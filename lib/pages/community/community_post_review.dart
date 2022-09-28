@@ -290,7 +290,7 @@ class _CommunityPostReviewState extends State<CommunityPostReview> {
                               .setWidth(x == _tcoments.length - 1 ? 10 : 0),
                         ),
                         width: double.infinity,
-                        color: Color(0xFFf2f2f2),
+                        color: Color(0xFF15152a),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

@@ -576,7 +576,6 @@ class CommonUtils {
     List<String> unChecklines = box.get('lines_url') == null
         ? AppGlobal.apiLines
         : List<String>.from(box.get('lines_url'));
-    // List<String> unChecklines = AppGlobal.apiLines;
     // List<String> unChecklines = ["https://api1.izivuiw.cn/api.php"];
     List<Map> errorLines = [];
     // int errorCount = 0;
