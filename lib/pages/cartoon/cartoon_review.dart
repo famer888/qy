@@ -1,0 +1,373 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qypj/components/common/pullrefreshlist.dart';
+import 'package:qypj/components/page_status.dart';
+import 'package:qypj/components/yy_dialog.dart';
+import 'package:qypj/global.dart';
+import 'package:qypj/routers.dart';
+import 'package:qypj/theme/default.dart';
+import 'package:qypj/utils/api.dart';
+import 'package:qypj/utils/common.dart';
+import 'package:qypj/utils/extensionlibrary.dart';
+import 'package:qypj/utils/input_box_comment.dart';
+import 'package:qypj/utils/networkImage.dart';
+
+class CartoonReview extends StatefulWidget {
+  CartoonReview({Key key, this.id}) : super(key: key);
+  final int id;
+
+  @override
+  State<CartoonReview> createState() => _CartoonReviewState();
+}
+
+class _CartoonReviewState extends State<CartoonReview> {
+  int page = 1;
+  bool noMore = false;
+  bool networkErr = false;
+  bool isHud = true;
+  String last_ix = "";
+  List<dynamic> _comentsList = [];
+  final FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  @override
+  void didUpdateWidget(covariant CartoonReview oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (MediaQuery.of(context).viewInsets.bottom == 0) {
+        focusNode.unfocus();
+      } else {}
+    });
+  }
+
+  _getData() {
+    cartoonListCommentMv(id: widget.id, last_ix: last_ix, page: page)
+        .then((res) {
+      if (res.data == null) {
+        networkErr = true;
+        setState(() {});
+        return;
+      }
+      List st = res.data["list"];
+      last_ix = res.data["last_ix"] == null ? "" : res.data["last_ix"];
+      if (page == 1) {
+        noMore = false;
+        _comentsList = st;
+      } else if (st.length > 0) {
+        _comentsList.addAll(st);
+      } else {
+        noMore = true;
+      }
+      isHud = false;
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPadding(
+      padding: MediaQuery.of(context).viewInsets,
+      duration: const Duration(milliseconds: 100),
+      child: Container(
+        height: ScreenUtil().screenHeight * 0.6,
+        decoration: BoxDecoration(
+          color: GQStyle.bgColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(ScreenUtil().setWidth(20)),
+            topRight: Radius.circular(ScreenUtil().setWidth(20)),
+          ),
+        ),
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            focusNode.unfocus();
+          },
+          child: InputCommentBox(
+            focusNode: focusNode,
+            labelText: CommonUtils.txt("wyddxf"),
+            onEditingCompleteText: (value) {
+              _inputTxt(value);
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.only(
+                      left: ScreenUtil().setWidth(20),
+                      right: ScreenUtil().setWidth(20),
+                      top: ScreenUtil().setWidth(20),
+                      bottom: ScreenUtil().setWidth(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          context.pop();
+                        },
+                        child: LImage(
+                          "issue_close_n",
+                          width: ScreenUtil().setWidth(11),
+                          height: ScreenUtil().setWidth(11),
+                        ),
+                      ),
+                      Text(
+                        "${CommonUtils.txt('pl')} ${_comentsList.length}",
+                        style: GQStyle.white255_18_M,
+                      ),
+                      Container(),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: networkErr
+                      ? PageStatus.noNetWork(onTap: () {
+                          networkErr = false;
+                          _getData();
+                        })
+                      : isHud
+                          ? PageStatus.loading(mounted)
+                          : _comentsList.length == 0
+                              ? PageStatus.noData()
+                              : PullRefreshList(
+                                  isAll: noMore,
+                                  onLoading: () {
+                                    page++;
+                                    _getData();
+                                  },
+                                  child: ListView.builder(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: GQStyle.pagePadding,
+                                      ),
+                                      itemCount: _comentsList.length,
+                                      itemBuilder: (context, index) {
+                                        return _reviewWidget(
+                                            _comentsList[index]);
+                                      }),
+                                ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _inputTxt(String value) {
+    if (AppGlobal.vipLevel > 0) {
+      if (value == null) return;
+      if (value.length == 0) {
+        CommonUtils.showText(CommonUtils.txt("qsrnr"));
+        return;
+      }
+      CommonUtils.startLoadGIF(tip: CommonUtils.txt("fbioz"));
+      cartoonCreateCommentMv(id: widget.id, content: value).then((res) {
+        BotToast.closeAllLoading();
+        if (res.status == 1) {
+          CommonUtils.showText(res.msg);
+        } else {
+          CommonUtils.showText(res.msg);
+        }
+      });
+    } else {
+      YyShowDialog.showdPNGDiaog(
+        context,
+        title: CommonUtils.txt("ts"),
+        content: (setDialogState) {
+          return Text(
+            CommonUtils.txt("ktvpfpl"),
+            style: GQStyle.gray203_13,
+          );
+        },
+        cancelText: CommonUtils.txt("qx"),
+        btnText: CommonUtils.txt("ljkt"),
+        callBack: () {
+          context.push('/${Routes.vip}');
+        },
+      );
+    }
+  }
+
+  Widget _reviewWidget(dynamic data) {
+    double w = 0;
+    if (data != null) {
+      w = CommonUtils.boundingTextSize(
+              context, data["member"]["nickname"] ?? "", GQStyle.white255_12)
+          .width;
+    }
+    return Container(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SizedBox(height: ScreenUtil().setWidth(15)),
+        Container(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: ScreenUtil().setWidth(30),
+                height: ScreenUtil().setWidth(30),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {},
+                  child: PlatformAwareNetworkImage(
+                    url: data["member"]["thumb"] ?? "",
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(ScreenUtil().setWidth(30 / 2))),
+                  ),
+                ),
+              ),
+              SizedBox(width: ScreenUtil().setWidth(10)),
+              Expanded(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: w > ScreenUtil().setWidth(180)
+                                ? ScreenUtil().setWidth(180)
+                                : w,
+                            child: Text(
+                              data["member"]["nickname"] ?? "",
+                              style: GQStyle.white255_12,
+                            ),
+                          ),
+                          SizedBox(width: ScreenUtil().setWidth(10)),
+                          data["member"]["vip_level"] > 0
+                              ? Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: ScreenUtil().setWidth(7)),
+                                  height: ScreenUtil().setWidth(13),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              ScreenUtil().setWidth(6.5))),
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xFFffca43),
+                                          Color(0xFFff7d3e)
+                                        ],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      )),
+                                  child: Center(
+                                    child: Text(
+                                      CommonUtils.txt("vvp"),
+                                      style: GQStyle.white255_8,
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                          SizedBox(
+                              width: ScreenUtil().setWidth(
+                                  data["member"]["vip_level"] > 0 ? 8 : 0)),
+                          data["member"]["auth_status"] == 1
+                              ? Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: ScreenUtil().setWidth(7)),
+                                  height: ScreenUtil().setWidth(13),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              ScreenUtil().setWidth(6.5))),
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xFFffca43),
+                                          Color(0xFFff7d3e)
+                                        ],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      )),
+                                  child: Center(
+                                    child: Text(
+                                      CommonUtils.txt("cuangz"),
+                                      style: GQStyle.white255_8,
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                        ],
+                      ),
+                      SizedBox(height: ScreenUtil().setWidth(4)),
+                      Text(
+                        "${RelativeDateFormat.format(DateTime.parse(data["created_at"] ?? ""))}",
+                        style: GQStyle.gray163_11,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  cartoonCommentMvLike(id: data["id"]).then((res) {
+                    if (res.status == 1) {
+                      data["is_like"] = data["is_like"] == 1 ? 0 : 1;
+                      data["like_count"] = data["is_like"] == 1
+                          ? data["like_count"] + 1
+                          : data["like_count"] - 1;
+                      setState(() {});
+                    } else {
+                      CommonUtils.showText(res.msg);
+                    }
+                  });
+                },
+                child: Container(
+                  width: ScreenUtil().setWidth(40),
+                  child: Column(
+                    children: [
+                      LImage(
+                        data["is_like"] == 1
+                            ? "comm_review_h"
+                            : "comm_review_n",
+                        width: ScreenUtil().setWidth(20),
+                        height: ScreenUtil().setWidth(20),
+                      ),
+                      SizedBox(height: ScreenUtil().setWidth(1)),
+                      Text(
+                        CommonUtils.renderFixedNumber(data["like_count"] ?? 0),
+                        style: GQStyle.gray203_12,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: ScreenUtil().setWidth(13)),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: ScreenUtil().setWidth(40)),
+              child: Text(
+                data["content"] != null
+                    ? CommonUtils.convertEmojiAndHtml(data["content"])
+                    : "",
+                style: GQStyle.gray203_13,
+                textAlign: TextAlign.left,
+                maxLines: AppGlobal.maxLines,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: ScreenUtil().setWidth(15)),
+        Container(
+          height: ScreenUtil().setWidth(0.5),
+          color: Color(0xFF23262f),
+        )
+      ]),
+    );
+  }
+}

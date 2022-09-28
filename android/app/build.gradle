@@ -1,0 +1,90 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply from: "../config.gradle"
+
+android {
+    compileSdkVersion 31
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId packagedata["applicationId"]
+        minSdkVersion 19
+        targetSdkVersion 30
+        versionCode versiondata["versionCode"]
+        versionName versiondata["versionName"]
+//         externalNativeBuild {
+//             cmake {
+//                 abiFilters 'armeabi-v7a'
+// //                abiFilters 'arm64-v8a'
+//             }
+//         }
+//         //todo --- tillusory end ---
+
+//         ndk {
+//             abiFilters "armeabi-v7a"
+//             // DO NOT MODIFY THIS LINE, IT'S UPDATED BY BUILD MACHINE AUTOMATICALLY.
+//         }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias signdata["keyAlias"]
+            keyPassword signdata["keyPassword"]
+            storeFile file(signdata["storeFile"])
+            storePassword signdata["storePassword"]
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    applicationVariants.all {
+        variant ->
+            if (variant.buildType.name.equals('release')) {
+                variant.outputs.all {
+                    variant.getPackageApplication().outputDirectory = new File('../apk/output/')
+                    outputFileName = "output.apk"
+                }
+            }
+
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
