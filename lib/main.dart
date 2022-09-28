@@ -21,7 +21,7 @@ import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/crypto.dart';
 
 void main() async {
-  // 初始化数据库，必须放在最前面·
+  // 初始化数据库，必须放在最前面
   await Hive.initFlutter();
   AppGlobal.appBox = await Hive.openBox('qypjbox'); // 用于存储一些简单的键值对
   AppGlobal.imageCacheBox = await Hive.openBox('qypjbox_ImageCache'); //图片缓存
