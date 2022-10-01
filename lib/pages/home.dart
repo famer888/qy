@@ -102,8 +102,8 @@ class _HomeState extends State<Home> {
 
   _initPlatformState() async {
     await Flurry.initialize(
-      androidKey: "JCJBR8C3RVC84XPN96MB",
-      iosKey: "C952JYS4423W47J833WT",
+      androidKey: "G87MKKWNTHCDM2RJQS4Z",
+      iosKey: "JWZPHSYDH2WB728P6DQX",
     );
   }
 

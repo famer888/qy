@@ -262,7 +262,7 @@ class _JellySliderBarState extends State<JellySliderBar>
                         height: ScreenUtil().setWidth(26),
                         decoration: BoxDecoration(
                             color: _selectIndex == x
-                                ? Color.fromRGBO(253, 160, 9, 1)
+                                ? Color.fromRGBO(35, 35, 55, 1)
                                 : Colors.transparent),
                         child: Center(
                           child: Text(
@@ -308,7 +308,7 @@ class _JellySliderBarState extends State<JellySliderBar>
     super.initState();
     if (widget.defaultStyle == null || widget.selectStyle == null) {
       _defaultStyle = TextStyle(
-          color: Color(0xff171518),
+          color: Color(0xff999999),
           fontSize: ScreenUtil().setSp(13),
           fontWeight: FontWeight.w500,
           overflow: TextOverflow.visible,
