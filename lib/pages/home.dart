@@ -182,12 +182,17 @@ class _HomeState extends State<Home> {
         box.put("lines_url", res.data.config.lines_url.toList());
         box.put("github_url", res.data.config.github_url.toString());
         Timer(Duration(seconds: 3), () {
-          CommonUtils.getRealImage(
-              url: res.data.ads?.imgUrl,
-              setUrl: (urllink) {
-                box.put('ads', {'image': urllink, 'url': res.data.ads.url});
-                CommonUtils.debugPrint(CommonUtils.txt('gdjw'));
-              });
+          String imageUrl = res.data.ads?.imgUrl;
+          if (imageUrl != null) {
+            CommonUtils.getRealImage(
+                url: res.data.ads?.imgUrl,
+                setUrl: (urllink) {
+                  box.put('ads', {'image': urllink, 'url': res.data.ads.url});
+                  CommonUtils.debugPrint(CommonUtils.txt('gdjw'));
+                });
+          } else {
+            box.put('ads', null);
+          }
         });
         getUserInfo(context).then((value) {
           initDialog();
