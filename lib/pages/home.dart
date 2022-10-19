@@ -69,6 +69,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    doCache();
     if (AppGlobal.apiBaseURL.length == 0) {
       CommonUtils.checkline(
         onFailed: () {
@@ -80,6 +81,23 @@ class _HomeState extends State<Home> {
       );
     } else {
       _setupData();
+    }
+  }
+
+  //打开的时候就清除一下缓存
+  void doCache() async {
+    if (kIsWeb) {
+      PaintingBinding.instance.imageCache.clear();
+      AppGlobal.imageCacheBox.clear();
+      return;
+    }
+    String path = AppGlobal.imageCacheBox.path;
+    File file = File(path);
+
+    int size = await file.length();
+    //大于500M清理磁盘
+    if (size > 500 << 20) {
+      await AppGlobal.imageCacheBox.clear();
     }
   }
 

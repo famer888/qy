@@ -51,25 +51,6 @@ class _WelcomeState extends State<Welcome> {
         toHome();
       }
     });
-
-    // 清一下缓存
-    doCache();
-  }
-
-  // 打开的时候就清除一下缓存
-  void doCache() async {
-    if (kIsWeb) {
-      PaintingBinding.instance.imageCache.clear();
-      return;
-    }
-    String path = AppGlobal.imageCacheBox.path;
-    File file = File(path);
-
-    int size = await file.length();
-    //大于500M清理磁盘
-    if (size > 500 << 20) {
-      await AppGlobal.imageCacheBox.clear();
-    }
   }
 
   void adsCountDown() {
