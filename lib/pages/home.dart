@@ -42,21 +42,25 @@ class _HomeState extends State<Home> {
       "title": CommonUtils.txt("sy"),
       "activeIcon": "tab_home_s",
       "icon": "tab_home_n",
+      "newyear_icon": "qy_newyear_tab_home",
     },
     {
       "title": CommonUtils.txt("sp"),
       "activeIcon": "tab_dm_s",
       "icon": "tab_dm_n",
+      "newyear_icon": "qy_newyear_tab_dm",
     },
     {
       "title": CommonUtils.txt("ym"),
       "activeIcon": "tab_shequ_s",
       "icon": "tab_shequ_n",
+      "newyear_icon": "qy_newyear_tab_sq",
     },
     {
       "title": CommonUtils.txt("wd"),
       "activeIcon": "tab_wode_s",
       "icon": "tab_wode_n",
+      "newyear_icon": "qy_newyear_tab_wd",
     },
   ];
   int selectedKey = 0;
@@ -528,22 +532,23 @@ class _HomeState extends State<Home> {
                                       child: Column(
                                         children: [
                                           LImage(
-                                            selectedKey == key
-                                                ? navBarItem[key]['activeIcon']
-                                                : navBarItem[key]['icon'],
-                                            width: ScreenUtil().setWidth(22.7),
-                                            height: ScreenUtil().setWidth(22.7),
+                                            // selectedKey == key
+                                            //     ? navBarItem[key]['activeIcon']
+                                            //     : navBarItem[key]['icon'],
+                                            navBarItem[key]['newyear_icon'],
+                                            width: ScreenUtil().setWidth(30),
+                                            height: ScreenUtil().setWidth(25),
                                             fit: BoxFit.fitWidth,
                                           ),
-                                          SizedBox(
-                                              height:
-                                                  ScreenUtil().setWidth(4.5)),
+                                          // SizedBox(
+                                          //     height:
+                                          //         ScreenUtil().setWidth(4.5)),
                                           Text(
                                             navBarItem[key]['title'],
                                             style: selectedKey == key
                                                 ? TextStyle(
                                                     color: GQStyle
-                                                        .jellyCyanColor108235220,
+                                                        .redColor255_57_13,
                                                     fontSize:
                                                         ScreenUtil().setSp(11),
                                                     overflow:

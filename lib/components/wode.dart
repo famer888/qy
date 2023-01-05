@@ -275,7 +275,7 @@ class _WodeState extends BaseWidgetState<Wode> {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    LImage(item['icon'],
+                    LImage('qy_newyear_' + item['icon'],
                         width: ScreenUtil().setWidth(20),
                         height: ScreenUtil().setWidth(20)),
                     SizedBox(
@@ -627,112 +627,128 @@ class _WodeState extends BaseWidgetState<Wode> {
                                   // );
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: GQStyle.pagePadding),
+                                  // padding: EdgeInsets.symmetric(
+                                  //     horizontal: GQStyle.pagePadding),
                                   height: ScreenUtil().setWidth(70),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(210, 163, 127, 1.0),
-                                        Color.fromRGBO(245, 228, 212, 1.0),
-                                        Color.fromRGBO(232, 207, 183, 1.0)
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text.rich(
-                                              TextSpan(children: [
-                                                WidgetSpan(
-                                                  alignment:
-                                                      PlaceholderAlignment
-                                                          .middle,
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        right: ScreenUtil()
-                                                            .setWidth(5)),
-                                                    child: LImage(
-                                                      "mine_vvp_n",
-                                                      width: ScreenUtil()
-                                                          .setWidth(33),
-                                                      height: ScreenUtil()
-                                                          .setWidth(13),
+                                  // decoration: BoxDecoration(
+                                  //   gradient: LinearGradient(
+                                  //     colors: [
+                                  //       Color.fromRGBO(84, 87, 99, 1.0),
+                                  //       // Color.fromRGBO(245, 228, 212, 1.0),
+                                  //       Color.fromRGBO(62, 65, 79, 1.0)
+                                  //     ],
+                                  //     begin: Alignment.topLeft,
+                                  //     end: Alignment.bottomRight,
+                                  //   ),
+                                  //   borderRadius:
+                                  //       BorderRadius.all(Radius.circular(5)),
+                                  // ),
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      context.push(CommonUtils.getRealHash(
+                                          Routes.kwantsharetousers));
+                                    },
+                                    child: Stack(
+                                      children: [
+                                        Positioned.fill(
+                                            child: LImage(
+                                          'qy_newyear_mine_vvp_bg',
+                                          fit: BoxFit.fill,
+                                        )),
+                                        Positioned.fill(
+                                          child: Column(
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 8.w,
                                                     ),
-                                                  ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 65.w),
+                                                      child: Text(
+                                                          CommonUtils.txt(
+                                                              "mflqhy"),
+                                                          style: TextStyle(
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    170,
+                                                                    36,
+                                                                    59,
+                                                                    1.0),
+                                                            fontSize:
+                                                                ScreenUtil()
+                                                                    .setSp(14),
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          )),
+                                                    ),
+                                                  ],
                                                 ),
-                                                TextSpan(
-                                                    text: CommonUtils.txt(
-                                                        "mflqhy"),
+                                              ),
+                                              // child: Text.rich(
+                                              //   TextSpan(children: [
+                                              //     WidgetSpan(
+                                              //       alignment:
+                                              //           PlaceholderAlignment
+                                              //               .middle,
+                                              //       child: Padding(
+                                              //           padding: EdgeInsets.only(
+                                              //               right:
+                                              //                   ScreenUtil()
+                                              //                       .setWidth(
+                                              //                           5)),
+                                              //           child: SizedBox(
+                                              //             width: 65.w,
+                                              //           )),
+                                              //     ),
+                                              //     TextSpan(
+                                              //         text: CommonUtils.txt(
+                                              //             "mflqhy"),
+                                              //         style: TextStyle(
+                                              //           color: Color.fromRGBO(
+                                              //               170, 36, 59, 1.0),
+                                              //           fontSize: ScreenUtil()
+                                              //               .setSp(14),
+                                              //           fontWeight:
+                                              //               FontWeight.bold,
+                                              //         )),
+                                              //   ]),
+                                              // ),
+                                              // ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 23.5.w),
+                                                  child: Text(
+                                                    config.tips_share_text ??
+                                                        CommonUtils.txt(
+                                                            "cgyqsqt"),
                                                     style: TextStyle(
                                                       color: Color.fromRGBO(
-                                                          80, 46, 19, 1.0),
+                                                          170, 36, 59, 1.0),
                                                       fontSize: ScreenUtil()
                                                           .setSp(14),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                              ]),
-                                            ),
-                                            Text(
-                                              config.tips_share_text ??
-                                                  CommonUtils.txt("cgyqsqt"),
-                                              style: TextStyle(
-                                                color: Color.fromRGBO(
-                                                    80, 46, 19, 1.0),
-                                                fontSize:
-                                                    ScreenUtil().setSp(14),
-                                              ),
-                                              maxLines: 2,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          context.push(CommonUtils.getRealHash(
-                                              Routes.kwantsharetousers));
-                                        },
-                                        child: SizedBox(
-                                          width: ScreenUtil().setWidth(94.7),
-                                          height: ScreenUtil().setWidth(37.7),
-                                          child: Stack(
-                                            children: [
-                                              LImage(
-                                                "mine_ljyq_n",
-                                                width: double.infinity,
-                                                height: double.infinity,
-                                              ),
-                                              Center(
-                                                child: Text(
-                                                  CommonUtils.txt("ljyqt"),
-                                                  style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        137, 88, 60, 1.0),
-                                                    fontSize:
-                                                        ScreenUtil().setSp(14),
+                                                    ),
+                                                    maxLines: 2,
                                                   ),
                                                 ),
                                               )
                                             ],
                                           ),
                                         ),
-                                      )
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
