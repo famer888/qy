@@ -276,8 +276,8 @@ class _WodeState extends BaseWidgetState<Wode> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     LImage('qy_newyear_' + item['icon'],
-                        width: ScreenUtil().setWidth(20),
-                        height: ScreenUtil().setWidth(20)),
+                        width: ScreenUtil().setWidth(30),
+                        height: ScreenUtil().setWidth(30)),
                     SizedBox(
                       width: ScreenUtil().setWidth(9.5),
                     ),
