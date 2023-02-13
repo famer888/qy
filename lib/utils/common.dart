@@ -571,15 +571,17 @@ class CommonUtils {
   }
 
   static void checkline({Function onSuccess, Function onFailed}) async {
-    int _timeout = 30;
     Box box = AppGlobal.appBox;
     List<String> unChecklines = box.get('lines_url') == null
         ? AppGlobal.apiLines
         : List<String>.from(box.get('lines_url'));
-    // List<String> unChecklines = ["https://api1.izivuiw.cn/api.php"];
+    // List<String> unChecklines = ["https://tgdapi.hyys.info/api.php"];
     List<Map> errorLines = [];
     // int errorCount = 0;
+    Function checkGit;
     Function doCheck;
+    Function handleResult;
+
     Function reportErrorLines = () async {
       // 上报错误线路&保存服务端推荐线路到本地
       if (errorLines.length == 0) return;
@@ -587,7 +589,7 @@ class CommonUtils {
           data: {'list': errorLines});
     };
 
-    Function handleResult = (String line) async {
+    handleResult = (String line) async {
       if (line != null) {
         AppGlobal.apiBaseURL = line;
         await reportErrorLines();
@@ -597,55 +599,147 @@ class CommonUtils {
       }
     };
 
+    checkGit = () async {
+      String git = box.get("github_url") == null
+          ? "https://raw.githubusercontent.com/little-5/backup/master/qypjb.txt"
+          : box.get("github_url").toString();
+      dynamic result;
+      if (kIsWeb) {
+        result = await html.HttpRequest.request(git, method: "GET")
+            .then((value) => value.response)
+            .timeout(Duration(milliseconds: 5 * 1000));
+      } else {
+        result = await new Dio(
+                BaseOptions(connectTimeout: 5 * 1000, receiveTimeout: 5 * 1000))
+            .get(git);
+      }
+
+      handleResult(result.toString().trim());
+    };
+
     doCheck = ({String line}) async {
       dynamic result;
       try {
-        result = await new Dio().get('$line/api/callback/checkLine');
+        if (kIsWeb) {
+          result = await html.HttpRequest.request(
+                  '$line/api/callback/checkLine',
+                  method: "GET")
+              .then((value) => value.response)
+              .timeout(Duration(milliseconds: 5 * 1000));
+        } else {
+          result = await new Dio(BaseOptions(
+                  connectTimeout: 5 * 1000, receiveTimeout: 5 * 1000))
+              .get('$line/api/callback/checkLine');
+        }
       } catch (err) {
         result = 'error';
       }
+      CommonUtils.debugPrint(result);
       if (result == 'error') {
         // errorCount++;
         errorLines.add({'url': line});
         //启用备用github线路
-        if (errorLines.length == unChecklines.length) {
-          String git = box.get("github_url") == null
-              ? "https://raw.githubusercontent.com/little-5/backup/master/qypjb.txt"
-              : box.get("github_url").toString();
-          dynamic result = await new Dio().get(git);
-          handleResult(result.toString().trim());
+        if (errorLines.length == unChecklines.length &&
+            unChecklines.length > 1) {
+          checkGit();
         }
-      } else {
-        if (result.toString() == '200') {
-          handleResult(line);
-        } else {
-          onFailed();
-        }
+      } else if (result.toString() == '200') {
+        handleResult(line);
       }
-      return result;
     };
 
     ConnectivityResult connectivityResult =
         await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
-      Future.any(unChecklines.map((line) {
-        return doCheck(line: line).then((value) {
-          if (value.toString() == '200') {
-            return line;
-          } else {
-            return Future.delayed(Duration(seconds: _timeout), () {
-              return null;
-            });
-          }
-        });
-      })).then((line) {
-        handleResult(line);
-      });
+      for (var i = 0; i < unChecklines.length; i++) {
+        if (AppGlobal.apiBaseURL.isEmpty) {
+          await doCheck(line: unChecklines[i]);
+        } else {
+          break;
+        }
+      }
     } else {
       onFailed();
     }
   }
+
+  // static void checkline({Function onSuccess, Function onFailed}) async {
+  //   int _timeout = 30;
+  //   Box box = AppGlobal.appBox;
+  //   List<String> unChecklines = box.get('lines_url') == null
+  //       ? AppGlobal.apiLines
+  //       : List<String>.from(box.get('lines_url'));
+  //   // List<String> unChecklines = ["https://api1.izivuiw.cn/api.php"];
+  //   List<Map> errorLines = [];
+  //   // int errorCount = 0;
+  //   Function doCheck;
+  //   Function reportErrorLines = () async {
+  //     // 上报错误线路&保存服务端推荐线路到本地
+  //     if (errorLines.length == 0) return;
+  //     await PlatformAwareHttp.post('/api/home/domainCheckReport',
+  //         data: {'list': errorLines});
+  //   };
+
+  //   Function handleResult = (String line) async {
+  //     if (line != null) {
+  //       AppGlobal.apiBaseURL = line;
+  //       await reportErrorLines();
+  //       onSuccess();
+  //     } else {
+  //       onFailed();
+  //     }
+  //   };
+
+  //   doCheck = ({String line}) async {
+  //     dynamic result;
+  //     try {
+  //       result = await new Dio().get('$line/api/callback/checkLine');
+  //     } catch (err) {
+  //       result = 'error';
+  //     }
+  //     if (result == 'error') {
+  //       // errorCount++;
+  //       errorLines.add({'url': line});
+  //       //启用备用github线路
+  //       if (errorLines.length == unChecklines.length) {
+  //         String git = box.get("github_url") == null
+  //             ? "https://raw.githubusercontent.com/little-5/backup/master/qypjb.txt"
+  //             : box.get("github_url").toString();
+  //         dynamic result = await new Dio().get(git);
+  //         handleResult(result.toString().trim());
+  //       }
+  //     } else {
+  //       if (result.toString() == '200') {
+  //         handleResult(line);
+  //       } else {
+  //         onFailed();
+  //       }
+  //     }
+  //     return result;
+  //   };
+
+  //   ConnectivityResult connectivityResult =
+  //       await Connectivity().checkConnectivity();
+  //   if (connectivityResult == ConnectivityResult.mobile ||
+  //       connectivityResult == ConnectivityResult.wifi) {
+  //     Future.any(unChecklines.map((line) {
+  //       return doCheck(line: line).then((value) {
+  //         if (value.toString() == '200') {
+  //           return line;
+  //         } else {
+  //           return Future.delayed(Duration(seconds: _timeout), () {
+  //             return null;
+  //           });
+  //         }
+  //       });
+  //     })).then((line) {
+  //       handleResult(line);
+  //     });
+  //   } else {
+  //     onFailed();
+  //   }
+  // }
 
   static String convertEmojiAndHtml(String str) {
     // 转 html
