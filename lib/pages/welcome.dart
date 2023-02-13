@@ -37,9 +37,6 @@ class _WelcomeState extends State<Welcome> {
     }
     adsCountDown();
     CommonUtils.checkline(onFailed: () {
-      if (yyads == null) {
-        toHome();
-      }
       BotToast.showText(
           text: '无法连接服务器，请检查手机网络设置',
           textStyle: TextStyle(
