@@ -203,6 +203,7 @@ class _HomeState extends State<Home> {
       if (res.status == 1) {
         box.put("lines_url", res.data.config.lines_url.toList());
         box.put("github_url", res.data.config.github_url.toString());
+        box.put('office_web', res.data.config.officeSite);
         Timer(Duration(seconds: 3), () {
           String imageUrl = res.data.ads?.imgUrl;
           if (imageUrl != null) {
