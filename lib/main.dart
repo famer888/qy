@@ -87,7 +87,7 @@ void main() async {
         "bundleId": packageInfo.packageName,
         "version": packageInfo.version,
         "oauth_type": "android",
-        // "build_affcode": "j5EJ",
+        // "build_affcode": "phQZ",
       };
     } else {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
