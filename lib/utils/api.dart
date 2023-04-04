@@ -32,6 +32,19 @@ import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/http.dart';
 import 'package:flutter/foundation.dart';
 
+//点击福利统计
+Future<Basic> reqWelfClickCount({int id = 0}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/home/buoy', data: {'id': id});
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
 //报告观看记录
 Future<Basic> reportVisit({String json}) async {
   try {

@@ -132,8 +132,7 @@ class _IndexPageState extends BaseWidgetState<IndexPage> {
   @override
   Widget pageBody(BuildContext context) {
     // TODO: implement pageBody
-    print('rebuild IndexPage');
-
+    List array = Provider.of<HomeConfig>(context, listen: false).config.buoy;
     // var h = kIsWeb
     //     ? ScreenUtil().setWidth(15)
     //     : MediaQuery.of(context).padding.top +
@@ -196,10 +195,23 @@ class _IndexPageState extends BaseWidgetState<IndexPage> {
                       )
                     ],
                   ),
-                  // Positioned(
-                  //     right: 0,
-                  //     bottom: ScreenUtil().setWidth(7),
-                  //     child: IndexGaoqianIcon())
+                  array.isNotEmpty
+                      ? Positioned(
+                          right: ScreenUtil().setWidth(7),
+                          bottom: ScreenUtil().setWidth(7),
+                          child: SizedBox(
+                            width: 67.6.w,
+                            height: 63.w * array.length,
+                            child: ListView.builder(
+                                itemCount: array.length,
+                                scrollDirection: Axis.vertical,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (cx, index) {
+                                  return IndexGaoqianIcon(data: array[index]);
+                                }),
+                          ),
+                        )
+                      : Container()
                 ],
               );
   }
@@ -247,6 +259,8 @@ class _GradientPainter extends CustomPainter {
 }
 
 class IndexGaoqianIcon extends StatefulWidget {
+  IndexGaoqianIcon({Key key, this.data}) : super(key: key);
+  dynamic data;
   @override
   State<IndexGaoqianIcon> createState() => _IndexGaoqianIconState();
 }
@@ -264,26 +278,53 @@ class _IndexGaoqianIconState extends State<IndexGaoqianIcon> {
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              hideGaoqian = true;
-              setState(() {});
+              reqWelfClickCount(id: widget.data['id'])
+                  .then((value) => CommonUtils.debugPrint(value.msg));
+              if (widget.data['link_url'] == null ||
+                  widget.data['link_url'].length == 0) return;
+              if (widget.data['redirect_type'] == 1) {
+                String linkUrl = widget.data['link_url'];
+                List urlList = linkUrl.split('??');
+                Map<String, dynamic> pramas = {};
+                if (urlList.first == "ktloadwebview") {
+                  pramas["url"] = urlList.last.toString().substring(4);
+                  AppGlobal.webExtra = {"url": pramas.values.first};
+                  if (kIsWeb) {
+                    CommonUtils.launchURL(
+                        Uri.decodeComponent(pramas.values.first.trim()));
+                  } else {
+                    context.push("/${urlList[0]}");
+                  }
+                } else {
+                  if (urlList.length > 1 && urlList.last != "") {
+                    urlList[1].split("&").forEach((item) {
+                      List stringText = item.split('=');
+                      pramas[stringText[0]] =
+                          stringText.length > 1 ? stringText[1] : null;
+                    });
+                  }
+                  String pramasStrs = "";
+                  if (pramas.values.length > 0) {
+                    pramas.forEach((key, value) {
+                      pramasStrs += "/${value}";
+                    });
+                  }
+                  context.push("/${urlList[0]}${pramasStrs}");
+                }
+              } else if (widget.data['redirect_type'] == 2) {
+                CommonUtils.launchURL(widget.data['link_url'].trim());
+              }
             },
-            child: LImage(
-              "index_gao_gb",
-              width: ScreenUtil().setWidth(16),
-              height: ScreenUtil().setWidth(16),
+            child: SizedBox(
+              width: 67.6.w,
+              height: 63.w,
+              child: PlatformAwareNetworkImage(
+                url: CommonUtils.getThumb(widget.data),
+                background: Colors.transparent,
+              ),
             ),
           ),
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              context.push("/mineAgentPage");
-            },
-            child: LImage(
-              "index_gao_n",
-              width: ScreenUtil().setWidth(73),
-              height: ScreenUtil().setWidth(66),
-            ),
-          )
+          SizedBox(height: 10.w),
         ],
       ),
       offstage: hideGaoqian,

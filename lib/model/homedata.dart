@@ -178,6 +178,7 @@ class Config {
     this.solution,
     this.person_ads,
     this.day_price,
+    this.buoy,
   });
 
   String day_price;
@@ -207,6 +208,7 @@ class Config {
   List<dynamic> lines_url;
   String girl_comment_option;
   String proxy_join_num;
+  List<dynamic> buoy;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         day_price: json["day_price"] == null ? null : json["day_price"],
@@ -232,6 +234,9 @@ class Config {
         line: json["line"] == null
             ? null
             : List<dynamic>.from(json["line"].map((x) => x)),
+        buoy: json["buoy"] == null
+            ? null
+            : List<dynamic>.from(json["buoy"].map((x) => x)),
         m3u8_encrypt: json['m3u8_encrypt'] == null
             ? null
             : json['m3u8_encrypt'].toString(),
@@ -299,6 +304,7 @@ class Config {
         "girl_comment_option":
             girl_comment_option == null ? null : girl_comment_option,
         "proxy_join_num": proxy_join_num == null ? null : proxy_join_num,
+        "buoy": buoy == null ? null : List<dynamic>.from(buoy.map((x) => x)),
       };
 }
 
