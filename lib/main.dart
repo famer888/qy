@@ -62,8 +62,9 @@ void main() async {
   // 初始化APP基础信息
   AppGlobal.apiToken = AppGlobal.appBox.get('qypj_token') ?? "";
   AppGlobal.appinfo = {
-    "oauth_id": CommonUtils.gvMD5(AppGlobal.appBox.get('oauth_id') ??
-        '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}'),
+    "oauth_id": AppGlobal.appBox.get('oauth_id') ??
+        CommonUtils.gvMD5(
+            '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}'),
     "bundleId": "com.pwa.qypj",
     "version": "1.2.0",
     "oauth_type": "web",
@@ -87,7 +88,7 @@ void main() async {
         "bundleId": packageInfo.packageName,
         "version": packageInfo.version,
         "oauth_type": "android",
-        // "build_affcode": "wdN2",
+        // "build_affcode": "z8S9",
       };
     } else {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
