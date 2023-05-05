@@ -3,14 +3,13 @@ import 'package:qypj/components/common/pagetitlebar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qypj/components/common/pullrefreshlist.dart';
 import 'package:qypj/components/page_status.dart';
-import 'package:qypj/page/flj_slider_nav.dart';
+import 'package:qypj/page/yyq_diamond_nav.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
 import 'package:qypj/utils/networkImage.dart';
 import 'package:qypj/utils/pageviewmixin.dart';
-import 'package:qypj/views/yyq/cards/acg_card.dart';
 
 class BuyPage extends StatefulWidget {
   BuyPage({Key key}) : super(key: key);
@@ -25,11 +24,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
   int currentTab = 0;
   List tabList = [
     {'id': 1, 'name': CommonUtils.txt('sping')},
-    {'id': 11, 'name': CommonUtils.txt('ssmj')},
-    {'id': 2, 'name': CommonUtils.txt('mh')},
-    // {'id': 3, 'name': CommonUtils.txt('xs')},
-    {'id': 6, 'name': CommonUtils.txt('mt')},
-    {'id': 99, 'name': CommonUtils.txt('hjsp')},
+    {'id': 14, 'name': CommonUtils.txt('tiezt')},
   ];
 
   @override
@@ -60,7 +55,7 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
             title: CommonUtils.txt('wdgm'),
           ),
           Expanded(
-            child: FljSliderNav(
+            child: YyqDiamondNav(
               titles: tabList.map<String>((e) => e["name"]).toList(),
               pages: tabList
                   .map((e) => PageViewMixin(
@@ -69,6 +64,13 @@ class _BuyPageState extends State<BuyPage> with TickerProviderStateMixin {
                         ),
                       ))
                   .toList(),
+              defaultStyle: GQStyle.white255_15_M,
+              selectStyle: GQStyle.blue80_15_M,
+              navColor: GQStyle.bgColor,
+              inedxFunc: (index) {
+                currentTab = index;
+                setState(() {});
+              },
             ),
           )
         ],
@@ -128,10 +130,8 @@ class _BuyListState extends State<BuyList> {
           _getData();
         },
         child: GridView.builder(
-            cacheExtent: ScreenUtil().screenHeight * 5,
             padding: EdgeInsets.symmetric(
-                horizontal: GQStyle.pagePadding,
-                vertical: ScreenUtil().setWidth(20)),
+                horizontal: GQStyle.pagePadding, vertical: 10.w),
             itemCount: dataList.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -172,7 +172,7 @@ class _BuyListState extends State<BuyList> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                "${CommonUtils.renderFixedNumber(t["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                "${CommonUtils.renderFixedNumber(t["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                 style: GQStyle.gray105_11),
                             Spacer(),
                             Text("${CommonUtils.getHMTime(t["duration"] ?? 0)}",
@@ -188,11 +188,7 @@ class _BuyListState extends State<BuyList> {
             }));
   }
 
-  Widget _mvList() {
-    double _w = (ScreenUtil().screenWidth -
-            GQStyle.pagePadding * 2 -
-            ScreenUtil().setWidth(20)) /
-        3;
+  Widget _postList() {
     return PullRefreshList(
       isAll: noMore,
       onRefresh: () {
@@ -200,334 +196,239 @@ class _BuyListState extends State<BuyList> {
         _getData();
       },
       onLoading: () {
-        page += 1;
+        page++;
         _getData();
       },
-      child: GridView.builder(
-          cacheExtent: ScreenUtil().screenHeight * 5,
-          padding: EdgeInsets.symmetric(
-              horizontal: GQStyle.pagePadding,
-              vertical: ScreenUtil().setWidth(10)),
-          itemCount: dataList.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            mainAxisSpacing: ScreenUtil().setWidth(12),
-            crossAxisSpacing: ScreenUtil().setWidth(12),
-            childAspectRatio: 110 / 175,
-          ),
-          itemBuilder: (context, index) {
-            var t = dataList[index];
-            return GestureDetector(
+      child: ListView.builder(
+        padding: EdgeInsets.symmetric(vertical: 10.w),
+        shrinkWrap: true,
+        itemCount: dataList.length,
+        itemBuilder: (context, index) {
+          dynamic e = dataList[index];
+          List medias = e["medias"] ?? [];
+          List tmp = medias.length > 3 ? medias.sublist(0, 3) : medias;
+          return Container(
+            margin: EdgeInsets.only(
+                left: GQStyle.pagePadding, right: GQStyle.pagePadding),
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+            ),
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onTap: () {
-                context.push(
-                    CommonUtils.getRealHash('smallvideodetail/${t["id"]}'));
+                if (e["status"] == 1) {
+                  context.push("/communitypostdetail/${e["id"]}");
+                }
               },
-              child: Stack(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: _w / 110 * 147,
-                        child: PlatformAwareNetworkImage(
-                            url: clipImageUrl(CommonUtils.getThumb(t),
-                                inputWidth: ScreenUtil().setWidth(110)),
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                  Text(
+                      "${RelativeDateFormat.format(DateTime.parse(e["created_at"] ?? ""))}",
+                      style: GQStyle.gray102_14),
+                  Offstage(
+                    offstage: false,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: ScreenUtil().setWidth(10),
+                          bottom: ScreenUtil().setWidth(10)),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          left: ScreenUtil().setWidth(10),
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border(
+                              left: BorderSide(
+                            color: Color(0xFF60B2DC),
+                            width: ScreenUtil().setWidth(2),
+                          )),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: ScreenUtil().setWidth(10)),
+                            Text.rich(TextSpan(children: [
+                              e["is_best"] == 1
+                                  ? WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            right: ScreenUtil().setWidth(2)),
+                                        child: Container(
+                                          height: ScreenUtil().setWidth(16),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  ScreenUtil().setWidth(5)),
+                                          child: Text(
+                                            CommonUtils.txt("jhua"),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: ScreenUtil().setSp(11),
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          decoration: BoxDecoration(
+                                              gradient: GQStyle
+                                                  .btnGradient_e4b191_f6dec7,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(ScreenUtil()
+                                                      .setWidth(2)))),
+                                        ),
+                                      ))
+                                  : TextSpan(),
+                              TextSpan(
+                                  text: e["title"] ?? "",
+                                  style: GQStyle.white255_15)
+                            ])),
+                            tmp.length > 0
+                                ? GridView.count(
+                                    padding: EdgeInsets.only(
+                                        top: ScreenUtil().setWidth(12)),
+                                    shrinkWrap: true,
+                                    crossAxisCount: 3,
+                                    mainAxisSpacing: ScreenUtil().setWidth(7),
+                                    crossAxisSpacing: ScreenUtil().setWidth(7),
+                                    childAspectRatio: 1.0,
+                                    scrollDirection: Axis.vertical,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    children: tmp
+                                        .asMap()
+                                        .keys
+                                        .map((x) => Stack(
+                                              children: [
+                                                PlatformAwareNetworkImage(
+                                                  url: tmp[x]["type"] == 2
+                                                      ? tmp[x]["cover"] ?? ""
+                                                      : tmp[x]["media_url"] ??
+                                                          "",
+                                                  borderRadius: BorderRadius
+                                                      .all(Radius.circular(
+                                                          ScreenUtil()
+                                                              .setWidth(5))),
+                                                ),
+                                                tmp[x]["type"] == 2
+                                                    ? Center(
+                                                        child: LImage(
+                                                            "v_play_n",
+                                                            width: ScreenUtil()
+                                                                .setWidth(30),
+                                                            height: ScreenUtil()
+                                                                .setWidth(30)),
+                                                      )
+                                                    : Container(),
+                                                //大于3张图并且最后一图显示剩余多少张
+                                                x == 2 && medias.length > 3
+                                                    ? Positioned(
+                                                        right: ScreenUtil()
+                                                            .setWidth(6),
+                                                        bottom: ScreenUtil()
+                                                            .setWidth(6),
+                                                        child: Container(
+                                                          padding: EdgeInsets.symmetric(
+                                                              horizontal:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          5)),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0.5),
+                                                            borderRadius: BorderRadius.all(
+                                                                Radius.circular(
+                                                                    ScreenUtil()
+                                                                        .setWidth(
+                                                                            2))),
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              "+${medias.length - 3}",
+                                                              style: GQStyle
+                                                                  .white255_12,
+                                                            ),
+                                                          ),
+                                                        ))
+                                                    : Container()
+                                              ],
+                                            ))
+                                        .toList(),
+                                  )
+                                : Container(),
+                            SizedBox(height: ScreenUtil().setWidth(15)),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      context.push(
+                                          "/communitytagdetail/${e["topic"]["id"]}");
+                                    },
+                                    child: Text(
+                                      "#${e["topic"]["name"] ?? ""}",
+                                      style: GQStyle.blue96_13_M,
+                                    ),
+                                  ),
+                                  Text(
+                                    "${CommonUtils.renderFixedNumber(e["comment_num"] ?? 0)}${CommonUtils.txt("tpl")} ｜ ${CommonUtils.renderFixedNumber(e["view_num"] ?? 0)}${CommonUtils.txt("llan")} ｜ ${CommonUtils.renderFixedNumber(e["like_num"] ?? 0)}${CommonUtils.txt("dz")}",
+                                    style: GQStyle.gray163_11,
+                                  )
+                                ]),
+                            SizedBox(height: ScreenUtil().setWidth(10)),
+                            e["status"] == 2
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: ScreenUtil().setWidth(10)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(CommonUtils.txt("bjyy") + "：",
+                                            style: GQStyle.red255_11),
+                                        SizedBox(
+                                            height: ScreenUtil().setWidth(5)),
+                                        Text(
+                                          e["refuse_reason"],
+                                          style: GQStyle.red255_11,
+                                          maxLines: 20,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : (e["status"] == 0
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: ScreenUtil().setWidth(10)),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                CommonUtils.txt("shzt") +
+                                                    "：" +
+                                                    CommonUtils.txt('dsh'),
+                                                style: GQStyle.red255_11),
+                                          ],
+                                        ),
+                                      )
+                                    : Container())
+                          ],
+                        ),
                       ),
-                      SizedBox(height: ScreenUtil().setWidth(3.5)),
-                      Text(t["title"] ?? "loading",
-                          style: GQStyle.white255_14, maxLines: 1),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            );
-          }),
+            ),
+          );
+        },
+      ),
     );
-  }
-
-  Widget _comicsList() {
-    double _w = (ScreenUtil().screenWidth -
-            GQStyle.pagePadding * 2 -
-            ScreenUtil().setWidth(20)) /
-        3;
-    return PullRefreshList(
-        isAll: noMore,
-        onRefresh: () {
-          page = 1;
-          _getData();
-        },
-        onLoading: () {
-          page += 1;
-          _getData();
-        },
-        child: GridView.builder(
-            cacheExtent: ScreenUtil().screenHeight * 5,
-            padding: EdgeInsets.symmetric(
-                horizontal: GQStyle.pagePadding,
-                vertical: ScreenUtil().setWidth(20)),
-            itemCount: dataList.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: ScreenUtil().setWidth(5),
-              crossAxisSpacing: ScreenUtil().setWidth(8.5),
-              childAspectRatio: 111 / 202,
-            ),
-            itemBuilder: (context, index) {
-              var t = dataList[index];
-
-              return AcgCard(
-                isForBuyPage: true,
-                data: Map.from(t)..['content_type'] = 2,
-              );
-
-              // 旧的样式 不用了
-              // return GestureDetector(
-              //   onTap: () {
-              //     context.push(CommonUtils.getRealHash(
-              //         'comicsdetail/${t["id"] ?? "0"}'));
-              //   },
-              //   child: Stack(
-              //     children: [
-              //       Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: [
-              //           SizedBox(
-              //             height: _w / 110 * 147,
-              //             child: PlatformAwareNetworkImage(
-              //                 url: clipImageUrl(CommonUtils.getThumb(t),
-              //                     inputWidth: ScreenUtil().setWidth(110)),
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(5))),
-              //           ),
-              //           SizedBox(height: ScreenUtil().setWidth(10)),
-              //           Text(t["title"] ?? "loading",
-              //               style: GQStyle.white255_14_M),
-              //           SizedBox(height: ScreenUtil().setWidth(6)),
-              //           Text(
-              //             t["finished"] == 1
-              //                 ? "${CommonUtils.txt("wj")} ${CommonUtils.txt("gng")}${t["series"]}${CommonUtils.txt("hua")}"
-              //                 : "${CommonUtils.txt("gxz")}${t["series"]}${CommonUtils.txt("hua")}",
-              //             style: GQStyle.gray128_11,
-              //           )
-              //         ],
-              //       ),
-              //     ],
-              //   ),
-              // );
-            }));
-  }
-
-  Widget _novelList() {
-    double _w = (ScreenUtil().screenWidth -
-            GQStyle.pagePadding * 2 -
-            ScreenUtil().setWidth(20)) /
-        3;
-    return PullRefreshList(
-        isAll: noMore,
-        onRefresh: () {
-          page = 1;
-          _getData();
-        },
-        onLoading: () {
-          page += 1;
-          _getData();
-        },
-        child: GridView.builder(
-            cacheExtent: ScreenUtil().screenHeight * 5,
-            padding: EdgeInsets.symmetric(
-                horizontal: GQStyle.pagePadding,
-                vertical: ScreenUtil().setWidth(20)),
-            itemCount: dataList.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 25,
-              crossAxisSpacing: 10,
-              childAspectRatio: 219 / 398,
-            ),
-            itemBuilder: (context, index) {
-              var t = dataList[index];
-              return GestureDetector(
-                onTap: () {
-                  context.push(
-                      CommonUtils.getRealHash('novelDetail/${t["id"] ?? "0"}'));
-                },
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: _w / 110 * 147,
-                          child: PlatformAwareNetworkImage(
-                              url: clipImageUrl(CommonUtils.getThumb(t),
-                                  inputWidth: ScreenUtil().setWidth(110)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                        ),
-                        SizedBox(height: ScreenUtil().setWidth(10)),
-                        Text(t["title"] ?? "loading",
-                            style: GQStyle.white255_14_M),
-                        SizedBox(height: ScreenUtil().setWidth(6)),
-                        Text(
-                          t["finished"] == 1
-                              ? "${CommonUtils.txt("wj")} ${CommonUtils.txt("gng")}${t["series"]}${CommonUtils.txt("hua")}"
-                              : "${CommonUtils.txt("gxz")}${t["series"]}${CommonUtils.txt("hua")}",
-                          style: GQStyle.gray128_11,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }));
-  }
-
-  Widget _beautyPNGList() {
-    double _w = (ScreenUtil().screenWidth -
-            GQStyle.pagePadding * 2 -
-            ScreenUtil().setWidth(12)) /
-        2;
-    return PullRefreshList(
-        isAll: noMore,
-        onRefresh: () {
-          page = 1;
-          _getData();
-        },
-        onLoading: () {
-          page += 1;
-          _getData();
-        },
-        child: GridView.builder(
-            cacheExtent: ScreenUtil().screenHeight * 5,
-            padding: EdgeInsets.symmetric(
-                horizontal: GQStyle.pagePadding,
-                vertical: ScreenUtil().setWidth(20)),
-            itemCount: dataList.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 25,
-              crossAxisSpacing: 12,
-              childAspectRatio: 340 / 530,
-            ),
-            itemBuilder: (context, index) {
-              var t = dataList[index];
-              return GestureDetector(
-                onTap: () {
-                  context.push(
-                      CommonUtils.getRealHash('atlasDetail/${t["id"] ?? "0"}'));
-                },
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: _w / 169 * 224,
-                          child: PlatformAwareNetworkImage(
-                              url: CommonUtils.getThumb(t),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                        ),
-                        SizedBox(height: ScreenUtil().setWidth(10)),
-                        Text(t["title"] ?? "loading",
-                            style: GQStyle.white255_14_M),
-                        SizedBox(height: ScreenUtil().setWidth(6)),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }));
-  }
-
-  Widget _packageList() {
-    return PullRefreshList(
-        isAll: noMore,
-        onRefresh: () {
-          page = 1;
-          _getData();
-        },
-        onLoading: () {
-          page += 1;
-          _getData();
-        },
-        child: ListView.builder(
-            padding: EdgeInsets.symmetric(
-                horizontal: GQStyle.pagePadding,
-                vertical: ScreenUtil().setWidth(20)),
-            itemCount: dataList.length,
-            itemBuilder: (context, index) {
-              var t = dataList[index];
-              return Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      context.push(
-                          '/more_and_more_collect/${t["id"] ?? "0"}/${t["type"] ?? "1"}');
-                    },
-                    child: Container(
-                      height: ScreenUtil().setWidth(180.6),
-                      child: Stack(children: [
-                        PlatformAwareNetworkImage(
-                            url: CommonUtils.getThumb(t),
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
-                        Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                                color: Color.fromRGBO(0, 0, 0, 0.68))),
-                        Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                  child: Text(
-                                t["title"] ?? "loading",
-                                style: GQStyle.white255_18_B,
-                              )),
-                              SizedBox(height: ScreenUtil().setWidth(14)),
-                              Center(
-                                  child: Text(
-                                t["sub_title"] ?? "loading",
-                                style: GQStyle.gray202_14,
-                              )),
-                            ])
-                      ]),
-                    ),
-                  ),
-                  SizedBox(height: ScreenUtil().setWidth(30))
-                ],
-              );
-            }));
-  }
-
-  Widget _beautyYueMList() {
-    return PullRefreshList(
-        isAll: noMore,
-        onRefresh: () {
-          page = 1;
-          _getData();
-        },
-        onLoading: () {
-          page += 1;
-          _getData();
-        },
-        child: GridView.builder(
-            cacheExtent: ScreenUtil().screenHeight * 5,
-            padding: EdgeInsets.symmetric(
-                horizontal: GQStyle.pagePadding,
-                vertical: ScreenUtil().setWidth(20)),
-            itemCount: dataList.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 25,
-              crossAxisSpacing: 12,
-              childAspectRatio: 340 / 450,
-            ),
-            itemBuilder: (context, index) {
-              var t = dataList[index];
-              return Container();
-            }));
   }
 
   @override
@@ -541,23 +442,8 @@ class _BuyListState extends State<BuyList> {
       case 1:
         return _videoList();
         break;
-      case 11:
-        return _mvList();
-        break;
-      case 2:
-        return _comicsList();
-        break;
-      case 3:
-        return _novelList();
-        break;
-      case 6:
-        return _beautyPNGList();
-        break;
-      case 7:
-        return _beautyYueMList();
-        break;
-      case 99:
-        return _packageList();
+      case 14:
+        return _postList();
         break;
     }
   }

@@ -80,7 +80,7 @@ class VideoDoubleColumeCardFix extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                "${CommonUtils.renderFixedNumber(data["count_play"] ?? 0)}${CommonUtils.txt('bf')}",
+                                "${CommonUtils.renderFixedNumber(data["play_ct"] ?? 0)}${CommonUtils.txt('bf')}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: ScreenUtil().setSp(11),

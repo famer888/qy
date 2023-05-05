@@ -109,7 +109,7 @@ class VideoSingleColumeCard extends StatelessWidget {
                                 style: GQStyle.gray95_12),
                             Text(
                                 '观看' +
-                                    "${CommonUtils.renderFixedNumber(data["count_play"] ?? 0)}"
+                                    "${CommonUtils.renderFixedNumber(data["play_ct"] ?? 0)}"
                                         '人',
                                 style: GQStyle.gray95_12),
                             // Spacer(),

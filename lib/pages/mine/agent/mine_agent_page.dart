@@ -255,7 +255,7 @@ class _MineAgentPageState extends BaseWidgetState {
                                             GestureDetector(
                                               onTap: () {
                                                 context.push(
-                                                    '/mineAgentToCashPage/0');
+                                                    '/mineAgentToCashPage/1');
                                               },
                                               child: Container(
                                                 width:
@@ -684,11 +684,7 @@ class _MineAgentPageState extends BaseWidgetState {
                         alignment: Alignment.bottomCenter,
                         child: GestureDetector(
                           onTap: () {
-                            if (members.channel == 'self') {
-                              context.push('/${Routes.kwantsharetousers}');
-                            } else {
-                              context.push('/${Routes.mineAgentApplyPage}');
-                            }
+                            context.push('/${Routes.kwantsharetousers}');
                           },
                           child: SafeArea(
                             child: Container(
@@ -713,9 +709,7 @@ class _MineAgentPageState extends BaseWidgetState {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      (members.channel == 'self')
-                                          ? CommonUtils.txt("ljtg")
-                                          : CommonUtils.txt("sqdl"),
+                                      CommonUtils.txt("sqdl"),
                                       style: TextStyle(
                                         fontSize: ScreenUtil().setSp(20),
                                         fontWeight: FontWeight.bold,

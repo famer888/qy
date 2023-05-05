@@ -10,6 +10,7 @@ import 'package:qypj/components/page_status.dart';
 import 'package:qypj/global.dart';
 import 'package:qypj/pages/home.dart';
 import 'package:qypj/theme/default.dart';
+import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
 
 class Welcome extends StatefulWidget {
@@ -109,6 +110,7 @@ class _WelcomeState extends State<Welcome> {
         GestureDetector(
           onTap: () {
             if (adsmap['url'] == '' || adsmap['url'] == null) return;
+            reqAdClickCount(id: adsmap['id'], type: adsmap['type']);
             CommonUtils.launchURL(adsmap['url']);
           },
           child: Image.memory(

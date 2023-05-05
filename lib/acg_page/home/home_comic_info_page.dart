@@ -114,7 +114,7 @@ class _AcgComicDetailPageState extends BaseWidgetState<HomeComicInfoPage> {
 
               /// 0 免费
               /// 1 VIP
-              /// 2 宝石
+              /// 2 金币
               /// 3 限时免费
               /// 4 新人免费
               if (e["is_free"] == 0 || e["is_free"] == 3 || e["is_free"] == 4) {

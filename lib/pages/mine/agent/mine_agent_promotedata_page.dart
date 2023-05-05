@@ -228,7 +228,7 @@ class _MineAgentPromoteDataPageState extends BaseWidgetState {
                                     alignment: Alignment.center,
                                     child: GestureDetector(
                                       onTap: () {
-                                        context.push('/mineAgentToCashPage/0');
+                                        context.push('/mineAgentToCashPage/1');
                                       },
                                       child: Container(
                                         width: ScreenUtil().setWidth(216),

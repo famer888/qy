@@ -14,52 +14,22 @@ import 'package:qypj/utils/networkImage.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
 import 'package:provider/provider.dart';
 
-class MineAgentApplyPage extends BaseWidget {
-  MineAgentApplyPage({this.applySuccess}) : super();
+class MineAgentApplyPage extends StatefulWidget {
+  MineAgentApplyPage({Key key, this.applySuccess}) : super(key: key);
   final Function applySuccess;
-  cState() => _MineAgentApplyPageState();
+
+  @override
+  State<MineAgentApplyPage> createState() => _MineAgentApplyPageState();
 }
 
-class _MineAgentApplyPageState extends BaseWidgetState<MineAgentApplyPage> {
+class _MineAgentApplyPageState extends State<MineAgentApplyPage> {
   TextEditingController _controller;
-  @override
-  void onCreate() {
-    setAppTitle(
-      title: CommonUtils.txt('dlsq'),
-    );
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     _controller = TextEditingController();
-  }
-
-  @override
-  Widget appbar() {
-    // return Stack(children: [
-    //   super.appbar(),
-    //   Positioned(
-    //       right: 0,
-    //       bottom: 0,
-    //       child: Container(
-    //         padding: EdgeInsets.symmetric(horizontal: GQStyle.pagePadding),
-    //         alignment: Alignment.centerRight,
-    //         height: GQStyle.navbarHegiht,
-    //         child: GestureDetector(
-    //           onTap: () {
-    //             context.push('/' + Routes.mineAgentRulePage);
-    //           },
-    //           child: Text(
-    //             CommonUtils.txt('sygz'),
-    //             style: GQStyle.gray15,
-    //           ),
-    //         ),
-    //       ))
-    // ]);
-    // TODO: implement appbar
-    return super.appbar();
-  }
-
-  @override
-  void onDestroy() {
-    // TODO: implement onDestroy
   }
 
   _applyAgent() async {
@@ -113,7 +83,7 @@ class _MineAgentApplyPageState extends BaseWidgetState<MineAgentApplyPage> {
   }
 
   @override
-  Widget pageBody(BuildContext context) {
+  Widget build(BuildContext context) {
     HomeConfig config = Provider.of<HomeConfig>(context, listen: false);
 
     return Container(
@@ -126,24 +96,16 @@ class _MineAgentApplyPageState extends BaseWidgetState<MineAgentApplyPage> {
                 FocusManager.instance.primaryFocus.unfocus();
               }
             },
-            child: ListView(
-              padding: EdgeInsets.zero,
+            child: Column(
               children: [
-                SizedBox(height: ScreenUtil().setWidth(16.5)),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    return ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(ScreenUtil().setWidth(5)),
-                      child: Container(
-                        child: LImage(
-                          'dlsq',
-                          width: constraints.maxWidth,
-                          height: constraints.maxWidth * 300 / 700,
-                        ),
-                      ),
-                    );
-                  },
+                SizedBox(height: ScreenUtil().setWidth(10)),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(ScreenUtil().setWidth(5)),
+                  child: Container(
+                    child: LImage(
+                      'dlsq',
+                    ),
+                  ),
                 ),
                 Container(
                   alignment: Alignment.center,

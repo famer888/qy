@@ -210,7 +210,7 @@ class _ActrHorScrollState extends State<ActrHorScroll> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                            "${CommonUtils.renderFixedNumber(x["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                                            "${CommonUtils.renderFixedNumber(x["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                                             style: GQStyle
                                                                 .gray105_12),
                                                         Spacer(),

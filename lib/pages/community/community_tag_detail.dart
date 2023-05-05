@@ -27,7 +27,11 @@ class CommunityTagDetail extends BaseWidget {
 
 class _CommunityTagDetailState extends BaseWidgetState<CommunityTagDetail> {
   dynamic topic;
-  List<String> labels = [CommonUtils.txt("zxpx"), CommonUtils.txt("zxjx")];
+  List<String> labels = [
+    CommonUtils.txt("zxpx"),
+    CommonUtils.txt("zxjx"),
+    CommonUtils.txt("sping"),
+  ];
   PageController _pageController = PageController();
   ScrollController _controller = ScrollController();
   GlobalKey _anchorKey = GlobalKey();
@@ -184,6 +188,10 @@ class _CommunityTagDetailState extends BaseWidgetState<CommunityTagDetail> {
                 CommunityTagDetailChild(
                   topic_id: widget.topic_id,
                   cate: "choice",
+                ),
+                CommunityTagDetailChild(
+                  topic_id: widget.topic_id,
+                  cate: "video",
                 )
               ],
             ),

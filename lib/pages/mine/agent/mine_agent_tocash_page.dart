@@ -8,13 +8,11 @@ import 'package:qypj/components/yy_dialog.dart';
 import 'package:qypj/model/basic.dart';
 import 'package:qypj/pages/mine/agent/mine_agent_bankcard_list_page.dart';
 import 'package:qypj/routers.dart';
-import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
 import 'package:qypj/utils/index.dart';
-import 'package:provider/provider.dart';
 
 class MineAgentToCashPage extends BaseWidget {
   MineAgentToCashPage({this.isbance = "0"}) : super();
@@ -44,7 +42,10 @@ class _MineAgentToCashPageState extends BaseWidgetState<MineAgentToCashPage> {
 
   @override
   void onCreate() {
-    setAppTitle(title: CommonUtils.txt('tx'));
+    setAppTitle(
+        title: widget.isbance == '0'
+            ? CommonUtils.txt('sytx')
+            : CommonUtils.txt('dltx'));
 
     EventBus().on('cash_choose_bankcard', (arg) {
       _setBankCard(arg);
@@ -60,7 +61,7 @@ class _MineAgentToCashPageState extends BaseWidgetState<MineAgentToCashPage> {
         setState(() {});
       });
 
-    _isBalance = widget.isbance == "1";
+    _isBalance = widget.isbance == "0";
 
     _getWithDrawRule();
 

@@ -123,108 +123,37 @@ class _CommunityPostState extends State<CommunityPost> {
                                       children: [
                                         Row(
                                           children: [
-                                            SizedBox(
-                                              width: w >
-                                                      ScreenUtil().setWidth(130)
-                                                  ? ScreenUtil().setWidth(130)
-                                                  : w,
-                                              child: Text(
-                                                e["user"]["nickname"] ?? "",
-                                                style: GQStyle.white255_15_M,
-                                              ),
+                                            Text(
+                                              e["user"]["nickname"] ?? "",
+                                              style: GQStyle.white255_15_M,
                                             ),
-                                            SizedBox(
-                                                width:
-                                                    ScreenUtil().setWidth(9)),
-                                            e["user"]["vip_level"] > 0
-                                                ? Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal:
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        7)),
-                                                    height: ScreenUtil()
-                                                        .setWidth(15),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius
-                                                            .all(Radius.circular(
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        7.5))),
-                                                        gradient:
-                                                            LinearGradient(
-                                                          colors: [
-                                                            Color(0xFFf5e0d1),
-                                                            Color(0xFFfbeadd),
-                                                            Color(0xFFf4d4b5),
-                                                          ],
-                                                          begin: Alignment
-                                                              .centerLeft,
-                                                          end: Alignment
-                                                              .centerRight,
-                                                        )),
-                                                    child: Center(
-                                                      child: Text(
-                                                        CommonUtils.txt("vvp"),
-                                                        style:
-                                                            GQStyle.brown_10_B,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container(),
-                                            SizedBox(
-                                                width: ScreenUtil().setWidth(
-                                                    e["user"]["vip_level"] > 0
-                                                        ? 8
-                                                        : 0)),
-                                            e["user"]["auth_status"] == 1
-                                                ? Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal:
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        7)),
-                                                    height: ScreenUtil()
-                                                        .setWidth(15),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius
-                                                            .all(Radius.circular(
-                                                                ScreenUtil()
-                                                                    .setWidth(
-                                                                        7.5))),
-                                                        gradient:
-                                                            LinearGradient(
-                                                          colors: [
-                                                            Color(0xFFffca43),
-                                                            Color(0xFFff7d3e)
-                                                          ],
-                                                          begin: Alignment
-                                                              .centerLeft,
-                                                          end: Alignment
-                                                              .centerRight,
-                                                        )),
-                                                    child: Center(
-                                                      child: Text(
-                                                        CommonUtils.txt(
-                                                            "cuangz"),
-                                                        style: GQStyle
-                                                            .white255_10_B,
-                                                      ),
-                                                    ),
-                                                  )
+                                            SizedBox(width: 2.w),
+                                            e["user"]['agent'] == 1
+                                                ? Icon(Icons.verified_sharp,
+                                                    size: 14.w,
+                                                    color: Color.fromRGBO(
+                                                        247, 208, 93, 1))
                                                 : Container(),
                                           ],
                                         ),
                                         SizedBox(
                                             height: ScreenUtil().setWidth(2)),
-                                        Text(
-                                          RelativeDateFormat.format(
-                                              DateTime.parse(
-                                                  e["created_at"] ?? "")),
-                                          style: GQStyle.gray163_11,
-                                        ),
+                                        Row(
+                                          children: [
+                                            CommonUtils.memberVip(
+                                              e["user"]["vip_str"],
+                                              h: 14,
+                                              fontsize: 7,
+                                              margin: 5,
+                                            ),
+                                            Text(
+                                              RelativeDateFormat.format(
+                                                  DateTime.parse(
+                                                      e["created_at"] ?? "")),
+                                              style: GQStyle.gray163_11,
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     ),
                                   ),
@@ -301,8 +230,8 @@ class _CommunityPostState extends State<CommunityPost> {
                                               textAlign: TextAlign.center,
                                             ),
                                             decoration: BoxDecoration(
-                                                color: Color.fromRGBO(
-                                                    234, 99, 152, 1.0),
+                                                gradient: GQStyle
+                                                    .btnGradient_ff00edfd_ffbbe954,
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(ScreenUtil()
                                                         .setWidth(2)))),

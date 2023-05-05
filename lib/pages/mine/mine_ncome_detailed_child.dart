@@ -97,18 +97,18 @@ class _MineNcomeDetailedChildState extends State<MineNcomeDetailedChild> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  SizedBox(
-                                    width: ScreenUtil().setWidth(34),
-                                    height: ScreenUtil().setWidth(34),
-                                    child: PlatformAwareNetworkImage(
-                                      url: CommonUtils.getThumb(
-                                          vList[index]["source_member"]),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              ScreenUtil().setWidth(17))),
-                                    ),
-                                  ),
-                                  SizedBox(width: ScreenUtil().setWidth(10)),
+                                  // SizedBox(
+                                  //   width: ScreenUtil().setWidth(34),
+                                  //   height: ScreenUtil().setWidth(34),
+                                  //   child: PlatformAwareNetworkImage(
+                                  //     url: CommonUtils.getThumb(
+                                  //         vList[index]["source_member"]),
+                                  //     borderRadius: BorderRadius.all(
+                                  //         Radius.circular(
+                                  //             ScreenUtil().setWidth(17))),
+                                  //   ),
+                                  // ),
+                                  // SizedBox(width: ScreenUtil().setWidth(10)),
                                   Expanded(
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -149,7 +149,7 @@ class _MineNcomeDetailedChildState extends State<MineNcomeDetailedChild> {
                                     // height: 10,
                                     // height: double.infinity,
                                     child: Text(
-                                        "+${vList[index]["coinCnt"] ?? 0}${CommonUtils.txt("jb")}",
+                                        "+${vList[index]["coinCnt"] ?? 0}${CommonUtils.txt("bs")}",
                                         style: GQStyle.blue80_13_M),
                                   )
                                 ],

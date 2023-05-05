@@ -356,187 +356,114 @@ class _WelfareAgentPageState extends BaseWidgetState<WelfareAgentPage> {
                                         Expanded(flex: 97, child: Container()),
                                         SizedBox(
                                             height: ScreenUtil().setWidth(46)),
-                                        (member.channel != 'self')
-                                            ? GestureDetector(
+                                        Container(
+                                          // width: double.infinity,
+                                          // color: Colors.red,
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 42,
+                                                child: Container(),
+                                              ),
+                                              GestureDetector(
                                                 onTap: () {
-                                                  context.push(CommonUtils
-                                                      .getRealHash(Routes
-                                                          .mineAgentApplyPage));
+                                                  context.push(
+                                                      '/mineAgentToCashPage/1');
                                                 },
                                                 child: Container(
-                                                  height: ScreenUtil()
-                                                      .setWidth(38.5),
-                                                  child: Center(
-                                                    child: Container(
-                                                      width: ScreenUtil()
-                                                          .setWidth(264),
-                                                      height: ScreenUtil()
-                                                          .setWidth(38.5),
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                          colors: [
-                                                            Color(0xFFfaddbd),
-                                                            Color(0xFFf2c380)
-                                                          ],
-                                                          begin: Alignment
-                                                              .topCenter,
-                                                          end: Alignment
-                                                              .bottomCenter,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(
-                                                              ScreenUtil()
-                                                                  .setWidth(
-                                                                      38.5 /
-                                                                          2)),
-                                                        ),
+                                                  // color: Colors.deepOrange,
+                                                  width: ScreenUtil()
+                                                      .setWidth(115),
+                                                  height:
+                                                      ScreenUtil().setWidth(35),
+                                                  // alignment: Alignment.center,
+                                                  child: Stack(
+                                                    children: [
+                                                      LImage(
+                                                        'proxy_btn_bg',
+                                                        fit: BoxFit.cover,
+                                                        width: ScreenUtil()
+                                                            .setWidth(115),
+                                                        height: ScreenUtil()
+                                                            .setWidth(35),
                                                       ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          CommonUtils.txt(
-                                                              "sqdl"),
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(20),
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Color(
-                                                                0xffaa5000),
+                                                      Positioned(
+                                                        top: ScreenUtil()
+                                                            .setWidth(5.5),
+                                                        child: Container(
+                                                          width: ScreenUtil()
+                                                              .setWidth(115),
+                                                          height: ScreenUtil()
+                                                              .setWidth(20),
+                                                          // color: Colors.cyan,
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            CommonUtils.txt(
+                                                                'ljtx'),
+                                                            style: GQStyle
+                                                                .brown_1378860_14_M,
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
                                                 ),
-                                              )
-                                            : Container(
-                                                // width: double.infinity,
-                                                // color: Colors.red,
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 42,
-                                                      child: Container(),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        context.push(
-                                                            '/mineAgentToCashPage/0');
-                                                      },
-                                                      child: Container(
-                                                        // color: Colors.deepOrange,
-                                                        width: ScreenUtil()
-                                                            .setWidth(115),
-                                                        height: ScreenUtil()
-                                                            .setWidth(35),
-                                                        // alignment: Alignment.center,
-                                                        child: Stack(
-                                                          children: [
-                                                            LImage(
-                                                              'proxy_btn_bg',
-                                                              fit: BoxFit.cover,
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          115),
-                                                              height:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          35),
-                                                            ),
-                                                            Positioned(
-                                                              top: ScreenUtil()
-                                                                  .setWidth(
-                                                                      5.5),
-                                                              child: Container(
-                                                                width: ScreenUtil()
-                                                                    .setWidth(
-                                                                        115),
-                                                                height:
-                                                                    ScreenUtil()
-                                                                        .setWidth(
-                                                                            20),
-                                                                // color: Colors.cyan,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                child: Text(
-                                                                  CommonUtils.txt(
-                                                                      'ljtx'),
-                                                                  style: GQStyle
-                                                                      .brown_1378860_14_M,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
+                                              ),
+                                              Expanded(
+                                                flex: 54,
+                                                child: Container(),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  context.push(
+                                                      '/${Routes.mineAgentPromoteDataPage}');
+                                                },
+                                                child: Container(
+                                                  width: ScreenUtil()
+                                                      .setWidth(115),
+                                                  height:
+                                                      ScreenUtil().setWidth(35),
+                                                  alignment: Alignment.center,
+                                                  child: Stack(
+                                                    children: [
+                                                      Positioned.fill(
+                                                          child: LImage(
+                                                        'proxy_btn_bg',
+                                                        fit: BoxFit.cover,
+                                                        width: double.infinity,
+                                                        height: double.infinity,
+                                                      )),
+                                                      Positioned(
+                                                        top: ScreenUtil()
+                                                            .setWidth(5.5),
+                                                        child: Container(
+                                                          width: ScreenUtil()
+                                                              .setWidth(115),
+                                                          height: ScreenUtil()
+                                                              .setWidth(20),
+                                                          // color: Colors.cyan,
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            CommonUtils.txt(
+                                                                'tgsj'),
+                                                            style: GQStyle
+                                                                .brown_1378860_14_M,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 54,
-                                                      child: Container(),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        context.push(
-                                                            '/${Routes.mineAgentPromoteDataPage}');
-                                                      },
-                                                      child: Container(
-                                                        width: ScreenUtil()
-                                                            .setWidth(115),
-                                                        height: ScreenUtil()
-                                                            .setWidth(35),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Stack(
-                                                          children: [
-                                                            Positioned.fill(
-                                                                child: LImage(
-                                                              'proxy_btn_bg',
-                                                              fit: BoxFit.cover,
-                                                              width: double
-                                                                  .infinity,
-                                                              height: double
-                                                                  .infinity,
-                                                            )),
-                                                            Positioned(
-                                                              top: ScreenUtil()
-                                                                  .setWidth(
-                                                                      5.5),
-                                                              child: Container(
-                                                                width: ScreenUtil()
-                                                                    .setWidth(
-                                                                        115),
-                                                                height:
-                                                                    ScreenUtil()
-                                                                        .setWidth(
-                                                                            20),
-                                                                // color: Colors.cyan,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                child: Text(
-                                                                  CommonUtils.txt(
-                                                                      'tgsj'),
-                                                                  style: GQStyle
-                                                                      .brown_1378860_14_M,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 42,
-                                                      child: Container(),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
+                                              Expanded(
+                                                flex: 42,
+                                                child: Container(),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         Expanded(flex: 73, child: Container())
                                       ],
                                     )),

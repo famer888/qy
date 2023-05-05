@@ -63,24 +63,26 @@ class _CommunityNewState extends State<CommunityNew> {
           })
         : isHud
             ? PageStatus.loading(mounted)
-            : PullRefreshList(
-                onRefresh: () {
-                  page = 1;
-                  _getData();
-                },
-                onLoading: () {
-                  page++;
-                  _getData();
-                },
-                isAll: noMore,
-                child: ListView.builder(
-                    itemCount: 1, //标签+帖子
-                    itemBuilder: (context, index) {
-                      // if (topics.length > 0 && index == 0) {
-                      //   return CommunityTags(data: topics);
-                      // }
-                      return CommunityPost(data: data, showHead: false);
-                    }),
-              );
+            : data.isEmpty
+                ? PageStatus.noData()
+                : PullRefreshList(
+                    onRefresh: () {
+                      page = 1;
+                      _getData();
+                    },
+                    onLoading: () {
+                      page++;
+                      _getData();
+                    },
+                    isAll: noMore,
+                    child: ListView.builder(
+                        itemCount: 1, //标签+帖子
+                        itemBuilder: (context, index) {
+                          // if (topics.length > 0 && index == 0) {
+                          //   return CommunityTags(data: topics);
+                          // }
+                          return CommunityPost(data: data, showHead: false);
+                        }),
+                  );
   }
 }

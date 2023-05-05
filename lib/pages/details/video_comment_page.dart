@@ -268,67 +268,28 @@ class _VideoCommentPageState extends State<VideoCommentPage> {
                               style: GQStyle.white23_12,
                             ),
                           ),
-                          SizedBox(width: ScreenUtil().setWidth(10)),
-                          data["member"]["vip_level"] > 0
-                              ? Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: ScreenUtil().setWidth(7)),
-                                  height: ScreenUtil().setWidth(13),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              ScreenUtil().setWidth(6.5))),
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Color(0xFFf5e0d1),
-                                          Color(0xFFfbeadd),
-                                          Color(0xFFf4d4b5)
-                                        ],
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                      )),
-                                  child: Center(
-                                    child: Text(
-                                      CommonUtils.txt("vvp"),
-                                      style: GQStyle.brown137_8,
-                                    ),
-                                  ),
-                                )
-                              : Container(),
-                          SizedBox(
-                              width: ScreenUtil().setWidth(
-                                  data["member"]["vip_level"] > 0 ? 8 : 0)),
-                          data["member"]["auth_status"] == 1
-                              ? Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: ScreenUtil().setWidth(7)),
-                                  height: ScreenUtil().setWidth(13),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              ScreenUtil().setWidth(6.5))),
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Color(0xFFffca43),
-                                          Color(0xFFff7d3e)
-                                        ],
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                      )),
-                                  child: Center(
-                                    child: Text(
-                                      CommonUtils.txt("cuangz"),
-                                      style: GQStyle.white255_8,
-                                    ),
-                                  ),
-                                )
+                          SizedBox(width: 2.w),
+                          data["member"]['agent'] == 1
+                              ? Icon(Icons.verified_sharp,
+                                  size: 11.w,
+                                  color: Color.fromRGBO(247, 208, 93, 1))
                               : Container(),
                         ],
                       ),
                       SizedBox(height: ScreenUtil().setWidth(4)),
-                      Text(
-                        "${RelativeDateFormat.format(DateTime.parse(data["created_at"] ?? ""))}",
-                        style: GQStyle.gray163_11,
+                      Row(
+                        children: [
+                          CommonUtils.memberVip(
+                            data["member"]["vip_str"],
+                            h: 14,
+                            fontsize: 7,
+                            margin: 5,
+                          ),
+                          Text(
+                            "${RelativeDateFormat.format(DateTime.parse(data["created_at"] ?? ""))}",
+                            style: GQStyle.gray163_11,
+                          ),
+                        ],
                       )
                     ],
                   ),

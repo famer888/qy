@@ -25,13 +25,6 @@ void main() async {
   await Hive.initFlutter();
   AppGlobal.appBox = await Hive.openBox('qypjbox'); // 用于存储一些简单的键值对
   AppGlobal.imageCacheBox = await Hive.openBox('qypjbox_ImageCache'); //图片缓存
-  AppGlobal.videoWatchRecordBox =
-      await Hive.openBox('qypjbox_VideoWatchRecord');
-  AppGlobal.manhuaWatchRecordBox =
-      await Hive.openBox('qypjbox_ManhuaWatchRecord');
-  AppGlobal.bookWatchRecordBox = await Hive.openBox('qypjbox_BookWatchRecord');
-  AppGlobal.smallVideoWatchRecordBox =
-      await Hive.openBox('qypjbox_smallVideoWatchRecord');
   //注册图片加载线程
   DefaultDelegate<dynamic, dynamic> fooDelegate =
       DefaultDelegate(callback: PlatformAwareCrypto.decryptImage);
@@ -66,7 +59,7 @@ void main() async {
         CommonUtils.gvMD5(
             '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}'),
     "bundleId": "com.pwa.qypj",
-    "version": "1.3.0",
+    "version": "2.0.0",
     "oauth_type": "web",
     "language": 'zh',
     "via": 'pwa',
@@ -95,7 +88,7 @@ void main() async {
       AppGlobal.appinfo = {
         "oauth_id": CommonUtils.gvMD5(iosInfo.identifierForVendor),
         "bundleId": packageInfo.packageName,
-        "version": "1.3.0",
+        "version": "2.0.0",
         "oauth_type": "ios",
       };
     }

@@ -101,12 +101,6 @@ class _FlickSmallVideoNormalState extends State<FlickSmallVideoNormal>
     if (mounted) setState(() {});
     //正式播放才会进行记录
     if (data.source_240.length == 0) return;
-    startWatchRecordTimer(AppGlobal.smallVideoWatchRecordBox, data.id,
-        chapterId: data.id,
-        offset: 0.0,
-        thumb: data.cover_vertical ?? data.cover_horizontal,
-        isFree: data.isfree,
-        title: data.title);
   }
 
   buySmallVideo(int money) {

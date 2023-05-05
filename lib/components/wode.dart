@@ -16,7 +16,6 @@ import 'package:qypj/routers.dart';
 import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/utils/index.dart';
 import 'package:qypj/utils/networkImage.dart';
-import 'package:qypj/components/yy_dialog.dart';
 
 class Wode extends BaseWidget {
   Wode({Key key, this.isShow = false}) : super(key: key);
@@ -97,9 +96,9 @@ class _WodeState extends BaseWidgetState<Wode> {
 
   List mainMenuList = [
     {
-      'icon': 'wdgz',
-      'name': CommonUtils.txt('wdgz'),
-      'router': '/${Routes.fansfollow}'
+      'icon': 'wd_tz_n',
+      'name': CommonUtils.txt('wdtz'),
+      'router': '/${Routes.minepostpage}'
     },
     {
       'icon': 'wd_sc_n',
@@ -107,19 +106,37 @@ class _WodeState extends BaseWidgetState<Wode> {
       'router': '/${Routes.collect}'
     },
     {
+      'icon': 'wd_gz_n',
+      'name': CommonUtils.txt('wdgz'),
+      'router': '/${Routes.fansfollow}'
+    },
+    {
+      'icon': 'wd_cz_n',
+      'name': CommonUtils.txt('ycrz'),
+      'router': '/${Routes.originalenter}'
+    },
+  ];
+
+  List footerList = [
+    {
+      'icon': 'wd_gm_n',
+      'name': CommonUtils.txt('wdgm'),
+      'router': '/${Routes.buy}'
+    },
+    {
+      'icon': 'wd_hc_n',
+      'name': CommonUtils.txt('zxhc'),
+      'router': '/${Routes.down}'
+    },
+    {
       'icon': 'txyqm',
-      'name': CommonUtils.txt('sr') + CommonUtils.txt('yqm'),
-      'router': 'fillcode'
+      'name': CommonUtils.txt('txyqm'),
+      'router': 'fillcode',
     },
     {
       'icon': 'wdyqm',
-      'name': CommonUtils.txt('sr') + CommonUtils.txt('dhm'),
-      'router': 'fillcodedh'
-    },
-    {
-      'icon': 'wdyy',
-      'name': CommonUtils.txt('zxhc'),
-      'router': '/${Routes.down}'
+      'name': CommonUtils.txt('txdhm'),
+      'router': 'fillcodedh',
     },
     {
       'icon': 'wdwt',
@@ -133,67 +150,24 @@ class _WodeState extends BaseWidgetState<Wode> {
     },
   ];
 
-  Widget memberVip(dynamic value) {
-    var type = "";
-    switch (value) {
-      case 0:
-        return Container();
-        break;
-      case 1:
-        type = CommonUtils.txt('lsk');
-        break;
-      case 2:
-        type = CommonUtils.txt('zk');
-        break;
-      case 3:
-        type = CommonUtils.txt('yk');
-        break;
-      case 4:
-        type = CommonUtils.txt('jk');
-        break;
-      case 5:
-        type = CommonUtils.txt('bnk');
-        break;
-      case 6:
-        type = CommonUtils.txt('nk');
-        break;
-      case 7:
-        type = CommonUtils.txt('lnk');
-        break;
-      case 8:
-        type = CommonUtils.txt('yjk');
-        break;
-    }
-    return Container(
-      width: ScreenUtil().setWidth(40),
-      height: ScreenUtil().setWidth(16),
-      decoration: kIsWeb
-          ? BoxDecoration(
-              color: Color(0xFFf4d4b5),
-              borderRadius: BorderRadius.all(Radius.circular(7.5)))
-          : BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xFFf5e0d1),
-                Color(0xFFfbeadd),
-                Color(0xFFf4d4b5)
-              ], begin: Alignment.centerLeft, end: Alignment.centerRight),
-              borderRadius: BorderRadius.all(Radius.circular(8))),
-      child: Center(
-          child: Text(type,
-              style: TextStyle(
-                  color: Color(0xFF89583c), fontSize: ScreenUtil().setSp(10)))),
-    );
-  }
-
-  /// 头部状态信息
+  //头部状态信息
   Widget setHeadInfo(isLogin, members) {
     if (isLogin) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            members?.nickname ?? CommonUtils.txt('kkyh'),
-            style: GQStyle.white18bold,
+          Row(
+            children: [
+              Text(
+                members?.nickname ?? CommonUtils.txt('kkyh'),
+                style: GQStyle.white18bold,
+              ),
+              SizedBox(width: 2.w),
+              members.agent == 1
+                  ? Icon(Icons.verified_sharp,
+                      size: 17.w, color: Color.fromRGBO(247, 208, 93, 1))
+                  : Container()
+            ],
           ),
           SizedBox(
             height: ScreenUtil().setWidth(9.5),
@@ -202,7 +176,7 @@ class _WodeState extends BaseWidgetState<Wode> {
             mainAxisSize: MainAxisSize.min,
             children: [
               members?.vipLevel != 0 && members?.vipLevel != null
-                  ? memberVip(members?.vipLevel)
+                  ? CommonUtils.memberVip(members?.vip_str)
                   : SizedBox(),
               SizedBox(
                 width: members?.vipLevel != 0 && members?.vipLevel != null
@@ -210,7 +184,7 @@ class _WodeState extends BaseWidgetState<Wode> {
                     : 0,
               ),
               Text(
-                'ID:${members?.aff ?? '0000000'}',
+                'ID: ${members?.aff ?? '0000000'}',
                 style: GQStyle.gray95_12,
               ),
             ],
@@ -218,29 +192,82 @@ class _WodeState extends BaseWidgetState<Wode> {
         ],
       );
     }
-    return GestureDetector(
-      onTap: () {
-        context.push('/login/0');
-      },
-      child: Container(
-        width: ScreenUtil().setWidth(75),
-        height: ScreenUtil().setWidth(35),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            ScreenUtil().setWidth(37.5),
-          ),
-          border: Border.all(
-            width: 0.5,
-            color: Color.fromRGBO(103, 224, 185, 1),
-          ),
+    return Row(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  members?.nickname ?? CommonUtils.txt('kkyh'),
+                  style: GQStyle.white18bold,
+                ),
+                SizedBox(width: 2.w),
+                members.agent == 1
+                    ? Icon(Icons.verified_sharp,
+                        size: 17.w, color: Color.fromRGBO(247, 208, 93, 1))
+                    : Container()
+              ],
+            ),
+            SizedBox(
+              height: ScreenUtil().setWidth(9.5),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                members?.vipLevel != 0 && members?.vipLevel != null
+                    ? CommonUtils.memberVip(members?.vip_str)
+                    : SizedBox(),
+                SizedBox(
+                  width: members?.vipLevel != 0 && members?.vipLevel != null
+                      ? ScreenUtil().setWidth(12)
+                      : 0,
+                ),
+                Text(
+                  'ID: ${members?.aff ?? '0000000'}',
+                  style: GQStyle.gray95_12,
+                ),
+              ],
+            ),
+          ],
         ),
-        child: Center(
-          child: Text(
-            CommonUtils.txt('dl'),
-            style: TextStyle(color: Color.fromRGBO(103, 224, 185, 1)),
+        Spacer(),
+        GestureDetector(
+          onTap: () {
+            context.push('/login/0');
+          },
+          child: Container(
+            width: ScreenUtil().setWidth(70),
+            height: ScreenUtil().setWidth(32),
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(35, 38, 46, 1),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.w),
+                bottomLeft: Radius.circular(16.w),
+              ),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    CommonUtils.txt('dl'),
+                    style: TextStyle(
+                        color: Color.fromRGBO(250, 207, 135, 1),
+                        fontSize: ScreenUtil().setSp(14)),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14.w,
+                    color: Color.fromRGBO(250, 207, 135, 1),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        )
+      ],
     );
   }
 
@@ -248,8 +275,8 @@ class _WodeState extends BaseWidgetState<Wode> {
   Widget setHandleList() {
     Member members = Provider.of<HomeConfig>(context, listen: true).member;
     List<Widget> tempList = [];
-    for (var i = 0; i < mainMenuList.length; i++) {
-      var item = mainMenuList[i];
+    for (var i = 0; i < footerList.length; i++) {
+      var item = footerList[i];
       tempList.add(
         new GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -275,16 +302,16 @@ class _WodeState extends BaseWidgetState<Wode> {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    LImage('qy_newyear_' + item['icon'],
-                        width: ScreenUtil().setWidth(30),
-                        height: ScreenUtil().setWidth(30)),
+                    LImage(item['icon'],
+                        width: ScreenUtil().setWidth(20),
+                        height: ScreenUtil().setWidth(20)),
                     SizedBox(
                       width: ScreenUtil().setWidth(9.5),
                     ),
                     Text(
                       item['name'],
                       overflow: TextOverflow.ellipsis,
-                      style: GQStyle.gray240_14,
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
                     ),
                   ],
                 ),
@@ -295,13 +322,6 @@ class _WodeState extends BaseWidgetState<Wode> {
                 )
               ],
             ),
-            // decoration: BoxDecoration(
-            //   border: Border(
-            //       bottom: i == mainMenuList.length - 1
-            //           ? BorderSide.none
-            //           : BorderSide(
-            //               color: Color.fromRGBO(255, 255, 255, 0.1), width: 1)),
-            // ),
           ),
         ),
       );
@@ -310,63 +330,53 @@ class _WodeState extends BaseWidgetState<Wode> {
       decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
+              Color.fromRGBO(21, 21, 42, 1),
               Color.fromRGBO(11, 11, 33, 1),
-              Color.fromRGBO(21, 21, 42, 1)
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
           borderRadius: BorderRadius.circular(ScreenUtil().setWidth(5))),
       margin: EdgeInsets.symmetric(horizontal: GQStyle.pagePadding),
-      padding:
-          EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(40 - 12.5)),
+      padding: EdgeInsets.symmetric(
+          horizontal: ScreenUtil().setWidth(40 - 12.5), vertical: 10.w),
       child: Wrap(
-        spacing: ScreenUtil().setWidth(0),
-        runSpacing: ScreenUtil().setWidth(0),
+        spacing: 0.w,
+        runSpacing: 0.w,
         children:
             tempList.asMap().keys.map((index) => tempList[index]).toList(),
       ),
     );
   }
 
-  /// 卡片 type类型{1: vip,2: gold}
+  /// 卡片 type类型{1: 金币充值,2: 分享邀请 3: }
   Widget setCard(int type, Member members) {
     String bgImg = '';
     String title = '';
     String subTitle = '';
-    String btnText = '';
     String routeString = '';
     if (type == 1) {
-      bgImg = 'wd_vbg_n';
-      title = CommonUtils.txt('hyzx');
-      DateTime nowTime = new DateTime.now();
-      String nowString = '${nowTime.year}-${nowTime.month}-${nowTime.day}';
-      // if (members?.expiredAt != null) {
-      if (members?.vipLevel != null && members.vipLevel > 0) {
-        String tempTime = members?.expiredAt.toString().split(' ')[0];
-        if (tempTime == nowString) {
-          subTitle = CommonUtils.txt('fhy');
-        } else {
-          subTitle = '$tempTime' + CommonUtils.txt('dq');
-        }
-      } else {
-        subTitle = CommonUtils.txt('fhy');
-      }
-
-      btnText = CommonUtils.txt('ljcz');
-      routeString = '/${Routes.vip}';
+      bgImg = 'wd_jbcz_n';
+      title = CommonUtils.txt('jbcz');
+      subTitle = CommonUtils.txt('dqye') + " ${members.money}";
+      routeString = '/${Routes.coinRecharge}';
     }
     if (type == 2) {
+      bgImg = 'wd_fxyq_n';
+      title = CommonUtils.txt('fxyqlhb');
+      subTitle = CommonUtils.txt('yqhydvp');
+      routeString = '/${Routes.kwantsharetousers}';
+    }
+    if (type == 3) {
       bgImg = 'wd_jbg_n';
       title = CommonUtils.txt('jbgm');
       subTitle = CommonUtils.txt('ye');
-      btnText = CommonUtils.txt('ljgm');
-      routeString = '/${Routes.coinRecharge}';
+      routeString = 'promote';
     }
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (routeString.contains("coinRecharge")) {
+        if (routeString.contains("promote")) {
           UtilEventbus().fire(
             UtilEventbusClass({
               "name": "openwf",
@@ -377,77 +387,40 @@ class _WodeState extends BaseWidgetState<Wode> {
           context.push(routeString);
         }
       },
-      child: Container(
-        // width: ScreenUtil().setWidth(163),
-        // height: ScreenUtil().setWidth(80),
-        child: Stack(
-          children: [
-            LImage(
-              bgImg,
-              fit: BoxFit.fill,
-              width: double.infinity,
-              height: double.infinity,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: GQStyle.pagePadding),
+      child: Stack(
+        children: [
+          LImage(
+            bgImg,
+            fit: BoxFit.fill,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Positioned(
+              bottom: 10.w,
+              left: 0,
+              right: 0,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     title,
                     style: TextStyle(
-                      color: Color(0xff845c48),
-                      fontSize: ScreenUtil().setSp(15),
-                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: ScreenUtil().setSp(12),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: ScreenUtil().setWidth(2),
-                      bottom: ScreenUtil().setWidth(5),
-                    ),
-                    child: Text(
-                      subTitle,
-                      style: TextStyle(
-                        color: Color(0xff845c48),
-                        fontSize: ScreenUtil().setSp(11),
-                      ),
+                  SizedBox(height: 5.w),
+                  Text(
+                    subTitle,
+                    style: TextStyle(
+                      color: Color.fromRGBO(246, 203, 163, 1),
+                      fontSize: ScreenUtil().setSp(12),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setWidth(5)),
-                        height: ScreenUtil().setWidth(15),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xff845c48),
-                            width: ScreenUtil().setWidth(0.5),
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            ScreenUtil().setWidth(10),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            btnText,
-                            style: TextStyle(
-                              color: Color(0xff845c48),
-                              fontSize: ScreenUtil().setSp(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(child: SizedBox())
-                    ],
-                  )
                 ],
-              ),
-            )
-          ],
-        ),
+              ))
+        ],
       ),
     );
   }
@@ -503,8 +476,10 @@ class _WodeState extends BaseWidgetState<Wode> {
             : Padding(
                 padding: EdgeInsets.only(
                     right: GQStyle.pagePadding,
-                    top: ScreenUtil().setWidth(35),
-                    bottom: ScreenUtil().setWidth(11)),
+                    top: kIsWeb
+                        ? 10.w
+                        : MediaQuery.of(context).padding.top + 5.w,
+                    bottom: 10.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -590,8 +565,111 @@ class _WodeState extends BaseWidgetState<Wode> {
                                   ),
                                 ),
                                 SizedBox(width: ScreenUtil().setWidth(5)),
-                                setHeadInfo(isLogin, members)
+                                Expanded(child: setHeadInfo(isLogin, members)),
                               ],
+                            ),
+                            SizedBox(height: 10.w),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: GQStyle.pagePadding),
+                              child: Container(
+                                height: ScreenUtil().setWidth(65),
+                                child: GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: () {
+                                    context.push(
+                                        CommonUtils.getRealHash(Routes.vip));
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Positioned.fill(
+                                          child: LImage(
+                                        'qy_newyear_mine_vvp_bg',
+                                        fit: BoxFit.fill,
+                                      )),
+                                      Positioned.fill(
+                                        child: Builder(builder: (cx) {
+                                          var subTitle = '';
+                                          DateTime nowTime = new DateTime.now();
+                                          String nowString =
+                                              '${nowTime.year}-${nowTime.month}-${nowTime.day}';
+                                          if (members?.vipLevel != null &&
+                                              members.vipLevel > 0) {
+                                            String tempTime = members?.expiredAt
+                                                .toString()
+                                                .split(' ')[0];
+                                            if (tempTime == nowString) {
+                                              subTitle = CommonUtils.txt('fhy');
+                                            } else {
+                                              subTitle = '$tempTime' +
+                                                  CommonUtils.txt('dq');
+                                            }
+                                          } else {
+                                            subTitle = CommonUtils.txt('fhy');
+                                          }
+                                          return Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    GQStyle.pagePadding),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    config.tips_share_text ??
+                                                        CommonUtils.txt(
+                                                            "cgyqsqt"),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14.sp,
+                                                    )),
+                                                SizedBox(height: 5.w),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      members.vip_str,
+                                                      style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            246, 203, 163, 1.0),
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(12),
+                                                      ),
+                                                      maxLines: 1,
+                                                    ),
+                                                    Text(
+                                                      subTitle,
+                                                      style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            246, 203, 163, 1.0),
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(12),
+                                                      ),
+                                                      maxLines: 1,
+                                                    ),
+                                                    // SizedBox(width: 5.w),
+                                                    // Text(
+                                                    //   "${CommonUtils.txt('syxzcs')}${members.video_download_value}",
+                                                    //   style: TextStyle(
+                                                    //     color: Color.fromRGBO(
+                                                    //         246, 203, 163, 1.0),
+                                                    //     fontSize: ScreenUtil()
+                                                    //         .setSp(12),
+                                                    //   ),
+                                                    //   maxLines: 1,
+                                                    // ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                             Padding(
                               padding: EdgeInsets.only(
@@ -602,160 +680,58 @@ class _WodeState extends BaseWidgetState<Wode> {
                               ),
                               child: GridView.count(
                                 physics: NeverScrollableScrollPhysics(),
-                                crossAxisCount: 2,
+                                crossAxisCount: 3,
                                 padding: EdgeInsets.zero,
                                 shrinkWrap: true,
                                 crossAxisSpacing: ScreenUtil().setWidth(10),
-                                childAspectRatio: 163 / 80.0,
+                                childAspectRatio: 110 / 115,
                                 children: [
                                   setCard(1, members),
                                   setCard(2, members),
+                                  setCard(3, members),
                                 ],
                               ),
                             ),
-                            Padding(
+                            SizedBox(height: 10.w),
+                            Container(
+                              height: 72.w,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(21, 21, 42, 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.w))),
                               padding: EdgeInsets.symmetric(
                                   horizontal: GQStyle.pagePadding),
-                              child: GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () {
-                                  // UtilEventbus().fire(
-                                  //   UtilEventbusClass({
-                                  //     "name": "openwf",
-                                  //     "data": {"index": 0},
-                                  //   }),
-                                  // );
-                                },
-                                child: Container(
-                                  // padding: EdgeInsets.symmetric(
-                                  //     horizontal: GQStyle.pagePadding),
-                                  height: ScreenUtil().setWidth(70),
-                                  // decoration: BoxDecoration(
-                                  //   gradient: LinearGradient(
-                                  //     colors: [
-                                  //       Color.fromRGBO(84, 87, 99, 1.0),
-                                  //       // Color.fromRGBO(245, 228, 212, 1.0),
-                                  //       Color.fromRGBO(62, 65, 79, 1.0)
-                                  //     ],
-                                  //     begin: Alignment.topLeft,
-                                  //     end: Alignment.bottomRight,
-                                  //   ),
-                                  //   borderRadius:
-                                  //       BorderRadius.all(Radius.circular(5)),
-                                  // ),
-                                  child: GestureDetector(
-                                    behavior: HitTestBehavior.translucent,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: GQStyle.pagePadding),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: mainMenuList.map((e) {
+                                  return GestureDetector(
                                     onTap: () {
-                                      context.push(CommonUtils.getRealHash(
-                                          Routes.kwantsharetousers));
+                                      context.push(e['router']);
                                     },
-                                    child: Stack(
-                                      children: [
-                                        Positioned.fill(
-                                            child: LImage(
-                                          'qy_newyear_mine_vvp_bg',
-                                          fit: BoxFit.fill,
-                                        )),
-                                        Positioned.fill(
-                                          child: Column(
-                                            // mainAxisAlignment:
-                                            //     MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 8.w,
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 65.w),
-                                                      child: Text(
-                                                          CommonUtils.txt(
-                                                              "mflqhy"),
-                                                          style: TextStyle(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    170,
-                                                                    36,
-                                                                    59,
-                                                                    1.0),
-                                                            fontSize:
-                                                                ScreenUtil()
-                                                                    .setSp(14),
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          )),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              // child: Text.rich(
-                                              //   TextSpan(children: [
-                                              //     WidgetSpan(
-                                              //       alignment:
-                                              //           PlaceholderAlignment
-                                              //               .middle,
-                                              //       child: Padding(
-                                              //           padding: EdgeInsets.only(
-                                              //               right:
-                                              //                   ScreenUtil()
-                                              //                       .setWidth(
-                                              //                           5)),
-                                              //           child: SizedBox(
-                                              //             width: 65.w,
-                                              //           )),
-                                              //     ),
-                                              //     TextSpan(
-                                              //         text: CommonUtils.txt(
-                                              //             "mflqhy"),
-                                              //         style: TextStyle(
-                                              //           color: Color.fromRGBO(
-                                              //               170, 36, 59, 1.0),
-                                              //           fontSize: ScreenUtil()
-                                              //               .setSp(14),
-                                              //           fontWeight:
-                                              //               FontWeight.bold,
-                                              //         )),
-                                              //   ]),
-                                              // ),
-                                              // ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 23.5.w),
-                                                  child: Text(
-                                                    config.tips_share_text ??
-                                                        CommonUtils.txt(
-                                                            "cgyqsqt"),
-                                                    style: TextStyle(
-                                                      color: Color.fromRGBO(
-                                                          170, 36, 59, 1.0),
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(14),
-                                                    ),
-                                                    maxLines: 2,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          LImage(e['icon'],
+                                              width: 30.w, height: 26.w),
+                                          SizedBox(height: 6.w),
+                                          Text(e['name'],
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14.sp))
+                                        ]),
+                                  );
+                                }).toList(),
                               ),
                             ),
-                            SizedBox(height: ScreenUtil().setWidth(10)),
+                            SizedBox(height: 10.w),
                             setHandleList(),
-                            SizedBox(height: ScreenUtil().setWidth(15))
+                            SizedBox(height: 15.w),
                           ],
                         ),
                       ),

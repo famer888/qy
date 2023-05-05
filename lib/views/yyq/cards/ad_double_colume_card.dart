@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qypj/theme/default.dart';
+import 'package:qypj/utils/api.dart';
 
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
@@ -37,6 +38,7 @@ class AdDoubleColumeCard extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           if (data['link_url'] == null || data['link_url'].length == 0) return;
+          reqAdClickCount(id: data['report_id'], type: data['report_type']);
           if (data['redirect_type'] == 1) {
             String linkUrl = data['link_url'];
             List urlList = linkUrl.split('??');
@@ -105,7 +107,7 @@ class AdDoubleColumeCard extends StatelessWidget {
                 //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 //           children: [
                 //             Text(
-                //                 "${CommonUtils.renderFixedNumber(data["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                //                 "${CommonUtils.renderFixedNumber(data["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                 //                 style: GQStyle.white255_11),
                 //             Spacer(),
                 //             Text(

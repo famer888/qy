@@ -123,7 +123,7 @@ class _MineCreaterCollectRateState
                           Text(vData["title"], style: GQStyle.white255_15),
                           SizedBox(height: ScreenUtil().setWidth(14)),
                           Text(
-                              "${CommonUtils.renderNumber(vData["count_play"])}${CommonUtils.txt("cbf")} ｜ ${CommonUtils.renderNumber(vData["count_like"])}${CommonUtils.txt("dz")}",
+                              "${CommonUtils.renderNumber(vData["play_ct"])}${CommonUtils.txt("cbf")} ｜ ${CommonUtils.renderNumber(vData["count_like"])}${CommonUtils.txt("dz")}",
                               style: GQStyle.gray163_11),
                           SizedBox(height: ScreenUtil().setWidth(14)),
                           Text.rich(TextSpan(children: [

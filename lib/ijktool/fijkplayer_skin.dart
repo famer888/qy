@@ -47,6 +47,7 @@ class CustomFijkPanel extends StatefulWidget {
   final ShowConfigAbs showConfig;
   final DetailData videoInfo;
   final isLocal;
+  final bool noback;
   CustomFijkPanel({
     this.player,
     this.viewSize,
@@ -56,6 +57,7 @@ class CustomFijkPanel extends StatefulWidget {
     this.onChangeVideo,
     this.videoInfo,
     this.isLocal,
+    this.noback = false,
   });
 
   @override
@@ -239,30 +241,32 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
 
   // 返回按钮
   Widget _buildTopBackBtn() {
-    return Container(
-      height: barHeight,
-      alignment: Alignment.centerLeft,
-      child: IconButton(
-        icon: LImage('nav_back_w_n', width: 22, height: 22),
-        padding: EdgeInsets.only(
-          left: 10.0,
-          right: 10.0,
-        ),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        color: Colors.white,
-        onPressed: () {
-          // 判断当前是否全屏，如果全屏，退出
-          if (widget.player.value.fullScreen) {
-            player.exitFullScreen();
-          } else {
-            if (widget.pageContent == null) return null;
-            player.stop();
-            Navigator.pop(widget.pageContent);
-          }
-        },
-      ),
-    );
+    return widget.noback
+        ? Container()
+        : Container(
+            height: barHeight,
+            alignment: Alignment.centerLeft,
+            child: IconButton(
+              icon: LImage('nav_back_w_n', width: 22, height: 22),
+              padding: EdgeInsets.only(
+                left: 10.0,
+                right: 10.0,
+              ),
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              color: Colors.white,
+              onPressed: () {
+                // 判断当前是否全屏，如果全屏，退出
+                if (widget.player.value.fullScreen) {
+                  player.exitFullScreen();
+                } else {
+                  if (widget.pageContent == null) return null;
+                  player.stop();
+                  Navigator.pop(widget.pageContent);
+                }
+              },
+            ),
+          );
   }
 
   // 可以共用的架子
@@ -412,12 +416,18 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
             widget.viewSize.width,
             widget.viewSize.height,
           )
-        : Rect.fromLTRB(
-            max(0.0, widget.texturePos.left),
-            max(0.0, widget.texturePos.top),
-            min(widget.viewSize.width, widget.texturePos.right),
-            min(widget.viewSize.height, widget.texturePos.bottom),
+        : Rect.fromLTWH(
+            0,
+            0,
+            widget.viewSize.width,
+            widget.viewSize.height,
           );
+    //  Rect.fromLTRB(
+    //     max(0.0, widget.texturePos.left),
+    //     max(0.0, widget.texturePos.top),
+    //     min(widget.viewSize.width, widget.texturePos.right),
+    //     min(widget.viewSize.height, widget.texturePos.bottom),
+    //   );
 
     List<Widget> ws = [];
 
@@ -454,6 +464,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
       } else {
         ws.add(
           FijkLoadSkin(
+            noback: widget.noback,
             player: widget.player,
             texturePos: widget.texturePos,
             showConfig: widget.showConfig,

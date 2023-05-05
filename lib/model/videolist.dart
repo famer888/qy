@@ -61,7 +61,7 @@ class VideoItem {
     this.count_reward,
     this.favorites,
     this.count_like,
-    this.count_play,
+    this.play_ct,
     this.rating,
     this.tags,
     this.directors,
@@ -91,7 +91,7 @@ class VideoItem {
   int count_reward;
   int favorites;
   int count_like;
-  int count_play;
+  int play_ct;
   int rating;
   String tags;
   String directors;
@@ -132,7 +132,7 @@ class VideoItem {
             json['count_comment'] == null ? 0 : json['count_comment'],
         count_reward: json['count_reward'] == null ? 0 : json['count_reward'],
         count_like: json['count_like'] == null ? 0 : json['count_like'],
-        count_play: json['count_play'] == null ? 0 : json['count_play'],
+        play_ct: json['play_ct'] == null ? 0 : json['play_ct'],
         cover_vertical:
             json['cover_vertical'] == null ? "" : json['cover_vertical'],
         cover_horizontal:
@@ -168,7 +168,7 @@ class VideoItem {
         "count_comment": count_comment == null ? 0 : count_comment,
         "count_reward": count_reward == null ? 0 : count_reward,
         "count_like": count_like == null ? 0 : count_like,
-        "count_play": count_play == null ? 0 : count_play,
+        "play_ct": play_ct == null ? 0 : play_ct,
         "cover_vertical": cover_vertical == null ? "" : cover_vertical,
         "cover_horizontal": cover_horizontal == null ? "" : cover_horizontal,
         "source_240": source_240 == null ? "" : source_240,

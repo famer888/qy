@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qypj/acg_page/home/home_comic_info_page.dart';
@@ -78,58 +77,6 @@ class _MineUserCenterState extends BaseWidgetState<MineUserCenter> {
     _controller.dispose();
   }
 
-  Widget memberVip(dynamic value) {
-    var type = "";
-    switch (value) {
-      case 0:
-        return Container();
-        break;
-      case 1:
-        type = CommonUtils.txt('lsk');
-        break;
-      case 2:
-        type = CommonUtils.txt('zk');
-        break;
-      case 3:
-        type = CommonUtils.txt('yk');
-        break;
-      case 4:
-        type = CommonUtils.txt('jk');
-        break;
-      case 5:
-        type = CommonUtils.txt('bnk');
-        break;
-      case 6:
-        type = CommonUtils.txt('nk');
-        break;
-      case 7:
-        type = CommonUtils.txt('lnk');
-        break;
-      case 8:
-        type = CommonUtils.txt('yjk');
-        break;
-    }
-    return Container(
-      width: ScreenUtil().setWidth(40),
-      height: ScreenUtil().setWidth(16),
-      decoration: kIsWeb
-          ? BoxDecoration(
-              color: Color(0xFFf4d4b5),
-              borderRadius: BorderRadius.all(Radius.circular(7.5)))
-          : BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xFFf5e0d1),
-                Color(0xFFfbeadd),
-                Color(0xFFf4d4b5)
-              ], begin: Alignment.centerLeft, end: Alignment.centerRight),
-              borderRadius: BorderRadius.all(Radius.circular(8))),
-      child: Center(
-          child: Text(type,
-              style: TextStyle(
-                  color: Color(0xFF89583c), fontSize: ScreenUtil().setSp(10)))),
-    );
-  }
-
   @override
   Widget pageBody(BuildContext context) {
     // TODO: implement pageBodys
@@ -162,32 +109,50 @@ class _MineUserCenterState extends BaseWidgetState<MineUserCenter> {
                               ),
                             ),
                             child: Center(
-                                child: ClipRRect(
-                              clipBehavior: Clip.hardEdge,
-                              borderRadius: BorderRadius.circular(
-                                  ScreenUtil().setWidth(31.5)),
-                              child: Container(
-                                width: ScreenUtil().setWidth(63),
-                                height: ScreenUtil().setWidth(63),
-                                child: _aff == member.aff.toString()
-                                    ? UserAvatar()
-                                    : PlatformAwareNetworkImage(
-                                        imageName: "flj_logo_icon",
-                                        url: memberInfo['thumb'],
-                                      ),
-                                // child: UserAvatar(),
+                              child: ClipRRect(
+                                clipBehavior: Clip.hardEdge,
+                                borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setWidth(31.5)),
+                                child: Container(
+                                  width: ScreenUtil().setWidth(63),
+                                  height: ScreenUtil().setWidth(63),
+                                  child: _aff == member.aff.toString()
+                                      ? UserAvatar()
+                                      : PlatformAwareNetworkImage(
+                                          imageName: "flj_logo_icon",
+                                          url: memberInfo['thumb'],
+                                        ),
+                                  // child: UserAvatar(),
+                                ),
                               ),
-                            )),
+                            ),
                           ),
                         ),
                       ),
                       SizedBox(height: ScreenUtil().setWidth(7)),
-                      Text(
-                        memberInfo["nickname"] ?? CommonUtils.txt('kkyh'),
-                        style: GQStyle.gray232_15,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                              memberInfo["nickname"] ?? CommonUtils.txt('kkyh'),
+                              style: GQStyle.white16bold),
+                          SizedBox(width: 5.w),
+                          CommonUtils.memberVip(memberInfo["vip_str"])
+                        ],
                       ),
-                      SizedBox(height: ScreenUtil().setWidth(4)),
-                      memberVip(memberInfo["vip_level"])
+                      memberInfo["agent"] == 1
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(CommonUtils.txt('kkyhrz'),
+                                    style: GQStyle.gray153_15),
+                                SizedBox(width: 2.w),
+                                Icon(Icons.verified_sharp,
+                                    size: 14.w,
+                                    color: Color.fromRGBO(247, 208, 93, 1)),
+                              ],
+                            )
+                          : Container()
                     ],
                   ),
                 ),

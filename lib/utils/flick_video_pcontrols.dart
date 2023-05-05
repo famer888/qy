@@ -26,12 +26,14 @@ class FlickVideoPcontrols extends StatelessWidget {
     this.shareVp,
     this.nowToVp,
     this.nowByKb,
+    this.noback,
   }) : super(key: key);
   final double fontSize;
   final String vtitle;
   final bool showBack;
   final bool isPreview;
   final bool isDone;
+  final bool noback;
   final DetailData data;
   final Function skiPreview; //跳过预览
   final Function shareVp; //分享得VIP
@@ -80,25 +82,27 @@ class FlickVideoPcontrols extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.2),
-                          offset: Offset(0, 0),
-                          blurRadius: ScreenUtil().setWidth(16))
-                    ],
-                  ),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    child: LImage("nav_back_w_n"),
-                    onTap: () {
-                      context.pop();
-                    },
-                  ),
-                ),
+                noback
+                    ? Container()
+                    : Container(
+                        width: 22,
+                        height: 22,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.2),
+                                offset: Offset(0, 0),
+                                blurRadius: ScreenUtil().setWidth(16))
+                          ],
+                        ),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          child: LImage("nav_back_w_n"),
+                          onTap: () {
+                            context.pop();
+                          },
+                        ),
+                      ),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
@@ -276,29 +280,31 @@ class FlickVideoPcontrols extends StatelessWidget {
                     children: [
                       showBack
                           ? SizedBox(width: 22)
-                          : Container(
-                              width: 22,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromRGBO(0, 0, 0, 0.2),
-                                      offset: Offset(0, 0),
-                                      blurRadius: ScreenUtil().setWidth(16))
-                                ],
-                              ),
-                              child: GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                child: LImage("nav_back_w_n"),
-                                onTap: () {
-                                  if (showBack) {
-                                    context.pop();
-                                  } else {
-                                    controlManager.toggleFullscreen();
-                                  }
-                                },
-                              ),
-                            ),
+                          : noback
+                              ? Container()
+                              : Container(
+                                  width: 22,
+                                  height: 22,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Color.fromRGBO(0, 0, 0, 0.2),
+                                          offset: Offset(0, 0),
+                                          blurRadius: ScreenUtil().setWidth(16))
+                                    ],
+                                  ),
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    child: LImage("nav_back_w_n"),
+                                    onTap: () {
+                                      if (showBack) {
+                                        context.pop();
+                                      } else {
+                                        controlManager.toggleFullscreen();
+                                      }
+                                    },
+                                  ),
+                                ),
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(

@@ -72,7 +72,7 @@ class VideoDoubleColumeCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                "${CommonUtils.renderFixedNumber(data["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                "${CommonUtils.renderFixedNumber(data["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                 style: GQStyle.white255_11),
                             Spacer(),
                             Text(

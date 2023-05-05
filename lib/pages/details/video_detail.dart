@@ -104,6 +104,7 @@ class _VideoDetailState extends State<VideoDetail> {
   }
 
   _onTapSwiper(Notice notice) {
+    reqAdClickCount(id: notice.report_id, type: notice.report_type);
     if (notice.type == "route") {
       String linkUrl = notice.url_str;
       List urlList = linkUrl.split('??');

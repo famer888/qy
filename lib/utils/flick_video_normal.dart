@@ -29,8 +29,12 @@ class FlickVideoNormal extends StatefulWidget {
     Key key,
     this.isLocal = false,
     this.data,
+    this.noback = false,
+    this.autoPlay = true,
   }) : super(key: key);
   bool isLocal;
+  bool noback;
+  bool autoPlay;
   final DetailData data;
 
   @override
@@ -115,13 +119,6 @@ class FlickVideoNormalState extends State<FlickVideoNormal>
     setState(() {});
     //正式播放才会进行记录
     if (widget.data.source240.length == 0) return;
-    startWatchRecordTimer(AppGlobal.videoWatchRecordBox, widget.data.id,
-        chapterId: widget.data.id,
-        offset: 0.0,
-        thumb:
-            widget.data.coverThumbHorizontal ?? widget.data.coverThumbVerticle,
-        isFree: widget.data.isfree,
-        title: widget.data.title);
   }
 
   byVideoRes() {
@@ -290,6 +287,7 @@ class FlickVideoNormalState extends State<FlickVideoNormal>
                   playerErrorFallback: Container(),
                   videoFit: BoxFit.contain,
                   controls: FlickVideoPcontrols(
+                    noback: widget.noback,
                     isPreview: isPrew,
                     isDone: isDone,
                     data: widget.data,

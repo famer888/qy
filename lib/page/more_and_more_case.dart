@@ -227,7 +227,7 @@ class _MoreAndMoreCaseChildState extends State<MoreAndMoreCaseChild> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                          "${CommonUtils.renderFixedNumber(t["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                          "${CommonUtils.renderFixedNumber(t["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                           style: GQStyle.gray105_12),
                                       Text(
                                           "${CommonUtils.getHMTime(t["duration"] ?? 0)}",
@@ -291,7 +291,7 @@ class _MoreAndMoreCaseChildState extends State<MoreAndMoreCaseChild> {
                                               height:
                                                   ScreenUtil().setWidth(17)),
                                           Text(
-                                              "${CommonUtils.renderFixedNumber(t["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                              "${CommonUtils.renderFixedNumber(t["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                               style: GQStyle.gray105_12),
                                           SizedBox(
                                               height:

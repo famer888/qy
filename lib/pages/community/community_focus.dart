@@ -3,7 +3,6 @@ import 'package:qypj/components/common/pullrefreshlist.dart';
 import 'package:qypj/components/page_status.dart';
 import 'package:qypj/pages/community/community_post.dart';
 import 'package:qypj/pages/community/community_tags.dart';
-import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
 

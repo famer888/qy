@@ -37,6 +37,8 @@ import 'package:qypj/utils/index.dart';
 import 'package:qypj/utils/pageviewmixin.dart';
 import 'dart:ui' as ui;
 
+import 'package:qypj/views/yyq/search_element_widget.dart';
+
 class IndexPage extends BaseWidget {
   IndexPage({Key key, this.isShow = false}) : super(key: key);
   final bool isShow;
@@ -171,6 +173,9 @@ class _IndexPageState extends BaseWidgetState<IndexPage> {
                                 height: kIsWeb
                                     ? ScreenUtil().setWidth(15)
                                     : MediaQuery.of(context).padding.top),
+                            Container(
+                                color: Colors.transparent,
+                                child: SearchElementWidget()),
                           ],
                         ),
                       ),

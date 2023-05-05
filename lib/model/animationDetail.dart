@@ -237,7 +237,7 @@ class DetailData {
       via: json["via"] == null ? null : json["via"],
       onshelfTm: json["onshelf_tm"] == null ? null : json["onshelf_tm"],
       rating: json["rating"] == null ? null : json["rating"],
-      countPlay: json["count_play"] == null ? null : json["count_play"],
+      countPlay: json["play_ct"] == null ? null : json["play_ct"],
       countFavorites: json["count_favorites"],
       countLike: json["count_like"] == null ? null : json["count_like"],
       countComment:
@@ -316,7 +316,7 @@ class DetailData {
         "via": via == null ? null : via,
         "onshelf_tm": onshelfTm == null ? null : onshelfTm,
         "rating": rating == null ? null : rating,
-        "count_play": countPlay == null ? null : countPlay,
+        "play_ct": countPlay == null ? null : countPlay,
         "count_favorites": countFavorites,
         "count_like": countLike == null ? null : countLike,
         "count_comment": countComment == null ? null : countComment,

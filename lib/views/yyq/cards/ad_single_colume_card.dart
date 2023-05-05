@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qypj/global.dart';
 import 'package:qypj/theme/default.dart';
+import 'package:qypj/utils/api.dart';
 
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
@@ -31,6 +32,7 @@ class AdSingleColumeCard extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           if (data['link_url'] == null || data['link_url'].length == 0) return;
+          reqAdClickCount(id: data['report_id'], type: data['report_type']);
           if (data['redirect_type'] == 1) {
             String linkUrl = data['link_url'];
             List urlList = linkUrl.split('??');

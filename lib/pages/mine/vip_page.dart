@@ -140,58 +140,6 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
     setState(() {});
   }
 
-  Widget memberVip(dynamic value) {
-    var type = "";
-    switch (value) {
-      case 0:
-        return Container();
-        break;
-      case 1:
-        type = CommonUtils.txt('lsk');
-        break;
-      case 2:
-        type = CommonUtils.txt('zk');
-        break;
-      case 3:
-        type = CommonUtils.txt('yk');
-        break;
-      case 4:
-        type = CommonUtils.txt('jk');
-        break;
-      case 5:
-        type = CommonUtils.txt('bnk');
-        break;
-      case 6:
-        type = CommonUtils.txt('nk');
-        break;
-      case 7:
-        type = CommonUtils.txt('lnk');
-        break;
-      case 8:
-        type = CommonUtils.txt('yjk');
-        break;
-    }
-    return Container(
-      width: ScreenUtil().setWidth(40),
-      height: ScreenUtil().setWidth(16),
-      decoration: kIsWeb
-          ? BoxDecoration(
-              color: Color(0xFFf4d4b5),
-              borderRadius: BorderRadius.all(Radius.circular(7.5)))
-          : BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xFFf5e0d1),
-                Color(0xFFfbeadd),
-                Color(0xFFf4d4b5)
-              ], begin: Alignment.centerLeft, end: Alignment.centerRight),
-              borderRadius: BorderRadius.all(Radius.circular(8))),
-      child: Center(
-          child: Text(type,
-              style: TextStyle(
-                  color: Color(0xFF89583c), fontSize: ScreenUtil().setSp(10)))),
-    );
-  }
-
   @override
   Widget pageBody(BuildContext context) {
     var members = Provider.of<HomeConfig>(context, listen: true).member;
@@ -276,7 +224,8 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
                                               SizedBox(
                                                   width: ScreenUtil()
                                                       .setWidth(10)),
-                                              memberVip(members?.vipLevel)
+                                              CommonUtils.memberVip(
+                                                  members?.vip_str)
                                             ],
                                           ),
                                           SizedBox(
@@ -671,12 +620,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                       horizontal: ScreenUtil().setWidth(8)),
                   height: ScreenUtil().setWidth(20),
                   decoration: BoxDecoration(
-                    // color: Color(0xFF006077),
-                    gradient: LinearGradient(
-                      colors: [Color(0xFFef2e2f), Color(0xFFed7e37)],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
+                    gradient: GQStyle.btnGradient_e4b191_f6dec7,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(ScreenUtil().setWidth(10)),
                         bottomRight:
@@ -686,7 +630,7 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                     child: Text(
                       "${widget.product["give_tip"] ?? "未知"}",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Color.fromRGBO(46, 24, 12, 1),
                         fontSize: ScreenUtil().setSp(10),
                         decoration: TextDecoration.none,
                         fontWeight: FontWeight.w500,

@@ -29,6 +29,7 @@ class FijkLoadSkin extends StatefulWidget {
   final Function shareVp;
   final Function nowToVp;
   final Function nowByKb;
+  final bool noback;
 
   FijkLoadSkin({
     Key key,
@@ -44,6 +45,7 @@ class FijkLoadSkin extends StatefulWidget {
     this.shareVp,
     this.nowToVp,
     this.nowByKb,
+    this.noback,
   }) : super(key: key);
 
   @override
@@ -442,6 +444,9 @@ class _FijkLoadSkinState extends State<FijkLoadSkin>
     double curTimePro = (currentValue / duration) * 100;
     double curBottomProW = (curConWidth / 100) * curTimePro;
 
+    double vWidth = widget.texturePos?.width ?? 0;
+    double vHeight = widget.texturePos?.height ?? 0;
+
     return Container(
       height: barHeight,
       child: Stack(
@@ -571,18 +576,33 @@ class _FijkLoadSkinState extends State<FijkLoadSkin>
                     // 按钮 - 预览关闭 全屏/退出全屏
                     _isPreview
                         ? Container()
-                        : _buildPlayStateBtn(
-                            widget.player.value.fullScreen
-                                ? Icons.fullscreen_exit
-                                : Icons.fullscreen,
-                            () {
-                              if (widget.player.value.fullScreen) {
-                                player.exitFullScreen();
-                              } else {
-                                player.enterFullScreen();
-                              }
-                            },
-                          ),
+                        : !widget.noback
+                            ? _buildPlayStateBtn(
+                                widget.player.value.fullScreen
+                                    ? Icons.fullscreen_exit
+                                    : Icons.fullscreen,
+                                () {
+                                  if (widget.player.value.fullScreen) {
+                                    player.exitFullScreen();
+                                  } else {
+                                    player.enterFullScreen();
+                                  }
+                                },
+                              )
+                            : vWidth > vHeight
+                                ? _buildPlayStateBtn(
+                                    widget.player.value.fullScreen
+                                        ? Icons.fullscreen_exit
+                                        : Icons.fullscreen,
+                                    () {
+                                      if (widget.player.value.fullScreen) {
+                                        player.exitFullScreen();
+                                      } else {
+                                        player.enterFullScreen();
+                                      }
+                                    },
+                                  )
+                                : Container(),
                     SizedBox(width: 7),
                     //
                   ],
@@ -625,22 +645,24 @@ class _FijkLoadSkinState extends State<FijkLoadSkin>
               blurRadius: 16)
         ],
       ),
-      child: IconButton(
-        icon: LImage('nav_back_w_n', width: 22, height: 22),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.red,
-        hoverColor: Colors.red,
-        onPressed: () {
-          // 判断当前是否全屏，如果全屏，退出
-          if (widget.player.value.fullScreen) {
-            player.exitFullScreen();
-          } else {
-            if (widget.pageContent == null) return null;
-            player.stop();
-            Navigator.pop(widget.pageContent);
-          }
-        },
-      ),
+      child: widget.noback
+          ? Container()
+          : IconButton(
+              icon: LImage('nav_back_w_n', width: 22, height: 22),
+              splashColor: Colors.transparent,
+              highlightColor: Colors.red,
+              hoverColor: Colors.red,
+              onPressed: () {
+                // 判断当前是否全屏，如果全屏，退出
+                if (widget.player.value.fullScreen) {
+                  player.exitFullScreen();
+                } else {
+                  if (widget.pageContent == null) return null;
+                  player.stop();
+                  Navigator.pop(widget.pageContent);
+                }
+              },
+            ),
     );
   }
 
@@ -859,9 +881,9 @@ class _FijkLoadSkinState extends State<FijkLoadSkin>
     return GestureDetector(
       onTap: _cancelAndRestartTimer,
       behavior: HitTestBehavior.opaque,
-      onHorizontalDragStart: _onHorizontalDragStart,
-      onHorizontalDragUpdate: _onHorizontalDragUpdate,
-      onHorizontalDragEnd: _onHorizontalDragEnd,
+      onHorizontalDragStart: widget.noback ? null : _onHorizontalDragStart,
+      onHorizontalDragUpdate: widget.noback ? null : _onHorizontalDragUpdate,
+      onHorizontalDragEnd: widget.noback ? null : _onHorizontalDragEnd,
       onVerticalDragStart: _onVerticalDragStart,
       onVerticalDragUpdate: _onVerticalDragUpdate,
       onVerticalDragEnd: _onVerticalDragEnd,

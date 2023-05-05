@@ -73,7 +73,7 @@ class _SingleColDoubleColHorState extends State<SingleColDoubleColHor> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                            "${CommonUtils.renderFixedNumber(_firstValue["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                            "${CommonUtils.renderFixedNumber(_firstValue["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                             style: GQStyle.gray105_12),
                         Text(
                             "${CommonUtils.getHMTime(_firstValue["duration"] ?? 0)}",
@@ -138,7 +138,7 @@ class _SingleColDoubleColHorState extends State<SingleColDoubleColHor> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${CommonUtils.renderFixedNumber(e["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                            "${CommonUtils.renderFixedNumber(e["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                             style: GQStyle.gray105_11,
                                             textAlign: TextAlign.center,
                                           ),

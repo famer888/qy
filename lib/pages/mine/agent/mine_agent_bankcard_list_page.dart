@@ -420,7 +420,7 @@ class MineBankCardWidget extends StatelessWidget {
                           gradient: LinearGradient(
                             colors: [
                               Color.fromRGBO(109, 239, 220, 1),
-                              Color.fromRGBO(96, 178, 220, 1)
+                              Color.fromRGBO(247, 208, 93, 1)
                             ],
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,

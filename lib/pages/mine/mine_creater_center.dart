@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:qypj/acg_page/home/home_comic_info_page.dart';
 import 'package:qypj/base/baseWidget.dart';
-import 'package:qypj/model/homedata.dart';
 import 'package:qypj/page/flj_slider_nav.dart';
 import 'package:qypj/pages/mine/mine_creater_center_status.dart';
-import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';

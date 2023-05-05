@@ -117,7 +117,7 @@ class _SingleColDoubleColHorRushState extends State<SingleColDoubleColHorRush> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                  "${CommonUtils.renderFixedNumber(ft["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                  "${CommonUtils.renderFixedNumber(ft["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                   style: GQStyle.gray105_12),
                               Text(
                                   "${CommonUtils.getHMTime(ft["duration"] ?? 0)}",
@@ -191,7 +191,7 @@ class _SingleColDoubleColHorRushState extends State<SingleColDoubleColHorRush> {
                                                           .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      "${CommonUtils.renderFixedNumber(e["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                                      "${CommonUtils.renderFixedNumber(e["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                                       style: GQStyle.gray105_11,
                                                       textAlign:
                                                           TextAlign.center,
@@ -218,7 +218,7 @@ class _SingleColDoubleColHorRushState extends State<SingleColDoubleColHorRush> {
                                           //       MainAxisAlignment.spaceBetween,
                                           //   children: [
                                           //     Text(
-                                          //         "${CommonUtils.renderFixedNumber(e["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                          //         "${CommonUtils.renderFixedNumber(e["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                           //         style: GQStyle.gray105_11),
                                           //     Text(
                                           //         "${CommonUtils.getHMTime(e["duration"] ?? 0)}",

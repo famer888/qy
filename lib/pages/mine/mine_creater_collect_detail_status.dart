@@ -186,7 +186,7 @@ class _MineCreaterCollectDetailStatusState
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                      "${CommonUtils.renderNumber(videos[index]["count_play"])}${CommonUtils.txt("cbf")} ｜ ${CommonUtils.renderNumber(videos[index]["count_like"])}${CommonUtils.txt("dz")}",
+                                                      "${CommonUtils.renderNumber(videos[index]["play_ct"])}${CommonUtils.txt("cbf")} ｜ ${CommonUtils.renderNumber(videos[index]["count_like"])}${CommonUtils.txt("dz")}",
                                                       style:
                                                           GQStyle.gray163_11),
                                                   SizedBox(

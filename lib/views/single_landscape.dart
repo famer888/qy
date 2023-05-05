@@ -119,7 +119,7 @@ class _SingleLandscapeState extends State<SingleLandscape> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    "${CommonUtils.renderFixedNumber(e["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                    "${CommonUtils.renderFixedNumber(e["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                     style: GQStyle.gray105_12),
                                 Text(
                                     "${CommonUtils.getHMTime(e["duration"] ?? 0)}",

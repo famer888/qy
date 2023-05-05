@@ -2,12 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:qypj/base/baseWidget.dart';
+import 'package:qypj/model/homedata.dart';
 import 'package:qypj/page/gen_custom_nav.dart';
+import 'package:qypj/pages/mine/app_center.dart';
 import 'package:qypj/pages/welfare/welfare_agent_page.dart';
 import 'package:qypj/pages/welfare/welfare_task_page.dart';
 import 'package:qypj/routers.dart';
+import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/pageviewmixin.dart';
@@ -63,6 +67,7 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
 
   @override
   Widget pageBody(BuildContext context) {
+    Config config = Provider.of<HomeConfig>(context, listen: false).config;
     return Column(
       children: [
         SizedBox(height: MediaQuery.of(context).padding.top),
@@ -75,17 +80,40 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
                   _selectedIndex = p0;
                   setState(() {});
                 },
-                titles: [CommonUtils.txt('flrw'), CommonUtils.txt('dlzq')],
-                pages: [
-                  PageViewMixin(
-                    child: WelfareTaskPage(
-                      isShow: widget.isShow,
-                    ),
-                  ),
-                  PageViewMixin(
-                    child: WelfareAgentPage(),
-                  )
-                ],
+                titles: config.show_app == 1
+                    ? [
+                        CommonUtils.txt('flrw'),
+                        CommonUtils.txt('dlzq'),
+                        CommonUtils.txt('yytj'),
+                      ]
+                    : [
+                        CommonUtils.txt('flrw'),
+                        CommonUtils.txt('dlzq'),
+                      ],
+                pages: config.show_app == 1
+                    ? [
+                        PageViewMixin(
+                          child: WelfareTaskPage(
+                            isShow: widget.isShow,
+                          ),
+                        ),
+                        PageViewMixin(
+                          child: WelfareAgentPage(),
+                        ),
+                        PageViewMixin(
+                          child: AppCenter(),
+                        ),
+                      ]
+                    : [
+                        PageViewMixin(
+                          child: WelfareTaskPage(
+                            isShow: widget.isShow,
+                          ),
+                        ),
+                        PageViewMixin(
+                          child: WelfareAgentPage(),
+                        ),
+                      ],
                 defaultStyle: TextStyle(
                     color: Color.fromRGBO(255, 255, 255, 1),
                     fontSize: ScreenUtil().setSp(18),
@@ -100,42 +128,42 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
                     decoration: TextDecoration.none),
                 isCenter: true,
               ),
-              Positioned(
-                  child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: GQStyle.pagePadding,
-                ),
-                // color: Colors.deepOrange,
-                height: GQStyle.navbarHegiht,
-                child: Row(
-                  children: [
-                    Expanded(child: Container()),
-                    _selectedIndex == 0
-                        ? GestureDetector(
-                            onTap: () {
-                              context.push('/RechargeRecord/1');
-                            },
-                            child: Text(
-                              CommonUtils.txt('czjl'),
-                              style: GQStyle.gray150_14,
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: () {
-                              String path =
-                                  '/${Routes.mineAgentProfitListPage}';
-                              context.push(path);
-                              // context
-                              //     .push('/${Routes.mineAgentProfitListPage}');
-                            },
-                            child: Text(
-                              CommonUtils.txt('symx'),
-                              style: GQStyle.gray150_14,
-                            ),
-                          )
-                  ],
-                ),
-              )),
+              // Positioned(
+              //     child: Container(
+              //   padding: EdgeInsets.symmetric(
+              //     horizontal: GQStyle.pagePadding,
+              //   ),
+              //   // color: Colors.deepOrange,
+              //   height: GQStyle.navbarHegiht,
+              //   child: Row(
+              //     children: [
+              //       Expanded(child: Container()),
+              //       _selectedIndex == 0
+              //           ? GestureDetector(
+              //               onTap: () {
+              //                 context.push('/RechargeRecord/1');
+              //               },
+              //               child: Text(
+              //                 CommonUtils.txt('czjl'),
+              //                 style: GQStyle.gray150_14,
+              //               ),
+              //             )
+              //           : GestureDetector(
+              //               onTap: () {
+              //                 String path =
+              //                     '/${Routes.mineAgentProfitListPage}';
+              //                 context.push(path);
+              //                 // context
+              //                 //     .push('/${Routes.mineAgentProfitListPage}');
+              //               },
+              //               child: Text(
+              //                 CommonUtils.txt('symx'),
+              //                 style: GQStyle.gray150_14,
+              //               ),
+              //             )
+              //     ],
+              //   ),
+              // )),
             ],
           ),
         )

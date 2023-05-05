@@ -1,13 +1,15 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:qypj/pages/community/community_seltag_page.dart';
 import 'package:qypj/pages/mine/collect_page.dart';
+import 'package:qypj/pages/mine/mine_post_page.dart';
+import 'package:qypj/pages/mine/original_enter.dart';
 import 'package:qypj/pages/welfare/welfare_task_alone_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qypj/acg_page/category/home_category_page.dart';
 import 'package:qypj/acg_page/home/home_comic_choose_chapter_download_page.dart';
 import 'package:qypj/acg_page/home/home_comic_download_page.dart';
 import 'package:qypj/acg_page/home/home_comic_info_page.dart';
-import 'package:qypj/acg_page/home/home_comic_reader_page.dart';
 import 'package:qypj/acg_page/home/home_more_and_more_page.dart';
 import 'package:qypj/acg_page/home/home_recently_updated_page.dart';
 import 'package:qypj/acg_page/home/home_sign_page.dart';
@@ -53,8 +55,6 @@ import 'package:qypj/utils/app_route_observer.dart';
 import 'package:qypj/global.dart';
 import 'package:qypj/pages/details/atlas_detail.dart';
 import 'package:qypj/pages/details/atlas_list.dart';
-import 'package:qypj/pages/details/novel_detail.dart';
-import 'package:qypj/pages/details/novel_reader.dart';
 import 'package:qypj/pages/details/video_detail.dart';
 import 'package:qypj/pages/login/index.dart';
 import 'package:qypj/pages/mine/down_page.dart';
@@ -64,7 +64,6 @@ import 'package:qypj/pages/mine/message_center.dart';
 import 'package:qypj/pages/mine/notice_message.dart';
 import 'package:qypj/page/kwantsharetousers.dart';
 import 'package:qypj/pages/mine/vip_page.dart';
-import 'package:qypj/pages/mine/watch_history.dart';
 import 'package:qypj/pages/mine/app_center.dart';
 import 'package:qypj/pages/mine/coinrecharge.dart';
 import 'package:qypj/pages/mine/coin_detail.dart';
@@ -102,7 +101,6 @@ class Routes {
   static String setup = 'setup'; //设置
   static String fillcode = 'fillcode'; //填写邀请码兑换码
 
-  static String watchhistory = 'watchhistory'; //观看记录
   static String collect = 'collect'; //我的收藏
   static String buy = 'buy'; //购买记录
   static String down = 'down'; //下载缓存
@@ -216,9 +214,22 @@ class Routes {
   static String minencomedetailed = 'minencomedetailed'; //收益明细
 
   static String welfaretaskpage = 'welfaretaskpage'; //福利任务
+  static String communityseltagpage = 'communityseltagpage/:id'; //选择帖子板块
+  static String minepostpage = 'minepostpage'; //我的帖子
+  static String originalenter = 'originalenter'; //申请入驻
+  static String picview = 'picview'; //预览图片
 
   static List<GoRoute> getDetailRoutes() {
     return [
+      GoRoute(
+        path: communityseltagpage,
+        builder: (context, state) =>
+            CommunitySeltagPage(id: int.parse(state.params['id'] ?? "0")),
+      ),
+      GoRoute(
+        path: picview,
+        builder: (context, state) => PicViewPage(pramas: AppGlobal.picMap),
+      ),
       GoRoute(
         path: minencomedetailed,
         builder: (context, state) => MineNcomeDetailed(),
@@ -285,7 +296,12 @@ class Routes {
                     path: minecreaterissuerule,
                     builder: (context, state) {
                       return MineCreaterIssueRule();
-                    })
+                    }),
+                GoRoute(
+                  path: communityseltagpage,
+                  builder: (context, state) => CommunitySeltagPage(
+                      id: int.parse(state.params['id'] ?? "0")),
+                ),
               ],
             )
           ]),
@@ -445,31 +461,6 @@ class Routes {
                   )
                 ]),
             GoRoute(
-                path: novelDetail,
-                builder: (context, state) {
-                  return NovelDetail(
-                      id: state.params == null || state.params['id'] == null
-                          ? null
-                          : int.parse(state.params['id'].toString()));
-                },
-                routes: [
-                  GoRoute(
-                    path: novelReader,
-                    builder: (context, state) {
-                      return NovelReader(
-                        id: state.params == null || state.params['id'] == null
-                            ? null
-                            : state.params['id'].toString(),
-                        novelInfoData: state.extra ?? null,
-                      );
-                    },
-                  ),
-                  GoRoute(
-                    path: kwantsharetousers,
-                    builder: (context, state) => KWantShareToUsers(),
-                  )
-                ]),
-            GoRoute(
                 path: videoDetail,
                 builder: (context, state) {
                   return VideoDetail(
@@ -513,23 +504,6 @@ class Routes {
                         )
                       ]),
                   GoRoute(
-                    path: comicReader,
-                    builder: (context, state) {
-                      final args = state.params;
-                      return HomeComicReaderPage(
-                        id: args == null || args['id'] == null
-                            ? 0
-                            : int.parse(args['id'].toString()),
-                        episode: args == null || args['episode'] == null
-                            ? 0
-                            : int.parse(args['episode'].toString()),
-                        title: args == null || args['title'] == null
-                            ? CommonUtils.txt('wzbt')
-                            : args['title'],
-                      );
-                    },
-                  ),
-                  GoRoute(
                     path: kwantsharetousers,
                     builder: (context, state) => KWantShareToUsers(),
                   )
@@ -558,23 +532,6 @@ class Routes {
                 },
                 routes: [
                   GoRoute(
-                    path: comicReader,
-                    builder: (context, state) {
-                      final args = state.params;
-                      return HomeComicReaderPage(
-                        id: args == null || args['id'] == null
-                            ? 0
-                            : int.parse(args['id'].toString()),
-                        episode: args == null || args['episode'] == null
-                            ? 0
-                            : int.parse(args['episode'].toString()),
-                        title: args == null || args['title'] == null
-                            ? CommonUtils.txt('wzbt')
-                            : args['title'],
-                      );
-                    },
-                  ),
-                  GoRoute(
                     path: kwantsharetousers,
                     builder: (context, state) => KWantShareToUsers(),
                   )
@@ -595,33 +552,7 @@ class Routes {
                   : state.params["categories"].toString(),
             );
           },
-          routes: [
-            GoRoute(
-                path: novelDetail,
-                builder: (context, state) {
-                  return NovelDetail(
-                      id: state.params == null || state.params['id'] == null
-                          ? null
-                          : int.parse(state.params['id'].toString()));
-                },
-                routes: [
-                  GoRoute(
-                    path: novelReader,
-                    builder: (context, state) {
-                      return NovelReader(
-                        id: state.params == null || state.params['id'] == null
-                            ? null
-                            : state.params['id'].toString(),
-                        novelInfoData: state ?? null,
-                      );
-                    },
-                  ),
-                  GoRoute(
-                    path: kwantsharetousers,
-                    builder: (context, state) => KWantShareToUsers(),
-                  )
-                ])
-          ]),
+          routes: []),
       GoRoute(
         path: moreandmorecarton,
         builder: (context, state) {
@@ -757,31 +688,6 @@ class Routes {
             )
           ]),
       GoRoute(
-          path: novelDetail,
-          builder: (context, state) {
-            return NovelDetail(
-                id: state.params == null || state.params['id'] == null
-                    ? null
-                    : int.parse(state.params['id'].toString()));
-          },
-          routes: [
-            GoRoute(
-              path: novelReader,
-              builder: (context, state) {
-                return NovelReader(
-                  id: state.params == null || state.params['id'] == null
-                      ? null
-                      : state.params['id'].toString(),
-                  novelInfoData: state.extra ?? null,
-                );
-              },
-            ),
-            GoRoute(
-              path: kwantsharetousers,
-              builder: (context, state) => KWantShareToUsers(),
-            )
-          ]),
-      GoRoute(
           path: videoDetail,
           builder: (context, state) {
             return VideoDetail(
@@ -825,23 +731,6 @@ class Routes {
                   )
                 ]),
             GoRoute(
-              path: comicReader,
-              builder: (context, state) {
-                final args = state.params;
-                return HomeComicReaderPage(
-                  id: args == null || args['id'] == null
-                      ? 0
-                      : int.parse(args['id'].toString()),
-                  episode: args == null || args['episode'] == null
-                      ? 0
-                      : int.parse(args['episode'].toString()),
-                  title: args == null || args['title'] == null
-                      ? CommonUtils.txt('wzbt')
-                      : args['title'],
-                );
-              },
-            ),
-            GoRoute(
               path: kwantsharetousers,
               builder: (context, state) => KWantShareToUsers(),
             )
@@ -855,6 +744,10 @@ class Routes {
 
   static GoRouter init() {
     List<GoRoute> rootRoutes = [
+      GoRoute(
+          path: minepostpage,
+          builder: (context, state) => MinePostPage(),
+          routes: getDetailRoutes()),
       GoRoute(
           path: minepoststatus,
           builder: (context, state) => MinePostStatus(),
@@ -1048,9 +941,11 @@ class Routes {
         },
       ),
       GoRoute(
-          path: watchhistory,
-          builder: (context, state) => WatchHistoryPage(),
-          routes: getDetailRoutes()),
+        path: originalenter,
+        builder: (context, state) {
+          return OriginalEnter();
+        },
+      ),
       GoRoute(
         path: down,
         builder: (context, state) => DownPage(),

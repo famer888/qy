@@ -1,16 +1,16 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:qypj/components/page_status.dart';
 import 'package:qypj/components/common/pullrefreshlist.dart';
 import 'package:qypj/mixin/element_mixin.dart';
-import 'package:qypj/model/basic.dart';
 import 'package:qypj/model/construct.dart';
 import 'package:qypj/model/element.dart';
 import 'package:qypj/model/home_package_list_construct.dart';
 import 'package:qypj/model/home_pure_list_construct.dart';
 import 'package:qypj/model/ranklistConstruct.dart';
+import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
@@ -18,7 +18,6 @@ import 'package:qypj/utils/index.dart';
 import 'package:qypj/views/general_banner.dart';
 import 'package:qypj/views/yyq/commend_navigation_bar.dart';
 import 'package:qypj/views/yyq/list_sort_switch.dart';
-import 'package:qypj/views/yyq/search_element_widget.dart';
 
 class KTheModuleLayout extends StatefulWidget {
   KTheModuleLayout({Key key, this.id, this.index, this.linkModel})
@@ -41,7 +40,7 @@ class _KTheModuleLayoutState extends State<KTheModuleLayout> with ElementMixin {
   bool isHud = true;
   ConstructModel cm_data;
   bool isPureList = false; // 是否是纯列表
-  List listParam;
+  List listParam = [];
 
   bool showPureListBtn = true;
 
@@ -53,13 +52,18 @@ class _KTheModuleLayoutState extends State<KTheModuleLayout> with ElementMixin {
   void initState() {
     super.initState();
     _controller = ScrollController();
-    listParam = [
-      {'title': CommonUtils.txt('zjgx'), 'key': 'new', 'selected': true},
-      {'title': CommonUtils.txt('bzzr'), 'key': 'hot', 'selected': false},
-      // {'title': CommonUtils.txt('tjan'), 'key': 'editor', 'selected': false},
-    ];
+    List tps = Provider.of<HomeConfig>(context, listen: false).config.sort_nav;
+    for (var x = 0; x < tps.length; x++) {
+      var map = tps[x];
+      if (x == 0) {
+        map['selected'] = true;
+      }
+      map['selected'] = false;
+      listParam.add(map);
+    }
     EventBus().on('', (sds) {});
     getPageData();
+    _pureChooseIndex(0);
   }
 
   Future getPageData() async {
@@ -68,12 +72,10 @@ class _KTheModuleLayoutState extends State<KTheModuleLayout> with ElementMixin {
     param['limit'] = limit;
 
     if (isPureList) {
-      var item = listParam.first;
-
-      if (item['selected'] == true) {
-        param['sort'] = item['key'];
-      } else {
-        param['sort'] = listParam.last['key'];
+      for (var item in listParam) {
+        if (item['selected'] == true) {
+          param['sort'] = item['type'];
+        }
       }
     }
 
@@ -343,16 +345,10 @@ class _KTheModuleLayoutState extends State<KTheModuleLayout> with ElementMixin {
   }
 
   _pureChooseIndex(int index) {
-    // CommonUtils.showText('$index');
-    var item = listParam[index];
-    // listParam.removeAt(index);
-
     for (var item in listParam) {
       item['selected'] = false;
     }
-
-    item['selected'] = true;
-    // listParam.insert(0, item);
+    listParam[index]['selected'] = true;
   }
 
   @override
@@ -395,9 +391,6 @@ class _KTheModuleLayoutState extends State<KTheModuleLayout> with ElementMixin {
                               ? Container()
                               : Column(
                                   children: [
-                                    Container(
-                                        color: Colors.transparent,
-                                        child: const SearchElementWidget()),
                                     Expanded(
                                       child: NestedScrollView(
                                         controller: _controller,
@@ -592,10 +585,13 @@ class _KTheModuleLayoutState extends State<KTheModuleLayout> with ElementMixin {
                                         color: Color(0xff26313b),
                                       ),
                                       child: Center(
-                                        child: ListView.separated(
+                                        child: ListView.builder(
                                             scrollDirection: Axis.horizontal,
                                             shrinkWrap: true,
                                             itemBuilder: (contenxt, index) {
+                                              var item = listParam[index];
+                                              CommonUtils.debugPrint(
+                                                  "listview: $item");
                                               return GestureDetector(
                                                 behavior:
                                                     HitTestBehavior.translucent,
@@ -606,8 +602,6 @@ class _KTheModuleLayoutState extends State<KTheModuleLayout> with ElementMixin {
                                                     setState(() {});
                                                     return;
                                                   } else {
-                                                    var item = listParam[index];
-
                                                     if (item['selected'] ==
                                                         true) {
                                                       // 展开 而且已经选中
@@ -625,38 +619,17 @@ class _KTheModuleLayoutState extends State<KTheModuleLayout> with ElementMixin {
                                                 child: Container(
                                                   width: ScreenUtil()
                                                       .setWidth(44.5),
-                                                  // padding: EdgeInsets.symmetric(
-                                                  //     horizontal: ScreenUtil()
-                                                  //         .setWidth(6.5)),
                                                   child: Center(
-                                                    child: Text(
-                                                        listParam[index]
-                                                            ['title'],
-                                                        style: listParam[index][
-                                                                    'selected'] ==
+                                                    child: Text(item['title'],
+                                                        style: item['selected'] ==
                                                                 true
                                                             ? GQStyle
-                                                                .jellyCyan_13_M
+                                                                .white13medium
                                                             : GQStyle
-                                                                .graya3a2a2_13),
+                                                                .gray102_13),
                                                   ),
                                                 ),
                                               );
-                                            },
-                                            separatorBuilder:
-                                                (contenxt, index) {
-                                              return Container(
-                                                  height:
-                                                      ScreenUtil().setWidth(2),
-                                                  // color: Color(0xffffffff),
-                                                  child: UnconstrainedBox(
-                                                    child: Container(
-                                                      width: .5,
-                                                      height: ScreenUtil()
-                                                          .setWidth(7),
-                                                      color: Color(0xffffffff),
-                                                    ),
-                                                  ));
                                             },
                                             itemCount: listParam.length),
                                       )),

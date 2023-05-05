@@ -97,6 +97,8 @@ class Ads {
     this.mvM3U8,
     this.channel,
     this.createdAt,
+    this.report_id,
+    this.report_type,
   });
 
   int id;
@@ -113,6 +115,8 @@ class Ads {
   String mvM3U8;
   String channel;
   String createdAt;
+  int report_id;
+  int report_type;
 
   factory Ads.fromJson(Map<String, dynamic> json) => Ads(
         id: json["id"],
@@ -129,6 +133,8 @@ class Ads {
         mvM3U8: json["mv_m3u8"],
         channel: json["channel"],
         createdAt: json["created_at"].toString(),
+        report_id: json['report_id'] ?? 0,
+        report_type: json['report_type'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -146,6 +152,8 @@ class Ads {
         "mv_m3u8": mvM3U8,
         "channel": channel,
         "created_at": createdAt,
+        "report_id": report_id,
+        "report_type": report_type,
       };
 }
 
@@ -179,6 +187,10 @@ class Config {
     this.person_ads,
     this.day_price,
     this.buoy,
+    this.show_app,
+    this.tg_group,
+    this.potato_group,
+    this.sort_nav,
   });
 
   String day_price;
@@ -209,6 +221,10 @@ class Config {
   String girl_comment_option;
   String proxy_join_num;
   List<dynamic> buoy;
+  int show_app;
+  String tg_group;
+  String potato_group;
+  List<dynamic> sort_nav;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         day_price: json["day_price"] == null ? null : json["day_price"],
@@ -267,6 +283,14 @@ class Config {
         proxy_join_num: json['proxy_join_num'] == null
             ? null
             : json['proxy_join_num'].toString(),
+        show_app: json['show_app'],
+        potato_group: json['potato_group'] ?? '',
+        tg_group: json['tg_group'] ?? '',
+        sort_nav: json["sort_nav"] == null
+            ? []
+            : List<dynamic>.from(
+                json["sort_nav"].map((x) => x),
+              ),
       );
 
   Map<String, dynamic> toJson() => {
@@ -305,6 +329,11 @@ class Config {
             girl_comment_option == null ? null : girl_comment_option,
         "proxy_join_num": proxy_join_num == null ? null : proxy_join_num,
         "buoy": buoy == null ? null : List<dynamic>.from(buoy.map((x) => x)),
+        "sort_nav":
+            sort_nav == null ? [] : List<dynamic>.from(sort_nav.map((x) => x)),
+        "show_app": show_app,
+        "potato_group": potato_group,
+        "tg_group": tg_group,
       };
 }
 
@@ -427,6 +456,7 @@ class Member {
     this.is_follow,
     this.post_count,
     this.fans_count,
+    this.vip_str,
   });
 
   int is_follow;
@@ -474,6 +504,7 @@ class Member {
   int likesCount;
   int commentCount;
   int vipLevel;
+  String vip_str;
   String personSignnatrue;
   int oldVip;
   int stature;
@@ -589,6 +620,7 @@ class Member {
       isSetPassword:
           json["is_set_password"] == null ? null : json["is_set_password"],
       level: json["level"] == null ? null : json["level"],
+      vip_str: json["vip_str"] == null ? "" : json["vip_str"],
       ads: json["ads"] == null ? null : Banner.fromJson(json["ads"]));
 
   Map<String, dynamic> toJson() => {
@@ -665,18 +697,22 @@ class Member {
         "is_set_password": isSetPassword == null ? null : isSetPassword,
         "level": level == null ? null : level,
         "ads": ads == null ? null : ads.toJson(),
+        "vip_str": vip_str,
       };
 }
 
 class Notice {
-  Notice(
-      {this.id,
-      this.img_url,
-      this.router,
-      this.type,
-      this.height,
-      this.width,
-      this.url_str});
+  Notice({
+    this.id,
+    this.img_url,
+    this.router,
+    this.type,
+    this.height,
+    this.width,
+    this.url_str,
+    this.report_id,
+    this.report_type,
+  });
 
   int id;
   String img_url;
@@ -685,6 +721,8 @@ class Notice {
   int height;
   int width;
   String url_str;
+  int report_id;
+  int report_type;
 
   factory Notice.fromJson(Map<String, dynamic> json) => Notice(
         id: json["id"] == null ? 0 : json["id"],
@@ -694,6 +732,8 @@ class Notice {
         height: json["height"] == null ? 100 : json["height"],
         width: json["width"] == null ? 100 : json["width"],
         url_str: json["url_str"] == null ? "" : json["url_str"],
+        report_id: json["report_id"] ?? 0,
+        report_type: json['report_type'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -704,6 +744,8 @@ class Notice {
         "height": height,
         "width": width,
         "url_str": url_str,
+        "report_id": report_id,
+        "report_type": report_type,
       };
 }
 

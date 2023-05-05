@@ -40,40 +40,15 @@ class AppGlobal {
   static bool showActivity = true;
   static Box appBox;
   static Box imageCacheBox;
-  static Box videoWatchRecordBox;
-  static Box manhuaWatchRecordBox;
-  static Box bookWatchRecordBox;
-  static Box smallVideoWatchRecordBox;
   static List helpList = [];
   static int isSetPassword = 0;
 
   static dynamic yuemeiSellerInfoData;
 
-// const VIP_LEVEL_NORMAL = 0;
-// const VIP_LEVEL_TMP = 1;
-// const VIP_LEVEL_WEEKLY = 2;
-// const VIP_LEVEL_MONTHLY = 3;
-// const VIP_LEVEL_QUARTERLY = 4;
-// const VIP_LEVEL_HALFYEAR = 5;
-// const VIP_LEVEL_ANNUAL = 6;
-// const VIP_LEVEL_TWO_YEAR = 7;
-// const VIP_LEVEL_LONG = 8;
-// const VIP_LEVEL = [
-//     self::VIP_LEVEL_NORMAL => '普通用户',
-//     self::VIP_LEVEL_TMP => '临时会员',
-//     self::VIP_LEVEL_WEEKLY => '周卡',
-//     self::VIP_LEVEL_MONTHLY => '月卡',
-//     self::VIP_LEVEL_QUARTERLY => '季卡',
-//     self::VIP_LEVEL_HALFYEAR => '半年卡',
-//     self::VIP_LEVEL_ANNUAL => '年卡',
-//     self::VIP_LEVEL_TWO_YEAR => '两年卡',
-//     self::VIP_LEVEL_LONG => '永久卡',
-// ];
   static int vipLevel = 0;
   static BuildContext appContext;
   static bool apInit = false;
   static bool routerReplace = false;
-
   static Map<String, dynamic> currentDetailRouteExtra;
   static Map<String, dynamic> currentReaderRouteExtra;
   static Map<String, dynamic> webExtra;
@@ -85,6 +60,7 @@ class AppGlobal {
   static String m3u8_encrypt;
   static Widget banner = Container();
 
+  static Map picMap = {};
   static Map<dynamic, dynamic> yuemeiFilterOption;
   static int maxLines = 1000; //纯txt最大行
   static String rules = ""; //上传规则

@@ -132,18 +132,19 @@ class CommendNavigationBar extends StatelessWidget {
                           // decoration: BoxDecoration(color: bgColors[index % 4]),
                           child: Stack(
                             children: [
+                              // Positioned.fill(
+                              //     child: PlatformAwareNetworkImage(
+                              //   url: e['resource_url'],
+                              // )),
+                              // e['resource_url'] != null &&
+                              //         e['resource_url'].length > 0
+                              //     ? Container()
+                              //     :
                               Positioned.fill(
-                                  child: PlatformAwareNetworkImage(
-                                url: e['resource_url'],
-                              )),
-                              e['resource_url'] != null &&
-                                      e['resource_url'].length > 0
-                                  ? Container()
-                                  : Positioned.fill(
-                                      child: Container(
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          color: Color(0xff262631))),
+                                  child: Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      color: Color(0xff262631))),
                               Center(
                                 child: Text(e["name"],
                                     style: TextStyle(

@@ -210,7 +210,12 @@ class _HomeState extends State<Home> {
             CommonUtils.getRealImage(
                 url: res.data.ads?.imgUrl,
                 setUrl: (urllink) {
-                  box.put('ads', {'image': urllink, 'url': res.data.ads.url});
+                  box.put('ads', {
+                    'image': urllink,
+                    'url': res.data.ads.url,
+                    'id': res.data.ads.report_id,
+                    'type': res.data.ads.report_type,
+                  });
                   CommonUtils.debugPrint(CommonUtils.txt('gdjw'));
                 });
           } else {
@@ -344,6 +349,7 @@ class _HomeState extends State<Home> {
   }
 
   _onTapSwiper(Notice notice) {
+    reqAdClickCount(id: notice.report_id, type: notice.report_type);
     if (notice.type == "route") {
       String linkUrl = notice.url_str;
       List urlList = linkUrl.split('??');
@@ -533,10 +539,10 @@ class _HomeState extends State<Home> {
                                       child: Column(
                                         children: [
                                           LImage(
-                                            // selectedKey == key
-                                            //     ? navBarItem[key]['activeIcon']
-                                            //     : navBarItem[key]['icon'],
-                                            navBarItem[key]['newyear_icon'],
+                                            selectedKey == key
+                                                ? navBarItem[key]['activeIcon']
+                                                : navBarItem[key]['icon'],
+                                            // navBarItem[key]['newyear_icon'],
                                             width: ScreenUtil().setWidth(30),
                                             height: ScreenUtil().setWidth(25),
                                             fit: BoxFit.fitWidth,
@@ -548,8 +554,8 @@ class _HomeState extends State<Home> {
                                             navBarItem[key]['title'],
                                             style: selectedKey == key
                                                 ? TextStyle(
-                                                    color: GQStyle
-                                                        .redColor255_57_13,
+                                                    color:
+                                                        GQStyle.cyanColor00edfd,
                                                     fontSize:
                                                         ScreenUtil().setSp(11),
                                                     overflow:

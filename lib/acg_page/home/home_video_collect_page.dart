@@ -361,7 +361,7 @@ class _HomeVideoCollectPageChildState extends State<HomeVideoCollectPageChild> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    "${CommonUtils.renderFixedNumber(e["count_play"] ?? 0)}${CommonUtils.txt("cbf")}",
+                                    "${CommonUtils.renderFixedNumber(e["play_ct"] ?? 0)}${CommonUtils.txt("cbf")}",
                                     style: GQStyle.white255_11),
                                 Spacer(),
                                 Text(

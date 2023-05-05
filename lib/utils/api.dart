@@ -32,6 +32,19 @@ import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/http.dart';
 import 'package:flutter/foundation.dart';
 
+//获取帖子的播放链接
+Future<Basic> reqGetPostURL({int id = 0}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/community/unlock', data: {'id': id});
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
 //点击福利统计
 Future<Basic> reqWelfClickCount({int id = 0}) async {
   try {
@@ -750,10 +763,13 @@ Future<Basic> communityListTopicPost(
 }
 
 //发帖获取全部标签
-Future<Basic> communityTopics() async {
+Future<Basic> communityTopics({int page = 1, int limit = 20}) async {
   try {
     Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/community/topics');
+        await PlatformAwareHttp.post('/api/community/topics', data: {
+      'page': page,
+      'limit': limit,
+    });
     CommonUtils.debugPrint(res.data);
     return Basic.fromJson(res.data);
   } catch (e) {
@@ -777,8 +793,13 @@ Future<Basic> communityTopicsDetail({String topic_id}) async {
 }
 
 //发布帖子
-Future<Basic> communityPost(
-    {String topic_id, String title, String content = "", String medias}) async {
+Future<Basic> communityPost({
+  String topic_id,
+  String title,
+  String content = "",
+  String medias,
+  String coins,
+}) async {
   try {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/community/post', data: {
@@ -786,6 +807,7 @@ Future<Basic> communityPost(
       "title": title,
       "content": content,
       "medias": medias,
+      "coins": coins,
     });
     CommonUtils.debugPrint(res.data);
     return Basic.fromJson(res.data);
@@ -2171,12 +2193,27 @@ Future<CoinOrVipModel> getOrderList(
 }
 
 // 应用商店
-Future<AppCenterModel> getAppCenter({int page = 1, dynamic type = ''}) async {
+Future<Basic> getAppCenter({int page = 1, dynamic type = ''}) async {
   try {
     Response<dynamic> res = await PlatformAwareHttp.post("/api/home/appCenter");
-    // CommonUtils.debugPrint(res);
-    return AppCenterModel.fromJson(res.data);
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
   } catch (e) {
+    return null;
+  }
+}
+
+//APP点击统计
+Future<Basic> reqAdClickCount({int id = 0, int type = 0}) async {
+  try {
+    if (id == null || type == null) throw Exception('id or type not null');
+    Response<dynamic> res = await PlatformAwareHttp.post(
+        '/api/home/click_report',
+        data: {'id': id, 'type': type});
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
     return null;
   }
 }

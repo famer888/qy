@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:qypj/global.dart';
+import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/common.dart';
@@ -66,6 +67,9 @@ class _GeneralBannerState extends State<GeneralBanner> {
                           if (widget.data[index]['link_url'] == null ||
                               widget.data[index]['link_url'].length == 0)
                             return;
+                          reqAdClickCount(
+                              id: widget.data[index]['report_id'],
+                              type: widget.data[index]['report_type']);
                           if (widget.data[index]['redirect_type'] == 1) {
                             String linkUrl = widget.data[index]['link_url'];
                             List urlList = linkUrl.split('??');

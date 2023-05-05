@@ -3,19 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qypj/components/common/pullrefreshlist.dart';
 import 'package:qypj/components/page_status.dart';
-import 'package:qypj/model/homedata.dart';
 import 'package:qypj/page/yyq_diamond_nav.dart';
-import 'package:qypj/pages/community/community_focus.dart';
-import 'package:qypj/pages/community/community_new.dart';
-import 'package:qypj/pages/community/community_recommend.dart';
-import 'package:qypj/pages/mine/mine_user_center_post.dart';
-import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
 import 'package:qypj/utils/networkImage.dart';
-import 'package:provider/provider.dart';
 
 class FansFollowIndex extends StatefulWidget {
   FansFollowIndex({Key key}) : super(key: key);
@@ -28,7 +21,6 @@ class _FansFollowIndexState extends State<FansFollowIndex> {
   List<String> labels = [
     CommonUtils.txt("yhu"),
     CommonUtils.txt("htt"),
-    CommonUtils.txt("fbdtz"),
   ];
 
   @override
@@ -78,7 +70,6 @@ class _FansFollowIndexState extends State<FansFollowIndex> {
                 pages: [
                   FansListPage(),
                   FollowedListPage(),
-                  MineUserCenterPost(),
                 ],
                 defaultStyle: GQStyle.white255_15_M,
                 selectStyle: GQStyle.blue80_15_M,
@@ -194,7 +185,7 @@ class _FansListPageState extends State<FansListPage> {
                   children: [
                     Text('${e["nickname"]}', style: GQStyle.white255_15_M),
                     Text(
-                      '${e["exp"] ?? 0}${CommonUtils.txt("jfen")}',
+                      '${e["exp"] ?? 0}${CommonUtils.txt("jb")}',
                       style: TextStyle(
                         color: Color(0xFFc6c7d9),
                         fontSize: ScreenUtil().setSp(14),
@@ -409,7 +400,7 @@ class _FollowedListPageState extends State<FollowedListPage> {
               height: ScreenUtil().setWidth(25),
               decoration: BoxDecoration(
                   color: e["is_follow"] == 1
-                      ? Color(0xFF67e0b9)
+                      ? Color(0xff5197F1)
                       : Colors.transparent,
                   borderRadius: BorderRadius.all(
                       Radius.circular(ScreenUtil().setWidth(25 / 2))),
