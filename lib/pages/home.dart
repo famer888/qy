@@ -543,8 +543,8 @@ class _HomeState extends State<Home> {
                                                 ? navBarItem[key]['activeIcon']
                                                 : navBarItem[key]['icon'],
                                             // navBarItem[key]['newyear_icon'],
-                                            width: ScreenUtil().setWidth(30),
-                                            height: ScreenUtil().setWidth(25),
+                                            width: ScreenUtil().setWidth(22.7),
+                                            height: ScreenUtil().setWidth(22.7),
                                             fit: BoxFit.fitWidth,
                                           ),
                                           // SizedBox(
