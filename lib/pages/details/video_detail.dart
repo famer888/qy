@@ -695,7 +695,7 @@ class _VideoDetailState extends State<VideoDetail> {
                                                   "isWaiting": true
                                                 };
                                                 Box box = await Hive.openBox(
-                                                    'qypjbox');
+                                                    'qypj_video_box');
                                                 List tasks = box.get(
                                                         'download_video_tasks') ??
                                                     [];
@@ -720,19 +720,17 @@ class _VideoDetailState extends State<VideoDetail> {
                                                   return;
                                                 }
 
-                                                if (member.exp == 0) {
+                                                if (AppGlobal.vipLevel < 1) {
                                                   YyShowDialog.showdPNGDiaog(
                                                       context,
                                                       title:
                                                           CommonUtils.txt('ts'),
                                                       btnText: CommonUtils.txt(
-                                                          'fxdv'),
+                                                          'ljkt'),
                                                       cancelText:
                                                           CommonUtils.txt('qx'),
                                                       callBack: () {
-                                                    context.push(
-                                                        CommonUtils.getRealHash(
-                                                            'welfaretaskpage'));
+                                                    context.push("/vip");
                                                   }, content: (setDialogState) {
                                                     return DefaultTextStyle(
                                                         style: GQStyle
@@ -744,117 +742,81 @@ class _VideoDetailState extends State<VideoDetail> {
                                                           children: [
                                                             Text(
                                                                 CommonUtils.txt(
-                                                                    'jfyebz')),
+                                                                    'ktvkpyp')),
                                                           ],
                                                         ));
                                                   });
                                                 } else {
-                                                  YyShowDialog.showdPNGDiaog(
-                                                      context,
-                                                      title:
-                                                          CommonUtils.txt('ts'),
-                                                      btnText: CommonUtils.txt(
-                                                          'qrxz'),
-                                                      cancelText:
-                                                          CommonUtils.txt('qx'),
-                                                      callBack: () {
-                                                    _downFromExp();
-                                                  }, content: (setDialogState) {
-                                                    return DefaultTextStyle(
-                                                        style: GQStyle
-                                                            .graya3a2a2_13,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(CommonUtils.txt(
-                                                                    'xzxyhf')
-                                                                .replaceAll("0",
-                                                                    "${member.exp_down}")),
-                                                          ],
-                                                        ));
+                                                  if (Provider.of<HomeConfig>(
+                                                              context,
+                                                              listen: false)
+                                                          .member
+                                                          .video_download_value ==
+                                                      0) {
+                                                    CommonUtils.showText(
+                                                        CommonUtils.txt(
+                                                            'xzcsw'));
+                                                    return;
+                                                  }
+                                                  Map taskInfo = {
+                                                    "id": "${videoInfo.id}",
+                                                    "urlPath":
+                                                        videoInfo.source240,
+                                                    "title": videoInfo.title,
+                                                    "thumbCover": videoInfo
+                                                            .coverThumbHorizontal ??
+                                                        videoInfo
+                                                            .coverThumbVerticle,
+                                                    "tags": tags.join('/'),
+                                                    "contentType": 1,
+                                                    "downloading": false,
+                                                    "isWaiting": true
+                                                  };
+                                                  Box box = await Hive.openBox(
+                                                      'qypj_video_box');
+                                                  List tasks = box.get(
+                                                          'download_video_tasks') ??
+                                                      [];
+                                                  int existTaskIndex =
+                                                      tasks.indexWhere((e) =>
+                                                          e["id"] ==
+                                                          taskInfo["id"]);
+                                                  if (tasks.isNotEmpty &&
+                                                      existTaskIndex != -1) {
+                                                    CommonUtils.showText(
+                                                        CommonUtils.txt(
+                                                            "dqrwcz"));
+                                                    return;
+                                                  }
+                                                  //修改数据
+                                                  downNum(videoInfo.id)
+                                                      .then((res) {
+                                                    if (res.status == 1) {
+                                                      Member member = Provider
+                                                              .of<HomeConfig>(
+                                                                  context,
+                                                                  listen: false)
+                                                          .member;
+                                                      member.video_download_value -=
+                                                          1;
+                                                      if (member
+                                                              .video_download_value <
+                                                          0)
+                                                        member.video_download_value =
+                                                            0;
+                                                      Provider.of<HomeConfig>(
+                                                              context,
+                                                              listen: false)
+                                                          .setMember(member);
+                                                      DownloadUtil
+                                                          .createDownloadTask(
+                                                              taskInfo);
+                                                    } else {
+                                                      CommonUtils.showText(
+                                                          res.msg);
+                                                    }
                                                   });
                                                 }
-                                                // if (AppGlobal.vipLevel < 1) {
-
-                                                // } else {
-                                                //   if (kIsWeb) {
-                                                //     CommonUtils.showText(
-                                                //         CommonUtils.txt(
-                                                //             'qxapty'));
-                                                //     return;
-                                                //   }
-                                                //   if (Provider.of<HomeConfig>(
-                                                //               context,
-                                                //               listen: false)
-                                                //           .member
-                                                //           .video_download_value ==
-                                                //       0) {
-                                                //     CommonUtils.showText(
-                                                //         CommonUtils.txt(
-                                                //             'xzcsw'));
-                                                //     return;
-                                                //   }
-                                                //   Map taskInfo = {
-                                                //     "id": "${videoInfo.id}",
-                                                //     "urlPath":
-                                                //         videoInfo.source240,
-                                                //     "title": videoInfo.title,
-                                                //     "thumbCover": videoInfo
-                                                //             .coverThumbHorizontal ??
-                                                //         videoInfo
-                                                //             .coverThumbVerticle,
-                                                //     "tags": tags.join('/'),
-                                                //     "contentType": 1,
-                                                //     "downloading": false,
-                                                //     "isWaiting": true
-                                                //   };
-                                                //   Box box = await Hive.openBox(
-                                                //       'qypjbox');
-                                                //   List tasks = box.get(
-                                                //           'download_video_tasks') ??
-                                                //       [];
-                                                //   int existTaskIndex =
-                                                //       tasks.indexWhere((e) =>
-                                                //           e["id"] ==
-                                                //           taskInfo["id"]);
-                                                //   if (tasks.isNotEmpty &&
-                                                //       existTaskIndex != -1) {
-                                                //     CommonUtils.showText(
-                                                //         CommonUtils.txt(
-                                                //             "dqrwcz"));
-                                                //     return;
-                                                //   }
-                                                //   //修改数据
-                                                //   downNum(videoInfo.id)
-                                                //       .then((res) {
-                                                //     if (res.status == 1) {
-                                                //       Member member = Provider
-                                                //               .of<HomeConfig>(
-                                                //                   context,
-                                                //                   listen: false)
-                                                //           .member;
-                                                //       member.video_download_value -=
-                                                //           1;
-                                                //       if (member
-                                                //               .video_download_value <
-                                                //           0)
-                                                //         member.video_download_value =
-                                                //             0;
-                                                //       Provider.of<HomeConfig>(
-                                                //               context,
-                                                //               listen: false)
-                                                //           .setMember(member);
-                                                //       DownloadUtil
-                                                //           .createDownloadTask(
-                                                //               taskInfo);
-                                                //     } else {
-                                                //       CommonUtils.showText(
-                                                //           res.msg);
-                                                //     }
-                                                //   });
-                                                // }
                                               },
                                               child: _btnItem(
                                                 icon: 'download',
@@ -1368,7 +1330,7 @@ class _VideoDetailState extends State<VideoDetail> {
       "downloading": false,
       "isWaiting": true
     };
-    Box box = await Hive.openBox('qypjbox');
+    Box box = await Hive.openBox('qypj_video_box');
     List tasks = box.get('download_video_tasks') ?? [];
     int existTaskIndex = tasks.indexWhere((e) => e["id"] == taskInfo["id"]);
     if (tasks.isNotEmpty && existTaskIndex != -1) {

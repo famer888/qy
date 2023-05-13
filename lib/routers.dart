@@ -21,7 +21,6 @@ import 'package:qypj/page/more_and_more_carton.dart';
 import 'package:qypj/page/more_and_more_png.dart';
 import 'package:qypj/page/more_and_more_normal.dart';
 import 'package:qypj/page/more_and_more_nvel.dart';
-import 'package:qypj/page/topic_small_video_detail.dart';
 import 'package:qypj/pages/community/community_issue.dart';
 import 'package:qypj/pages/community/community_post_detail.dart';
 import 'package:qypj/pages/community/community_tag_detail.dart';
@@ -74,7 +73,6 @@ import 'package:qypj/pages/mine/recharg_record.dart';
 import 'package:qypj/pages/mine/setup.dart';
 import 'package:qypj/pages/welcome.dart';
 import 'package:qypj/pages/mine/invite_friends.dart';
-import 'package:qypj/page/small_video_detail.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/index.dart';
 import 'package:qypj/pages/mine/mine_user_center.dart';
@@ -245,23 +243,6 @@ class Routes {
             aff: state.params['aff'],
           );
         },
-        routes: [
-          GoRoute(
-              path: topicsmallvideodetail,
-              builder: (context, state) {
-                return TopicSmallVideoDetail(
-                  id: state.params == null || state.params['id'] == null
-                      ? "0"
-                      : state.params['id'],
-                );
-              },
-              routes: [
-                GoRoute(
-                  path: kwantsharetousers,
-                  builder: (context, state) => KWantShareToUsers(),
-                )
-              ])
-        ],
       ),
       GoRoute(
           path: minecreatercollectdetail,
@@ -343,36 +324,6 @@ class Routes {
           return MineCreaterCollect();
         },
       ),
-      GoRoute(
-          path: topicsmallvideodetail,
-          builder: (context, state) {
-            return TopicSmallVideoDetail(
-              id: state.params == null || state.params['id'] == null
-                  ? "0"
-                  : state.params['id'],
-            );
-          },
-          routes: [
-            GoRoute(
-              path: kwantsharetousers,
-              builder: (context, state) => KWantShareToUsers(),
-            )
-          ]),
-      GoRoute(
-          path: smallvideodetail,
-          builder: (context, state) {
-            return SmallVideoDetail(
-              id: state.params == null || state.params['id'] == null
-                  ? "0"
-                  : state.params['id'],
-            );
-          },
-          routes: [
-            GoRoute(
-              path: kwantsharetousers,
-              builder: (context, state) => KWantShareToUsers(),
-            )
-          ]),
       GoRoute(
           path: moreandmorepng,
           builder: (context, state) {
@@ -958,16 +909,6 @@ class Routes {
                 videoInfo: args == null || args['videoInfo'] == null
                     ? null
                     : args['videoInfo'],
-              );
-            },
-          ),
-          GoRoute(
-            path: smallvideodetail,
-            builder: (context, state) {
-              return SmallVideoDetail(
-                id: state.params == null || state.params['id'] == null
-                    ? "0"
-                    : state.params['id'],
               );
             },
           ),

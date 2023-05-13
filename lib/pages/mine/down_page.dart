@@ -236,7 +236,7 @@ class _DownListState extends State<DownList> {
   }
 
   onDelete() async {
-    Box box = await Hive.openBox('qypjbox');
+    Box box = await Hive.openBox('qypj_video_box');
     // data = box.get('download_video_tasks') ?? [];
     for (var i = 0; i < data.length; i++) {
       if (data[i]["choosed"] == true) {
@@ -263,7 +263,7 @@ class _DownListState extends State<DownList> {
 
   // 获取视频下载信息
   Future getVideoDownloadInfo() async {
-    Box box = await Hive.openBox('qypjbox');
+    Box box = await Hive.openBox('qypj_video_box');
     data = box.get('download_video_tasks') ?? [];
     for (var i = 0; i < data.length; i++) {
       data[i]["choosed"] = false;

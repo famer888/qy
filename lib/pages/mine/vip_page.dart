@@ -232,11 +232,11 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
                                               height:
                                                   ScreenUtil().setWidth(10)),
                                           Text(
-                                            members.vipLevel < 2
+                                            members.vipLevel < 1
                                                 ? CommonUtils.txt('khykp')
                                                 : CommonUtils.txt('dqrq') +
-                                                    ' $tempTime',
-                                            //  +" ${kIsWeb ? "" : "${CommonUtils.txt('syxzcs')}：${members.video_download_value}"}",
+                                                    ' $tempTime' +
+                                                    " ${kIsWeb ? "" : "${CommonUtils.txt('syxzcs')}：${members.video_download_value}"}",
                                             style: GQStyle.gray163_12,
                                           ),
                                         ],

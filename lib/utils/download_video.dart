@@ -146,7 +146,7 @@ class DownloadUtil {
   static startNext() async {
     if (downloadTasks.length > 0) {
       // LogUtil.d("${downloadTasks[0]["taskInfo"]["title"]}");
-      Box box = await Hive.openBox('qypjbox');
+      Box box = await Hive.openBox('qypj_video_box');
       List tasks = box.get('download_video_tasks') ?? [];
       downloadTasks[0]["taskInfo"]["downloading"] = true;
       int taskNum = tasks
@@ -206,7 +206,7 @@ class DownloadUtil {
       return;
     }
     try {
-      Box box = await Hive.openBox('qypjbox');
+      Box box = await Hive.openBox('qypj_video_box');
       List tasks = box.get('download_video_tasks') ?? [];
       int existTaskIndex = tasks.indexWhere((e) => e["id"] == taskInfo["id"]);
       int existDownloadTaskIndex = downloadTasks

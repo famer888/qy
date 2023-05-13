@@ -6,16 +6,14 @@ import 'package:provider/provider.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:qypj/base/baseWidget.dart';
 import 'package:qypj/model/homedata.dart';
-import 'package:qypj/page/gen_custom_nav.dart';
+import 'package:qypj/page/yyq_diamond_nav.dart';
 import 'package:qypj/pages/mine/app_center.dart';
 import 'package:qypj/pages/welfare/welfare_agent_page.dart';
 import 'package:qypj/pages/welfare/welfare_task_page.dart';
-import 'package:qypj/routers.dart';
 import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/pageviewmixin.dart';
-import 'package:qypj/utils/extensionlibrary.dart';
 
 class WelfarePage extends BaseWidget {
   WelfarePage({Key key, this.isShow}) : super(key: key);
@@ -29,8 +27,8 @@ class WelfarePage extends BaseWidget {
 
 class WelfarePageState extends BaseWidgetState<WelfarePage> {
   int _selectedIndex = 0;
-  final GlobalKey<GenCustomNavState> _gennavKey =
-      new GlobalKey<GenCustomNavState>();
+  final GlobalKey<YyqDiamondNavState> _gennavKey =
+      new GlobalKey<YyqDiamondNavState>();
 
   @override
   void onCreate() {}
@@ -74,31 +72,33 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
         Expanded(
           child: Stack(
             children: [
-              GenCustomNav(
+              YyqDiamondNav(
                 key: _gennavKey,
                 inedxFunc: (p0) {
                   _selectedIndex = p0;
                   setState(() {});
                 },
+                navColor: Colors.transparent,
+                type: YyqDiamondNavEnum.line,
                 titles: config.show_app == 1
                     ? [
-                        CommonUtils.txt('flrw'),
                         CommonUtils.txt('dlzq'),
+                        CommonUtils.txt('flrw'),
                         CommonUtils.txt('yytj'),
                       ]
                     : [
-                        CommonUtils.txt('flrw'),
                         CommonUtils.txt('dlzq'),
+                        CommonUtils.txt('flrw'),
                       ],
                 pages: config.show_app == 1
                     ? [
                         PageViewMixin(
+                          child: WelfareAgentPage(),
+                        ),
+                        PageViewMixin(
                           child: WelfareTaskPage(
                             isShow: widget.isShow,
                           ),
-                        ),
-                        PageViewMixin(
-                          child: WelfareAgentPage(),
                         ),
                         PageViewMixin(
                           child: AppCenter(),
@@ -106,24 +106,23 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
                       ]
                     : [
                         PageViewMixin(
+                          child: WelfareAgentPage(),
+                        ),
+                        PageViewMixin(
                           child: WelfareTaskPage(
                             isShow: widget.isShow,
                           ),
-                        ),
-                        PageViewMixin(
-                          child: WelfareAgentPage(),
                         ),
                       ],
                 defaultStyle: TextStyle(
                     color: Color.fromRGBO(255, 255, 255, 1),
                     fontSize: ScreenUtil().setSp(18),
                     overflow: TextOverflow.visible,
-                    fontWeight: FontWeight.w500,
                     decoration: TextDecoration.none),
                 selectStyle: TextStyle(
-                    color: Color.fromRGBO(232, 197, 174, 1),
+                    color: GQStyle.jellyCyanColor103224185,
                     fontSize: ScreenUtil().setSp(18),
-                    fontWeight: FontWeight.w500,
+                    // fontWeight: FontWeight.w500,
                     overflow: TextOverflow.visible,
                     decoration: TextDecoration.none),
                 isCenter: true,

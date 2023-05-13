@@ -1054,23 +1054,21 @@ class _FijkLoadSkinState extends State<FijkLoadSkin>
     var vflag = false;
     Member member = Provider.of<HomeConfig>(context, listen: false).member;
     if (AppGlobal.vipLevel < 1 && widget.info.isfree == 1) {
-      if (member.exp > 0) {
-        dgt = DefaultTextStyle(
-          style: GQStyle.white255_14_N,
-          child: Text.rich(
-            TextSpan(children: [
-              TextSpan(text: "${member.exp_con}", style: GQStyle.blue80_14_M),
-              TextSpan(text: CommonUtils.txt('jbjsw') + "，"),
-              TextSpan(text: CommonUtils.txt('ktvpzk') + "${member.exp}")
-            ]),
-          ),
-        );
-        vflag = true;
-      } else {
-        //需要VIP
-        dgt = Text(CommonUtils.txt('kvbw'), style: GQStyle.white255_14_M);
-        vflag = false;
-      }
+      //需要VIP
+      dgt = Text(CommonUtils.txt('kvbw'), style: GQStyle.white255_14_M);
+      vflag = false;
+    } else if (widget.info.isfree == 2) {
+      dgt = DefaultTextStyle(
+        style: GQStyle.white255_14_N,
+        child: Text.rich(
+          TextSpan(children: [
+            TextSpan(text: "${widget.info.coins}", style: GQStyle.blue80_14_M),
+            TextSpan(text: CommonUtils.txt('jbjsw') + "，"),
+            TextSpan(text: CommonUtils.txt('ktvpzk') + "${member.money}")
+          ]),
+        ),
+      );
+      vflag = true;
     }
     return Container(
       color: Colors.black87,

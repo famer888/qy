@@ -29,6 +29,11 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
+  void setMoney(dynamic newMoney) {
+    _member.money = newMoney;
+    notifyListeners();
+  }
+
   void setExp(dynamic newExp) {
     _member.exp = newExp;
     notifyListeners();
@@ -97,6 +102,10 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   void setInvitation(dynamic invitation) {
     _member.invitedBy = invitation;
     notifyListeners();
+  }
+
+  static setUserMoney(BuildContext context, int coins) async {
+    Provider.of<HomeConfig>(context, listen: false).setMoney(coins);
   }
 
   static setUserExp(BuildContext context, int exp) async {

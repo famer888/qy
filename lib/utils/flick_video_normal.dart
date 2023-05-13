@@ -121,14 +121,9 @@ class FlickVideoNormalState extends State<FlickVideoNormal>
     if (widget.data.source240.length == 0) return;
   }
 
-  byVideoRes() {
-    Member member = Provider.of<HomeConfig>(context, listen: false).member;
+  byVideoRes(int coins) {
     CommonUtils.startLoadGIF(tip: CommonUtils.txt("dhz"));
-    buyVideo(
-            id: widget.data.id,
-            exp: member.exp - member.exp_con,
-            context: context)
-        .then((res) {
+    buyVideo(id: widget.data.id, coins: coins, context: context).then((res) {
       //关闭加载动画
       BotToast.closeAllLoading();
       if (res.status != 0) {
@@ -142,12 +137,12 @@ class FlickVideoNormalState extends State<FlickVideoNormal>
 
   showAlertVp({bool goby = false}) {
     Member member = Provider.of<HomeConfig>(context, listen: false).member;
-    bool isInsufficient = member.exp < member.exp_con;
+    bool isInsufficient = member.money < widget.data.coins;
     if (goby && !isInsufficient) {
-      byVideoRes(); //直接购买
+      byVideoRes(member.money - widget.data.coins); //直接购买
       return;
     }
-    if (member.exp > 0) {
+    if (widget.data.isfree == 2) {
       YyShowDialog.showdialog(
         context,
         title: CommonUtils.txt('ts'),
@@ -161,7 +156,7 @@ class FlickVideoNormalState extends State<FlickVideoNormal>
           if (isInsufficient) {
             context.push('/${Routes.coinRecharge}');
           } else {
-            byVideoRes();
+            byVideoRes(member.money - widget.data.coins);
           }
         },
         content: (setDialogState) {
@@ -175,7 +170,7 @@ class FlickVideoNormalState extends State<FlickVideoNormal>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("${member.exp_con}" + CommonUtils.txt('jb'),
+                    Text("${widget.data.coins}" + CommonUtils.txt('jb'),
                         style: GQStyle.blue80_13_M),
                   ],
                 ),
@@ -185,28 +180,9 @@ class FlickVideoNormalState extends State<FlickVideoNormal>
                   children: [
                     Text(
                         CommonUtils.txt('kyje') +
-                            "：${member.exp}" +
+                            "：${member.money}" +
                             CommonUtils.txt('jb'),
                         style: GQStyle.gray203_13),
-                    // SizedBox(width: ScreenUtil().setWidth(13.5)),
-                    // GestureDetector(
-                    //   behavior: HitTestBehavior.translucent,
-                    //   onTap: () {
-                    //     context.pop();
-                    //     context.push('/${Routes.coinRecharge}');
-                    //   },
-                    //   child: Row(
-                    //     crossAxisAlignment: CrossAxisAlignment.center,
-                    //     children: [
-                    //       RichText(
-                    //         text: TextSpan(
-                    //             style: GQStyle.blue80_13_M,
-                    //             text: CommonUtils.txt('qcz'),
-                    //             children: []),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // )
                   ],
                 ),
               ],

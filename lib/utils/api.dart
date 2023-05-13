@@ -1832,14 +1832,14 @@ Future<Basic> onOrderExchange({
 }
 
 //购买视频
-Future<Basic> buyVideo({int id, int exp, BuildContext context}) async {
+Future<Basic> buyVideo({int id, int coins, BuildContext context}) async {
   try {
     Response<dynamic> res =
-        await PlatformAwareHttp.post('/api/mv/exp_buy', data: {'id': id});
+        await PlatformAwareHttp.post('/api/mv/buy', data: {'id': id});
     CommonUtils.debugPrint(res);
     Basic data = Basic.fromJson(res.data);
     if (data.status != 0) {
-      HomeConfig.setUserExp(context, exp);
+      HomeConfig.setUserMoney(context, coins);
     }
     return data;
   } catch (e) {

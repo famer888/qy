@@ -35,7 +35,6 @@ class _CommunityTagDetailState extends BaseWidgetState<CommunityTagDetail> {
   PageController _pageController = PageController();
   ScrollController _controller = ScrollController();
   GlobalKey _anchorKey = GlobalKey();
-  Color setColor;
 
   @override
   void onCreate() {

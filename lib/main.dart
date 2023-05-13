@@ -59,7 +59,7 @@ void main() async {
         CommonUtils.gvMD5(
             '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}'),
     "bundleId": "com.pwa.qypj",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "oauth_type": "web",
     "language": 'zh',
     "via": 'pwa',
@@ -81,14 +81,14 @@ void main() async {
         "bundleId": packageInfo.packageName,
         "version": packageInfo.version,
         "oauth_type": "android",
-        // "build_affcode": "zBDa",
+        // "build_affcode": "c9Rk",
       };
     } else {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       AppGlobal.appinfo = {
         "oauth_id": CommonUtils.gvMD5(iosInfo.identifierForVendor),
         "bundleId": packageInfo.packageName,
-        "version": "2.0.0",
+        "version": "2.1.0",
         "oauth_type": "ios",
       };
     }

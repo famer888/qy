@@ -52,29 +52,28 @@ class FlickVideoPcontrols extends StatelessWidget {
     var vflag = false;
     Member member = Provider.of<HomeConfig>(context, listen: false).member;
     if (AppGlobal.vipLevel < 1 && data.isfree == 1) {
-      if (member.exp > 0) {
-        dgt = DefaultTextStyle(
-          style: GQStyle.white255_14_N,
-          child: Text.rich(
-            TextSpan(children: [
-              TextSpan(text: "${member.exp_con}", style: GQStyle.blue80_14_M),
-              TextSpan(text: CommonUtils.txt('jbjsw') + "，"),
-              TextSpan(text: CommonUtils.txt('ktvpzk') + "${member.exp}")
-            ]),
-          ),
-        );
-        vflag = true;
-      } else {
-        //需要VIP
-        dgt = Text(CommonUtils.txt('kvbw'), style: GQStyle.white255_14_M);
-        vflag = false;
-      }
+      //需要VIP
+      dgt = Text(CommonUtils.txt('kvbw'), style: GQStyle.white255_14_M);
+      vflag = false;
+    } else if (data.isfree == 2) {
+      dgt = DefaultTextStyle(
+        style: GQStyle.white255_14_N,
+        child: Text.rich(
+          TextSpan(children: [
+            TextSpan(text: "${data.coins}", style: GQStyle.blue80_14_M),
+            TextSpan(text: CommonUtils.txt('jbjsw') + "，"),
+            TextSpan(text: CommonUtils.txt('ktvpzk') + "${member.money}")
+          ]),
+        ),
+      );
+      vflag = true;
     }
+
     return Container(
       color: Colors.black87,
       child: Column(children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10.0),
           child: Container(
             alignment: Alignment.centerLeft,
             height: ScreenUtil().setWidth(22),
@@ -103,21 +102,6 @@ class FlickVideoPcontrols extends StatelessWidget {
                           },
                         ),
                       ),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: vtitle.length == 0
-                                ? Colors.transparent
-                                : Color.fromRGBO(72, 46, 0, 0.54),
-                            offset: Offset(0, 0),
-                            blurRadius: ScreenUtil().setWidth(16))
-                      ],
-                    ),
-                    child: Text(vtitle, style: GQStyle.white255_18_B),
-                  ),
-                ),
               ],
             ),
           ),
@@ -169,7 +153,7 @@ class FlickVideoPcontrols extends StatelessWidget {
                         vflag
                             ? CommonUtils.txt("gmgk")
                             : CommonUtils.txt("ljkv"),
-                        style: GQStyle.white255_13_M),
+                        style: GQStyle.white13),
                   ),
                 ),
               ),
@@ -188,8 +172,8 @@ class FlickVideoPcontrols extends StatelessWidget {
                         Radius.circular(ScreenUtil().setWidth(3))),
                   ),
                   child: Center(
-                    child: Text(CommonUtils.txt("fxdv"),
-                        style: GQStyle.white255_13_M),
+                    child:
+                        Text(CommonUtils.txt("fxdv"), style: GQStyle.white13),
                   ),
                 ),
               )

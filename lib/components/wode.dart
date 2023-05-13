@@ -380,7 +380,7 @@ class _WodeState extends BaseWidgetState<Wode> {
           UtilEventbus().fire(
             UtilEventbusClass({
               "name": "openwf",
-              "data": {"index": 1},
+              "data": {"index": 0},
             }),
           );
         } else {
@@ -648,17 +648,17 @@ class _WodeState extends BaseWidgetState<Wode> {
                                                       ),
                                                       maxLines: 1,
                                                     ),
-                                                    // SizedBox(width: 5.w),
-                                                    // Text(
-                                                    //   "${CommonUtils.txt('syxzcs')}${members.video_download_value}",
-                                                    //   style: TextStyle(
-                                                    //     color: Color.fromRGBO(
-                                                    //         246, 203, 163, 1.0),
-                                                    //     fontSize: ScreenUtil()
-                                                    //         .setSp(12),
-                                                    //   ),
-                                                    //   maxLines: 1,
-                                                    // ),
+                                                    SizedBox(width: 5.w),
+                                                    Text(
+                                                      "${CommonUtils.txt('syxzcs')}${members.video_download_value}",
+                                                      style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            246, 203, 163, 1.0),
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(12),
+                                                      ),
+                                                      maxLines: 1,
+                                                    ),
                                                   ],
                                                 )
                                               ],

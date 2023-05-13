@@ -116,8 +116,10 @@ class _HomeState extends State<Home> {
     discrip = UtilEventbus().on<UtilEventbusClass>().listen((event) {
       if (event.arg["name"] == 'openwf') {
         selectedKey = 1;
-        _wfKey.currentState.changeIndex(event.arg["data"]["index"] ?? 0);
         setState(() {});
+        Future.delayed(Duration(milliseconds: 100), () {
+          _wfKey.currentState.changeIndex(event.arg["data"]["index"] ?? 0);
+        });
       }
     });
   }
@@ -131,7 +133,7 @@ class _HomeState extends State<Home> {
 
   // 初始化下载状态
   Future<void> _initDownloadStastu() async {
-    Box box = await Hive.openBox('qypjbox');
+    Box box = await Hive.openBox('qypj_video_box');
     List tasks = box.get('download_video_tasks') ?? [];
     if (tasks.length > 0) {
       tasks = tasks.map((element) {
@@ -339,9 +341,21 @@ class _HomeState extends State<Home> {
     UpdateModel.showAvtivetysDialog(backButtonBehavior, notice: notice,
         cancel: () {
       AppGlobal.showActivity = false;
+      if (Provider.of<HomeConfig>(context, listen: false).versionMsg != null) {
+        var version =
+            Provider.of<HomeConfig>(context, listen: false).versionMsg;
+        var config = Provider.of<HomeConfig>(context, listen: false).config;
+        checkUpdateAnnouncement(version, config);
+      }
     }, confirm: () {
       AppGlobal.showActivity = false;
       _onTapSwiper(notice);
+      if (Provider.of<HomeConfig>(context, listen: false).versionMsg != null) {
+        var version =
+            Provider.of<HomeConfig>(context, listen: false).versionMsg;
+        var config = Provider.of<HomeConfig>(context, listen: false).config;
+        checkUpdateAnnouncement(version, config);
+      }
     });
     setState(() {
       showActivety = true;
@@ -391,12 +405,6 @@ class _HomeState extends State<Home> {
         var notice = Provider.of<HomeConfig>(context, listen: false).notice;
         // title 活动图片地址  content 活动跳转地址 type 跳转类型 1 路由 2 内部webview 3 外部
         showActivetyDialog(notice);
-      }
-      if (Provider.of<HomeConfig>(context, listen: false).versionMsg != null) {
-        var version =
-            Provider.of<HomeConfig>(context, listen: false).versionMsg;
-        var config = Provider.of<HomeConfig>(context, listen: false).config;
-        checkUpdateAnnouncement(version, config);
       }
     }
   }

@@ -204,7 +204,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                       getDownloadText(),
                       style: TextStyle(
                           color: progress == -1
-                              ? Color.fromRGBO(255, 159, 0, 1.0)
+                              ? Color.fromRGBO(103, 224, 185, 1.0)
                               : Colors.white,
                           decoration: TextDecoration.none,
                           fontWeight: FontWeight.bold,
@@ -237,7 +237,7 @@ mixin CardMixin<T extends StatefulWidget> on State<T> {
                           height: ScreenUtil().setWidth(2),
                           width: thumbWidth * progress,
                           decoration: BoxDecoration(
-                              color: Color.fromRGBO(255, 159, 0, 1.0),
+                              color: Color.fromRGBO(103, 224, 185, 1.0),
                               borderRadius: BorderRadius.all(
                                   Radius.circular(ScreenUtil().setWidth(1)))),
                         ),

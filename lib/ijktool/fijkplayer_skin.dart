@@ -506,15 +506,14 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
 
   @override
   bool get wantKeepAlive => true;
-
   showAlertVp({bool goby = false}) {
     Member member = Provider.of<HomeConfig>(context, listen: false).member;
-    bool isInsufficient = member.exp < member.exp_con;
+    bool isInsufficient = member.money < widget.videoInfo.coins;
     if (goby && !isInsufficient) {
-      byVideoRes(); //直接购买
+      byVideoRes(member.money - widget.videoInfo.coins); //直接购买
       return;
     }
-    if (member.exp > 0) {
+    if (widget.videoInfo.isfree == 2) {
       YyShowDialog.showdialog(
         context,
         title: CommonUtils.txt('ts'),
@@ -528,7 +527,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
           if (isInsufficient) {
             context.push('/${Routes.coinRecharge}');
           } else {
-            byVideoRes();
+            byVideoRes(member.money - widget.videoInfo.coins);
           }
         },
         content: (setDialogState) {
@@ -542,7 +541,7 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("${member.exp_con}" + CommonUtils.txt('jb'),
+                    Text("${widget.videoInfo.coins}" + CommonUtils.txt('jb'),
                         style: GQStyle.blue80_13_M),
                   ],
                 ),
@@ -552,28 +551,9 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
                   children: [
                     Text(
                         CommonUtils.txt('kyje') +
-                            "：${member.exp}" +
+                            "：${member.money}" +
                             CommonUtils.txt('jb'),
                         style: GQStyle.gray203_13),
-                    // SizedBox(width: ScreenUtil().setWidth(13.5)),
-                    // GestureDetector(
-                    //   behavior: HitTestBehavior.translucent,
-                    //   onTap: () {
-                    //     context.pop();
-                    //     context.push('/${Routes.coinRecharge}');
-                    //   },
-                    //   child: Row(
-                    //     crossAxisAlignment: CrossAxisAlignment.center,
-                    //     children: [
-                    //       RichText(
-                    //         text: TextSpan(
-                    //             style: GQStyle.blue80_13_M,
-                    //             text: CommonUtils.txt('qcz'),
-                    //             children: []),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // )
                   ],
                 ),
               ],
@@ -617,13 +597,9 @@ class _CustomFijkPanelState extends State<CustomFijkPanel>
     }
   }
 
-  byVideoRes() {
-    Member member = Provider.of<HomeConfig>(context, listen: false).member;
+  byVideoRes(int coins) {
     CommonUtils.startLoadGIF(tip: CommonUtils.txt("dhz"));
-    buyVideo(
-            id: widget.videoInfo.id,
-            exp: member.exp - member.exp_con,
-            context: context)
+    buyVideo(id: widget.videoInfo.id, coins: coins, context: context)
         .then((res) {
       //关闭加载动画
       BotToast.closeAllLoading();

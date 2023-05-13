@@ -29,7 +29,7 @@ class DownloadComics {
       return;
     }
     try {
-      Box box = await Hive.openBox('qypjbox');
+      Box box = await Hive.openBox('qypj_video_box');
       List tasks = box.get('download_comics_tasks') ?? [];
       int existTaskIndex = tasks.indexWhere((e) => e["id"] == taskInfo["id"]);
       int existDownloadTaskIndex = downloadTasks

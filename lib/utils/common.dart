@@ -36,7 +36,7 @@ class CommonUtils {
     double fontsize = 10,
     double margin = 0,
   }) {
-    return value.isEmpty
+    return value.isEmpty || value == null
         ? Container()
         : Container(
             height: h.w,

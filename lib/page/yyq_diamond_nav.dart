@@ -37,10 +37,10 @@ class YyqDiamondNav extends StatefulWidget {
   YyqDiamondNavEnum type; //0菱角 1下划线 2覆盖
 
   @override
-  State<YyqDiamondNav> createState() => _GenCustomNavState();
+  State<YyqDiamondNav> createState() => YyqDiamondNavState();
 }
 
-class _GenCustomNavState extends State<YyqDiamondNav>
+class YyqDiamondNavState extends State<YyqDiamondNav>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   PageController _pageController;
@@ -56,7 +56,7 @@ class _GenCustomNavState extends State<YyqDiamondNav>
       child: TabBar(
         onTap: (index) {
           _isOnTab = true;
-          _onTabPageChange(index, isOnTab: true);
+          onTabPageChange(index, isOnTab: true);
         },
         indicatorColor: Colors.transparent,
         labelPadding: EdgeInsets.symmetric(
@@ -158,7 +158,7 @@ class _GenCustomNavState extends State<YyqDiamondNav>
     }
   }
 
-  void _onTabPageChange(index,
+  void onTabPageChange(index,
       {bool isOnTab = false, bool forceRefreashTab = false}) {
     if (_selectIndex == index) {
       _isOnTab = false;
@@ -220,7 +220,7 @@ class _GenCustomNavState extends State<YyqDiamondNav>
 
       if (index >= 0 && index < widget.titles.length) {
         _isOnTab = true;
-        _onTabPageChange(index, isOnTab: _isOnTab, forceRefreashTab: true);
+        onTabPageChange(index, isOnTab: _isOnTab, forceRefreashTab: true);
       }
 
       // _onTabPageChange(index, isOnTab: false);
@@ -255,7 +255,7 @@ class _GenCustomNavState extends State<YyqDiamondNav>
               Expanded(
                   child: PageView(
                 onPageChanged: (index) {
-                  if (!_isOnTab) _onTabPageChange(index, isOnTab: false);
+                  if (!_isOnTab) onTabPageChange(index, isOnTab: false);
                 },
                 controller: _pageController,
                 children: widget.pages,
