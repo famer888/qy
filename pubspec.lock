@@ -156,7 +156,7 @@ packages:
     source: hosted
     version: "1.1.0"
   chewie_audio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: chewie_audio
       url: "http://mirrors.cnnic.cn/dart-pub/"
