@@ -405,6 +405,14 @@ class _HomeState extends State<Home> {
         var notice = Provider.of<HomeConfig>(context, listen: false).notice;
         // title 活动图片地址  content 活动跳转地址 type 跳转类型 1 路由 2 内部webview 3 外部
         showActivetyDialog(notice);
+      } else {
+        if (Provider.of<HomeConfig>(context, listen: false).versionMsg !=
+            null) {
+          var version =
+              Provider.of<HomeConfig>(context, listen: false).versionMsg;
+          var config = Provider.of<HomeConfig>(context, listen: false).config;
+          checkUpdateAnnouncement(version, config);
+        }
       }
     }
   }
