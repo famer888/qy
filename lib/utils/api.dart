@@ -32,6 +32,18 @@ import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/http.dart';
 import 'package:flutter/foundation.dart';
 
+//获取帖子导航
+Future<Basic> reqGetPostNav() async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/community/nav');
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
 //获取帖子的播放链接
 Future<Basic> reqGetPostURL({int id = 0}) async {
   try {
@@ -743,6 +755,25 @@ Future<Basic> communityList(
   }
 }
 
+//社区排序列表
+Future<Basic> communitySortList(
+    {int id, String sort, int page, int limit = 15}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/community/construct', data: {
+      "id": id,
+      "sort": sort,
+      "page": page,
+      "limit": limit,
+    });
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
 //话题详情-帖子分页
 Future<Basic> communityListTopicPost(
     {String topic_id, String cate, int page, int limit = 15}) async {
@@ -841,6 +872,8 @@ Future<HomeData> getHomeConfig(BuildContext context) async {
       Provider.of<HomeConfig>(context, listen: false)
           .setNotice(result.data.notice);
       Provider.of<HomeConfig>(context, listen: false).setAbs(result.data.ads);
+      Provider.of<HomeConfig>(context, listen: false)
+          .setPopAds(result.data.pop_ads);
       Provider.of<HomeConfig>(context, listen: false)
           .setConfig(result.data.config);
       Provider.of<HomeConfig>(context, listen: false)

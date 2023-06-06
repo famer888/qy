@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:qypj/acg_page/home/home_comic_info_page.dart';
 import 'package:qypj/base/baseWidget.dart';
 import 'package:qypj/global.dart';
 import 'package:qypj/page/flj_slider_nav.dart';
 import 'package:qypj/page/yyq_diamond_nav.dart';
 import 'package:qypj/pages/community/community_tag_detail_child.dart';
+import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
@@ -27,11 +29,6 @@ class CommunityTagDetail extends BaseWidget {
 
 class _CommunityTagDetailState extends BaseWidgetState<CommunityTagDetail> {
   dynamic topic;
-  List<String> labels = [
-    CommonUtils.txt("zxpx"),
-    CommonUtils.txt("zxjx"),
-    CommonUtils.txt("sping"),
-  ];
   PageController _pageController = PageController();
   ScrollController _controller = ScrollController();
   GlobalKey _anchorKey = GlobalKey();
@@ -39,7 +36,6 @@ class _CommunityTagDetailState extends BaseWidgetState<CommunityTagDetail> {
   @override
   void onCreate() {
     // TODO: implement onCreate
-
     _getTopDetail();
   }
 
@@ -66,6 +62,7 @@ class _CommunityTagDetailState extends BaseWidgetState<CommunityTagDetail> {
   @override
   Widget pageBody(BuildContext context) {
     // TODO: implement pageBody
+    List tps = Provider.of<HomeConfig>(context, listen: false).config.forum_nav;
     return topic == null
         ? Container()
         : NestedScrollView(
@@ -166,10 +163,12 @@ class _CommunityTagDetailState extends BaseWidgetState<CommunityTagDetail> {
                         key: _anchorKey,
                         color: GQStyle.naviColor,
                         child: FljSliderBar(
+                          labelPadding: 5,
                           selectStyle: GQStyle.white13medium,
                           defaultStyle: GQStyle.white255_13,
                           pageController: _pageController,
-                          titles: labels,
+                          titles:
+                              tps.map<String>((e) => e["title"] ?? "").toList(),
                         ),
                       ),
                       minHeight: GQStyle.navbarHegiht,
@@ -179,20 +178,12 @@ class _CommunityTagDetailState extends BaseWidgetState<CommunityTagDetail> {
             },
             body: PageView(
               controller: _pageController,
-              children: [
-                CommunityTagDetailChild(
-                  topic_id: widget.topic_id,
-                  cate: "new",
-                ),
-                CommunityTagDetailChild(
-                  topic_id: widget.topic_id,
-                  cate: "choice",
-                ),
-                CommunityTagDetailChild(
-                  topic_id: widget.topic_id,
-                  cate: "video",
-                )
-              ],
+              children: tps
+                  .map<Widget>((e) => CommunityTagDetailChild(
+                        topic_id: widget.topic_id,
+                        cate: e["type"],
+                      ))
+                  .toList(),
             ),
             controller: _controller,
           );

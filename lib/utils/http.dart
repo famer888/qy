@@ -260,9 +260,12 @@ class PlatformAwareHttp {
 
   static Future<Response> download(String urlPath, String savePath,
       {ProgressCallback onReceiveProgress}) {
-//    if(_dio == null) return;
     return _uploadDio.download(urlPath, savePath,
-        onReceiveProgress: onReceiveProgress);
+        onReceiveProgress: onReceiveProgress,
+        options: Options(headers: {
+          "user-agent":
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Andr/hjsq"
+        }));
   }
 
   // cancelToken 用于二级页面销毁时，中断正在进行中的异步请求

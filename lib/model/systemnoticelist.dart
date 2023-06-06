@@ -52,6 +52,8 @@ class Datum {
     this.createdAt,
     this.updatedAt,
     this.title,
+    this.type,
+    this.related_id,
   });
 
   int id;
@@ -61,6 +63,8 @@ class Datum {
   dynamic createdAt;
   dynamic updatedAt;
   String title;
+  int type;
+  int related_id;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"] == null ? null : json["id"],
@@ -70,6 +74,8 @@ class Datum {
         createdAt: json["created_at"] == null ? null : json["created_at"],
         updatedAt: json["updated_at"] == null ? null : json["updated_at"],
         title: json["title"] == null ? null : json["title"],
+        type: json["type"] ?? 0,
+        related_id: json["related_id"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -80,5 +86,7 @@ class Datum {
         "created_at": createdAt == null ? null : createdAt,
         "updated_at": updatedAt == null ? null : updatedAt,
         "title": title == null ? null : title,
+        "type": type,
+        "related_id": related_id,
       };
 }

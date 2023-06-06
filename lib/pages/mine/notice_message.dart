@@ -7,6 +7,7 @@ import 'package:qypj/model/systemnoticelist.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
+import 'package:qypj/utils/extensionlibrary.dart';
 
 class NoticeMessage extends StatefulWidget {
   final Map args;
@@ -97,11 +98,7 @@ class _MessageCenterState extends State<NoticeMessage> {
                           child: ListView.builder(
                               itemCount: messageList.length,
                               itemBuilder: (context, index) {
-                                return NoticeItem(
-                                  title: messageList[index].title,
-                                  content: messageList[index].content,
-                                  time: messageList[index].createdAt,
-                                );
+                                return NoticeItem(data: messageList[index]);
                               }),
                         ),
                       ),
@@ -113,11 +110,8 @@ class _MessageCenterState extends State<NoticeMessage> {
 }
 
 class NoticeItem extends StatelessWidget {
-  final String title;
-  final String content;
-  final String time;
-  const NoticeItem({Key key, this.title, this.content, this.time})
-      : super(key: key);
+  final Datum data;
+  const NoticeItem({Key key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -126,27 +120,44 @@ class NoticeItem extends StatelessWidget {
           left: ScreenUtil().setWidth(12.5),
           right: ScreenUtil().setWidth(12.5),
           top: ScreenUtil().setWidth(20)),
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(ScreenUtil().setWidth(15)),
-        decoration: BoxDecoration(
-            color: Color.fromRGBO(21, 21, 42, 1),
-            borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            title,
-            style: GQStyle.white255_18_M,
-            maxLines: 100,
-          ),
-          SizedBox(height: ScreenUtil().setWidth(10)),
-          Text(
-            content,
-            style: GQStyle.gray199_13,
-            maxLines: 100,
-          ),
-          SizedBox(height: ScreenUtil().setWidth(10)),
-          Text(time, style: GQStyle.hexa3a2a2_11)
-        ]),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          if (data.type == 1) {
+            context.push("/communitypostdetail/${data.related_id}");
+          }
+        },
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(ScreenUtil().setWidth(15)),
+          decoration: BoxDecoration(
+              color: Color.fromRGBO(21, 21, 42, 1),
+              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10))),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              data.title,
+              style: GQStyle.white255_18_M,
+              maxLines: 100,
+            ),
+            SizedBox(height: ScreenUtil().setWidth(10)),
+            Text(
+              data.content,
+              style: GQStyle.gray199_13,
+              maxLines: 100,
+            ),
+            SizedBox(height: ScreenUtil().setWidth(10)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(data.createdAt, style: GQStyle.hexa3a2a2_11),
+                data.type == 1
+                    ? Text(CommonUtils.txt('ckxq'), style: GQStyle.blue80_11)
+                    : Container()
+              ],
+            )
+          ]),
+        ),
       ),
     );
   }

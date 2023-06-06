@@ -11,7 +11,7 @@ class GetConfig {
 class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   VersionMsg _versionMsg;
   Ads _ads;
-  dynamic _pads;
+  List<Notice> _pop_ads;
   Notice _notice;
   Config _config;
   Member _member;
@@ -20,6 +20,7 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
   SystemNotice get systemnotice => _systemNotice;
   Member get member => _member;
   Notice get notice => _notice;
+  List<Notice> get pop_ads => _pop_ads;
   Config get config => _config;
   Ads get ads => _ads;
   VersionMsg get versionMsg => _versionMsg;
@@ -61,6 +62,11 @@ class HomeConfig with ChangeNotifier, DiagnosticableTreeMixin {
 
   void setAvatar(dynamic url) {
     _member.thumb = url;
+    notifyListeners();
+  }
+
+  void setPopAds(List<dynamic> newPopAds) {
+    _pop_ads = newPopAds;
     notifyListeners();
   }
 

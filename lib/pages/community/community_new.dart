@@ -9,8 +9,10 @@ import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
 
 class CommunityNew extends StatefulWidget {
-  CommunityNew({Key key, this.cate = "new", this.call}) : super(key: key);
-  final String cate;
+  CommunityNew({Key key, this.id = 0, this.sort = "new", this.call})
+      : super(key: key);
+  final int id;
+  final String sort;
   final Function(dynamic) call;
 
   @override
@@ -32,13 +34,13 @@ class _CommunityNewState extends State<CommunityNew> {
   }
 
   _getData() {
-    communityList(cate: widget.cate, page: page).then((res) {
+    communitySortList(id: widget.id, sort: widget.sort, page: page).then((res) {
       if (res.data == null) {
         networkErr = true;
         setState(() {});
         return;
       }
-      List st = res.data["posts"];
+      List st = List.from(res.data["posts"] ?? []);
       if (page == 1) {
         noMore = false;
         topics = res.data["topics"];

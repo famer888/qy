@@ -53,12 +53,13 @@ class Data {
     this.config,
     this.notice,
     this.ads,
+    this.pop_ads,
   });
 
   VersionMsg versionMsg;
   int timestamp;
   Notice notice;
-
+  List<Notice> pop_ads;
   Config config;
   Ads ads;
 
@@ -70,6 +71,9 @@ class Data {
         timestamp: json["timestamp"] == null ? null : json["timestamp"],
         config: json["config"] == null ? null : Config.fromJson(json["config"]),
         ads: json["ads"] == null ? null : Ads.fromJson(json["ads"]),
+        pop_ads: json["pop_ads"] == null
+            ? []
+            : List.from(json["pop_ads"].map((x) => Notice.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -78,6 +82,7 @@ class Data {
         "notice": notice == null ? null : notice.toJson(),
         "config": config == null ? null : config.toJson(),
         "ads": ads == null ? null : ads.toJson(),
+        "pop_ads": pop_ads.map((e) => e.toJson()),
       };
 }
 
@@ -191,6 +196,7 @@ class Config {
     this.tg_group,
     this.potato_group,
     this.sort_nav,
+    this.forum_nav,
   });
 
   String day_price;
@@ -225,6 +231,7 @@ class Config {
   String tg_group;
   String potato_group;
   List<dynamic> sort_nav;
+  List<dynamic> forum_nav;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         day_price: json["day_price"] == null ? null : json["day_price"],
@@ -291,6 +298,11 @@ class Config {
             : List<dynamic>.from(
                 json["sort_nav"].map((x) => x),
               ),
+        forum_nav: json["forum_nav"] == null
+            ? []
+            : List<dynamic>.from(
+                json["forum_nav"].map((x) => x),
+              ),
       );
 
   Map<String, dynamic> toJson() => {
@@ -334,6 +346,9 @@ class Config {
         "show_app": show_app,
         "potato_group": potato_group,
         "tg_group": tg_group,
+        "forum_nav": forum_nav == null
+            ? []
+            : List<dynamic>.from(forum_nav.map((x) => x)),
       };
 }
 

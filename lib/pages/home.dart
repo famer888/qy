@@ -335,31 +335,31 @@ class _HomeState extends State<Home> {
   }
 
   // 活动弹窗
-  void showActivetyDialog(Notice notice) {
-    if (showActivety == true) return;
-    if (AppGlobal.showActivity == false) return;
-    UpdateModel.showAvtivetysDialog(backButtonBehavior, notice: notice,
-        cancel: () {
-      AppGlobal.showActivity = false;
-      if (Provider.of<HomeConfig>(context, listen: false).versionMsg != null) {
-        var version =
-            Provider.of<HomeConfig>(context, listen: false).versionMsg;
-        var config = Provider.of<HomeConfig>(context, listen: false).config;
-        checkUpdateAnnouncement(version, config);
+  void showActivetyDialog(List<Notice> pop_ads, {int index = 0}) {
+    if (pop_ads.isEmpty) return;
+    Notice pt = pop_ads[index];
+    UpdateModel.showAvtivetysDialog(backButtonBehavior, notice: pt, cancel: () {
+      if (index == pop_ads.length - 1) {
+        _showAnnouncemen();
+      } else {
+        showActivetyDialog(pop_ads, index: index + 1);
       }
     }, confirm: () {
-      AppGlobal.showActivity = false;
-      _onTapSwiper(notice);
-      if (Provider.of<HomeConfig>(context, listen: false).versionMsg != null) {
-        var version =
-            Provider.of<HomeConfig>(context, listen: false).versionMsg;
-        var config = Provider.of<HomeConfig>(context, listen: false).config;
-        checkUpdateAnnouncement(version, config);
+      _onTapSwiper(pt);
+      if (index == pop_ads.length - 1) {
+        _showAnnouncemen();
+      } else {
+        showActivetyDialog(pop_ads, index: index + 1);
       }
     });
-    setState(() {
-      showActivety = true;
-    });
+  }
+
+  _showAnnouncemen() {
+    if (Provider.of<HomeConfig>(context, listen: false).versionMsg != null) {
+      var version = Provider.of<HomeConfig>(context, listen: false).versionMsg;
+      var config = Provider.of<HomeConfig>(context, listen: false).config;
+      checkUpdateAnnouncement(version, config);
+    }
   }
 
   _onTapSwiper(Notice notice) {
@@ -401,18 +401,12 @@ class _HomeState extends State<Home> {
   initDialog() {
     if (!initPage) {
       initPage = true;
-      if (Provider.of<HomeConfig>(context, listen: false).notice != null) {
-        var notice = Provider.of<HomeConfig>(context, listen: false).notice;
+      if (Provider.of<HomeConfig>(context, listen: false).pop_ads.length > 0) {
+        var pop_ads = Provider.of<HomeConfig>(context, listen: false).pop_ads;
         // title 活动图片地址  content 活动跳转地址 type 跳转类型 1 路由 2 内部webview 3 外部
-        showActivetyDialog(notice);
+        showActivetyDialog(pop_ads);
       } else {
-        if (Provider.of<HomeConfig>(context, listen: false).versionMsg !=
-            null) {
-          var version =
-              Provider.of<HomeConfig>(context, listen: false).versionMsg;
-          var config = Provider.of<HomeConfig>(context, listen: false).config;
-          checkUpdateAnnouncement(version, config);
-        }
+        _showAnnouncemen();
       }
     }
   }
