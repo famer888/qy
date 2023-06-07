@@ -103,8 +103,6 @@ class DownloadUtil {
       decrypted = res.data;
     }
     decrypted = _checkIV(decrypted);
-    CommonUtils.debugPrint(decrypted);
-
     String localM3u8 = decrypted;
     // 整理key和ts链接
     List<String> lists = decrypted.split("#EXTINF:");
@@ -112,8 +110,7 @@ class DownloadUtil {
     lists.forEach((e) {
       // 提取key
       if (e.indexOf("URI=") != -1 && e.indexOf(".key") != -1) {
-        String keyUri =
-            e.substring(e.indexOf("URI=") + 5, e.indexOf(".key") + 4);
+        String keyUri = e.substring(e.indexOf("URI=") + 5, e.indexOf("\","));
         tsLists.add(keyUri);
         // 替换key为本地链接
         localM3u8 = localM3u8.replaceAll(
@@ -123,7 +120,10 @@ class DownloadUtil {
       }
       // 提取ts链接
       if (e.indexOf("http") != -1 && e.indexOf(".ts") != -1) {
-        String tsItem = e.substring(e.indexOf("http"), e.indexOf(".ts") + 3);
+        String tsItem = e
+            .substring(e.indexOf("http"), e.length)
+            .replaceAll("#EXT-X-ENDLIST", "")
+            .trim();
         tsLists.add(tsItem);
         // 替换ts为本地链接
         localM3u8 = localM3u8.replaceAll(
@@ -132,6 +132,7 @@ class DownloadUtil {
                 tsItem.lastIndexOf("/") + 1, tsItem.indexOf(".ts") + 3));
       }
     });
+
     return {"localM3u8": localM3u8, "tsLists": tsLists};
   }
 
