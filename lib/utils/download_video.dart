@@ -107,32 +107,24 @@ class DownloadUtil {
     // 整理key和ts链接
     List<String> lists = decrypted.split("#EXTINF:");
     List<String> tsLists = [];
-    lists.forEach((e) {
-      // 提取key
-      if (e.indexOf("URI=") != -1 && e.indexOf(".key") != -1) {
-        String keyUri = e.substring(e.indexOf("URI=") + 5, e.indexOf("\","));
-        tsLists.add(keyUri);
-        // 替换key为本地链接
+    for (var el in lists) {
+      var regSrcExp = RegExp(
+          r'(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?');
+      String matchfix = regSrcExp.stringMatch(el) ?? "";
+      if (matchfix.indexOf(".key") != -1) {
         localM3u8 = localM3u8.replaceAll(
-            keyUri,
-            keyUri.substring(
-                keyUri.lastIndexOf("/") + 1, keyUri.indexOf(".key") + 4));
+            matchfix,
+            matchfix.substring(
+                matchfix.lastIndexOf("/") + 1, matchfix.indexOf(".key") + 4));
       }
-      // 提取ts链接
-      if (e.indexOf("http") != -1 && e.indexOf(".ts") != -1) {
-        String tsItem = e
-            .substring(e.indexOf("http"), e.length)
-            .replaceAll("#EXT-X-ENDLIST", "")
-            .trim();
-        tsLists.add(tsItem);
-        // 替换ts为本地链接
+      if (matchfix.indexOf(".ts") != -1) {
         localM3u8 = localM3u8.replaceAll(
-            tsItem,
-            tsItem.substring(
-                tsItem.lastIndexOf("/") + 1, tsItem.indexOf(".ts") + 3));
+            matchfix,
+            matchfix.substring(
+                matchfix.lastIndexOf("/") + 1, matchfix.indexOf(".ts") + 3));
       }
-    });
-
+      tsLists.add(matchfix);
+    }
     return {"localM3u8": localM3u8, "tsLists": tsLists};
   }
 
@@ -264,7 +256,7 @@ class DownloadUtil {
       box.put("download_video_tasks", tasks);
       creating = false;
     } catch (e) {
-      CommonUtils.debugPrint(CommonUtils.txt('xzcjsb'));
+      CommonUtils.showText(CommonUtils.txt('xzcjsb'));
       creating = false;
     }
   }

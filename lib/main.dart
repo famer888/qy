@@ -59,7 +59,7 @@ void main() async {
         CommonUtils.gvMD5(
             '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}'),
     "bundleId": "com.pwa.qypj",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "oauth_type": "web",
     "language": 'zh',
     "via": 'pwa',
@@ -88,7 +88,7 @@ void main() async {
       AppGlobal.appinfo = {
         "oauth_id": CommonUtils.gvMD5(iosInfo.identifierForVendor),
         "bundleId": packageInfo.packageName,
-        "version": "2.2.0",
+        "version": "2.3.0",
         "oauth_type": "ios",
       };
     }
