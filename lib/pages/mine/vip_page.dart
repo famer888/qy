@@ -499,7 +499,6 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
         onTap: () {
           String path = CommonUtils.getRealHash('RechargeRecord/1');
           context.push(path);
-          // context.push(CommonUtils.getRealHash('RechargeRecord/1'));
         },
         child: Text(
           CommonUtils.txt('czjl'),

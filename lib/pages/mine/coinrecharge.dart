@@ -34,7 +34,7 @@ class _CoinRechargeState extends BaseWidgetState<CoinRecharge> with PayMixin {
         title: CommonUtils.txt('jbcz'),
         rightW: GestureDetector(
           onTap: () {
-            context.push(CommonUtils.getRealHash('RechargeRecord/1'));
+            context.push(CommonUtils.getRealHash('RechargeRecord/2'));
           },
           child: Text(
             CommonUtils.txt('czjl'),

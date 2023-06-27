@@ -279,7 +279,7 @@ class _MineAgentToCashPageState extends BaseWidgetState<MineAgentToCashPage> {
                                   ],
                                 ),
                                 SizedBox(height: ScreenUtil().setHeight(15)),
-                                Text(CommonUtils.txt("txye"),
+                                Text(CommonUtils.txt("txje"),
                                     style: GQStyle.white255_15_M),
                                 SizedBox(height: ScreenUtil().setWidth(10)),
                                 Container(
@@ -301,9 +301,9 @@ class _MineAgentToCashPageState extends BaseWidgetState<MineAgentToCashPage> {
                                               _sumResultMoney =
                                                   int.parse(value);
                                               _sumAllResultMoney =
-                                                  (int.parse(value) *
-                                                          (1 + _proxy_rate))
-                                                      .floor();
+                                                  (_sumResultMoney /
+                                                          (1 - _proxy_rate))
+                                                      .ceil();
                                             });
                                           }
                                         },
