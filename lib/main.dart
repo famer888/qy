@@ -81,7 +81,7 @@ void main() async {
         "bundleId": packageInfo.packageName,
         "version": packageInfo.version,
         "oauth_type": "android",
-        // "build_affcode": "GbMA",
+        // "build_affcode": "kvXM",
       };
     } else {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
