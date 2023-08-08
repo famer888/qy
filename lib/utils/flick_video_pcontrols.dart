@@ -483,29 +483,31 @@ class FlickVideoPcontrols extends StatelessWidget {
             ? Positioned(
                 top: ScreenUtil().setWidth(8),
                 left: ScreenUtil().setWidth(8),
-                child: Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.2),
-                          offset: Offset(0, 0),
-                          blurRadius: ScreenUtil().setWidth(16))
-                    ],
-                  ),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    child: LImage("nav_back_w_n"),
-                    onTap: () {
-                      if (showBack) {
-                        context.pop();
-                      } else {
-                        controlManager.toggleFullscreen();
-                      }
-                    },
-                  ),
-                ),
+                child: noback
+                    ? Container()
+                    : Container(
+                        width: 22,
+                        height: 22,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.2),
+                                offset: Offset(0, 0),
+                                blurRadius: ScreenUtil().setWidth(16))
+                          ],
+                        ),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          child: LImage("nav_back_w_n"),
+                          onTap: () {
+                            if (showBack) {
+                              context.pop();
+                            } else {
+                              controlManager.toggleFullscreen();
+                            }
+                          },
+                        ),
+                      ),
               )
             : Container()
       ],
