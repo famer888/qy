@@ -731,7 +731,6 @@ class _MineCreaterIssueState extends BaseWidgetState<MineCreaterIssue> {
     if (file != null) {
       bool flag = await CommonUtils.pngLimitSize(file);
       if (flag) return;
-      CommonUtils.debugPrint("${file.path}---${file.name}");
       uploadFileImg(file);
     }
   }

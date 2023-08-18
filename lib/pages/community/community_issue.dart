@@ -144,7 +144,6 @@ class _CommunityIssueState extends BaseWidgetState<CommunityIssue> {
     if (file != null) {
       bool flag = await CommonUtils.pngLimitSize(file);
       if (flag) return;
-      CommonUtils.debugPrint("${file.path}---${file.name}");
       uploadPNG(file);
     }
   }

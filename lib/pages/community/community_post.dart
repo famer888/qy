@@ -58,7 +58,6 @@ class _CommunityPostState extends State<CommunityPost> {
                 ),
           Column(
             children: widget.data.map((e) {
-              CommonUtils.debugPrint("${e["title"]}---${e["medias"]}");
               List medias = e["medias"] ?? [];
               List tmp = medias.length > 3 ? medias.sublist(0, 3) : medias;
               double w = 0;

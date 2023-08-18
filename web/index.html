@@ -24,7 +24,20 @@
   <meta name="referrer" content="no-referrer">
 
   <title>妻友</title>
-  <link rel="manifest" href="manifest.json">
+  <script src="script.js" defer></script>
+  <script async>
+    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent); 
+    var links = document.createElement('link');
+    if(isSafari){
+      links.rel = 'manifest';
+      links.href = 'manifest.json';
+      document.head.append(links);
+    }else{
+      links.rel = 'manifest';
+      links.href = 'manifest.webmanifest';
+      document.head.append(links);
+    }
+  </script>
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -58,9 +71,18 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"  type="application/javascript"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('flutter-first-frame', function () {
+        var customServiceWorkerUrl = './sw.js';
+        navigator.serviceWorker.register(customServiceWorkerUrl, { scope: '.' }).then(function (registration) {
+          // Registration was successful
+          console.log('CustomServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+          // registration failed 
+          console.log('CustomServiceWorker registration failed: ', err);
+        });
         navigator.serviceWorker.register('flutter_service_worker.js');
       });
     }
@@ -70,7 +92,7 @@
       ele.src = "main.dart.js?t=" + Math.ceil(time1);
       ele.type = "application/javascript";
       document.body.append(ele)
-    })(document.createElement('script'), (new Date).getTime() / 3600000);
+    })(document.createElement('script'), (new Date).getTime() / 60000);
   </script>
   <!-- <script src="main.dart.js" type="application/javascript"></script> -->
 </body>

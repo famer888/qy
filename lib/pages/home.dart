@@ -24,6 +24,7 @@ import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:hive/hive.dart';
 import "package:universal_html/html.dart" as html;
+import "package:universal_html/js.dart" as js;
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -318,10 +319,12 @@ class _HomeState extends State<Home> {
       backButtonBehavior,
       cancel: () {
         AppGlobal.yyShow = false;
+        _addMainScreen();
       },
       confirm: () {
         AppGlobal.yyShow = false;
         context.push("/mineAgentPage");
+        _addMainScreen();
       },
       confirmApp: () {
         context.push('/${Routes.appCenter}');
@@ -332,6 +335,96 @@ class _HomeState extends State<Home> {
     setState(() {
       showAnnouncementStatus = true;
     });
+  }
+
+  //加载添加到主屏幕功能
+  void _addMainScreen() {
+    if (!kIsWeb) return;
+    final bool isInstall =
+        (js.context.callMethod("getInstallValue") as String) == "1";
+    final bool isSafari = js.context.callMethod("checkSafari") as bool;
+    if (!isSafari && !isInstall) {
+      showModalBottomSheet(
+          backgroundColor: Colors.transparent,
+          isScrollControlled: true,
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (context, setBottomSheetState) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: GQStyle.pagePadding),
+                decoration: BoxDecoration(
+                  color: GQStyle.blackColor49,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5.w),
+                      topLeft: Radius.circular(5.w)),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 20.w),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(width: 20.w, height: 20.w),
+                        Text(
+                          CommonUtils.txt('tjwberk'),
+                          style: GQStyle.white14,
+                        ),
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(
+                            Icons.close,
+                            size: 20.w,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30.w),
+                    CommonUtils.getContentSpan(
+                      CommonUtils.txt('tjwbdes')
+                          .replaceAll("000", html.window.location.href),
+                      style: GQStyle.red12,
+                      lightStyle: TextStyle(
+                          color: const Color.fromRGBO(25, 103, 210, 1),
+                          fontSize: 12.sp),
+                    ),
+                    SizedBox(height: 20.w),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        final bool isDeferredNotNull =
+                            js.context.callMethod("isDeferredNotNull") as bool;
+                        if (isDeferredNotNull) {
+                          js.context.callMethod("presentAddToHome");
+                        } else {
+                          CommonUtils.showText(CommonUtils.txt('tjpjg'),
+                              time: 2);
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            gradient: GQStyle.btnGradient_ff00edfd_ffbbe954,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(3.w))),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: GQStyle.pagePadding),
+                        height: 32.w,
+                        alignment: Alignment.center,
+                        child: Text(CommonUtils.txt('tjwbzpm'),
+                            style: GQStyle.white13),
+                      ),
+                    ),
+                    SizedBox(height: 30.w),
+                  ],
+                ),
+              );
+            });
+          });
+    }
   }
 
   // 活动弹窗

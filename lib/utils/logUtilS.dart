@@ -8,7 +8,7 @@
  */
 // import 'package:flutter/cupertino.dart';
 
-class LogUtil {
+class LogUtilS {
   static var _separator = "=";
   static var _split =
       "$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator";

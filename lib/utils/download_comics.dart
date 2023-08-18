@@ -13,7 +13,7 @@ import 'package:qypj/utils/crypto.dart';
 import 'package:hive/hive.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/index.dart';
-import 'package:qypj/utils/logUtil.dart';
+import 'package:qypj/utils/logUtilS.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DownloadComics {

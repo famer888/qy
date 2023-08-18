@@ -31,7 +31,6 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
         file: widget.file,
         position: 'upload',
         progressCallback: (count, total) {
-          CommonUtils.debugPrint("---${count}--${total}");
           Future.delayed(Duration(milliseconds: 1000)).then((value) {
             var tmp = (count / total * 100).toInt();
             if (tmp % 1 == 0) {
@@ -47,7 +46,6 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
         file: widget.file,
         position: 'upload',
         progressCallback: (count, total) {
-          CommonUtils.debugPrint("---${count}--${total}");
           var tmp = (count / total * 100).toInt();
           if (tmp % 1 == 0) {
             progress = "${CommonUtils.txt('scz')} ${tmp}%";
