@@ -869,6 +869,7 @@ Future<Basic> communityPost({
       "content": content,
       "medias": medias,
       "coins": coins,
+      "is_public": is_public,
     });
     CommonUtils.debugPrint(res.data);
     Basic data = Basic.fromJson(res.data);
