@@ -1,11 +1,14 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:qypj/components/common/pullrefreshlist.dart';
 import 'package:qypj/components/page_status.dart';
 import 'package:qypj/components/yy_dialog.dart';
 import 'package:qypj/global.dart';
+import 'package:qypj/model/homedata.dart';
 import 'package:qypj/routers.dart';
+import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
@@ -63,6 +66,7 @@ class _CommunityPostReviewState extends State<CommunityPostReview> {
               context, _data["user"]["nickname"] ?? "", GQStyle.white23_12)
           .width;
     }
+    Member member = Provider.of<HomeConfig>(context, listen: true).member;
     return Container(
       child: Column(
         children: [
@@ -76,7 +80,9 @@ class _CommunityPostReviewState extends State<CommunityPostReview> {
                   height: ScreenUtil().setWidth(30),
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
-                    onTap: () {},
+                    onTap: () {
+                      context.push('/mineUserCenter/${_data["user"]["aff"]}');
+                    },
                     child: PlatformAwareNetworkImage(
                       url: _data["user"]["thumb"] ?? "",
                       borderRadius: BorderRadius.all(
@@ -109,6 +115,42 @@ class _CommunityPostReviewState extends State<CommunityPostReview> {
                                     size: 11.w,
                                     color: Color.fromRGBO(247, 208, 93, 1))
                                 : Container(),
+                            member.uuid == _data["user"]["uuid"]
+                                ? Container()
+                                : GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      if (member.username.isEmpty) {
+                                        CommonUtils.showText(
+                                            CommonUtils.txt("zcyhcz"));
+                                        return;
+                                      }
+                                      String uuid = _data["user"]["uuid"];
+                                      String nick = Uri.encodeComponent(
+                                          _data["user"]["nickname"]);
+                                      String url = Uri.encodeComponent(
+                                          _data["user"]["thumb"].isEmpty
+                                              ? " "
+                                              : _data["user"]["thumb"]);
+                                      context.push(
+                                          '/imtochatpage/$uuid/$nick/$url');
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 2.w),
+                                      alignment: Alignment.center,
+                                      height: 15.w,
+                                      width: 40.w,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Color.fromRGBO(
+                                                  96, 178, 220, 1),
+                                              width: 0.5.w),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(2.w))),
+                                      child: Text(CommonUtils.txt('sxta'),
+                                          style: GQStyle.blue80_09),
+                                    ),
+                                  )
                           ],
                         ),
                         SizedBox(height: ScreenUtil().setWidth(4)),

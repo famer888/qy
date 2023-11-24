@@ -13,11 +13,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:qypj/model/imchat_model.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:hive/hive.dart';
 import 'package:isolated_worker/worker_delegator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:qypj/utils/extensionlibrary.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:qypj/global.dart';
 import 'package:qypj/model/systemnotice.dart';
@@ -28,10 +30,74 @@ import 'package:qypj/utils/http.dart';
 import 'package:convert/convert.dart';
 import 'package:qypj/utils/logUtilS.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:vibration/vibration.dart';
 
 Map _cacheJSON = {}; //全局使用
 
 class CommonUtils {
+  //导航栏
+  static Widget createNav({Widget left, Widget right, Widget title}) {
+    return Column(
+      children: [
+        SizedBox(height: GQStyle.topHeight),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: GQStyle.pagePadding),
+          height: GQStyle.navbarHegiht,
+          width: ScreenUtil().screenWidth,
+          child: Stack(
+            children: [
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    left ?? SizedBox(width: 20.w, height: 20.w),
+                    right ?? SizedBox(width: 20.w, height: 20.w),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                child: Center(child: title),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  //关闭键盘
+  static bool unFocusNode(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+    if (currentFocus.focusedChild == null && kIsWeb) {
+      return true;
+    } else if (currentFocus.hasPrimaryFocus) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static showMsgNoti(ChatMessage chat) async {
+    if (!kIsWeb && await Vibration.hasVibrator() == true) {
+      Vibration.vibrate();
+    }
+    // return BotToast.showSimpleNotification(
+    //   title: CommonUtils.txt("tzzz"),
+    //   subTitle: CommonUtils.txt("nyxxx"),
+    //   titleStyle: GQStyle.black1434,
+    //   subTitleStyle: GQStyle.gray105_12,
+    //   backgroundColor: Colors.white,
+    //   onTap: () {
+    //     AppGlobal.appContext.push(
+    //         "/imtochatpage/${chat.touser?.uuid}/${chat.touser?.nickname ?? ""}/${chat.touser?.avatar?.isEmpty == true ? " " : (chat.touser?.avatar ?? "")}");
+    //   },
+    // );
+  }
+
   //特殊字符处理
   static Widget getContentSpan(
     String text, {
@@ -139,6 +205,7 @@ class CommonUtils {
         height: ScreenUtil().setWidth(110),
         width: ScreenUtil().setWidth(110),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             // LImage("ref_data_n",
@@ -668,7 +735,7 @@ class CommonUtils {
     List<String> unChecklines = box.get('lines_url') == null
         ? AppGlobal.apiLines
         : List<String>.from(box.get('lines_url'));
-    // List<String> unChecklines = ["https://dd22.yesebo.net"];
+    // List<String> unChecklines = ["https://7uapi.hyys.info/api.php"];
     List<Map> errorLines = [];
     // int errorCount = 0;
     Function checkGit;

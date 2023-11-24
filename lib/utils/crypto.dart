@@ -110,4 +110,30 @@ class PlatformAwareCrypto {
       return encrypted;
     }
   }
+
+  //IM加密专用
+  static Future<String> encryptReqParamsWithKey(
+      String word, String key, String iv) async {
+    Encrypter encrypter = Encrypter(AES(Key.fromUtf8(key), mode: AESMode.cbc));
+    Encrypted encrypted =
+        encrypter.encryptBytes(utf8.encode(word), iv: IV.fromUtf8(iv));
+    String data = utf8.decode(encrypted.base64.codeUnits);
+    return data;
+  }
+
+  //IM解密专用
+  static Future<String> decryptResDataWithKey(
+    dynamic data,
+    String key,
+    String iv,
+  ) async {
+    String data_str = data['data'] ?? "";
+    // if (data_str.length % 4 > 0) {
+    //   data_str += '=' * (4 - data_str.length % 4); // as suggested by Albert221
+    // }
+    Encrypter encrypter = Encrypter(AES(Key.fromUtf8(key), mode: AESMode.cbc));
+    Encrypted encrypted = Encrypted.fromBase64(data_str);
+    String decrypted = encrypter.decrypt(encrypted, iv: IV.fromUtf8(iv));
+    return decrypted;
+  }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:qypj/mixin/imchatmanager_io.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:qypj/global.dart';
 import 'package:qypj/utils/common.dart';
@@ -68,6 +69,8 @@ Dio _apiDio = new Dio(new BaseOptions(
         AppGlobal.appContext != null &&
         AppGlobal.apInit) {
       CommonUtils.showText(CommonUtils.txt('dlsx'));
+      //关闭IM
+      IMChatManagerIO.instance().activeClose();
       isJump = true;
       AppGlobal.apiToken = '';
       Box box = AppGlobal.appBox;

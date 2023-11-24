@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qypj/base/baseWidget.dart';
+import 'package:qypj/mixin/imchatmanager_io.dart';
+import 'package:qypj/model/imchat_model.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
@@ -39,7 +41,6 @@ class _WodeState extends BaseWidgetState<Wode> {
   String vipName = ''; // vip名称
   String vipStatusText = ''; // vip状态
   bool networkErr = false;
-  bool redShow = false;
 
   @override
   void didUpdateWidget(covariant Wode oldWidget) {
@@ -430,9 +431,15 @@ class _WodeState extends BaseWidgetState<Wode> {
     // TODO: implement onCreate
     EventBus().on('need-update-login-state', (args) {
       if (args == 'login') {
-        setState(() {});
+        if (mounted) setState(() {});
+        Member user = Provider.of<HomeConfig>(context, listen: false).member;
+        if (user?.username?.isNotEmpty == true) {
+          //开启IM
+          IMChatManagerIO.instance().openSocket();
+        }
       } else if (args == 'quit') {
-        getUserInfo(context);
+        //关闭IM
+        IMChatManagerIO.instance().activeClose();
       }
     });
   }
@@ -484,7 +491,7 @@ class _WodeState extends BaseWidgetState<Wode> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SystemNoticeIcon(imShow: redShow),
+                    // SystemNoticeIcon(imShow: redShow),
                     SizedBox(
                       width: ScreenUtil().setWidth(13),
                     ),

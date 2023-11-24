@@ -40,6 +40,7 @@ class AppGlobal {
   static bool showActivity = true;
   static Box appBox;
   static Box imageCacheBox;
+  static Box chats;
   static List helpList = [];
   static int isSetPassword = 0;
 

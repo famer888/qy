@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:qypj/model/appcenter.dart';
+import 'package:qypj/model/imchat_model.dart';
 
 HomeData homeDataFromJson(String str) => HomeData.fromJson(json.decode(str));
 
@@ -197,6 +198,9 @@ class Config {
     this.potato_group,
     this.sort_nav,
     this.forum_nav,
+    this.im_msg,
+    this.pay_ai,
+    this.wdai_str,
   });
 
   String day_price;
@@ -232,6 +236,9 @@ class Config {
   String potato_group;
   List<dynamic> sort_nav;
   List<dynamic> forum_nav;
+  String im_msg;
+  int pay_ai;
+  String wdai_str;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         day_price: json["day_price"] == null ? null : json["day_price"],
@@ -303,6 +310,9 @@ class Config {
             : List<dynamic>.from(
                 json["forum_nav"].map((x) => x),
               ),
+        im_msg: json['im_msg'] ?? '',
+        wdai_str: json['wdai_str'] ?? '',
+        pay_ai: json['pay_ai'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -349,6 +359,9 @@ class Config {
         "forum_nav": forum_nav == null
             ? []
             : List<dynamic>.from(forum_nav.map((x) => x)),
+        "im_msg": im_msg,
+        "wdai_str": wdai_str,
+        "pay_ai": pay_ai,
       };
 }
 
@@ -472,8 +485,10 @@ class Member {
     this.post_count,
     this.fans_count,
     this.vip_str,
+    this.chat,
   });
 
+  ImChatModel chat;
   int is_follow;
   int post_count;
   int fans_count;
@@ -636,6 +651,7 @@ class Member {
           json["is_set_password"] == null ? null : json["is_set_password"],
       level: json["level"] == null ? null : json["level"],
       vip_str: json["vip_str"] == null ? "" : json["vip_str"],
+      chat: json["chat"] == null ? null : ImChatModel.fromJson(json["chat"]),
       ads: json["ads"] == null ? null : Banner.fromJson(json["ads"]));
 
   Map<String, dynamic> toJson() => {
@@ -713,6 +729,7 @@ class Member {
         "level": level == null ? null : level,
         "ads": ads == null ? null : ads.toJson(),
         "vip_str": vip_str,
+        "chat": chat?.toJson(),
       };
 }
 

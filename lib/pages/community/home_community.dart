@@ -7,6 +7,7 @@ import 'package:qypj/components/common/pagetitlebar.dart';
 import 'package:qypj/components/common/pullrefreshlist.dart';
 import 'package:qypj/components/page_status.dart';
 import 'package:qypj/global.dart';
+import 'package:qypj/model/homedata.dart';
 import 'package:qypj/page/flj_slider_nav.dart';
 import 'package:qypj/page/yyq_diamond_nav.dart';
 import 'package:qypj/pages/community/community_new.dart';
@@ -39,7 +40,7 @@ class _HomeCommunityState extends State<HomeCommunity>
   List<dynamic> navs = [];
   List<Map> issues = [
     {"title": CommonUtils.txt("tp"), "png": "issue_png_n"},
-    {"title": CommonUtils.txt("sping"), "png": "issue_vdio_n"},
+    {"title": CommonUtils.txt("spingty"), "png": "issue_vdio_n"},
     {"title": CommonUtils.txt("twen"), "png": "issue_pngtxt_n"}
   ];
 
@@ -47,6 +48,10 @@ class _HomeCommunityState extends State<HomeCommunity>
     reqGetPostNav().then((value) {
       if (value.status == 1) {
         navs = List.from(value?.data ?? []);
+        Config config = Provider.of<HomeConfig>(context, listen: false).config;
+        if (config.wdai_str.isNotEmpty) {
+          navs.add({'id': 100, 'title': config.wdai_str});
+        }
         _isHud = false;
       } else {
         _netError = true;
@@ -191,9 +196,16 @@ class _HomeCommunityState extends State<HomeCommunity>
                     : YyqDiamondNav(
                         titles:
                             navs.map<String>((e) => e["title"] ?? "").toList(),
-                        pages: navs
-                            .map<Widget>((e) => CommunityChildPage(id: e["id"]))
-                            .toList(),
+                        pages: navs.map<Widget>((e) {
+                          if (e["id"] == 100) {
+                            return CommunityNew(
+                              id: e["id"],
+                              sort: e["type"],
+                            );
+                          } else {
+                            return CommunityChildPage(id: e["id"]);
+                          }
+                        }).toList(),
                         navColor: Colors.transparent,
                         type: YyqDiamondNavEnum.line,
                         defaultStyle: TextStyle(

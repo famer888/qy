@@ -18,6 +18,7 @@ import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/http.dart';
+import 'package:qypj/utils/index.dart';
 import 'package:qypj/utils/networkImage.dart';
 
 class SetupPage extends BaseWidget {
@@ -279,10 +280,15 @@ class _SetupPageState extends BaseWidgetState<SetupPage> {
         isLogin
             ? GestureDetector(
                 onTap: () {
+                  CommonUtils.startLoadGIF(tip: CommonUtils.txt('tuc'));
                   clearCached().then((_) {
                     AppGlobal.apiToken = '';
                     clearToken();
-                    context.pop('quit');
+                    getUserInfo(context).then((value) {
+                      BotToast.closeAllLoading();
+                      context.pop();
+                      EventBus().emit('need-update-login-state', 'quit');
+                    });
                   });
                 },
                 child: Container(

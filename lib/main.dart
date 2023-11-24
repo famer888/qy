@@ -25,6 +25,7 @@ void main() async {
   await Hive.initFlutter();
   AppGlobal.appBox = await Hive.openBox('qypjbox'); // 用于存储一些简单的键值对
   AppGlobal.imageCacheBox = await Hive.openBox('qypjbox_ImageCache'); //图片缓存
+  AppGlobal.chats = await Hive.openBox('qypjbox_Chats'); //IM记录
   //注册图片加载线程
   DefaultDelegate<dynamic, dynamic> fooDelegate =
       DefaultDelegate(callback: PlatformAwareCrypto.decryptImage);
@@ -59,7 +60,7 @@ void main() async {
         CommonUtils.gvMD5(
             '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}'),
     "bundleId": "com.pwa.qypj",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "oauth_type": "web",
     "language": 'zh',
     "via": 'pwa',
@@ -81,14 +82,14 @@ void main() async {
         "bundleId": packageInfo.packageName,
         "version": packageInfo.version,
         "oauth_type": "android",
-        // "build_affcode": "ZNyn",
+        // "build_affcode": "abcxU",
       };
     } else {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       AppGlobal.appinfo = {
         "oauth_id": CommonUtils.gvMD5(iosInfo.identifierForVendor),
         "bundleId": packageInfo.packageName,
-        "version": "2.3.0",
+        "version": "2.4.0",
         "oauth_type": "ios",
       };
     }

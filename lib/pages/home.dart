@@ -6,7 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qypj/mixin/imchatmanager_io.dart';
+import 'package:qypj/model/imchat_model.dart';
 import 'package:qypj/pages/community/home_community.dart';
+import 'package:qypj/pages/mine/message_im_center.dart';
 import 'package:qypj/pages/welfare/welfare_page.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
 import 'package:qypj/utils/util_eventbus_class.dart';
@@ -46,16 +49,22 @@ class _HomeState extends State<Home> {
       "newyear_icon": "qy_newyear_tab_home",
     },
     {
-      "title": CommonUtils.txt("sp"),
-      "activeIcon": "tab_dm_s",
-      "icon": "tab_dm_n",
-      "newyear_icon": "qy_newyear_tab_dm",
-    },
-    {
       "title": CommonUtils.txt("ym"),
       "activeIcon": "tab_shequ_s",
       "icon": "tab_shequ_n",
       "newyear_icon": "qy_newyear_tab_sq",
+    },
+    {
+      "title": CommonUtils.txt("xx2"),
+      "activeIcon": "tab_xx_s",
+      "icon": "tab_xx_n",
+      "newyear_icon": "qy_newyear_tab_sq",
+    },
+    {
+      "title": CommonUtils.txt("sp"),
+      "activeIcon": "tab_dm_s",
+      "icon": "tab_dm_n",
+      "newyear_icon": "qy_newyear_tab_dm",
     },
     {
       "title": CommonUtils.txt("wd"),
@@ -70,6 +79,7 @@ class _HomeState extends State<Home> {
   bool netError = false;
   var discrip;
   final GlobalKey<WelfarePageState> _wfKey = new GlobalKey<WelfarePageState>();
+  bool redShow = false;
 
   @override
   void initState() {
@@ -116,13 +126,39 @@ class _HomeState extends State<Home> {
 
     discrip = UtilEventbus().on<UtilEventbusClass>().listen((event) {
       if (event.arg["name"] == 'openwf') {
-        selectedKey = 1;
+        selectedKey = 3;
         setState(() {});
         Future.delayed(Duration(milliseconds: 100), () {
           _wfKey.currentState.changeIndex(event.arg["data"]["index"] ?? 0);
         });
       }
     });
+
+    IMChatManagerIO.instance().wodeCall = () {
+      dealRedShow();
+    };
+    dealRedShow();
+  }
+
+  void dealRedShow() {
+    List<ChatList> chats = IMChatManagerIO.instance().getChats();
+    if (chats.isEmpty) redShow = false;
+    for (var item in chats) {
+      if (item.count > 0) {
+        redShow = true;
+        break;
+      } else {
+        redShow = false;
+      }
+    }
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void didUpdateWidget(covariant Home oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    dealRedShow();
   }
 
   _initPlatformState() async {
@@ -230,6 +266,9 @@ class _HomeState extends State<Home> {
           getClipboardText();
           loading = false;
           setState(() {});
+          if (value?.username?.isNotEmpty == true) {
+            IMChatManagerIO.instance().openSocket(); //注册用户 开启IM
+          }
         });
       } else {
         netError = true;
@@ -554,10 +593,8 @@ class _HomeState extends State<Home> {
                                 child: Container(
                                   width: ScreenUtil().screenWidth,
                                   height: double.infinity,
-                                  child: WelfarePage(
-                                    key: _wfKey,
-                                    isShow: selectedKey == 1,
-                                  ),
+                                  child:
+                                      HomeCommunity(isShow: selectedKey == 1),
                                 )),
                             Positioned(
                                 left: (-selectedKey + 2) *
@@ -568,7 +605,7 @@ class _HomeState extends State<Home> {
                                   width: ScreenUtil().screenWidth,
                                   height: double.infinity,
                                   child:
-                                      HomeCommunity(isShow: selectedKey == 2),
+                                      MessageIMCenter(isShow: selectedKey == 2),
                                 )),
                             Positioned(
                                 left: (-selectedKey + 3) *
@@ -576,10 +613,23 @@ class _HomeState extends State<Home> {
                                 top: 0,
                                 bottom: 0,
                                 child: Container(
+                                  width: ScreenUtil().screenWidth,
+                                  height: double.infinity,
+                                  child: WelfarePage(
+                                    key: _wfKey,
+                                    isShow: selectedKey == 3,
+                                  ),
+                                )),
+                            Positioned(
+                                left: (-selectedKey + 4) *
+                                    ScreenUtil().screenWidth,
+                                top: 0,
+                                bottom: 0,
+                                child: Container(
                                     width: ScreenUtil().screenWidth,
                                     height: double.infinity,
                                     child: Wode(
-                                      isShow: selectedKey == 3,
+                                      isShow: selectedKey == 4,
                                     ))),
                           ],
                         )),
@@ -641,14 +691,37 @@ class _HomeState extends State<Home> {
                                       },
                                       child: Column(
                                         children: [
-                                          LImage(
-                                            selectedKey == key
-                                                ? navBarItem[key]['activeIcon']
-                                                : navBarItem[key]['icon'],
-                                            // navBarItem[key]['newyear_icon'],
-                                            width: ScreenUtil().setWidth(22.7),
-                                            height: ScreenUtil().setWidth(22.7),
-                                            fit: BoxFit.fitWidth,
+                                          Stack(
+                                            children: [
+                                              LImage(
+                                                selectedKey == key
+                                                    ? navBarItem[key]
+                                                        ['activeIcon']
+                                                    : navBarItem[key]['icon'],
+                                                // navBarItem[key]['newyear_icon'],
+                                                width:
+                                                    ScreenUtil().setWidth(22.5),
+                                                height:
+                                                    ScreenUtil().setWidth(22.5),
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                              Positioned(
+                                                right: 0,
+                                                top: 0,
+                                                child: redShow && key == 2
+                                                    ? Container(
+                                                        width: 6.w,
+                                                        height: 6.w,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.red,
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        3.w))),
+                                                      )
+                                                    : Container(),
+                                              )
+                                            ],
                                           ),
                                           // SizedBox(
                                           //     height:

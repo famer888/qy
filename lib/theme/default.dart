@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qypj/global.dart';
 import 'package:qypj/utils/common.dart';
 // import 'package:universal_html/html.dart';
 
@@ -26,6 +28,8 @@ class GQStyle {
   //         CommonUtils.platform() == 2;
   static bool ipx = CommonUtils.platform() == 2;
   static double bottom = ScreenUtil().setWidth(ipx ? 15 : 0);
+  static double get topHeight =>
+      kIsWeb ? 5.w : MediaQuery.of(AppGlobal.appContext).padding.top;
   // 底部导航高度
   static double get bottomnavbarHegiht =>
       ScreenUtil().setWidth(ipx ? (bottom + 55) : 55);
@@ -997,6 +1001,13 @@ class GQStyle {
       fontFamily: hanyi,
       color: Color.fromRGBO(96, 178, 220, 1),
       fontSize: ScreenUtil().setSp(11),
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static TextStyle blue80_09 = TextStyle(
+      fontFamily: hanyi,
+      color: Color.fromRGBO(96, 178, 220, 1),
+      fontSize: ScreenUtil().setSp(9),
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 

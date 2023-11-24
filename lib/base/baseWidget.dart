@@ -139,6 +139,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         width: ScreenUtil().setWidth(110),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // LImage("ref_data_n",
             //     width: ScreenUtil().setWidth(40),

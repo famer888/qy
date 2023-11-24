@@ -32,6 +32,18 @@ import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/http.dart';
 import 'package:flutter/foundation.dart';
 
+Future<Basic> reqImMsg({String txt}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/im_send', data: {'txt': txt});
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
 //获取帖子导航
 Future<Basic> reqGetPostNav() async {
   try {
@@ -755,6 +767,21 @@ Future<Basic> communityList(
   }
 }
 
+Future<Basic> communityAiList({int page, int limit = 15}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/community/ai_posts', data: {
+      "page": page,
+      "limit": limit,
+    });
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
 //社区排序列表
 Future<Basic> communitySortList(
     {int id, String sort, int page, int limit = 15}) async {
@@ -830,6 +857,9 @@ Future<Basic> communityPost({
   String content = "",
   String medias,
   String coins,
+  int money = 0,
+  int is_public = 0,
+  BuildContext context,
 }) async {
   try {
     Response<dynamic> res =
@@ -841,7 +871,11 @@ Future<Basic> communityPost({
       "coins": coins,
     });
     CommonUtils.debugPrint(res.data);
-    return Basic.fromJson(res.data);
+    Basic data = Basic.fromJson(res.data);
+    if (data.status == 1 && money > 0) {
+      HomeConfig.setUserMoney(context, money);
+    }
+    return data;
   } catch (e) {
     CommonUtils.debugPrint(e);
     return null;

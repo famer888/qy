@@ -11,8 +11,9 @@ import 'package:qypj/utils/networkImage.dart';
 import 'package:qypj/utils/util_eventbus_class.dart';
 
 class CommunitySeltagPage extends BaseWidget {
-  CommunitySeltagPage({Key key, this.id}) : super(key: key);
+  CommunitySeltagPage({Key key, this.id, this.type}) : super(key: key);
   int id;
+  int type;
 
   @override
   State<StatefulWidget> cState() {
@@ -45,6 +46,7 @@ class _CommunitySeltagPageState extends BaseWidgetState<CommunitySeltagPage> {
         noMore = true;
       }
       isHud = false;
+      if (widget.type == 1) tops.removeWhere((el) => el["is_ai"] == 1);
       setState(() {});
     });
   }

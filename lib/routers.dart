@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qypj/pages/community/community_seltag_page.dart';
 import 'package:qypj/pages/mine/collect_page.dart';
+import 'package:qypj/pages/mine/imtochat_page.dart';
 import 'package:qypj/pages/mine/mine_post_page.dart';
 import 'package:qypj/pages/mine/original_enter.dart';
 import 'package:qypj/pages/welfare/welfare_task_alone_page.dart';
@@ -212,17 +213,20 @@ class Routes {
   static String minencomedetailed = 'minencomedetailed'; //收益明细
 
   static String welfaretaskpage = 'welfaretaskpage'; //福利任务
-  static String communityseltagpage = 'communityseltagpage/:id'; //选择帖子板块
+  static String communityseltagpage = 'communityseltagpage/:id/:type'; //选择帖子板块
   static String minepostpage = 'minepostpage'; //我的帖子
   static String originalenter = 'originalenter'; //申请入驻
   static String picview = 'picview'; //预览图片
+  static String imtochatpage = 'imtochatpage/:touid/:nick/:thumb'; //私信
 
   static List<GoRoute> getDetailRoutes() {
     return [
       GoRoute(
         path: communityseltagpage,
-        builder: (context, state) =>
-            CommunitySeltagPage(id: int.parse(state.params['id'] ?? "0")),
+        builder: (context, state) => CommunitySeltagPage(
+          id: int.parse(state.params['id'] ?? "0"),
+          type: int.parse(state.params['type'] ?? "0"),
+        ),
       ),
       GoRoute(
         path: picview,
@@ -281,7 +285,9 @@ class Routes {
                 GoRoute(
                   path: communityseltagpage,
                   builder: (context, state) => CommunitySeltagPage(
-                      id: int.parse(state.params['id'] ?? "0")),
+                    id: int.parse(state.params['id'] ?? "0"),
+                    type: int.parse(state.params['type'] ?? "0"),
+                  ),
                 ),
               ],
             )
@@ -548,6 +554,16 @@ class Routes {
         path: mineAgentPage,
         builder: (context, state) {
           return MineAgentPage();
+        },
+      ),
+      GoRoute(
+        path: imtochatpage,
+        builder: (context, state) {
+          return IMToChatPage(
+            touid: state.params["touid"] ?? "0",
+            nick: state.params["nick"] ?? "",
+            thumb: state.params["thumb"] ?? "",
+          );
         },
       ),
       GoRoute(
@@ -958,6 +974,13 @@ class Routes {
             builder: (context, state) => CustomerService(),
           ),
         ],
+      ),
+      GoRoute(
+        path: noticemessage,
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>;
+          return NoticeMessage(args: args);
+        },
       ),
     ];
     rootRoutes.addAll(getDetailRoutes());

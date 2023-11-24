@@ -241,7 +241,9 @@ class _VideoCommentPageState extends State<VideoCommentPage> {
                 height: ScreenUtil().setWidth(30),
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: () {},
+                  onTap: () {
+                    context.push('/mineUserCenter/${data["member"]["aff"]}');
+                  },
                   child: PlatformAwareNetworkImage(
                     url: data["member"]["thumb"] ?? "",
                     borderRadius: BorderRadius.all(

@@ -58,16 +58,16 @@ class _MineUserCenterState extends BaseWidgetState<MineUserCenter> {
     setAppTitle(navColor: Colors.transparent);
     _aff = widget.aff;
     _getData();
-    EventBus().on('need-update-login-state', (args) {
-      //退出登录需要更新当前用户信息并重新拉取数据
-      if (args == 'quit') {
-        isHud = true;
-        getUserInfo(context).then((res) {
-          _aff = res.aff.toString();
-          _getData();
-        });
-      }
-    });
+    // EventBus().on('need-update-login-state', (args) {
+    //   //退出登录需要更新当前用户信息并重新拉取数据
+    //   if (args == 'quit') {
+    //     isHud = true;
+    //     getUserInfo(context).then((res) {
+    //       _aff = res.aff.toString();
+    //       _getData();
+    //     });
+    //   }
+    // });
   }
 
   @override
@@ -152,7 +152,41 @@ class _MineUserCenterState extends BaseWidgetState<MineUserCenter> {
                                     color: Color.fromRGBO(247, 208, 93, 1)),
                               ],
                             )
-                          : Container()
+                          : Container(),
+                      member.uuid == memberInfo.uuid
+                          ? Container()
+                          : GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                if (member.username.isEmpty) {
+                                  CommonUtils.showText(
+                                      CommonUtils.txt("zcyhcz"));
+                                  return;
+                                }
+                                String uuid = memberInfo["uuid"];
+                                String nick =
+                                    Uri.encodeComponent(memberInfo["nickname"]);
+                                String url = Uri.encodeComponent(
+                                    memberInfo["thumb"].isEmpty
+                                        ? " "
+                                        : memberInfo["thumb"]);
+                                context.push('/imtochatpage/$uuid/$nick/$url');
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10.w),
+                                alignment: Alignment.center,
+                                height: 26.w,
+                                width: 80.w,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Color.fromRGBO(96, 178, 220, 1),
+                                        width: 0.5.w),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(2.w))),
+                                child: Text(CommonUtils.txt('sxta'),
+                                    style: GQStyle.blue80_11),
+                              ),
+                            ),
                     ],
                   ),
                 ),

@@ -91,12 +91,12 @@ class _CommunityPostState extends State<CommunityPost> {
                           children: [
                             SizedBox(height: GQStyle.pagePadding),
                             SizedBox(
-                              height: ScreenUtil().setWidth(50),
+                              height: ScreenUtil().setWidth(40),
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: ScreenUtil().setWidth(50),
-                                    height: ScreenUtil().setWidth(50),
+                                    width: ScreenUtil().setWidth(40),
+                                    height: ScreenUtil().setWidth(40),
                                     child: GestureDetector(
                                       behavior: HitTestBehavior.translucent,
                                       onTap: () {
@@ -108,7 +108,7 @@ class _CommunityPostState extends State<CommunityPost> {
                                         url: e["user"]["thumb"] ?? "",
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(
-                                                ScreenUtil().setWidth(25))),
+                                                ScreenUtil().setWidth(20))),
                                       ),
                                     ),
                                   ),
@@ -124,7 +124,7 @@ class _CommunityPostState extends State<CommunityPost> {
                                           children: [
                                             Text(
                                               e["user"]["nickname"] ?? "",
-                                              style: GQStyle.white255_15_M,
+                                              style: GQStyle.white255_14_M,
                                             ),
                                             SizedBox(width: 2.w),
                                             e["user"]['agent'] == 1

@@ -7,6 +7,7 @@ import 'package:qypj/components/yy_dialog.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:qypj/utils/index.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:qypj/components/input/yy_input.dart';
 import 'package:qypj/components/page_status.dart';
@@ -62,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                   '回家地址：${res.share.affUrlCopy.url} 帐号：${username.text} 密码：${userPassword.text}'));
           CommonUtils.showText(CommonUtils.txt('zccgdl'));
           context.pop();
+          EventBus().emit('need-update-login-state', 'login');
         });
       },
       content: (setDialogState) {
@@ -149,6 +151,7 @@ class _LoginPageState extends State<LoginPage> {
             setToken(res.data);
             getUserInfo(context).then((res) {
               context.pop();
+              EventBus().emit('need-update-login-state', 'login');
             });
           } else {
             CommonUtils.showText(res.msg);
