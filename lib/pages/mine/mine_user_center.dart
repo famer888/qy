@@ -153,7 +153,7 @@ class _MineUserCenterState extends BaseWidgetState<MineUserCenter> {
                               ],
                             )
                           : Container(),
-                      member.uuid == memberInfo.uuid
+                      member.uuid == memberInfo['uuid']
                           ? Container()
                           : GestureDetector(
                               behavior: HitTestBehavior.translucent,
