@@ -12,8 +12,8 @@ import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/crypto.dart';
 import 'package:provider/provider.dart';
-// import 'package:web_socket_channel/html.dart'; //运行web需要引入 否则注释掉
-import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/html.dart'; //运行web需要引入 否则注释掉
+// import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class IMChatManagerIO {
@@ -47,9 +47,9 @@ class IMChatManagerIO {
 
     if (kIsWeb) {
       //运行web需要引入 否则注释掉
-      // _channel = HtmlWebSocketChannel.connect(user?.chat?.line ?? "");
+      _channel = HtmlWebSocketChannel.connect(user?.chat?.line ?? "");
     } else {
-      _channel = IOWebSocketChannel.connect(user?.chat?.line ?? "");
+      // _channel = IOWebSocketChannel.connect(user?.chat?.line ?? "");
     }
     CommonUtils.debugPrint('WebSocket连接成功: ${user?.chat?.line}');
     //连接成功，返回WebSocket实例
