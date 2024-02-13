@@ -42,13 +42,31 @@ class _WodeState extends BaseWidgetState<Wode> {
   String vipStatusText = ''; // vip状态
   bool networkErr = false;
 
+  bool redShow = false;
+
   @override
   void didUpdateWidget(covariant Wode oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     if (widget.isShow && isHud) {
       initInfo();
-    } else {}
+    } else {
+      dealRedShow();
+    }
+  }
+
+  void dealRedShow() {
+    List<ChatList> chats = IMChatManagerIO.instance().getChats();
+    if (chats.isEmpty) redShow = false;
+    for (var item in chats) {
+      if (item.count > 0) {
+        redShow = true;
+        break;
+      } else {
+        redShow = false;
+      }
+    }
+    if (mounted) setState(() {});
   }
 
   void initInfo() async {
@@ -442,6 +460,10 @@ class _WodeState extends BaseWidgetState<Wode> {
         IMChatManagerIO.instance().activeClose();
       }
     });
+    IMChatManagerIO.instance().wodeCall = () {
+      dealRedShow();
+    };
+    dealRedShow();
   }
 
   @override
@@ -491,7 +513,7 @@ class _WodeState extends BaseWidgetState<Wode> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // SystemNoticeIcon(imShow: redShow),
+                    SystemNoticeIcon(imShow: redShow),
                     SizedBox(
                       width: ScreenUtil().setWidth(13),
                     ),

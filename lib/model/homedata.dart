@@ -181,8 +181,11 @@ class Config {
     this.video_encrypt_referer,
     this.video_encrypt_m3u8,
     this.nav_id,
+    this.aw_id,
     this.dm_navid,
     this.mh_navid,
+    this.vip_name_str,
+    this.vip_level_str,
     this.github_url,
     this.lines_url,
     this.tips_share_text,
@@ -201,6 +204,12 @@ class Config {
     this.im_msg,
     this.pay_ai,
     this.wdai_str,
+    this.seed_nav,
+    this.seed_mask,
+    this.seed_vip,
+    this.seed_tip,
+    this.vip_level_awq_str,
+    this.vip_name_awq_str,
   });
 
   String day_price;
@@ -224,6 +233,7 @@ class Config {
   String video_encrypt_referer;
   String video_encrypt_m3u8;
   int nav_id = 7;
+  int aw_id = 0;
   int dm_navid = 0;
   int mh_navid = 0;
   String github_url;
@@ -239,6 +249,14 @@ class Config {
   String im_msg;
   int pay_ai;
   String wdai_str;
+  List<String> vip_level_str;
+  String vip_name_str;
+  List<dynamic> seed_nav;
+  int seed_mask;
+  List<String> seed_vip;
+  String seed_tip;
+  List<String> vip_level_awq_str;
+  String vip_name_awq_str;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         day_price: json["day_price"] == null ? null : json["day_price"],
@@ -282,6 +300,7 @@ class Config {
         nav_id: json["nav_id"],
         dm_navid: json["dm_navid"],
         mh_navid: json["mh_navid"],
+        aw_id: json["aw_id"] ?? 0,
         short_site: json["short_site"] == null ? null : json["short_site"],
         github_url: json["github_url"] == null ? null : json["github_url"],
         lines_url: json["lines_url"] == null
@@ -313,6 +332,25 @@ class Config {
         im_msg: json['im_msg'] ?? '',
         wdai_str: json['wdai_str'] ?? '',
         pay_ai: json['pay_ai'] ?? 0,
+        vip_level_str: json["vip_level_str"] == null
+            ? []
+            : List<String>.from(json["vip_level_str"].map((x) => x.toString())),
+        vip_name_str: json['vip_name_str'] ?? '',
+        seed_nav: json["seed_nav"] == null
+            ? []
+            : List<dynamic>.from(
+                json["seed_nav"].map((x) => x),
+              ),
+        seed_vip: json["seed_vip"] == null
+            ? []
+            : List<String>.from(json["seed_vip"].map((x) => x.toString())),
+        seed_tip: json['seed_tip'] ?? '',
+        seed_mask: json["seed_mask"] ?? 0,
+        vip_level_awq_str: json["vip_level_awq_str"] == null
+            ? []
+            : List<String>.from(
+                json["vip_level_awq_str"].map((x) => x.toString())),
+        vip_name_awq_str: json['vip_name_awq_str'] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -341,6 +379,7 @@ class Config {
         "nav_id": nav_id,
         "dm_navid": dm_navid,
         "mh_navid": mh_navid,
+        "aw_id": aw_id,
         "short_site": short_site,
         "github_url": github_url,
         "tips_share_text": tips_share_text,
@@ -362,6 +401,15 @@ class Config {
         "im_msg": im_msg,
         "wdai_str": wdai_str,
         "pay_ai": pay_ai,
+        "vip_level_str": vip_level_str,
+        "vip_name_str": vip_name_str,
+        "seed_mask": seed_mask,
+        "seed_tip": seed_tip,
+        "seed_nav":
+            seed_nav == null ? [] : List<dynamic>.from(seed_nav.map((x) => x)),
+        "seed_vip": seed_vip,
+        "vip_level_awq_str": vip_level_awq_str,
+        "vip_name_awq_str": vip_name_awq_str,
       };
 }
 

@@ -133,13 +133,13 @@ class _HomeCommunityState extends State<HomeCommunity>
                                 context.pop();
                                 if (e["png"] == "issue_png_n") {
                                   //图片
-                                  context.push("/communityissue/0");
+                                  context.push("/communityissue/0/0");
                                 } else if (e["png"] == "issue_vdio_n") {
                                   //视频
-                                  context.push("/communityissue/1");
+                                  context.push("/communityissue/1/0");
                                 } else {
                                   //图文
-                                  context.push("/communityissue/2");
+                                  context.push("/communityissue/2/0");
                                 }
                               },
                               child: Column(

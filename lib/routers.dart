@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:qypj/pages/community/community_post_bit_detail.dart';
 import 'package:qypj/pages/community/community_seltag_page.dart';
 import 'package:qypj/pages/mine/collect_page.dart';
 import 'package:qypj/pages/mine/imtochat_page.dart';
@@ -196,7 +197,7 @@ class Routes {
 
   static String servicetimetochat = 'servicetimetochat'; //IM
 
-  static String communityissue = 'communityissue/:type'; //社区发布
+  static String communityissue = 'communityissue/:type/:circle'; //社区发布
   static String communitytagdetail = 'communitytagdetail/:topic_id'; //话题详情
   static String communitytagsall = 'communitytagsall/:type'; //全部标签
   static String communitypostdetail = 'communitypostdetail/:id'; //帖子详情
@@ -218,6 +219,8 @@ class Routes {
   static String originalenter = 'originalenter'; //申请入驻
   static String picview = 'picview'; //预览图片
   static String imtochatpage = 'imtochatpage/:touid/:nick/:thumb'; //私信
+
+  static String communitypostbitdetail = 'communitypostbitdetail/:id'; //种子帖子详情
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -712,6 +715,17 @@ class Routes {
   static GoRouter init() {
     List<GoRoute> rootRoutes = [
       GoRoute(
+        path: communitypostbitdetail,
+        builder: (context, state) {
+          return CommunityPostBitDetail(
+            id: state.params["id"] == null
+                ? "0"
+                : state.params["id"].toString(),
+          );
+        },
+        routes: getDetailRoutes(),
+      ),
+      GoRoute(
           path: minepostpage,
           builder: (context, state) => MinePostPage(),
           routes: getDetailRoutes()),
@@ -768,6 +782,9 @@ class Routes {
             type: state.params["type"] == null
                 ? 0
                 : int.parse(state.params["type"].toString()),
+            circle: state.params["circle"] == null
+                ? 0
+                : int.parse(state.params["circle"].toString()),
           );
         },
         routes: getDetailRoutes(),

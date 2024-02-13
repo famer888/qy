@@ -24,8 +24,9 @@ import 'package:qypj/utils/util_eventbus_class.dart';
 import 'package:image/image.dart' as imgLib;
 
 class CommunityIssue extends BaseWidget {
-  CommunityIssue({Key key, this.type}) : super(key: key);
+  CommunityIssue({Key key, this.type, this.circle}) : super(key: key);
   final int type; //0发布图片 1发布视频 2发布图文
+  final int circle; //0不是 1是
 
   @override
   State<StatefulWidget> cState() {

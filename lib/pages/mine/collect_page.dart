@@ -5,6 +5,7 @@ import 'package:qypj/components/common/pullrefreshlist.dart';
 import 'package:qypj/components/page_status.dart';
 import 'package:qypj/page/gen_custom_nav.dart';
 import 'package:qypj/page/yyq_diamond_nav.dart';
+import 'package:qypj/pages/community/community_bit_post.dart';
 import 'package:qypj/pages/community/community_post.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
@@ -27,10 +28,7 @@ class _CollectPageState extends State<CollectPage> {
   List tabList = [
     {'id': 1, 'name': CommonUtils.txt('sping')},
     {'id': 14, 'name': CommonUtils.txt('tiezt')},
-    // {'id': 2, 'name': CommonUtils.txt('mh')},
-    // {'id': 3, 'name': CommonUtils.txt('xs')},
-    // {'id': 6, 'name': CommonUtils.txt('mt')},
-    // {'id': 7, 'name': CommonUtils.txt('ym')},
+    {'id': 15, 'name': CommonUtils.txt('zhoz')},
   ];
 
   @override
@@ -212,6 +210,26 @@ class _CollectListState extends State<CollectList> {
     );
   }
 
+  Widget _postBitList() {
+    return PullRefreshList(
+      isAll: noMore,
+      onRefresh: () {
+        page = 1;
+        last_ix = "";
+        _getData();
+      },
+      onLoading: () {
+        page++;
+        _getData();
+      },
+      child: ListView.builder(
+          itemCount: 1, //标签+帖子
+          itemBuilder: (context, index) {
+            return CommunityBitPost(data: dataList, showHead: false);
+          }),
+    );
+  }
+
   getListWidget() {
     switch (widget.type) {
       case 1:
@@ -219,6 +237,8 @@ class _CollectListState extends State<CollectList> {
         break;
       case 14:
         return _postList();
+      case 15:
+        return _postBitList();
         break;
     }
   }

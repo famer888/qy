@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qypj/components/common/pullrefreshlist.dart';
 import 'package:qypj/components/nakedchat_page.dart';
 import 'package:qypj/components/page_status.dart';
+import 'package:qypj/pages/community/community_bit_post.dart';
 import 'package:qypj/pages/community/community_post.dart';
 import 'package:qypj/theme/default.dart';
 import 'package:qypj/utils/api.dart';
@@ -55,8 +56,8 @@ class _SearchListState extends State<SearchList> {
       case 5:
         res = await searchPhoto(page: page, limit: limit, word: widget.value);
         break;
-      case 6:
-        res = await searchSisters(page: page, limit: limit, word: widget.value);
+      case 8:
+        res = await searchBit(page: page, limit: limit, word: widget.value);
         break;
       case 7:
         res =
@@ -185,6 +186,25 @@ class _SearchListState extends State<SearchList> {
             ),
           );
         });
+  }
+
+  _bitList() {
+    return PullRefreshList(
+      isAll: isAll,
+      onRefresh: () {
+        page = 1;
+        getSearchList();
+      },
+      onLoading: () {
+        page++;
+        getSearchList();
+      },
+      child: ListView.builder(
+          itemCount: 1, //标签+帖子
+          itemBuilder: (context, index) {
+            return CommunityBitPost(data: searchData, showHead: false);
+          }),
+    );
   }
 
   _videoList() {
@@ -562,8 +582,8 @@ class _SearchListState extends State<SearchList> {
       case 5:
         return _meiPNGList();
         break;
-      case 6:
-        return _yueMeiList();
+      case 8:
+        return _bitList();
         break;
       case 7:
         return _communityList();

@@ -37,11 +37,9 @@ class _SearchResultPageState extends BaseWidgetState<SearchResultPage> {
   int selectIndex = 0;
 
   List tabList = [
-    // {'id': 0, 'name': CommonUtils.txt('ssmj')},
     {'id': 1, 'name': CommonUtils.txt('shp')},
-    // {'id': 3, 'name': CommonUtils.txt('mh')},
-    // {'id': 5, 'name': CommonUtils.txt('mt')},
     {'id': 7, 'name': CommonUtils.txt('tiezt')},
+    {'id': 8, 'name': CommonUtils.txt('zhoz')},
   ];
 
   @override

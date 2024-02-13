@@ -1,0 +1,89 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qypj/components/common/pullrefreshlist.dart';
+import 'package:qypj/components/page_status.dart';
+import 'package:qypj/pages/community/community_bit_post.dart';
+import 'package:qypj/pages/community/community_post.dart';
+import 'package:qypj/pages/community/community_tags.dart';
+import 'package:qypj/theme/default.dart';
+import 'package:qypj/utils/api.dart';
+import 'package:qypj/utils/common.dart';
+
+class CommunityBitNew extends StatefulWidget {
+  CommunityBitNew({Key key, this.id = 0, this.sort = "new", this.call})
+      : super(key: key);
+  final int id;
+  final String sort;
+  final Function(dynamic) call;
+
+  @override
+  State<CommunityBitNew> createState() => _CommunityBitNewState();
+}
+
+class _CommunityBitNewState extends State<CommunityBitNew> {
+  int page = 1;
+  bool noMore = false;
+  bool networkErr = false;
+  bool isHud = true;
+  List<dynamic> data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  _getData() {
+    bitSortList(id: widget.id, sort: widget.sort, page: page).then((res) {
+      if (res.data == null) {
+        networkErr = true;
+        setState(() {});
+        return;
+      }
+      List st = List.from(res.data["posts"] ?? []);
+      if (page == 1) {
+        noMore = false;
+        data = st;
+        if (widget.call != null) widget.call(res.data);
+      } else if (st.length > 0) {
+        data.addAll(st);
+      } else {
+        noMore = true;
+      }
+      isHud = false;
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return networkErr
+        ? PageStatus.noNetWork(onTap: () {
+            networkErr = false;
+            _getData();
+          })
+        : isHud
+            ? PageStatus.loading(mounted)
+            : data.isEmpty
+                ? PageStatus.noData()
+                : PullRefreshList(
+                    onRefresh: () {
+                      page = 1;
+                      _getData();
+                    },
+                    onLoading: () {
+                      page++;
+                      _getData();
+                    },
+                    isAll: noMore,
+                    child: ListView.builder(
+                        itemCount: 1, //标签+帖子
+                        itemBuilder: (context, index) {
+                          // if (topics.length > 0 && index == 0) {
+                          //   return CommunityTags(data: topics);
+                          // }
+                          return CommunityBitPost(data: data, showHead: false);
+                        }),
+                  );
+  }
+}

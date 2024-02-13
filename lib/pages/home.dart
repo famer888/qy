@@ -6,8 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qypj/components/index_jq_page.dart';
 import 'package:qypj/mixin/imchatmanager_io.dart';
 import 'package:qypj/model/imchat_model.dart';
+import 'package:qypj/pages/community/home_bit_community.dart';
+import 'package:qypj/pages/community/home_circle_community.dart';
 import 'package:qypj/pages/community/home_community.dart';
 import 'package:qypj/pages/mine/message_im_center.dart';
 import 'package:qypj/pages/welfare/welfare_page.dart';
@@ -49,22 +52,28 @@ class _HomeState extends State<Home> {
       "newyear_icon": "qy_newyear_tab_home",
     },
     {
+      "title": CommonUtils.txt("jq"),
+      "activeIcon": "tab_area_s",
+      "icon": "tab_area_n",
+      "newyear_icon": "qy_newyear_tab_home",
+    },
+    {
       "title": CommonUtils.txt("ym"),
       "activeIcon": "tab_shequ_s",
       "icon": "tab_shequ_n",
       "newyear_icon": "qy_newyear_tab_sq",
     },
     {
-      "title": CommonUtils.txt("xx2"),
-      "activeIcon": "tab_xx_s",
-      "icon": "tab_xx_n",
+      "title": CommonUtils.txt("qz"),
+      "activeIcon": "tab_circle_s",
+      "icon": "tab_circle_n",
       "newyear_icon": "qy_newyear_tab_sq",
     },
     {
-      "title": CommonUtils.txt("sp"),
-      "activeIcon": "tab_dm_s",
-      "icon": "tab_dm_n",
-      "newyear_icon": "qy_newyear_tab_dm",
+      "title": CommonUtils.txt("xz"),
+      "activeIcon": "tab_download_s",
+      "icon": "tab_download_n",
+      "newyear_icon": "qy_newyear_tab_sq",
     },
     {
       "title": CommonUtils.txt("wd"),
@@ -593,8 +602,7 @@ class _HomeState extends State<Home> {
                                 child: Container(
                                   width: ScreenUtil().screenWidth,
                                   height: double.infinity,
-                                  child:
-                                      HomeCommunity(isShow: selectedKey == 1),
+                                  child: IndexJQPage(isShow: selectedKey == 1),
                                 )),
                             Positioned(
                                 left: (-selectedKey + 2) *
@@ -605,7 +613,7 @@ class _HomeState extends State<Home> {
                                   width: ScreenUtil().screenWidth,
                                   height: double.infinity,
                                   child:
-                                      MessageIMCenter(isShow: selectedKey == 2),
+                                      HomeCommunity(isShow: selectedKey == 2),
                                 )),
                             Positioned(
                                 left: (-selectedKey + 3) *
@@ -615,10 +623,8 @@ class _HomeState extends State<Home> {
                                 child: Container(
                                   width: ScreenUtil().screenWidth,
                                   height: double.infinity,
-                                  child: WelfarePage(
-                                    key: _wfKey,
-                                    isShow: selectedKey == 3,
-                                  ),
+                                  child: HomeCircleCommunity(
+                                      isShow: selectedKey == 3),
                                 )),
                             Positioned(
                                 left: (-selectedKey + 4) *
@@ -626,10 +632,21 @@ class _HomeState extends State<Home> {
                                 top: 0,
                                 bottom: 0,
                                 child: Container(
+                                  width: ScreenUtil().screenWidth,
+                                  height: double.infinity,
+                                  child: HomeBitCommunity(
+                                      isShow: selectedKey == 4),
+                                )),
+                            Positioned(
+                                left: (-selectedKey + 5) *
+                                    ScreenUtil().screenWidth,
+                                top: 0,
+                                bottom: 0,
+                                child: Container(
                                     width: ScreenUtil().screenWidth,
                                     height: double.infinity,
                                     child: Wode(
-                                      isShow: selectedKey == 4,
+                                      isShow: selectedKey == 5,
                                     ))),
                           ],
                         )),

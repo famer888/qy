@@ -32,6 +32,157 @@ import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/http.dart';
 import 'package:flutter/foundation.dart';
 
+//种子搜索
+Future searchBit({int page, int limit, String word}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/seed/search',
+        data: {'page': page, 'limit': limit, 'word': word});
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+//种子排序列表
+Future<Basic> bitSortList(
+    {int id, String sort, int page, int limit = 15}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/seed/post', data: {
+      "topic_id": id,
+      "sort": sort,
+      "page": page,
+      "limit": limit,
+    });
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
+//评论详情列表
+Future<Basic> bitPostCommentsSecond(
+    {String comment_id, int page, int limit = 15}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/seed/comments', data: {
+      "comment_id": comment_id,
+      "page": page,
+      "limit": limit,
+    });
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
+//发布评论
+Future<Basic> bitPostComment(
+    {String post_id, String comment_id, String content}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/seed/comment',
+        data: {
+          "post_id": post_id,
+          "comment_id": comment_id,
+          "content": content
+        });
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
+//购买视频
+Future<Basic> buyBit({int id, int coins, BuildContext context}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/seed/buy', data: {'id': id});
+    CommonUtils.debugPrint(res);
+    Basic data = Basic.fromJson(res.data);
+    if (data.status != 0) {
+      HomeConfig.setUserMoney(context, coins);
+    }
+    return data;
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
+//种子帖子收藏/取消收藏
+Future<Basic> bitTopicFavorite({String id}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/seed/favorite', data: {"id": id});
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
+//种子帖子或评论点赞/取消点赞
+Future<Basic> bitTopicLike({String type = "post", String id}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/seed/like',
+        data: {"type": type, "id": id});
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
+//一级评论列表
+Future<Basic> bitPostComments({String id, int page, int limit = 15}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/seed/post_comments', data: {
+      "id": id,
+      "page": page,
+      "limit": limit,
+    });
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
+//种子帖子详情
+Future<Basic> bitTopicDetail({String id}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/seed/detail', data: {"id": id});
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
+//获取种子导航
+Future<Basic> reqGetPostBit() async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/seed/nav');
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
 Future<Basic> reqImMsg({String txt}) async {
   try {
     Response<dynamic> res =
@@ -45,9 +196,10 @@ Future<Basic> reqImMsg({String txt}) async {
 }
 
 //获取帖子导航
-Future<Basic> reqGetPostNav() async {
+Future<Basic> reqGetPostNav({String type = ""}) async {
   try {
-    Response<dynamic> res = await PlatformAwareHttp.post('/api/community/nav');
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/community/nav',
+        data: {"type": type});
     CommonUtils.debugPrint(res.data);
     return Basic.fromJson(res.data);
   } catch (e) {

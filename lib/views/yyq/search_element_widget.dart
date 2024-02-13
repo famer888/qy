@@ -54,9 +54,10 @@ class SearchElementWidget extends StatelessWidget {
           SizedBox(
             width: ScreenUtil().setWidth(10),
           ),
-          LImage(
-            'search_icon',
-            width: ScreenUtil().setWidth(39.7),
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {},
+            child: LImage('search_icon', width: ScreenUtil().setWidth(39.7)),
           ),
         ],
       ),
