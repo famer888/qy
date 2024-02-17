@@ -16,8 +16,7 @@ import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/pageviewmixin.dart';
 
 class WelfarePage extends BaseWidget {
-  WelfarePage({Key key, this.isShow}) : super(key: key);
-  final bool isShow;
+  WelfarePage({Key key}) : super(key: key);
 
   @override
   BaseWidgetState<WelfarePage> cState() {
@@ -27,8 +26,6 @@ class WelfarePage extends BaseWidget {
 
 class WelfarePageState extends BaseWidgetState<WelfarePage> {
   int _selectedIndex = 0;
-  final GlobalKey<YyqDiamondNavState> _gennavKey =
-      new GlobalKey<YyqDiamondNavState>();
 
   @override
   void onCreate() {}
@@ -41,10 +38,6 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
   @override
   Widget appbar() {
     return Container();
-  }
-
-  void changeIndex(int index) {
-    _gennavKey.currentState.onTabPageChange(index, isOnTab: true);
   }
 
   // @override
@@ -68,12 +61,11 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
     Config config = Provider.of<HomeConfig>(context, listen: false).config;
     return Column(
       children: [
-        SizedBox(height: MediaQuery.of(context).padding.top),
+        SizedBox(height: GQStyle.topHeight),
         Expanded(
           child: Stack(
             children: [
               YyqDiamondNav(
-                key: _gennavKey,
                 inedxFunc: (p0) {
                   _selectedIndex = p0;
                   setState(() {});
@@ -96,9 +88,7 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
                           child: WelfareAgentPage(),
                         ),
                         PageViewMixin(
-                          child: WelfareTaskPage(
-                            isShow: widget.isShow,
-                          ),
+                          child: WelfareTaskPage(),
                         ),
                         PageViewMixin(
                           child: AppCenter(),
@@ -109,9 +99,7 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
                           child: WelfareAgentPage(),
                         ),
                         PageViewMixin(
-                          child: WelfareTaskPage(
-                            isShow: widget.isShow,
-                          ),
+                          child: WelfareTaskPage(),
                         ),
                       ],
                 defaultStyle: TextStyle(
@@ -127,42 +115,20 @@ class WelfarePageState extends BaseWidgetState<WelfarePage> {
                     decoration: TextDecoration.none),
                 isCenter: true,
               ),
-              // Positioned(
-              //     child: Container(
-              //   padding: EdgeInsets.symmetric(
-              //     horizontal: GQStyle.pagePadding,
-              //   ),
-              //   // color: Colors.deepOrange,
-              //   height: GQStyle.navbarHegiht,
-              //   child: Row(
-              //     children: [
-              //       Expanded(child: Container()),
-              //       _selectedIndex == 0
-              //           ? GestureDetector(
-              //               onTap: () {
-              //                 context.push('/RechargeRecord/1');
-              //               },
-              //               child: Text(
-              //                 CommonUtils.txt('czjl'),
-              //                 style: GQStyle.gray150_14,
-              //               ),
-              //             )
-              //           : GestureDetector(
-              //               onTap: () {
-              //                 String path =
-              //                     '/${Routes.mineAgentProfitListPage}';
-              //                 context.push(path);
-              //                 // context
-              //                 //     .push('/${Routes.mineAgentProfitListPage}');
-              //               },
-              //               child: Text(
-              //                 CommonUtils.txt('symx'),
-              //                 style: GQStyle.gray150_14,
-              //               ),
-              //             )
-              //     ],
-              //   ),
-              // )),
+              Positioned(
+                top: 12.w,
+                left: GQStyle.pagePadding,
+                child: GestureDetector(
+                  child: LImage(
+                    "nav_back_n",
+                    width: ScreenUtil().setWidth(20),
+                    height: ScreenUtil().setWidth(20),
+                  ),
+                  onTap: () {
+                    finish();
+                  },
+                ),
+              ),
             ],
           ),
         )

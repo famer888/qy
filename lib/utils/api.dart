@@ -195,6 +195,19 @@ Future<Basic> reqImMsg({String txt}) async {
   }
 }
 
+//获取圈子导航
+Future<Basic> reqGetCircleNav({String type = ""}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/community/circle_nav');
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
 //获取帖子导航
 Future<Basic> reqGetPostNav({String type = ""}) async {
   try {
@@ -934,6 +947,25 @@ Future<Basic> communityAiList({int page, int limit = 15}) async {
   }
 }
 
+//圈子排序列表
+Future<Basic> circleSortList(
+    {int id, String sort, int page, int limit = 15}) async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/community/circle_post', data: {
+      "id": id,
+      "sort": sort,
+      "page": page,
+      "limit": limit,
+    });
+    CommonUtils.debugPrint(res.data);
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    CommonUtils.debugPrint(e);
+    return null;
+  }
+}
+
 //社区排序列表
 Future<Basic> communitySortList(
     {int id, String sort, int page, int limit = 15}) async {
@@ -973,12 +1005,14 @@ Future<Basic> communityListTopicPost(
 }
 
 //发帖获取全部标签
-Future<Basic> communityTopics({int page = 1, int limit = 20}) async {
+Future<Basic> communityTopics(
+    {int page = 1, int limit = 20, String type = ""}) async {
   try {
     Response<dynamic> res =
         await PlatformAwareHttp.post('/api/community/topics', data: {
       'page': page,
       'limit': limit,
+      'type': type,
     });
     CommonUtils.debugPrint(res.data);
     return Basic.fromJson(res.data);

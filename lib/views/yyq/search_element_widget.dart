@@ -56,8 +56,10 @@ class SearchElementWidget extends StatelessWidget {
           ),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () {},
-            child: LImage('search_icon', width: ScreenUtil().setWidth(39.7)),
+            onTap: () {
+              context.push("/welfarepage");
+            },
+            child: LImage('app_home_bonus', width: ScreenUtil().setWidth(30)),
           ),
         ],
       ),

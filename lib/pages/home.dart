@@ -58,15 +58,15 @@ class _HomeState extends State<Home> {
       "newyear_icon": "qy_newyear_tab_home",
     },
     {
-      "title": CommonUtils.txt("ym"),
-      "activeIcon": "tab_shequ_s",
-      "icon": "tab_shequ_n",
-      "newyear_icon": "qy_newyear_tab_sq",
-    },
-    {
       "title": CommonUtils.txt("qz"),
       "activeIcon": "tab_circle_s",
       "icon": "tab_circle_n",
+      "newyear_icon": "qy_newyear_tab_sq",
+    },
+    {
+      "title": CommonUtils.txt("ym"),
+      "activeIcon": "tab_shequ_s",
+      "icon": "tab_shequ_n",
       "newyear_icon": "qy_newyear_tab_sq",
     },
     {
@@ -137,9 +137,6 @@ class _HomeState extends State<Home> {
       if (event.arg["name"] == 'openwf') {
         selectedKey = 3;
         setState(() {});
-        Future.delayed(Duration(milliseconds: 100), () {
-          _wfKey.currentState.changeIndex(event.arg["data"]["index"] ?? 0);
-        });
       }
     });
 
@@ -612,8 +609,8 @@ class _HomeState extends State<Home> {
                                 child: Container(
                                   width: ScreenUtil().screenWidth,
                                   height: double.infinity,
-                                  child:
-                                      HomeCommunity(isShow: selectedKey == 2),
+                                  child: HomeCircleCommunity(
+                                      isShow: selectedKey == 2),
                                 )),
                             Positioned(
                                 left: (-selectedKey + 3) *
@@ -623,8 +620,8 @@ class _HomeState extends State<Home> {
                                 child: Container(
                                   width: ScreenUtil().screenWidth,
                                   height: double.infinity,
-                                  child: HomeCircleCommunity(
-                                      isShow: selectedKey == 3),
+                                  child:
+                                      HomeCommunity(isShow: selectedKey == 3),
                                 )),
                             Positioned(
                                 left: (-selectedKey + 4) *

@@ -6,6 +6,7 @@ import 'package:qypj/pages/mine/collect_page.dart';
 import 'package:qypj/pages/mine/imtochat_page.dart';
 import 'package:qypj/pages/mine/mine_post_page.dart';
 import 'package:qypj/pages/mine/original_enter.dart';
+import 'package:qypj/pages/welfare/welfare_page.dart';
 import 'package:qypj/pages/welfare/welfare_task_alone_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qypj/acg_page/category/home_category_page.dart';
@@ -221,6 +222,8 @@ class Routes {
   static String imtochatpage = 'imtochatpage/:touid/:nick/:thumb'; //私信
 
   static String communitypostbitdetail = 'communitypostbitdetail/:id'; //种子帖子详情
+
+  static String welfarepage = 'welfarePage'; //福利
 
   static List<GoRoute> getDetailRoutes() {
     return [
@@ -714,6 +717,13 @@ class Routes {
 
   static GoRouter init() {
     List<GoRoute> rootRoutes = [
+      GoRoute(
+        path: welfarepage,
+        builder: (context, state) {
+          return WelfarePage();
+        },
+        routes: getDetailRoutes(),
+      ),
       GoRoute(
         path: communitypostbitdetail,
         builder: (context, state) {

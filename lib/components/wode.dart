@@ -390,21 +390,12 @@ class _WodeState extends BaseWidgetState<Wode> {
       bgImg = 'wd_jbg_n';
       title = CommonUtils.txt('jbgm');
       subTitle = CommonUtils.txt('ye');
-      routeString = 'promote';
+      routeString = '/${Routes.mineAgentPage}';
     }
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (routeString.contains("promote")) {
-          UtilEventbus().fire(
-            UtilEventbusClass({
-              "name": "openwf",
-              "data": {"index": 0},
-            }),
-          );
-        } else {
-          context.push(routeString);
-        }
+        context.push(routeString);
       },
       child: Stack(
         children: [

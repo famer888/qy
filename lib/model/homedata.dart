@@ -675,7 +675,7 @@ class Member {
           ? null
           : json["used_money_free_num"],
       agentFee: json["agent_fee"] == null ? null : json["agent_fee"],
-      agent: json["agent"] == null ? null : json["agent"],
+      agent: json["agent"] == null ? 0 : json["agent"],
       buildId: json["build_id"] == null ? null : json["build_id"],
       authStatus: json["auth_status"] == null ? null : json["auth_status"],
       exp: json["exp"] == null ? 0 : json["exp"],
@@ -759,7 +759,7 @@ class Member {
         "used_money_free_num":
             usedMoneyFreeNum == null ? null : usedMoneyFreeNum,
         "agent_fee": agentFee == null ? null : agentFee,
-        "agent": agent == null ? null : agent,
+        "agent": agent == null ? 0 : agent,
         "build_id": buildId == null ? null : buildId,
         "auth_status": authStatus == null ? null : authStatus,
         "exp": exp == null ? 0 : exp,

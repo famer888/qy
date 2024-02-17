@@ -30,7 +30,8 @@ class _CommunitySeltagPageState extends BaseWidgetState<CommunitySeltagPage> {
   int page = 1;
 
   void getData() {
-    communityTopics(page: page).then((value) {
+    communityTopics(page: page, type: widget.type == 2 ? "circle" : "")
+        .then((value) {
       if (value.data == null) {
         netError = true;
         setState(() {});

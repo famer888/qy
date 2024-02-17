@@ -51,6 +51,11 @@ class _WelfareAgentPageState extends BaseWidgetState<WelfareAgentPage> {
 
   bool showApplePage = false; // 是否显示申请页面
 
+  @override
+  Widget appbar() {
+    return Container();
+  }
+
   _loadUserAgentData() async {
     member = Provider.of<HomeConfig>(context, listen: false).member;
 

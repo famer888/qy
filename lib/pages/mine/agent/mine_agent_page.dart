@@ -709,7 +709,7 @@ class _MineAgentPageState extends BaseWidgetState {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      CommonUtils.txt("sqdl"),
+                                      CommonUtils.txt("ljtg"),
                                       style: TextStyle(
                                         fontSize: ScreenUtil().setSp(20),
                                         fontWeight: FontWeight.bold,

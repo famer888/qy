@@ -22,8 +22,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WelfareTaskPage extends BaseWidget {
-  WelfareTaskPage({Key key, this.isShow = false}) : super(key: key);
-  final bool isShow;
+  WelfareTaskPage({Key key}) : super(key: key);
 
   @override
   _WelfareTaskPageState cState() => _WelfareTaskPageState();
@@ -39,22 +38,15 @@ class _WelfareTaskPageState extends BaseWidgetState<WelfareTaskPage> {
   dynamic signTaskData;
 
   @override
-  void onCreate() {
-    // TODO: implement onCreate
-    // _loadTaskData();
-    setAppTitle(bgColor: Colors.transparent, navColor: Colors.transparent);
+  Widget appbar() {
+    return Container();
   }
 
   @override
-  void didUpdateWidget(covariant WelfareTaskPage oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-
-    if (widget.isShow == true) {
-      if (signTaskData == null) {
-        _loadTaskData();
-      }
-    }
+  void onCreate() {
+    // TODO: implement onCreate
+    // setAppTitle(bgColor: Colors.transparent, navColor: Colors.transparent);
+    _loadTaskData();
   }
 
   _loadTaskData() async {

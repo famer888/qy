@@ -12,6 +12,7 @@ import 'package:qypj/global.dart';
 import 'package:qypj/model/homedata.dart';
 import 'package:qypj/page/flj_slider_nav.dart';
 import 'package:qypj/page/yyq_diamond_nav.dart';
+import 'package:qypj/pages/community/community_circle_new.dart';
 import 'package:qypj/pages/community/community_new.dart';
 import 'package:qypj/routers.dart';
 import 'package:qypj/store/homeConfig.dart';
@@ -47,7 +48,7 @@ class _HomeCommunityState extends State<HomeCircleCommunity>
   ];
 
   _getData() {
-    reqGetPostNav(type: "circle").then((value) {
+    reqGetCircleNav().then((value) {
       if (value.status == 1) {
         navs = List.from(value?.data ?? []);
         _isHud = false;
@@ -193,17 +194,10 @@ class _HomeCommunityState extends State<HomeCircleCommunity>
                     ? PageStatus.loading(mounted)
                     : YyqDiamondNav(
                         titles:
-                            navs.map<String>((e) => e["title"] ?? "").toList(),
+                            navs.map<String>((e) => e["name"] ?? "").toList(),
                         pages: navs.map<Widget>((e) {
-                          if (e["id"] == 100) {
-                            return CommunityNew(
-                              id: e["id"],
-                              sort: e["type"],
-                            );
-                          } else {
-                            return CommunityChildPage(
-                                id: e["id"], mask: e["mask"]);
-                          }
+                          return CommunityChildPage(
+                              id: e["id"], mask: e["mask"]);
                         }).toList(),
                         navColor: Colors.transparent,
                         type: YyqDiamondNavEnum.line,
@@ -239,7 +233,6 @@ class _CommunityChildPageState extends State<CommunityChildPage> {
   PageController _pageController = PageController();
   ScrollController _scrollController = ScrollController();
   List<dynamic> banners = [];
-  List<dynamic> topics = [];
 
   @override
   Widget build(BuildContext context) {
@@ -250,6 +243,13 @@ class _CommunityChildPageState extends State<CommunityChildPage> {
     String vip_name_str =
         Provider.of<HomeConfig>(context, listen: false).config.vip_name_awq_str;
     Member user = Provider.of<HomeConfig>(context, listen: false).member;
+
+    // CommonUtils.debugPrint(((vip_level_str.isNotEmpty &&
+    //             vip_level_str.contains(user.vip_str) == false) ||
+    //         user.agent == 0) &&
+    //     widget.mask == 1);
+    // CommonUtils.debugPrint(
+    //     "=====${vip_level_str.contains(user.vip_str) == false}");
     return Stack(
       children: [
         NestedScrollView(
@@ -273,75 +273,6 @@ class _CommunityChildPageState extends State<CommunityChildPage> {
                               ),
                             )
                           : Container(),
-                      SizedBox(height: ScreenUtil().setWidth(10)),
-                      GridView(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: GQStyle.pagePadding),
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3, //横轴三个子widget
-                          childAspectRatio: 2.2, //宽高比为1时，子widget
-                          mainAxisSpacing: ScreenUtil().setWidth(10),
-                          crossAxisSpacing: ScreenUtil().setWidth(10),
-                        ),
-                        children: topics
-                            .map((e) => Container(
-                                  child: GestureDetector(
-                                    behavior: HitTestBehavior.translucent,
-                                    onTap: () {
-                                      context.push(
-                                          "/communitytagdetail/${e["id"]}");
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Color.fromRGBO(90, 90, 90, 1.0),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                ScreenUtil().setWidth(5))),
-                                      ),
-                                      child: Stack(
-                                        children: [
-                                          // PlatformAwareNetworkImage(
-                                          //   url: e["bg_thumb"] ?? "",
-                                          //   nofigure: true,
-                                          //   borderRadius: BorderRadius.all(
-                                          //       Radius.circular(ScreenUtil()
-                                          //           .setWidth(5))),
-                                          // ),
-                                          Positioned.fill(
-                                              child: Container(
-                                                  width: double.infinity,
-                                                  height: double.infinity,
-                                                  color: Color(0xff262631))),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Center(
-                                                child: Text(
-                                                  e["name"] ?? "",
-                                                  style: GQStyle
-                                                      .white255_15_semibold,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                  height:
-                                                      ScreenUtil().setWidth(2)),
-                                              Center(
-                                                  child: Text(
-                                                "${e["post_num"] ?? "0"}${CommonUtils.txt("tiez")}",
-                                                style: GQStyle.white255_11,
-                                              ))
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
                       SizedBox(height: ScreenUtil().setWidth(5)),
                     ],
                   ),
@@ -369,23 +300,24 @@ class _CommunityChildPageState extends State<CommunityChildPage> {
           body: PageView(
             controller: _pageController,
             children: tps
-                .map<Widget>((e) => CommunityNew(
+                .map<Widget>((e) => CommunityCircleNew(
                       id: widget.id,
                       sort: e["type"],
                       call: (data) {
                         banners = List.from(data["banner"]);
-                        topics = List.from(data["topics"]);
                         setState(() {});
                       },
                     ))
                 .toList(),
           ),
         ),
-        vip_level_str.isNotEmpty &&
-                vip_level_str.contains(user.vip_str) == false &&
-                widget.mask == 1 &&
-                user.agent == 0
-            ? ClipRect(
+        (((vip_level_str.isNotEmpty &&
+                            vip_level_str.contains(user.vip_str) == true) ||
+                        user.agent == 1) &&
+                    widget.mask == 1) ||
+                widget.mask == 0
+            ? Container()
+            : ClipRect(
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 12.w, sigmaY: 12.w),
                   child: GestureDetector(
@@ -410,8 +342,7 @@ class _CommunityChildPageState extends State<CommunityChildPage> {
                     ),
                   ),
                 ),
-              )
-            : Container(),
+              ),
       ],
     );
   }

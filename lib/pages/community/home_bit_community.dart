@@ -81,11 +81,7 @@ class _HomeBitCommunityState extends State<HomeBitCommunity>
         children: [
           Column(
             children: [
-              SizedBox(
-                  height: kIsWeb
-                      ? ScreenUtil().setWidth(15)
-                      : MediaQuery.of(context).padding.top),
-              const SearchElementWidget(),
+              SizedBox(height: GQStyle.topHeight),
               Expanded(
                   child: _netError
                       ? PageStatus.noNetWork(onTap: () {

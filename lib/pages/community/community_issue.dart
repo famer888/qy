@@ -303,10 +303,16 @@ class _CommunityIssueState extends BaseWidgetState<CommunityIssue> {
             GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                if (widget.type == 1) {
-                  context.push("/communityseltagpage/${setLabel['id'] ?? 0}/0");
+                if (widget.circle == 1) {
+                  context.push("/communityseltagpage/${setLabel['id'] ?? 0}/2");
                 } else {
-                  context.push("/communityseltagpage/${setLabel['id'] ?? 0}/1");
+                  if (widget.type == 1) {
+                    context
+                        .push("/communityseltagpage/${setLabel['id'] ?? 0}/0");
+                  } else {
+                    context
+                        .push("/communityseltagpage/${setLabel['id'] ?? 0}/1");
+                  }
                 }
               },
               child: Container(

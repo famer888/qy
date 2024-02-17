@@ -189,22 +189,11 @@ class _SearchListState extends State<SearchList> {
   }
 
   _bitList() {
-    return PullRefreshList(
-      isAll: isAll,
-      onRefresh: () {
-        page = 1;
-        getSearchList();
-      },
-      onLoading: () {
-        page++;
-        getSearchList();
-      },
-      child: ListView.builder(
-          itemCount: 1, //标签+帖子
-          itemBuilder: (context, index) {
-            return CommunityBitPost(data: searchData, showHead: false);
-          }),
-    );
+    return ListView.builder(
+        itemCount: 1, //标签+帖子
+        itemBuilder: (context, index) {
+          return CommunityBitPost(data: searchData, showHead: false);
+        });
   }
 
   _videoList() {
