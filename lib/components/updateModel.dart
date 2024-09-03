@@ -25,6 +25,19 @@ class UpdateModel {
       String type = "2"}) {
     var tipSplit = text.split('#');
     tipWidget(String value) {
+      return CommonUtils.getContentSpan(value,
+          style: TextStyle(
+            color: Color(0xff636363),
+            fontSize: ScreenUtil().setSp(15),
+            decoration: TextDecoration.none,
+            fontWeight: FontWeight.normal,
+          ),
+          lightStyle: TextStyle(
+            color: const Color.fromRGBO(25, 103, 210, 1),
+            fontSize: ScreenUtil().setSp(15),
+            decoration: TextDecoration.none,
+            fontWeight: FontWeight.normal,
+          ));
       return RichText(
           text: TextSpan(
         text: value,
