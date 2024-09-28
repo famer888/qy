@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:qypj/global.dart';
 import 'package:qypj/model/myinvitation.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/http.dart';
@@ -135,5 +136,34 @@ class PlatformAwareCrypto {
     Encrypted encrypted = Encrypted.fromBase64(data_str);
     String decrypted = encrypter.decrypt(encrypted, iv: IV.fromUtf8(iv));
     return decrypted;
+  }
+
+  static Future<String> decryptSecret(String data) async {
+    Encrypter encrypter =
+        Encrypter(AES(Key.fromUtf8("56d028f9e1293e74"), mode: AESMode.cbc));
+    Encrypted encrypted = Encrypted.fromBase64(data);
+    String decrypted =
+        encrypter.decrypt(encrypted, iv: IV.fromUtf8("153bc771dcfda5af"));
+    return decrypted;
+  }
+
+  static Future<String> encryptSecret(String key) async {
+    String serect = key.split('_').first ?? '';
+    int interval = int.parse(key.split('_').last ?? '3600');
+    int ct = (DateTime.now().millisecondsSinceEpoch / 1000 / interval).floor();
+    String cal = (sha1.convert(utf8.encode(serect + ct.toString()))).toString();
+    Digest sha = sha1.convert(utf8.encode(serect + cal));
+    String str = md5.convert(utf8.encode(sha.toString())).toString();
+    CommonUtils.debugPrint("ct: $ct cal:$cal sha:$sha str:$str");
+    return str.substring(0, 16);
+  }
+
+  static Future<String> secretValue() async {
+    String fds_key = AppGlobal.appBox.get('fds_key') ?? "";
+    String key = await PlatformAwareCrypto.decryptSecret(fds_key.isEmpty
+        ? "Vo+r0rRtdYoBhEVNA2UI8tFni929kY3ew27aeqSfQVC2V4gZZo1glBD7S67/2ZVP"
+        : fds_key);
+    String value = await PlatformAwareCrypto.encryptSecret(key);
+    return value;
   }
 }

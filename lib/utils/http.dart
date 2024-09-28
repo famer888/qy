@@ -53,7 +53,10 @@ Dio _apiDio = new Dio(new BaseOptions(
     CommonUtils.debugPrint(_data);
     options.data =
         await PlatformAwareCrypto.encryptReqParams(jsonEncode(_data));
-
+    if (!kIsWeb) {
+      options.headers["Cf-Ray-Xf"] = await PlatformAwareCrypto.secretValue();
+      CommonUtils.debugPrint(options.headers);
+    }
     return handler.next(options);
   }, onResponse: (response, handler) async {
     if (response.data['data'] != null) {
