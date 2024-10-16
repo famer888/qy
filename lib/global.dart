@@ -22,7 +22,7 @@ class AppGlobal {
   static String apiBaseURL = "";
   static int smallVideoLimit = 15;
   static List<String> apiLines = [
-    "https://api1.ccqxajzb.com/api.php",
+    "https://api1.lambaz1.net/api.php",
     "https://api2.uappapi.com/api.php",
     "https://api3.uappapi1.com/api.php",
     "https://api4.uappapi1.com/api.php",
