@@ -1,181 +1,158 @@
-import 'dart:io';
-
-import 'package:bot_toast/bot_toast.dart';
-// import 'package:fluro/fluro.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:isolated_worker/worker_delegator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
-import 'package:qypj/global.dart';
-import 'package:qypj/routers.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:bot_toast/bot_toast.dart';
+import 'package:utils/utils.dart';
 
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:qypj/store/homeConfig.dart';
-// import 'package:qypj/theme/default.dart';
-import 'package:qypj/utils/common.dart';
-import 'package:qypj/utils/crypto.dart';
+import 'data_layer/repo/repo.dart';
+import 'domain/domain.dart';
+import 'ui_layer/notifiers/chat_notifier.dart';
+import 'ui_layer/notifiers/home_config_notifier.dart';
+import 'ui_layer/notifiers/user_notifier.dart';
+import 'ui_layer/router/router.dart';
+import 'ui_layer/screens/theme.dart';
+import 'ui_layer/utils/common_utils.dart';
+import 'ui_layer/utils/download_utils.dart';
 
 void main() async {
-  // 初始化数据库，必须放在最前面
-  await Hive.initFlutter();
-  AppGlobal.appBox = await Hive.openBox('qypjbox'); // 用于存储一些简单的键值对
-  AppGlobal.imageCacheBox = await Hive.openBox('qypjbox_ImageCache'); //图片缓存
-  AppGlobal.chats = await Hive.openBox('qypjbox_Chats'); //IM记录
-  //注册图片加载线程
-  DefaultDelegate<dynamic, dynamic> fooDelegate =
-      DefaultDelegate(callback: PlatformAwareCrypto.decryptImage);
-  JsDelegate fooJsDelegate = JsDelegate(callback: 'decryptImage');
-  List<WorkerDelegate<dynamic, dynamic>> wds = List.generate(
-      5,
-      (index) => WorkerDelegate(
-            key: 'decryptImage$index',
-            defaultDelegate: fooDelegate,
-            jsDelegate: fooJsDelegate,
-          ));
-  WorkerDelegator().addAllDelegates(wds);
-  await WorkerDelegator().importScripts(const <String>[
-    'js/aware.js?v=2',
-    'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js?v=2'
-  ]);
+  /// 初始化仓库，必须放在最前面
+  final appRepo = AppRepo();
+  await appRepo.init();
+  disableUrlStrategy();
 
-  // 搭建m3u8代理服务器
-  // if (!kIsWeb) {
-  //   var handler =
-  //       const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
-  //   var server = await shelf_io.serve(handler, 'localhost', 8888);
-  //   server.autoCompress = true;
-  //   CommonUtils.debugPrint(
-  //       'Serving at http://${server.address.host}:${server.port}');
-  // }
-  // 初始化全局路由
-  // 初始化APP基础信息
-  AppGlobal.apiToken = AppGlobal.appBox.get('qypj_token') ?? "";
-  AppGlobal.appinfo = {
-    "oauth_id": AppGlobal.appBox.get('oauth_id') ??
-        CommonUtils.gvMD5(
-            '${CommonUtils.randomId(16)}_${DateTime.now().millisecondsSinceEpoch.toString()}'),
-    "bundleId": "com.pwa.qypj",
-    "version": "2.7.0",
-    "oauth_type": "web",
-    "language": 'zh',
-    "via": 'pwa',
-  };
-  //设备ID统一32位
-  if (!kIsWeb) {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
-      // bool vx = await DownloadUtil.getPermission();
-      // if (!vx) {
-      //   await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      //   return;
-      // }
-      AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
-      // String osid = await DownloadUtil.getUniqueId();
-      AppGlobal.appinfo = {
-        "oauth_id": CommonUtils.gvMD5(androidInfo.androidId),
-        "bundleId": packageInfo.packageName,
-        "version": packageInfo.version,
-        "oauth_type": "android",
-        // "build_affcode": "8Q2w",
-      };
-    } else {
-      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      AppGlobal.appinfo = {
-        "oauth_id": CommonUtils.gvMD5(iosInfo.identifierForVendor),
-        "bundleId": packageInfo.packageName,
-        "version": "2.7.0",
-        "oauth_type": "ios",
-      };
-    }
-  } else {
-    AppGlobal.appBox.put('oauth_id', AppGlobal.appinfo['oauth_id']);
-  }
-  //  test
-  // AppGlobal.appinfo = {
-  //   "oauth_id": "b91524d2fcd0ad89",
-  //   "version": "3.2.0",
-  //   "oauth_type": "android",
-  // };
+  /// 初始化多语系
+  await EasyLocalization.ensureInitialized();
 
-  //路由初始化
-  // final _frouter = FluroRouter();
-  // FluroRoutes.configureRoutes(_frouter);
-  // AppGlobal.router = _frouter;
-  //本地JSON初始化
-  await CommonUtils.loadJSON();
-
-  debugRepaintRainbowEnabled = false;
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => HomeConfig()),
-    ],
-    child: qypj(),
-  ));
-  // 强制竖屏
+  /// 强制竖屏
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  /// 设置屏幕状态栏、导航列底色
   CommonUtils.setStatusBar(isLight: true);
+
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<AppDomain>(lazy: false, create: (_) => appRepo),
+        Provider<CacheDomain>(lazy: false, create: (_) => appRepo.cache),
+        Provider<HomeDomain>(lazy: false, create: (_) => appRepo),
+        Provider<UserDomain>(lazy: false, create: (_) => appRepo),
+        Provider<ElementDomain>(lazy: false, create: (_) => appRepo),
+        Provider<DynamicDomain>(lazy: false, create: (_) => appRepo),
+        Provider<CommunityDomain>(lazy: false, create: (_) => appRepo),
+        Provider<SeedDomain>(lazy: false, create: (_) => appRepo),
+        Provider<OrderDomain>(lazy: false, create: (_) => appRepo),
+        Provider<SignDomain>(lazy: false, create: (_) => appRepo),
+        Provider<AccountDomain>(lazy: false, create: (_) => appRepo),
+        Provider<ProxyDomain>(lazy: false, create: (_) => appRepo),
+        Provider<WithdrawDomain>(lazy: false, create: (_) => appRepo),
+        Provider<SearchDomain>(lazy: false, create: (_) => appRepo),
+        Provider<MvDomain>(lazy: false, create: (_) => appRepo),
+        Provider<MessageDomain>(lazy: false, create: (_) => appRepo),
+        Provider<PrivilegeDomain>(lazy: false, create: (_) => appRepo),
+        Provider<DownloadUtil>(
+            lazy: false, create: (_) => DownloadUtil(cache: appRepo.cache)),
+        ChangeNotifierProvider(create: (_) => HomeConfigNotifier(appRepo)),
+        ChangeNotifierProvider(create: (_) => UserNotifier(appRepo)),
+        ChangeNotifierProxyProvider<UserNotifier, ChatNotifier?>(
+          lazy: false,
+          update: (context, value, previous) {
+            if (!value.isInit) {
+              return null;
+            }
+
+            return previous?.member.uuid == value.member.uuid
+                ? previous!
+                : ChatNotifier(
+                    cache: appRepo.cache,
+                    member: value.member,
+                    oauthType: appRepo.getOAuthType(),
+                    oauthId: appRepo.getOAuthId(),
+                  );
+          },
+          create: (BuildContext context) => null,
+        ),
+      ],
+      child: EasyLocalization(
+        supportedLocales: const [Locale('zh', 'CN')],
+        fallbackLocale: const Locale('zh', 'CN'),
+        path: 'assets/translations',
+        child: ScreenUtilInit(
+          designSize: const Size(375, 667),
+          child: const MyApp(),
+          builder: (_, child) => child!,
+        ),
+      ),
+    ),
+  );
 }
 
-final _router = AppGlobal.appRouter = Routes.init();
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
-class qypj extends StatefulWidget {
-  qypj({Key key}) : super(key: key);
   @override
-  _qypjState createState() => _qypjState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _qypjState extends State<qypj> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final botToastBuilder = BotToastInit();
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      builder: (context, child) => ScreenUtilInit(
-        designSize: Size(375, 667),
-        builder: () => MaterialApp.router(
-          routeInformationParser: _router.routeInformationParser,
-          routerDelegate: _router.routerDelegate,
-          title: CommonUtils.txt("yybt"),
-          builder: (context, widget) {
-            widget = botToastBuilder(context, widget);
-            widget = MediaQuery(
-              //设置文字大小不随系统设置改变
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-              child: widget,
-            );
-            return widget;
-          },
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            scaffoldBackgroundColor: Colors.black,
-            primarySwatch: MaterialColor(
-              0xFF000000, //改了不好看
-              <int, Color>{
-                50: Color(0xFF000000),
-                100: Color(0xFF000000),
-                200: Color(0xFF000000),
-                300: Color(0xFF000000),
-                400: Color(0xFF000000),
-                500: Color(0xFF000000),
-                600: Color(0xFF000000),
-                700: Color(0xFF000000),
-                800: Color(0xFF000000),
-                900: Color(0xFF000000),
-              },
-            ),
-          ),
+
+    return MaterialApp.router(
+      routerConfig: AppRouter.router,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      onGenerateTitle: (context) => 'yybt'.tr(context: context),
+      theme: ThemeData(
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+            color: MyTheme.jellyCyanColor103224185),
+        splashColor: Colors.transparent,
+        scaffoldBackgroundColor: MyTheme.bgColor,
+        highlightColor: Colors.transparent,
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: MyTheme.cyanColor00edfd,
+          selectionColor: MyTheme.cyanColor00edfd.withOpacity(0.5),
+          selectionHandleColor: MyTheme.cyanColor00edfd,
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          disabledBorder: MyTheme.inputBorder,
+          focusedBorder: MyTheme.inputBorder,
+          enabledBorder: MyTheme.inputBorder,
+          border: MyTheme.inputBorder,
+          isDense: true,
+          contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
+        ),
+        primarySwatch: const MaterialColor(
+          0xFF000000, //改了不好看
+          <int, Color>{
+            50: Color(0xFF000000),
+            100: Color(0xFF000000),
+            200: Color(0xFF000000),
+            300: Color(0xFF000000),
+            400: Color(0xFF000000),
+            500: Color(0xFF000000),
+            600: Color(0xFF000000),
+            700: Color(0xFF000000),
+            800: Color(0xFF000000),
+            900: Color(0xFF000000),
+          },
+        ),
+      ),
+      builder: (context, widget) {
+        widget = botToastBuilder(context, widget!);
+        widget = MediaQuery(
+          //设置文字大小不随系统设置改变
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
+          child: widget,
+        );
+        return widget;
+      },
+      scrollBehavior: ScrollConfiguration.of(context).copyWith(
+        physics: const BouncingScrollPhysics(),
       ),
     );
   }

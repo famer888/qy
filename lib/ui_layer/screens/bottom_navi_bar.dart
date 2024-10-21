@@ -1,0 +1,353 @@
+import 'dart:io';
+
+import 'package:bot_toast/bot_toast.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_area_insets/safe_area_insets.dart';
+import 'package:universal_html/html.dart' as html;
+
+import '../../app_config.dart';
+import '../../domain/domain.dart';
+import '../../domain/enum.dart';
+import '../../domain/model/home_data_model.dart';
+import '../notifiers/home_config_notifier.dart';
+import '../notifiers/user_notifier.dart';
+import '../router/routes.dart';
+import '../utils/common_utils.dart';
+import '../utils/my_toast.dart';
+import 'common_widgets/dialog/widgets/ad_dialog.dart';
+import 'common_widgets/dialog/widgets/announcement_dialog.dart';
+import 'common_widgets/dialog/widgets/download_apk_dialog.dart';
+import 'common_widgets/dialog/widgets/update_dialog.dart';
+import 'common_widgets/my_image.dart';
+import 'common_widgets/pop_scope_wrapper.dart';
+import 'common_widgets/status/loading.dart';
+import 'image_paths.dart';
+import 'theme.dart';
+
+class BottomNaviBar extends StatefulWidget {
+  const BottomNaviBar({
+    required this.navigationShell,
+    super.key = const ValueKey<String>('ScaffoldWithNavBar'),
+  });
+  final StatefulNavigationShell navigationShell;
+
+  @override
+  State<BottomNaviBar> createState() => _BottomNaviBarState();
+}
+
+class _BottomNaviBarState extends State<BottomNaviBar> {
+  late final _userNotifier = context.read<UserNotifier>();
+  late final homeConfigNotifier = context.read<HomeConfigNotifier>();
+  late final targetVersion = homeConfigNotifier.homeData.versionMsg;
+  late final domain = context.read<AppDomain>();
+  late final cache = domain.cache;
+  MyTokenStatus? currentTokenStatus;
+
+  bool _isInit = false;
+
+  @override
+  void initState() {
+    _userNotifier.addListener(_userNotifierListener);
+    _userNotifier.init();
+
+    super.initState();
+  }
+
+  void _userNotifierListener() async {
+    final status = _userNotifier.tokenStatus;
+    if (currentTokenStatus != status) {
+      currentTokenStatus = status;
+      if (currentTokenStatus == MyTokenStatus.invalid) {
+        MyToast.showText(text: 'dlsx'.tr());
+        await _userNotifier.init();
+        if (mounted) {
+          const LoginRoute().push(context);
+        }
+      }
+    }
+
+    if (!_isInit && _userNotifier.isInit) {
+      _isInit = true;
+      if (_isInit) {
+        _appStartCheck();
+      }
+    }
+  }
+
+  Future<void> _appStartCheck() async {
+    //打开的时候就清除一下缓存
+    cache.clearImageCacheIfNeed();
+    //处理剪贴板内容
+    _getClipboardText();
+
+    _showActivityDialog(index: 0);
+
+    if (!kIsWeb) _initDownloadStatus();
+  }
+
+  Future<void> _getClipboardText() async {
+    if (kIsWeb) {
+      final uri = Uri.parse(html.window.location.href);
+      final affCode = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
+      if (affCode.isNotEmpty) {
+        domain.toInvitation(affCode: affCode);
+      }
+    } else {
+      final result = await Clipboard.getData(Clipboard.kTextPlain);
+      if (result?.text?.split(':') case final clipTextList?
+          when clipTextList.length > 1 &&
+              clipTextList[0] == BuildConfig.affCodeKey) {
+        if (clipTextList[1] case final affCode when affCode.isNotEmpty) {
+          domain.toInvitation(affCode: affCode);
+        }
+      }
+    }
+  }
+
+  /// 活动弹窗
+  void _showActivityDialog({required int index}) {
+    final popAds = homeConfigNotifier.homeData.popAds;
+    final int adsLength = popAds?.length ?? 0;
+    final bool isLastAd = index == adsLength - 1;
+    if (popAds?.isNotEmpty == true) {
+      if (index < adsLength) {
+        final Notice? notice = popAds?[index];
+        BotToast.showWidget(
+            toastBuilder: (cancelFunc) => AdDialog(
+                  cancel: () {
+                    cancelFunc();
+                    if (isLastAd) {
+                      _checkUpdateAnnouncement();
+                    } else {
+                      _showActivityDialog(index: index + 1);
+                    }
+                  },
+                  confirm: () {
+                    cancelFunc();
+                    if (isLastAd) {
+                      _checkUpdateAnnouncement();
+                    } else {
+                      _showActivityDialog(index: index + 1);
+                    }
+                    _adOnTap(notice: notice);
+                  },
+                  adUrl: notice?.imgUrl ?? '',
+                  adWidth: notice?.width,
+                  adHeight: notice?.height,
+                ));
+      }
+    } else {
+      _checkUpdateAnnouncement();
+    }
+  }
+
+  /// 检查更新
+  Future<void> _checkUpdateAnnouncement() async {
+    if (targetVersion?.version case final version?) {
+      final packageInfo = await PackageInfo.fromPlatform();
+      final String localVersion = packageInfo.version;
+      final currentVersion = localVersion.replaceAll('.', '');
+
+      final String targetNumber = version.replaceAll('.', '');
+
+      final needUpdate = (int.tryParse(targetNumber) ?? 0) >
+          (int.tryParse(currentVersion) ?? 0);
+
+      if (kIsWeb) {
+        if (targetVersion!.mstatus == 1) _showAnnouncementDialog();
+        return;
+      }
+      if (needUpdate) _showAppUpdateDialog();
+
+      // 无更新 有公告
+      if (targetVersion!.mstatus == 1) _showAnnouncementDialog();
+    }
+  }
+
+  /// 更新公告弹窗
+  void _showAppUpdateDialog() {
+    final Config config = homeConfigNotifier.config;
+
+    BotToast.showWidget(
+        toastBuilder: (cancelFunc) => UpdateDialog(
+              cancel: () {
+                cancelFunc();
+                if (targetVersion?.must == 2) _showAnnouncementDialog();
+              },
+              confirm: () {
+                cancelFunc();
+                if (kIsWeb) {
+                  CommonUtils.launchUrl(config.officeSite ?? '');
+                } else {
+                  if (Platform.isAndroid) {
+                    BotToast.showWidget(
+                      toastBuilder: (cancelFunc) => DownloadApkDialog(
+                        version: targetVersion?.version ?? '',
+                        url: targetVersion?.apk ?? '',
+                      ),
+                    );
+                  } else {
+                    CommonUtils.launchUrl(targetVersion?.apk ?? '');
+                  }
+                }
+              },
+              tips: targetVersion?.tips ?? '',
+              mustUpdate: targetVersion?.must == 1,
+              officialWebUrl: config.officeSite ?? '',
+              solution: config.solution ?? '',
+            ));
+  }
+
+  /// 活动弹窗点击事件
+  void _adOnTap({Notice? notice}) {
+    if (notice == null) return;
+    final json = notice.toJson();
+    json['link_url'] = json['url_str'];
+    if (json['type'] == 'route') {
+      json['redirect_type'] = '1';
+    }
+    CommonUtils.openRoute(context, json);
+  }
+
+  /// 系统公告弹窗
+  void _showAnnouncementDialog() {
+    BotToast.showWidget(
+        toastBuilder: (cancelFunc) => AnnouncementDialog(
+              cancel: () {
+                cancelFunc();
+              },
+              confirm: () {
+                cancelFunc();
+                const MineAgentRoute().push(context);
+              },
+              text: homeConfigNotifier.homeData.versionMsg?.message ?? '',
+            ));
+  }
+
+  // 初始化下载状态
+  Future<void> _initDownloadStatus() async {
+    if (await cache.readDownloadVideoTasks() case final tasks) {
+      for (var task in tasks) {
+        task['downloading'] = false;
+        task['isWaiting'] = false;
+      }
+      await cache.upsertDownloadVideoTasks(tasks: tasks);
+    }
+  }
+
+  @override
+  void dispose() {
+    _userNotifier.removeListener(_userNotifierListener);
+    super.dispose();
+  }
+
+  late final appDomain = context.read<AppDomain>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Selector<UserNotifier, bool>(
+      builder: (_, isInit, child) {
+        if (!isInit) {
+          return const PopScopeWrapper(
+            child: Scaffold(
+              body: LoadingView(),
+            ),
+          );
+        }
+        return kIsWeb ? WebSafeAreaInsets(child: child!) : child!;
+      },
+      child: PopScopeWrapper(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: widget.navigationShell,
+          bottomNavigationBar: DecoratedBox(
+            decoration: const BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Color.fromRGBO(39, 39, 39, 1),
+                    spreadRadius: 0.0,
+                    offset: Offset(0.0, -0.5),
+                    blurRadius: 0.0),
+              ],
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: MyTheme.bgColor,
+              elevation: 0,
+              type: BottomNavigationBarType.fixed,
+              selectedFontSize: 11.sp,
+              unselectedFontSize: 11.sp,
+              unselectedItemColor: const Color.fromRGBO(149, 148, 156, 1),
+              selectedItemColor: Colors.white,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: const _Icon(MyImagePaths.appTabHomeN),
+                  activeIcon: const _Icon(MyImagePaths.appTabHomeS),
+                  label: 'sy'.tr(context: context),
+                ),
+                BottomNavigationBarItem(
+                  icon: const _Icon(MyImagePaths.appTabAreaN),
+                  activeIcon: const _Icon(MyImagePaths.appTabAreaS),
+                  label: 'jq'.tr(context: context),
+                ),
+                BottomNavigationBarItem(
+                  icon: const _Icon(MyImagePaths.appTabCircleN),
+                  activeIcon: const _Icon(MyImagePaths.appTabCircleS),
+                  label: 'qz'.tr(context: context),
+                ),
+                BottomNavigationBarItem(
+                  icon: const _Icon(MyImagePaths.appTabShequN),
+                  activeIcon: const _Icon(MyImagePaths.appTabShequS),
+                  label: 'ym'.tr(context: context),
+                ),
+                BottomNavigationBarItem(
+                  icon: const _Icon(MyImagePaths.appTabDownloadN),
+                  activeIcon: const _Icon(MyImagePaths.appTabDownloadS),
+                  label: 'xz'.tr(context: context),
+                ),
+                BottomNavigationBarItem(
+                  icon: const _Icon(MyImagePaths.appTabWodeN),
+                  activeIcon: const _Icon(MyImagePaths.appTabWodeS),
+                  label: 'wd'.tr(context: context),
+                ),
+              ],
+              currentIndex: widget.navigationShell.currentIndex,
+              onTap: _goBranch,
+            ),
+          ),
+        ),
+      ),
+      selector: (_, userNotifier) => userNotifier.isInit,
+    );
+  }
+
+  void _goBranch(int index) {
+    widget.navigationShell.goBranch(index,
+        initialLocation: index == widget.navigationShell.currentIndex);
+  }
+}
+
+class _Icon extends StatelessWidget {
+  const _Icon(this.path);
+
+  final String path;
+  @override
+  Widget build(BuildContext context) {
+    final size = 23.w;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2.0),
+      child: MyImage.asset(
+        path,
+        width: size,
+        height: size,
+      ),
+    );
+  }
+}
