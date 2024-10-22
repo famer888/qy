@@ -78,6 +78,12 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('setVolume() has not been implemented.');
   }
 
+    /// Sets the setBrightness to a range between 0.0 and 1.0.
+  Future<void> setBrightness(int textureId, double volume) {
+    throw UnimplementedError('setBrightness() has not been implemented.');
+  }
+
+
   /// Sets the video position to a [Duration] from the start.
   Future<void> seekTo(int textureId, Duration position) {
     throw UnimplementedError('seekTo() has not been implemented.');
@@ -103,14 +109,10 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('setMixWithOthers() has not been implemented.');
   }
 
-  void requestFullScreen(int textureId) =>
-      throw UnimplementedError('requestFullScreen() has not been implemented.');
-
-  void exitFullScreen(int textureId) =>
-      throw UnimplementedError('exitFullScreen() has not been implemented.');
-
-  Future<void> changeVideo(int textureId, String src) =>
-      throw UnimplementedError('changeVideo() has not been implemented.');
+  /// Sets additional options on web
+  Future<void> setWebOptions(int textureId, VideoPlayerWebOptions options) {
+    throw UnimplementedError('setWebOptions() has not been implemented.');
+  }
 }
 
 class _PlaceholderImplementation extends VideoPlayerPlatform {}
@@ -221,6 +223,7 @@ class VideoEvent {
     this.size,
     this.rotationCorrection,
     this.buffered,
+    this.isPlaying,
   });
 
   /// The type of the event.
@@ -246,6 +249,11 @@ class VideoEvent {
   /// Only used if [eventType] is [VideoEventType.bufferingUpdate].
   final List<DurationRange>? buffered;
 
+  /// Whether the video is currently playing.
+  ///
+  /// Only used if [eventType] is [VideoEventType.isPlayingStateUpdate].
+  final bool? isPlaying;
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -255,7 +263,8 @@ class VideoEvent {
             duration == other.duration &&
             size == other.size &&
             rotationCorrection == other.rotationCorrection &&
-            listEquals(buffered, other.buffered);
+            listEquals(buffered, other.buffered) &&
+            isPlaying == other.isPlaying;
   }
 
   @override
@@ -265,13 +274,14 @@ class VideoEvent {
         size,
         rotationCorrection,
         buffered,
+        isPlaying,
       );
 }
 
 /// Type of the event.
 ///
 /// Emitted by the platform implementation when the video is initialized or
-/// completed or to communicate buffering events.
+/// completed or to communicate buffering events or play state changed.
 enum VideoEventType {
   /// The video has been initialized.
   initialized,
@@ -287,6 +297,12 @@ enum VideoEventType {
 
   /// The video stopped to buffer.
   bufferingEnd,
+
+  /// The playback state of the video has changed.
+  ///
+  /// This event is fired when the video starts or pauses due to user actions or
+  /// phone calls, or other app media such as music players.
+  isPlayingStateUpdate,
 
   /// An unknown event has been received.
   unknown,
@@ -360,7 +376,7 @@ class DurationRange {
 /// [VideoPlayerOptions] can be optionally used to set additional player settings
 @immutable
 class VideoPlayerOptions {
-  /// set additional optional player settings
+  /// Set additional optional player settings
   // TODO(stuartmorgan): Temporarily suppress warnings about not using const
   // in all of the other video player packages, fix this, and then update
   // the other packages to use const.
@@ -368,6 +384,7 @@ class VideoPlayerOptions {
   VideoPlayerOptions({
     this.mixWithOthers = false,
     this.allowBackgroundPlayback = false,
+    this.webOptions,
   });
 
   /// Set this to true to keep playing video in background, when app goes in background.
@@ -380,4 +397,86 @@ class VideoPlayerOptions {
   /// Note: This option will be silently ignored in the web platform (there is
   /// currently no way to implement this feature in this platform).
   final bool mixWithOthers;
+
+  /// Additional web controls
+  final VideoPlayerWebOptions? webOptions;
+}
+
+/// [VideoPlayerWebOptions] can be optionally used to set additional web settings
+@immutable
+class VideoPlayerWebOptions {
+  /// [VideoPlayerWebOptions] can be optionally used to set additional web settings
+  const VideoPlayerWebOptions({
+    this.controls = const VideoPlayerWebOptionsControls.disabled(),
+    this.allowContextMenu = true,
+    this.allowRemotePlayback = true,
+  });
+
+  /// Additional settings for how control options are displayed
+  final VideoPlayerWebOptionsControls controls;
+
+  /// Whether context menu (right click) is allowed
+  final bool allowContextMenu;
+
+  /// Whether remote playback is allowed
+  final bool allowRemotePlayback;
+}
+
+/// [VideoPlayerWebOptions] can be used to set how control options are displayed
+@immutable
+class VideoPlayerWebOptionsControls {
+  /// Enables controls and sets how the options are displayed
+  const VideoPlayerWebOptionsControls.enabled({
+    this.allowDownload = true,
+    this.allowFullscreen = true,
+    this.allowPlaybackRate = true,
+    this.allowPictureInPicture = true,
+  }) : enabled = true;
+
+  /// Disables control options. Default behavior.
+  const VideoPlayerWebOptionsControls.disabled()
+      : enabled = false,
+        allowDownload = false,
+        allowFullscreen = false,
+        allowPlaybackRate = false,
+        allowPictureInPicture = false;
+
+  /// Whether native controls are enabled
+  final bool enabled;
+
+  /// Whether downloaded control is displayed
+  ///
+  /// Only applicable when [controlsEnabled] is true
+  final bool allowDownload;
+
+  /// Whether fullscreen control is enabled
+  ///
+  /// Only applicable when [controlsEnabled] is true
+  final bool allowFullscreen;
+
+  /// Whether playback rate control is displayed
+  ///
+  /// Only applicable when [controlsEnabled] is true
+  final bool allowPlaybackRate;
+
+  /// Whether picture in picture control is displayed
+  ///
+  /// Only applicable when [controlsEnabled] is true
+  final bool allowPictureInPicture;
+
+  /// A string representation of disallowed controls
+  String get controlsList {
+    final List<String> controlsList = <String>[];
+    if (!allowDownload) {
+      controlsList.add('nodownload');
+    }
+    if (!allowFullscreen) {
+      controlsList.add('nofullscreen');
+    }
+    if (!allowPlaybackRate) {
+      controlsList.add('noplaybackrate');
+    }
+
+    return controlsList.join(' ');
+  }
 }

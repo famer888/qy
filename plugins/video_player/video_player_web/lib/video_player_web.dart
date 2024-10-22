@@ -85,8 +85,7 @@ class VideoPlayerPlugin extends VideoPlayerPlatform {
     ui.platformViewRegistry.registerViewFactory(
         'videoPlayer-$textureId', (int viewId) => videoElement);
 
-    final VideoPlayer player = VideoPlayer(videoElement: videoElement)
-      ..initialize();
+    final VideoPlayer player = VideoPlayer(videoElement: videoElement);
 
     _videoPlayers[textureId] = player;
     return videoElement;
@@ -126,7 +125,6 @@ class VideoPlayerPlugin extends VideoPlayerPlatform {
       _unavailable.add(textureId);
     }
     changeVideo(textureId, uri);
-
 
     return textureId;
   }

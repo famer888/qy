@@ -1,4 +1,4 @@
-<?code-excerpt path-base="excerpts/packages/video_player_example"?>
+<?code-excerpt path-base="example/lib"?>
 
 # Video Player plugin for Flutter
 
@@ -6,15 +6,13 @@
 
 A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
 
-|             | Android | iOS  | Web   |
-|-------------|---------|------|-------|
-| **Support** | SDK 16+ | 9.0+ | Any\* |
+|             | Android | iOS   | macOS  | Web   |
+|-------------|---------|-------|--------|-------|
+| **Support** | SDK 16+ | 12.0+ | 10.14+ | Any\* |
 
-![The example app running in iOS](https://github.com/flutter/plugins/blob/main/packages/video_player/video_player/doc/demo_ipod.gif?raw=true)
+![The example app running in iOS](https://github.com/flutter/packages/blob/main/packages/video_player/video_player/doc/demo_ipod.gif?raw=true)
 
-## Installation
-
-First, add `video_player` as a [dependency in your pubspec.yaml file](https://flutter.dev/using-packages/).
+## Setup
 
 ### iOS
 
@@ -33,9 +31,15 @@ Android Manifest file, located in `<project root>/android/app/src/main/AndroidMa
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
+### macOS
+
+If you are using network-based videos, you will need to [add the
+`com.apple.security.network.client`
+entitlement](https://flutter.dev/to/macos-entitlements)
+
 ### Web
 
-> The Web platform does **not** suppport `dart:io`, so avoid using the `VideoPlayerController.file` constructor for the plugin. Using the constructor attempts to create a `VideoPlayerController.file` that will throw an `UnimplementedError`.
+> The Web platform does **not** support `dart:io`, so avoid using the `VideoPlayerController.file` constructor for the plugin. Using the constructor attempts to create a `VideoPlayerController.file` that will throw an `UnimplementedError`.
 
 \* Different web browsers may have different video-playback capabilities (supported formats, autoplay...). Check [package:video_player_web](https://pub.dev/packages/video_player_web) for more web-specific information.
 
@@ -43,7 +47,7 @@ The `VideoPlayerOptions.mixWithOthers` option can't be implemented in web, at le
 
 ## Supported Formats
 
-- On iOS, the backing player is [AVPlayer](https://developer.apple.com/documentation/avfoundation/avplayer).
+- On iOS and macOS, the backing player is [AVPlayer](https://developer.apple.com/documentation/avfoundation/avplayer).
   The supported formats vary depending on the version of iOS, [AVURLAsset](https://developer.apple.com/documentation/avfoundation/avurlasset) class
   has [audiovisualTypes](https://developer.apple.com/documentation/avfoundation/avurlasset/1386800-audiovisualtypes?language=objc) that you can query for supported av formats.
 - On Android, the backing player is [ExoPlayer](https://google.github.io/ExoPlayer/),
@@ -61,7 +65,7 @@ void main() => runApp(const VideoApp());
 
 /// Stateful widget to fetch and then display video content.
 class VideoApp extends StatefulWidget {
-  const VideoApp({Key? key}) : super(key: key);
+  const VideoApp({super.key});
 
   @override
   _VideoAppState createState() => _VideoAppState();
@@ -73,8 +77,8 @@ class _VideoAppState extends State<VideoApp> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
+    _controller = VideoPlayerController.networkUrl(Uri.parse(
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
@@ -112,8 +116,8 @@ class _VideoAppState extends State<VideoApp> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 }
 ```
@@ -123,7 +127,7 @@ class _VideoAppState extends State<VideoApp> {
 The following section contains usage information that goes beyond what is included in the
 documentation in order to give a more elaborate overview of the API.
 
-This is not complete as of now. You can contribute to this section by [opening a pull request](https://github.com/flutter/plugins/pulls).
+This is not complete as of now. You can contribute to this section by [opening a pull request](https://github.com/flutter/packages/pulls).
 
 ### Playback speed
 

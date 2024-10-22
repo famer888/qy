@@ -151,6 +151,7 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
                   VideoPlayer(_controller),
                   _ControlsOverlay(controller: _controller),
                   VideoProgressIndicator(_controller),
+                  _BrightnessControl(controller: _controller),
                 ],
               ),
             ),
@@ -160,6 +161,51 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
     );
   }
 }
+
+class _BrightnessControl extends StatefulWidget {
+  final MiniController controller;
+
+  const _BrightnessControl({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  _BrightnessControlState createState() => _BrightnessControlState();
+}
+
+class _BrightnessControlState extends State<_BrightnessControl> {
+  double _brightness = 1.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: 0,
+      right: 0,
+      top: 0,
+      child: Container(
+        color: Colors.black.withOpacity(0.5),
+        child: Row(
+          children: [
+            const Icon(Icons.brightness_6, color: Colors.white),
+            Expanded(
+              child: Slider(
+                value: _brightness,
+                min: 0.0,
+                max: 1.0,
+                onChanged: (value) {
+                  setState(() {
+                    _brightness = value;
+                  });
+                  // 这里调用设置亮度的方法
+                  widget.controller.setBrightness(_brightness);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 class _BumbleBeeEncryptedLiveStream extends StatefulWidget {
   @override
@@ -215,8 +261,7 @@ class _BumbleBeeEncryptedLiveStreamState
 }
 
 class _ControlsOverlay extends StatelessWidget {
-  const _ControlsOverlay({Key? key, required this.controller})
-      : super(key: key);
+  const _ControlsOverlay({required this.controller});
 
   static const List<double> _examplePlaybackRates = <double>[
     0.25,
@@ -240,9 +285,9 @@ class _ControlsOverlay extends StatelessWidget {
           reverseDuration: const Duration(milliseconds: 200),
           child: controller.value.isPlaying
               ? const SizedBox.shrink()
-              : Container(
+              : const ColoredBox(
                   color: Colors.black26,
-                  child: const Center(
+                  child: Center(
                     child: Icon(
                       Icons.play_arrow,
                       color: Colors.white,

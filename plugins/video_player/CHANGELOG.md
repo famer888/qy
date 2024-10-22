@@ -1,3 +1,94 @@
+## 2.9.1
+
+* Updates minimum web implementation version to ensure support for
+  the new `webOptions` exposed in `2.9.0`.
+
+## 2.9.0
+
+* Exports types: `VideoPlayerWebOptions` and `VideoPlayerWebOptionsControls` to
+  customize the `webOptions` field in `VideoPlayerOptions` objects.
+* Forwards `webOptions` to the web implementation.
+
+## 2.8.7
+
+* Ensures that `value.position` never reports a value larger than `value.duration`.
+* Updates minimum supported SDK version to Flutter 3.16/Dart 3.2.
+
+## 2.8.6
+
+* Updates minimum iOS implementation version to include a privacy manifest.
+* Updates minimum supported SDK version to Flutter 3.16.6/Dart 3.2.3.
+
+## 2.8.5
+
+* Updates example to call `super.dispose()` last.
+
+## 2.8.4
+
+* Removes `_ambiguate` methods from code.
+
+## 2.8.3
+
+* Fixes typo in `README.md`.
+* Updates minimum supported SDK version to Flutter 3.13/Dart 3.1.
+* Updates support matrix in README to indicate that iOS 11 is no longer supported.
+* Clients on versions of Flutter that still support iOS 11 can continue to use this
+  package with iOS 11, but will not receive any further updates to the iOS implementation.
+
+## 2.8.2
+
+* Updates minimum supported SDK version to Flutter 3.10/Dart 3.0.
+* Fixes new lint warnings.
+
+## 2.8.1
+
+* Updates the example app: replaces `ButtonBar` with `OverflowBar` widget.
+
+## 2.8.0
+
+* Adds support for macOS.
+
+## 2.7.2
+
+* Adds `isCompleted` event to `VideoPlayerEvent`.
+
+## 2.7.1
+
+* Adds pub topics to package metadata.
+* Updates minimum supported SDK version to Flutter 3.7/Dart 2.19.
+
+## 2.7.0
+
+* Adds an `Uri` typed factory method `VideoPlayerController.networkUrl` to avoid common mistakes with `String` URIs. The method
+receives an`Uri` instead of a `String` url.
+* Deprecates `VideoPlayerController.network` factory method.
+* Updates minimum supported SDK version to Flutter 3.3/Dart 2.18.
+## 2.6.1
+
+* Synchronizes `VideoPlayerValue.isPlaying` with underlying video player.
+
+## 2.6.0
+
+* Adds option to configure HTTP headers via `VideoPlayerController` to fix access to M3U8 files on Android.
+* Aligns Dart and Flutter SDK constraints.
+
+## 2.5.3
+
+* Updates iOS minimum version in README.
+
+## 2.5.2
+
+* Updates links for the merge of flutter/plugins into flutter/packages.
+* Updates minimum Flutter version to 3.0.
+
+## 2.5.1
+
+* Updates code for stricter lint checks.
+
+## 2.5.0
+
+* Exposes `VideoScrubber` so it can be used to make custom video progress indicators
+
 ## 2.4.10
 
 * Adds compatibilty with version 6.0 of the platform interface.
