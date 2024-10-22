@@ -5,7 +5,7 @@ publish_to: "none"
 version: 2.8.0
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
+  sdk: ">=3.4.0 <4.0.0"
 
 
 dependencies:
@@ -49,7 +49,7 @@ dependencies:
   qr_flutter: ^4.1.0
   image_gallery_saver: 2.0.3
   device_info_plus: ^9.1.1
-  package_info_plus: ^5.0.1
+  package_info_plus: ^8.0.2
   shelf: ^1.2.0
   pedantic: ^1.0.0
   shelf_static: ^1.1.0
@@ -61,7 +61,7 @@ dependencies:
   webcrypto: 0.5.3
 
 dependency_overrides:
-  win32: ">=4.0.0 <6.0.0"
+  win32: 5.5.4
 
 dev_dependencies:
   flutter_test:
