@@ -152,12 +152,6 @@ class UpdateDialog extends StatelessWidget {
                                   if (!mustUpdate) const Spacer(),
                                   GestureDetector(
                                     onTap: () {
-                                      if (!mustUpdate) {
-                                        cancel.call();
-                                      } else if (mustUpdate &&
-                                          Platform.isAndroid) {
-                                        cancel.call();
-                                      }
                                       confirm.call();
                                     },
                                     child: Container(

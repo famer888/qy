@@ -1,4 +1,6 @@
 class BuildConfig {
+  static const appName = 'qypj';
+
   static const key = '2acf7e91e9864673';
   static const iv = '1c29882d3ddfcfd6';
   static const appKey = '5589d41f92a597d016b037ac37db243d';
@@ -19,7 +21,7 @@ class BuildConfig {
 
   /// 备用线路
   static const githubLine =
-      'https://raw.githubusercontent.com/little-5/backup/master/qypjb.txt';
+      'https://raw.githubusercontent.com/little-5/backup/master/${appName}b.txt';
 
   static final fdsKeyApi = [
     'https://wvseee.jsbacjr.com/mb.txt',
@@ -29,15 +31,15 @@ class BuildConfig {
   /// 跳转webview路径
   static const webViewPathName = 'ktloadwebview';
 
-  static const affCodeKey = 'qypjb_aff';
+  static const affCodeKey = '${appName}b_aff';
 
-  static const webBundleId = 'com.pwa.qypj';
+  static const webBundleId = 'com.pwa.$appName';
 
   static const cacheKeys = (
-    appBox: 'qypjbox',
-    chats: 'qypjbox_Chats',
-    videoBox: 'qypj_video_box',
-    imageBox: 'qypjbox_ImageCache',
+    appBox: '${appName}box',
+    chats: '${appName}box_Chats',
+    videoBox: '${appName}_video_box',
+    imageBox: '${appName}box_ImageCache',
     imageCacheSalt: 'B181a0y1tL',
   );
 }

@@ -6,8 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../app_config.dart';
 import '../../../../../domain/domain.dart';
 import '../../../../utils/common_utils.dart';
+import '../../../theme.dart';
 
 class DownloadApkDialog extends StatefulWidget {
   const DownloadApkDialog(
@@ -34,8 +36,8 @@ class _DownloadApkDialogState extends State<DownloadApkDialog> {
   Future<void> _init() async {
     try {
       final result = await getExternalStorageDirectory();
-      String savePath =
-          '${result?.path}/wwsj.${DateTime.now().millisecondsSinceEpoch}.apk';
+      final savePath =
+          '${result?.path}/${BuildConfig.appName}.${DateTime.now().millisecondsSinceEpoch}.apk';
       await appDomain.downloadApk(
           urlPath: widget.url,
           savePath: savePath,
@@ -122,9 +124,8 @@ class _DownloadApkDialogState extends State<DownloadApkDialog> {
                                         width: 185.w,
                                         height: 4.w,
                                         decoration: const BoxDecoration(
-                                          color:
-                                              Color.fromRGBO(236, 174, 55, 1),
-                                        ),
+                                            color: MyTheme
+                                                .jellyCyanColor103224185),
                                       ),
                                     ),
                                     Positioned(
@@ -141,8 +142,8 @@ class _DownloadApkDialogState extends State<DownloadApkDialog> {
                                                     185.w,
                                                 height: 4.w,
                                                 decoration: const BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      236, 174, 55, 1),
+                                                  color: MyTheme
+                                                      .jellyCyanColor103224185,
                                                 ),
                                               );
                                             }),
@@ -161,13 +162,14 @@ class _DownloadApkDialogState extends State<DownloadApkDialog> {
                             animation: progressNotifier,
                             builder: (context, child) {
                               return Center(
-                                child: Text('${progressNotifier.value}%',
-                                    style: TextStyle(
-                                        color: const Color.fromRGBO(
-                                            236, 174, 55, 1),
-                                        fontSize: 18.sp,
-                                        decoration: TextDecoration.none,
-                                        fontWeight: FontWeight.bold)),
+                                child: Text(
+                                  '${progressNotifier.value}%',
+                                  style: TextStyle(
+                                      color: MyTheme.jellyCyanColor103224185,
+                                      fontSize: 18.sp,
+                                      decoration: TextDecoration.none,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               );
                             })
                       ],

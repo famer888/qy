@@ -45,7 +45,7 @@ class BottomNaviBar extends StatefulWidget {
 class _BottomNaviBarState extends State<BottomNaviBar> {
   late final _userNotifier = context.read<UserNotifier>();
   late final homeConfigNotifier = context.read<HomeConfigNotifier>();
-  late final targetVersion = homeConfigNotifier.homeData.versionMsg;
+  late final versionMsg = homeConfigNotifier.homeData.versionMsg;
   late final domain = context.read<AppDomain>();
   late final cache = domain.cache;
   MyTokenStatus? currentTokenStatus;
@@ -116,16 +116,17 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     if (homeConfigNotifier.homeData.popAds case final popAds?
         when popAds.length > index) {
       final notice = popAds[index];
+      final nextIndex = index + 1;
 
       BotToast.showWidget(
         toastBuilder: (cancelFunc) => AdDialog(
           cancel: () {
             cancelFunc();
-            _showDialog(index: index + 1);
+            _showDialog(index: nextIndex);
           },
           confirm: () {
             cancelFunc();
-            _showDialog(index: index + 1);
+            _showDialog(index: nextIndex);
             _adOnTap(notice: notice);
           },
           adUrl: notice.imgUrl ?? '',
@@ -140,59 +141,56 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
 
   /// 检查更新
   Future<void> _checkUpdateAnnouncement() async {
-    if (targetVersion?.version case final version?) {
+    if (versionMsg?.version case final targetVersion?) {
       final packageInfo = await PackageInfo.fromPlatform();
-      final String localVersion = packageInfo.version;
-      final currentVersion = localVersion.replaceAll('.', '');
+      final currentVersion = packageInfo.version;
 
-      final String targetNumber = version.replaceAll('.', '');
+      final currentNumber =
+          int.tryParse(currentVersion.replaceAll('.', '')) ?? 0;
+      final targetNumber = int.tryParse(targetVersion.replaceAll('.', '')) ?? 0;
 
-      final needUpdate = (int.tryParse(targetNumber) ?? 0) >
-          (int.tryParse(currentVersion) ?? 0);
+      final needUpdate = targetNumber > currentNumber;
 
-      if (kIsWeb) {
-        if (targetVersion!.mstatus == 1) _showAnnouncementDialog();
-        return;
+      if (needUpdate && !kIsWeb) {
+        _showAppUpdateDialog();
+      } else {
+        _showAnnouncementDialogIfNeed();
       }
-      if (needUpdate) _showAppUpdateDialog();
-
-      // 无更新 有公告
-      if (targetVersion!.mstatus == 1) _showAnnouncementDialog();
     }
   }
 
   /// 更新公告弹窗
   void _showAppUpdateDialog() {
-    final Config config = homeConfigNotifier.config;
+    final config = homeConfigNotifier.config;
+
+    //强制更新
+    final mustUpdate = versionMsg?.must == 1;
 
     BotToast.showWidget(
-        toastBuilder: (cancelFunc) => UpdateDialog(
-              cancel: () {
-                cancelFunc();
-                if (targetVersion?.must == 2) _showAnnouncementDialog();
-              },
-              confirm: () {
-                cancelFunc();
-                if (kIsWeb) {
-                  CommonUtils.launchUrl(config.officeSite ?? '');
-                } else {
-                  if (Platform.isAndroid) {
-                    BotToast.showWidget(
-                      toastBuilder: (cancelFunc) => DownloadApkDialog(
-                        version: targetVersion?.version ?? '',
-                        url: targetVersion?.apk ?? '',
-                      ),
-                    );
-                  } else {
-                    CommonUtils.launchUrl(targetVersion?.apk ?? '');
-                  }
-                }
-              },
-              tips: targetVersion?.tips ?? '',
-              mustUpdate: targetVersion?.must == 1,
-              officialWebUrl: config.officeSite ?? '',
-              solution: config.solution ?? '',
-            ));
+      toastBuilder: (cancelFunc) => UpdateDialog(
+        cancel: () {
+          cancelFunc();
+          _showAnnouncementDialogIfNeed();
+        },
+        confirm: () {
+          if (Platform.isAndroid) {
+            cancelFunc();
+            BotToast.showWidget(
+              toastBuilder: (cancelFunc) => DownloadApkDialog(
+                version: versionMsg?.version ?? '',
+                url: versionMsg?.apk ?? '',
+              ),
+            );
+          } else {
+            CommonUtils.launchUrl(versionMsg?.apk ?? '');
+          }
+        },
+        tips: versionMsg?.tips ?? '',
+        mustUpdate: mustUpdate,
+        officialWebUrl: config.officeSite ?? '',
+        solution: config.solution ?? '',
+      ),
+    );
   }
 
   /// 活动弹窗点击事件
@@ -207,7 +205,10 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   }
 
   /// 系统公告弹窗
-  void _showAnnouncementDialog() {
+  void _showAnnouncementDialogIfNeed() {
+    if (versionMsg?.mstatus != 1) {
+      return;
+    }
     BotToast.showWidget(
       toastBuilder: (cancelFunc) => AnnouncementDialog(
         cancel: () {
@@ -217,7 +218,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
           cancelFunc();
           const MineAgentRoute().push(context);
         },
-        text: homeConfigNotifier.homeData.versionMsg?.message ?? '',
+        text: versionMsg?.message ?? '',
       ),
     );
   }
