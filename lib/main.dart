@@ -107,6 +107,7 @@ class _MyAppState extends State<MyApp> {
       locale: context.locale,
       onGenerateTitle: (context) => 'yybt'.tr(context: context),
       theme: ThemeData(
+        primaryColor: MyTheme.bgColor,
         progressIndicatorTheme: const ProgressIndicatorThemeData(
             color: MyTheme.jellyCyanColor103224185),
         splashColor: Colors.transparent,

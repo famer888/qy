@@ -86,8 +86,8 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     cache.clearImageCacheIfNeed();
     //处理剪贴板内容
     _getClipboardText();
-
-    _showActivityDialog(index: 0);
+    // 显示弹窗
+    _showDialog();
 
     if (!kIsWeb) _initDownloadStatus();
   }
@@ -111,38 +111,28 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     }
   }
 
-  /// 活动弹窗
-  void _showActivityDialog({required int index}) {
-    final popAds = homeConfigNotifier.homeData.popAds;
-    final int adsLength = popAds?.length ?? 0;
-    final bool isLastAd = index == adsLength - 1;
-    if (popAds?.isNotEmpty == true) {
-      if (index < adsLength) {
-        final Notice? notice = popAds?[index];
-        BotToast.showWidget(
-            toastBuilder: (cancelFunc) => AdDialog(
-                  cancel: () {
-                    cancelFunc();
-                    if (isLastAd) {
-                      _checkUpdateAnnouncement();
-                    } else {
-                      _showActivityDialog(index: index + 1);
-                    }
-                  },
-                  confirm: () {
-                    cancelFunc();
-                    if (isLastAd) {
-                      _checkUpdateAnnouncement();
-                    } else {
-                      _showActivityDialog(index: index + 1);
-                    }
-                    _adOnTap(notice: notice);
-                  },
-                  adUrl: notice?.imgUrl ?? '',
-                  adWidth: notice?.width,
-                  adHeight: notice?.height,
-                ));
-      }
+  // 显示弹窗
+  void _showDialog({int index = 0}) {
+    if (homeConfigNotifier.homeData.popAds case final popAds?
+        when popAds.length > index) {
+      final notice = popAds[index];
+
+      BotToast.showWidget(
+        toastBuilder: (cancelFunc) => AdDialog(
+          cancel: () {
+            cancelFunc();
+            _showDialog(index: index + 1);
+          },
+          confirm: () {
+            cancelFunc();
+            _showDialog(index: index + 1);
+            _adOnTap(notice: notice);
+          },
+          adUrl: notice.imgUrl ?? '',
+          adWidth: notice.width,
+          adHeight: notice.height,
+        ),
+      );
     } else {
       _checkUpdateAnnouncement();
     }
@@ -219,16 +209,17 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   /// 系统公告弹窗
   void _showAnnouncementDialog() {
     BotToast.showWidget(
-        toastBuilder: (cancelFunc) => AnnouncementDialog(
-              cancel: () {
-                cancelFunc();
-              },
-              confirm: () {
-                cancelFunc();
-                const MineAgentRoute().push(context);
-              },
-              text: homeConfigNotifier.homeData.versionMsg?.message ?? '',
-            ));
+      toastBuilder: (cancelFunc) => AnnouncementDialog(
+        cancel: () {
+          cancelFunc();
+        },
+        confirm: () {
+          cancelFunc();
+          const MineAgentRoute().push(context);
+        },
+        text: homeConfigNotifier.homeData.versionMsg?.message ?? '',
+      ),
+    );
   }
 
   // 初始化下载状态

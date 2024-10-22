@@ -20,7 +20,7 @@ import '../router/routes.dart';
 class CommonUtils {
   static setStatusBar({bool isLight = false}) {
     if (kIsWeb) {
-      return SystemChrome.setSystemUIOverlayStyle(
+      SystemChrome.setSystemUIOverlayStyle(
           isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
     } else if (Platform.isAndroid) {
       SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(

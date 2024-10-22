@@ -29,11 +29,10 @@ class AnnouncementDialog extends StatelessWidget {
             children: [
               Container(
                 clipBehavior: Clip.hardEdge,
-                decoration: const BoxDecoration(
-                    color: Colors.black38,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10))),
+                decoration: BoxDecoration(
+                  color: Colors.black38,
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 margin: EdgeInsets.symmetric(horizontal: 35.w),
                 height: 450.w,
                 child: Stack(
