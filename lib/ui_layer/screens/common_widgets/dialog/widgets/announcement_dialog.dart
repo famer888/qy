@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../utils/common_utils.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
+import '../../link_text.dart';
 import '../../my_image.dart';
 
 class AnnouncementDialog extends StatelessWidget {
@@ -49,26 +51,37 @@ class AnnouncementDialog extends StatelessWidget {
                         children: [
                           SizedBox(height: 10.w),
                           Expanded(
-                              child: SingleChildScrollView(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                for (final text in textList)
-                                  RichText(
-                                      text: TextSpan(
-                                    text: text,
-                                    style: TextStyle(
-                                      color: const Color(0xff636363),
-                                      fontSize: 15.sp,
-                                      decoration: TextDecoration.none,
-                                      fontWeight: FontWeight.normal,
+                            child: SingleChildScrollView(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  for (final text in textList)
+                                    LinkText(
+                                      text,
+                                      textAlign: TextAlign.left,
+                                      onLinkTap: (url) {
+                                        CommonUtils.launchUrl(url);
+                                      },
+                                      textStyle: TextStyle(
+                                        color: const Color(0xff636363),
+                                        fontSize: 15.sp,
+                                        decoration: TextDecoration.none,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                      linkStyle: TextStyle(
+                                        color: const Color.fromRGBO(
+                                            25, 103, 210, 1),
+                                        fontSize: 15.sp,
+                                        decoration: TextDecoration.none,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
-                                  ))
-                              ],
+                                ],
+                              ),
                             ),
-                          )),
+                          ),
                           SizedBox(height: 15.w),
                           Padding(
                             padding: EdgeInsets.only(
@@ -89,12 +102,16 @@ class AnnouncementDialog extends StatelessWidget {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(16.w))),
                                     child: Center(
-                                        child: RichText(
-                                            text: TextSpan(children: [
-                                      TextSpan(
-                                          text: tr('wygq'),
-                                          style: MyTheme.white255_14_M),
-                                    ]))),
+                                      child: RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                                text: tr('wygq'),
+                                                style: MyTheme.white255_14_M),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 )
                               ],
@@ -107,11 +124,15 @@ class AnnouncementDialog extends StatelessWidget {
                 ),
               ),
               Positioned(
-                  top: 30.w,
-                  left: 0,
-                  right: 0,
-                  child: MyImage.asset(MyImagePaths.appAnnouncement,
-                      width: 119.w, height: 29.w))
+                top: 30.w,
+                left: 0,
+                right: 0,
+                child: MyImage.asset(
+                  MyImagePaths.appAnnouncement,
+                  width: 119.w,
+                  height: 29.w,
+                ),
+              )
             ],
           ),
         )
