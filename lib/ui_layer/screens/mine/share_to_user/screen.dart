@@ -80,6 +80,7 @@ class _MineShareToUserScreenState extends State<MineShareToUserScreen> {
         _asyncValue = const AsyncError();
       }
     } else {
+      showApplyPage = false;
       _asyncValue = AsyncData(res.data);
     }
 

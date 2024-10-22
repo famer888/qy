@@ -30,7 +30,10 @@ class UpdateDialog extends StatelessWidget {
     return Stack(
       children: [
         const Positioned.fill(
-            child: ColoredBox(color: Color.fromRGBO(0, 0, 0, 0.7))),
+          child: ColoredBox(
+            color: Colors.black38,
+          ),
+        ),
         Positioned(
             child: Center(
           child: Stack(

@@ -20,6 +20,7 @@ class MyTheme {
     color: Colors.white.withOpacity(0.6),
     fontSize: 12.sp,
     fontWeight: FontWeight.w400,
+    overflow: TextOverflow.ellipsis,
   );
   static final TextStyle whiteOpacity614w400 = TextStyle(
       color: Colors.white.withOpacity(0.6),

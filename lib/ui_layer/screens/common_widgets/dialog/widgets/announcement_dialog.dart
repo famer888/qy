@@ -21,9 +21,11 @@ class AnnouncementDialog extends StatelessWidget {
     return Stack(
       children: [
         Positioned.fill(
-            child: GestureDetector(
-                onTap: () => cancel.call(),
-                child: const ColoredBox(color: Colors.black38))),
+          child: GestureDetector(
+            onTap: () => cancel.call(),
+            child: const ColoredBox(color: Colors.black38),
+          ),
+        ),
         Center(
           child: Stack(
             children: [

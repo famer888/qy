@@ -20,39 +20,48 @@ class AdDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () => cancel.call(),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () => confirm.call(),
-              child: RepaintBoundary(
-                child: Image.network(
-                  adUrl,
-                  width: adWidth?.w,
-                  height: adHeight?.w,
-                ),
-              ),
-            ),
-            SizedBox(height: 20.w),
-            GestureDetector(
-              onTap: () => cancel.call(),
-              child: SizedBox(
-                child: MyImage.asset(
-                  MyImagePaths.appCancelWithCircle,
-                  fit: BoxFit.cover,
-                  width: 33.w,
-                  height: 33.w,
-                ),
-              ),
-            ),
-          ],
+    return Stack(
+      children: [
+        const Positioned.fill(
+          child: ColoredBox(
+            color: Colors.black38,
+          ),
         ),
-      ),
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => cancel.call(),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => confirm.call(),
+                  child: RepaintBoundary(
+                    child: Image.network(
+                      adUrl,
+                      width: adWidth?.w,
+                      height: adHeight?.w,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.w),
+                GestureDetector(
+                  onTap: () => cancel.call(),
+                  child: SizedBox(
+                    child: MyImage.asset(
+                      MyImagePaths.appCancelWithCircle,
+                      fit: BoxFit.cover,
+                      width: 33.w,
+                      height: 33.w,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
