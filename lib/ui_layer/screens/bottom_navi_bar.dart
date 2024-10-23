@@ -241,8 +241,8 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   void _addMainScreen() {
     if (!kIsWeb) return;
     final bool isInstall =
-        (js.context.callMethod("getInstallValue") as String) == "1";
-    final bool isSafari = js.context.callMethod("checkSafari") as bool;
+        (js.context.callMethod('getInstallValue') as String) == '1';
+    final bool isSafari = js.context.callMethod('checkSafari') as bool;
     if (!isSafari && !isInstall) {
       showModalBottomSheet(
         backgroundColor: Colors.transparent,
