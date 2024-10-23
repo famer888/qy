@@ -62,6 +62,9 @@ class _MessageCenterScreenState extends State<MessageCenterScreen> {
                       : Container(),
                   Column(
                     children: chats.map((e) {
+                      if (!e.id.startsWith('${userNotifier.member.uuid}_')) {
+                        return const SizedBox.shrink();
+                      }
                       final DateTime targetDate =
                           DateTime.fromMillisecondsSinceEpoch(
                               int.parse(e.list.last.time) * 1000);
