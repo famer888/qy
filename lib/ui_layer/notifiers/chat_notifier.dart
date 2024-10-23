@@ -54,9 +54,6 @@ class ChatNotifier extends ChangeNotifier {
   }
 
   Future _sendInitUser() async {
-    if (_imWebSocket == null) {
-      return;
-    }
     await _imWebSocket?.sendEvent(ImRequestType.initUser, data: {
       'uuid': member.uuid,
       'phone': member.username,
