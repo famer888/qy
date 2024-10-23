@@ -133,12 +133,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
         ),
       );
     } else {
-      //web端直接去展示系统公告
-      if (kIsWeb) {
-        _showAnnouncementDialogIfNeed();
-      } else {
-        _showAppUpdateDialogIfNeed();
-      }
+      _showAppUpdateDialogIfNeed();
     }
   }
 
