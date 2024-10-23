@@ -90,7 +90,7 @@ class _FollowingUserViewState extends State<FollowingUserView> {
     if (res.isValid) {
       lastIx = res.data?.lastIx ?? '';
       userNotifier.patchUserFollowStatus(
-          res.data?.followFansModelList?.map((e) => '${e.aff}') ?? []);
+          res.data?.followFansModelList?.map((e) => '${e.aff}') ?? [], []);
     } else if (res.msg case final msg? when msg.isNotEmpty) {
       MyToast.showText(text: msg);
     }
@@ -139,8 +139,9 @@ class _FollowingUserViewState extends State<FollowingUserView> {
                         width: 65.w,
                         height: 25.w,
                         decoration: BoxDecoration(
-                            color: MyTheme.cyanColor00edfd,
-                            borderRadius: BorderRadius.circular(12.5.w)),
+                          color: const Color(0xFF60b2dc),
+                          borderRadius: BorderRadius.circular(12.5.w),
+                        ),
                         child: Center(
                             child: Text(tr('qxgz'), style: MyTheme.white11)),
                       );
@@ -150,12 +151,12 @@ class _FollowingUserViewState extends State<FollowingUserView> {
                       height: 25.w,
                       decoration: BoxDecoration(
                           border: Border.all(
-                            color: MyTheme.cyanColor00edfd,
+                            color: const Color(0xFF60b2dc),
                             width: 0.5,
                           ),
                           borderRadius: BorderRadius.circular(12.5.w)),
                       child: Center(
-                          child: Text(tr('jgz'), style: MyTheme.jellyCyan_11)),
+                          child: Text(tr('jgz'), style: MyTheme.blue80_11)),
                     );
                   }),
             )
@@ -276,13 +277,13 @@ class _FollowingTopicState extends State<FollowingTopic> {
                 height: 25.w,
                 decoration: BoxDecoration(
                     color: isFollowing
-                        ? MyTheme.cyanColor00edfd
+                        ? const Color(0xFF60b2dc)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(12.5.w),
                     border: Border.all(
                         color: isFollowing
                             ? Colors.transparent
-                            : MyTheme.cyanColor00edfd,
+                            : const Color(0xFF60b2dc),
                         width: 0.5.w)),
                 child: Center(
                   child: Text(

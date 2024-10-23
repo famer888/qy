@@ -73,6 +73,9 @@ class _CircleCommunityContentViewState
           posts
               .where((post) => post.user?.isFollow == 1)
               .map((post) => '${post.user?.aff}'),
+          posts
+              .where((post) => post.user?.isFollow != 1)
+              .map((post) => '${post.user?.aff}'),
         );
         return posts;
       }
