@@ -245,8 +245,6 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     super.dispose();
   }
 
-  late final appDomain = context.read<AppDomain>();
-
   @override
   Widget build(BuildContext context) {
     return Selector<UserNotifier, bool>(
