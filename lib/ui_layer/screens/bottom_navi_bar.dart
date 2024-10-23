@@ -25,11 +25,14 @@ import 'common_widgets/dialog/widgets/ad_dialog.dart';
 import 'common_widgets/dialog/widgets/announcement_dialog.dart';
 import 'common_widgets/dialog/widgets/download_apk_dialog.dart';
 import 'common_widgets/dialog/widgets/update_dialog.dart';
+import 'common_widgets/link_text.dart';
 import 'common_widgets/my_image.dart';
 import 'common_widgets/pop_scope_wrapper.dart';
 import 'common_widgets/status/loading.dart';
 import 'image_paths.dart';
 import 'theme.dart';
+
+import 'package:universal_html/js.dart' as js;
 
 class BottomNaviBar extends StatefulWidget {
   const BottomNaviBar({
@@ -88,6 +91,17 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     _showDialog();
 
     if (!kIsWeb) _initDownloadStatus();
+  }
+
+  // 初始化下载状态
+  Future<void> _initDownloadStatus() async {
+    if (await cache.readDownloadVideoTasks() case final tasks) {
+      for (var task in tasks) {
+        task['downloading'] = false;
+        task['isWaiting'] = false;
+      }
+      await cache.upsertDownloadVideoTasks(tasks: tasks);
+    }
   }
 
   Future<void> _getClipboardText() async {
@@ -223,14 +237,93 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     );
   }
 
-  // 初始化下载状态
-  Future<void> _initDownloadStatus() async {
-    if (await cache.readDownloadVideoTasks() case final tasks) {
-      for (var task in tasks) {
-        task['downloading'] = false;
-        task['isWaiting'] = false;
-      }
-      await cache.upsertDownloadVideoTasks(tasks: tasks);
+  //加载添加到主屏幕功能
+  void _addMainScreen() {
+    if (!kIsWeb) return;
+    final bool isInstall =
+        (js.context.callMethod("getInstallValue") as String) == "1";
+    final bool isSafari = js.context.callMethod("checkSafari") as bool;
+    if (!isSafari && !isInstall) {
+      showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setBottomSheetState) {
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+              decoration: BoxDecoration(
+                color: MyTheme.blackColor49,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(5.w),
+                    topLeft: Radius.circular(5.w)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 20.w),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(width: 20.w, height: 20.w),
+                      Text(
+                        'tjwberk'.tr(),
+                        style: MyTheme.white14,
+                      ),
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(
+                          Icons.close,
+                          size: 20.w,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30.w),
+                  LinkText(
+                    'tjwbdes'.tr(namedArgs: {
+                      'url': html.window.location.href,
+                    }),
+                    textStyle: MyTheme.red12,
+                    linkStyle: TextStyle(
+                      color: const Color.fromRGBO(25, 103, 210, 1),
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                  SizedBox(height: 20.w),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      final bool isDeferredNotNull =
+                          js.context.callMethod('isDeferredNotNull') as bool;
+                      if (isDeferredNotNull) {
+                        js.context.callMethod('presentAddToHome');
+                      } else {
+                        MyToast.showText(text: 'tjpjg'.tr(), time: 2);
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          gradient: MyTheme.btnGradient_ff00edfd_ffbbe954,
+                          borderRadius: BorderRadius.all(Radius.circular(3.w))),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                      height: 32.w,
+                      alignment: Alignment.center,
+                      child: Text('tjwbzpm'.tr(), style: MyTheme.white13),
+                    ),
+                  ),
+                  SizedBox(height: 30.w),
+                ],
+              ),
+            );
+          });
+        },
+      );
     }
   }
 

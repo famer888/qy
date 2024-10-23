@@ -304,7 +304,7 @@
   "sqljzcl": "IM失去链接，正在重新链接^_^",
   "tjwbzpm": "添加到主屏幕",
   "tjwberk": "添加妻友到主屏幕？[如已添加请忽略]",
-  "tjwbdes": "如无法正常添加到主屏幕，请下载最新版本的Google浏览器https://www.google.cn/intl/zh-CN/chrome，打开Google浏览器，输入本站网址000，点击右上角的【菜单】然后选择【添加到主屏幕】即可完成WEB版APP",
+  "tjwbdes": "如无法正常添加到主屏幕，请下载最新版本的Google浏览器https://www.google.cn/intl/zh-CN/chrome，打开Google浏览器，输入本站网址{url}，点击右上角的【菜单】然后选择【添加到主屏幕】即可完成WEB版APP",
   "tjpcg": "用户已安装PWA",
   "tjpjg": "当前浏览器不支持该功能，请使用Google浏览器添加到主屏幕或24小时后再操作",
   "tjpsb": "用户取消安装PWA",
