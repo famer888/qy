@@ -75,9 +75,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
 
     if (!_isInit && _userNotifier.isInit) {
       _isInit = true;
-      if (_isInit) {
-        _appStartCheck();
-      }
+      _appStartCheck();
     }
   }
 
@@ -135,13 +133,19 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
         ),
       );
     } else {
-      _checkUpdateAnnouncement();
+      //web端直接去展示系统公告
+      if (kIsWeb) {
+        _showAnnouncementDialogIfNeed();
+      } else {
+        _showAppUpdateDialogIfNeed();
+      }
     }
   }
 
   /// 检查更新
-  Future<void> _checkUpdateAnnouncement() async {
-    if (versionMsg?.version case final targetVersion?) {
+  Future<void> _showAppUpdateDialogIfNeed() async {
+    bool needUpdate = false;
+    if (versionMsg?.version case final targetVersion? when !kIsWeb) {
       final packageInfo = await PackageInfo.fromPlatform();
       final currentVersion = packageInfo.version;
 
@@ -149,13 +153,13 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
           int.tryParse(currentVersion.replaceAll('.', '')) ?? 0;
       final targetNumber = int.tryParse(targetVersion.replaceAll('.', '')) ?? 0;
 
-      final needUpdate = targetNumber > currentNumber;
+      needUpdate = targetNumber > currentNumber;
+    }
 
-      if (needUpdate && !kIsWeb) {
-        _showAppUpdateDialog();
-      } else {
-        _showAnnouncementDialogIfNeed();
-      }
+    if (needUpdate) {
+      _showAppUpdateDialog();
+    } else {
+      _showAnnouncementDialogIfNeed();
     }
   }
 
@@ -168,10 +172,12 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
 
     BotToast.showWidget(
       toastBuilder: (cancelFunc) => UpdateDialog(
-        cancel: () {
-          cancelFunc();
-          _showAnnouncementDialogIfNeed();
-        },
+        cancel: mustUpdate
+            ? null
+            : () {
+                cancelFunc();
+                _showAnnouncementDialogIfNeed();
+              },
         confirm: () {
           if (Platform.isAndroid) {
             cancelFunc();
@@ -186,7 +192,6 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
           }
         },
         tips: versionMsg?.tips ?? '',
-        mustUpdate: mustUpdate,
         officialWebUrl: config.officeSite ?? '',
         solution: config.solution ?? '',
       ),

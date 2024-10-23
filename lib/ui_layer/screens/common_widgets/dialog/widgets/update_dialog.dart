@@ -10,20 +10,20 @@ import '../../../theme.dart';
 import '../../my_image.dart';
 
 class UpdateDialog extends StatelessWidget {
-  const UpdateDialog(
-      {super.key,
-      required this.cancel,
-      required this.confirm,
-      required this.tips,
-      required this.officialWebUrl,
-      required this.solution,
-      required this.mustUpdate});
-  final VoidCallback cancel;
+  const UpdateDialog({
+    super.key,
+    this.cancel,
+    required this.confirm,
+    required this.tips,
+    required this.officialWebUrl,
+    required this.solution,
+  });
+  final VoidCallback? cancel;
   final VoidCallback confirm;
   final String tips;
   final String officialWebUrl;
   final String solution;
-  final bool mustUpdate;
+
   List<String> get textList => tips.split('#');
   @override
   Widget build(BuildContext context) {
@@ -125,12 +125,9 @@ class UpdateDialog extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  if (!mustUpdate)
+                                  if (cancel != null) ...[
                                     GestureDetector(
-                                      onTap: () {
-                                        if (mustUpdate) return;
-                                        cancel.call();
-                                      },
+                                      onTap: cancel,
                                       child: Container(
                                         width: 110.w,
                                         height: 32.w,
@@ -149,7 +146,8 @@ class UpdateDialog extends StatelessWidget {
                                         )),
                                       ),
                                     ),
-                                  if (!mustUpdate) const Spacer(),
+                                    const Spacer()
+                                  ],
                                   GestureDetector(
                                     onTap: () {
                                       confirm.call();
