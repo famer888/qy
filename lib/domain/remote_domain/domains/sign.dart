@@ -14,4 +14,7 @@ abstract class SignDomain {
 
   /// 新人福利 领取
   AsyncResult signListTaskAccept(Map request);
+
+  /// 签到
+  AsyncResult signUp();
 }

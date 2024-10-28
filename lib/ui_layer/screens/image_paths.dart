@@ -11,6 +11,7 @@ class MyImagePaths {
   static const appMineInvitedCode = './assets/images/app_mine_invited_code.png';
   static const appDlcy = './assets/images/app_dlcy.png';
   static const appTabAreaN = './assets/images/app_tab_area_n.png';
+  static const appSingInVip = './assets/images/app_singIn_vip.png';
   static const appTabHomeS = './assets/images/app_tab_home_s.png';
   static const appCollectOff = './assets/images/app_collect_off.png';
   static const appMineLogin = './assets/images/app_mine_login.png';
@@ -48,6 +49,7 @@ class MyImagePaths {
   static const appNoData = './assets/images/app_no_data.png';
   static const appWdServsN = './assets/images/app_wd_servs_n.png';
   static const appMineCollect = './assets/images/app_mine_collect.png';
+  static const appSiginCz = './assets/images/app_sigin_cz.png';
   static const appWdFxbotmbgN = './assets/images/app_wd_fxbotmbg_n.png';
   static const app2024ComXiazai = './assets/images/app_2024_com_xiazai.png';
   static const appTabCircleN = './assets/images/app_tab_circle_n.png';
@@ -111,11 +113,13 @@ class MyImagePaths {
   static const appCircleClose = './assets/images/app_circle_close.png';
   static const appAiFaceSampleGlasses = './assets/images/app_ai_face_sample_glasses.png';
   static const appCopy = './assets/images/app_copy.png';
+  static const appSingInJb = './assets/images/app_singIn_jb.png';
   static const appFxxbbT = './assets/images/app_fxxbb_t.png';
   static const appTabWodeS = './assets/images/app_tab_wode_s.png';
   static const appMineDownload = './assets/images/app_mine_download.png';
   static const appCustomerServiceSelectImg = './assets/images/app_customer_service_select_img.png';
   static const appRenqiIcon = './assets/images/app_renqi_icon.png';
+  static const appSingInJf = './assets/images/app_singIn_jf.png';
   static const appFigureN = './assets/images/app_figure_n.png';
   static const appThumbsIcon = './assets/images/app_thumbs_icon.png';
   static const appIssueCancelIcon = './assets/images/app_issue_cancel_icon.png';

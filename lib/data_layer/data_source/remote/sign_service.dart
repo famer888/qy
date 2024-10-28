@@ -25,4 +25,7 @@ class SignService extends BaseService {
   /// 新人福利 领取
   AsyncJson signListTaskAccept(Map reqData) =>
       post('/accept_task', data: reqData);
+
+  /// 签到
+  AsyncJson signUpt() => post('/sign_up');
 }

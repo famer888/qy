@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../theme.dart';
+import 'gradient_button/button.dart';
 
 enum _Type {
   highEmphasis,
@@ -130,23 +131,19 @@ class _MyButtonState extends State<MyButton> {
           onPressed: onPressed,
           child: child,
         ),
-      _Type.gradient => GestureDetector(
-          onTap: onPressed,
-          child: Container(
-            padding: padding,
-            alignment: padding == null ? Alignment.center : null,
-            constraints: BoxConstraints(
-              minWidth: minimumSize?.width ?? 0,
-              minHeight: minimumSize?.height ?? 0,
-            ),
-            decoration: BoxDecoration(
-              gradient:
-                  widget.gradient ?? MyTheme.btnGradient_ff00edfd_ffbbe954,
+      _Type.gradient => GradientElevatedButton(
+          style: GradientElevatedButton.styleFrom(
+            gradient: widget.gradient ?? MyTheme.btnGradient_ff00edfd_ffbbe954,
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
                   widget.borderRadius ?? (minimumSize?.height ?? 8.w) / 2),
             ),
-            child: child,
+            minimumSize: minimumSize,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: padding,
           ),
+          onPressed: onPressed,
+          child: child,
         ),
       _Type.lowEmphasis => OutlinedButton(
           style: OutlinedButton.styleFrom(

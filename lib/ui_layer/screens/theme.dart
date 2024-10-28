@@ -96,7 +96,7 @@ class MyTheme {
   /// ----------------------
   static const btnGradient_ff00edfd_ffbbe954 = LinearGradient(
     // colors: [Color(0xff00edfd), Color(0xffbbe954)],
-    colors: [Color(0xff00d2be), Color(0xff6496fc)],
+    colors: [Color(0xff6defdc), Color(0xff60b2dc)],
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
   );
@@ -111,10 +111,12 @@ class MyTheme {
   static const bgColor = Color.fromRGBO(11, 11, 33, 1);
   static const naviColor = Color.fromRGBO(11, 11, 33, 1);
 
+  static const white008Color = Color.fromRGBO(255, 255, 255, 0.08);
   static const white02Color = Color.fromRGBO(255, 255, 255, 0.2);
+  static const white06Color = Color.fromRGBO(255, 255, 255, 0.6);
+  static const white07Color = Color.fromRGBO(255, 255, 255, 0.7);
   static const white08Color = Color.fromRGBO(255, 255, 255, 0.8);
   static const white09Color = Color.fromRGBO(255, 255, 255, 0.9);
-  static const white06Color = Color.fromRGBO(255, 255, 255, 0.6);
 
   static const blackColor18 = Color.fromRGBO(18, 18, 18, 1);
   static const blackColor25 = Color.fromRGBO(25, 25, 25, 1);
@@ -133,6 +135,7 @@ class MyTheme {
   static const brownColor91_60_44 = Color.fromRGBO(118, 75, 51, 1);
   static const grayColor180 = Color.fromRGBO(180, 180, 180, 1);
   static const grayColor150 = Color.fromRGBO(150, 150, 150, 1);
+  static const yellow255240 = Color.fromRGBO(255, 240, 0, 1);
 
   static const goldColor234_202_147 = Color.fromRGBO(234, 202, 147, 1);
 
@@ -140,8 +143,37 @@ class MyTheme {
 
   static const cyanColor00edfd = Color(0xff67e0b9);
 
+  static const jellyCyanColor = Color.fromRGBO(0, 210, 190, 1);
   static const jellyCyanColor103224185 = Color.fromRGBO(0, 210, 190, 1);
   static const jellyCyanColor108235220 = Color.fromRGBO(108, 235, 220, 1);
+
+  static final TextStyle yellow_11 = TextStyle(
+      color: yellow255240,
+      fontSize: 11.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static final TextStyle yellow_12 = TextStyle(
+      color: yellow255240,
+      fontSize: 12.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+  static final TextStyle yellow_14 = TextStyle(
+      color: yellow255240,
+      fontSize: 14.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+  static final TextStyle yellow_16 = TextStyle(
+      color: yellow255240,
+      fontSize: 16.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static final TextStyle white04_12 = TextStyle(
+      color: const Color.fromRGBO(255, 255, 255, 0.4),
+      fontSize: 12.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
 
   static final TextStyle white06_10 = TextStyle(
     color: white06Color,
@@ -157,6 +189,13 @@ class MyTheme {
     decoration: TextDecoration.none,
   );
 
+  static final TextStyle white07_10 =
+      TextStyle(color: white07Color, fontSize: 10.sp);
+  static final TextStyle white07_12 = TextStyle(
+    color: white07Color,
+    fontSize: 12.sp,
+  );
+
   static final TextStyle white08_12 = TextStyle(
     color: white08Color,
     fontSize: 12.sp,
@@ -169,6 +208,14 @@ class MyTheme {
       fontSize: 14.sp,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w500,
+      decoration: TextDecoration.none);
+
+  static final white15_M = TextStyle(
+      fontFamily: hanyi,
+      color: Colors.white,
+      fontSize: 15.sp,
+      fontWeight: FontWeight.w500,
+      overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static final bloodOrange2557710_14 = TextStyle(
@@ -2817,10 +2864,11 @@ class MyTheme {
       fontWeight: FontWeight.w500,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
-  static final jellyCyan_25_semi = TextStyle(
+
+  static TextStyle jellyCyan_25_semi = TextStyle(
       fontFamily: hanyi,
       color: jellyCyanColor103224185,
-      fontSize: 25.sp,
+      fontSize: ScreenUtil().setSp(25),
       fontWeight: FontWeight.w600,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);

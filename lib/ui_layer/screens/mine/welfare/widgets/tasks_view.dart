@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/async_value.dart';
 import '../../../../../domain/domain.dart';
 import '../../../../../domain/model/member_model.dart';
@@ -13,6 +14,7 @@ import '../../../../router/routes.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_avatar.dart';
+import '../../../common_widgets/my_button.dart';
 import '../../../common_widgets/my_image.dart';
 import '../../../common_widgets/my_list_view.dart';
 import '../../../common_widgets/status/empty_data.dart';
@@ -65,6 +67,18 @@ class _TaskViewState extends State<TaskView> {
     }
   }
 
+  Future _signUp() async {
+    MyToast.showLoading();
+    final res = await signDomain.signUp();
+    MyToast.closeAllLoading();
+    if (res.isValid) {
+      await userNotifier.init(); //签到成功更新用户数据
+      _initData(); //刷新当前界面数据
+    } else if (res.msg case final msg?) {
+      MyToast.showText(text: msg);
+    }
+  }
+
   Widget _buildDataView(WelfareTaskModel data) {
     return CustomScrollView(
       // physics: const BouncingScrollPhysics(
@@ -73,53 +87,205 @@ class _TaskViewState extends State<TaskView> {
       slivers: [
         MyIndicator(onRefresh: _initData),
         SliverList.list(children: [
-          _MemberView(data: data),
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.w),
-                topRight: Radius.circular(20.w)),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.03),
-                  width: 1.w,
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8.w),
-                  topRight: Radius.circular(8.w),
-                ),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: Column(
-                children: [
-                  _Header(data: data),
-                  (data.list == null || data.list?.isEmpty == true)
-                      ? Column(
-                          children: [
-                            SizedBox(height: 20.w),
-                            const PageEmptyDataView(),
-                            SizedBox(height: 0.5.sh),
-                          ],
-                        )
-                      : ListView.builder(
-                          addAutomaticKeepAlives: false,
-                          addRepaintBoundaries: false,
-                          shrinkWrap: true,
-                          cacheExtent: 1.sh,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: data.list?.length,
-                          itemBuilder: (context, index) => _Tile(
-                            data: data.list![index],
-                            getTaskData: _initData,
-                          ),
-                        ),
-                ],
-              ),
+          SizedBox(height: 13.w),
+          _MemberView(
+              data: data,
+              signCall: () {
+                ///立即签到
+                _signUp();
+              }),
+          _signInContent(data),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadiusDirectional.circular(10.w),
+              color: MyTheme.white008Color,
             ),
-          )
+            margin: EdgeInsets.symmetric(
+                horizontal: MyTheme.pagePadding, vertical: MyTheme.pagePadding),
+            padding: EdgeInsets.symmetric(
+                horizontal: MyTheme.pagePadding, vertical: 5.w),
+            child: Column(
+              children: [
+                _Header(data: data),
+                (data.list == null || data.list?.isEmpty == true)
+                    ? Column(
+                        children: [
+                          SizedBox(height: 20.w),
+                          const PageEmptyDataView(),
+                          SizedBox(height: 0.5.sh),
+                        ],
+                      )
+                    : ListView.builder(
+                        addAutomaticKeepAlives: false,
+                        addRepaintBoundaries: false,
+                        shrinkWrap: true,
+                        cacheExtent: 1.sh,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: data.list?.length,
+                        itemBuilder: (context, index) => _Tile(
+                          data: data.list![index],
+                          getTaskData: _initData,
+                        ),
+                      ),
+              ],
+            ),
+          ),
+          SizedBox(height: 50.w),
         ]),
       ],
+    );
+  }
+
+  //签到view
+  Widget _signInContent(WelfareTaskModel data) {
+    return data.signRewardList == null
+        ? Container()
+        : Container(
+            height: 325.w,
+            margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+            padding: EdgeInsets.all(MyTheme.pagePadding),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadiusDirectional.circular(10.w),
+              color: MyTheme.white008Color,
+            ),
+            child: Column(children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'zmrrw'.tr(context: context),
+                    style: MyTheme.white18bold,
+                  ),
+                  SizedBox(width: 10.w),
+                  Text(
+                    'ljl'.tr(context: context),
+                    style: MyTheme.white04_12,
+                  ),
+                  const Spacer(),
+                  Text(
+                    'yljqd'.tr(context: context),
+                    style: MyTheme.white04_12,
+                  ),
+                  Text(
+                    ' ${data.signNum} ',
+                    style: MyTheme.yellow_12,
+                  ),
+                  Text(
+                    'tian'.tr(context: context),
+                    style: MyTheme.white04_12,
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.w),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 150 / 200,
+                ),
+                itemCount: data.signRewardList?.length,
+                itemBuilder: (context, index) =>
+                    siginItem(data.signRewardList![index], data.signNum ?? 0),
+              ),
+              SizedBox(height: 13.w),
+              GestureDetector(
+                onTap: () {
+                  //兑换VIP
+                  const VipCenterRoute().push(context);
+                },
+                child: Container(
+                  width: 300.w,
+                  height: 40.w,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadiusDirectional.circular(20.w),
+                    color: MyTheme.jellyCyanColor,
+                  ),
+                  child: Text(
+                    tr('dhvp'),
+                    style: MyTheme.white15_M,
+                  ),
+                ),
+              )
+            ]),
+          );
+  }
+
+  Widget siginItem(WelfareTaskListModel data, int signNum) {
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: MyTheme.white02Color,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.w),
+        ),
+      ),
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.w),
+                decoration: BoxDecoration(
+                  // color: MyTheme.jellyCyanColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.w),
+                    bottomRight: Radius.circular(10.w),
+                  ),
+                ),
+                child: Text(
+                  data.title ?? '',
+                  style: MyTheme.white10,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 10.w),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MyImage.asset(
+                          (data.desc?.contains('积分') ?? false)
+                              ? MyImagePaths.appSingInJf
+                              : (data.desc?.contains('VIP') ?? false)
+                                  ? MyImagePaths.appSingInVip
+                                  : MyImagePaths.appSingInJb,
+                          width: 35.w,
+                          height: 35.w),
+                      SizedBox(height: 5.w),
+                      Text(
+                        data.desc ?? '',
+                        style: MyTheme.yellow_11,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+          data.sort == 7
+              ? Positioned(
+                  right: 0,
+                  top: 0,
+                  child: MyImage.asset(MyImagePaths.appSiginCz,
+                      width: 30.w, height: 30.w))
+              : Container(),
+          (data.sort ?? 0) <= signNum
+              ? Container(
+                  color: Colors.black45,
+                  child: Center(
+                      child: Text(
+                    'yqiandao'.tr(context: context),
+                    style: MyTheme.white14,
+                  )))
+              : Container(),
+        ],
+      ),
     );
   }
 
@@ -138,48 +304,48 @@ class _TaskViewState extends State<TaskView> {
 }
 
 class _MemberView extends StatelessWidget {
-  const _MemberView({required this.data});
+  const _MemberView({required this.data, required this.signCall});
+
   final WelfareTaskModel data;
+
+  final Function signCall;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 150.w,
-      child: Stack(
-        children: [
-          Column(
-            children: [
-              SizedBox(height: 11.5.w),
-              Selector<UserNotifier, Member?>(
-                selector: (_, notifier) => notifier.member,
-                builder: (context, member, child) {
-                  return member == null
-                      ? const SizedBox.shrink()
-                      : Container(
-                          height: 53.w,
-                          margin: EdgeInsets.all(12.5.w),
-                          child: Row(
-                            children: [
-                              MyAvatar(
-                                size: 53.w,
-                                thumb: member.thumb,
-                              ),
-                              SizedBox(width: 9.w),
-                              Expanded(
-                                  child: Column(
+      height: 120.w,
+      child: Padding(
+        padding: EdgeInsets.only(
+            left: MyTheme.pagePadding, right: 6.w, bottom: MyTheme.pagePadding),
+        child: Column(
+          children: [
+            Selector<UserNotifier, Member?>(
+              selector: (_, notifier) => notifier.member,
+              builder: (context, member, child) {
+                return member == null
+                    ? const SizedBox.shrink()
+                    : Container(
+                        height: 53.w,
+                        margin: EdgeInsets.only(
+                            left: MyTheme.pagePadding,
+                            right: MyTheme.pagePadding,
+                            bottom: MyTheme.pagePadding),
+                        child: Row(
+                          children: [
+                            MyAvatar(
+                              size: 53.w,
+                              thumb: member.thumb,
+                            ),
+                            SizedBox(width: 9.w),
+                            Expanded(
+                              child: Column(
                                 children: [
                                   Expanded(
                                     flex: 1,
                                     child: Row(
                                       children: [
                                         Text(member.nickname,
-                                            style: TextStyle(
-                                                color: const Color.fromRGBO(
-                                                    255, 255, 255, 1),
-                                                fontSize: 14.sp,
-                                                overflow: TextOverflow.ellipsis,
-                                                decoration:
-                                                    TextDecoration.none)),
+                                            style: MyTheme.white18mudium),
                                         SizedBox(width: 9.w),
                                         member.vipLevel > 0
                                             ? MyImage.asset(
@@ -196,59 +362,35 @@ class _MemberView extends StatelessWidget {
                                       children: [
                                         member.vipLevel > 0
                                             ? Text('vpwxk'.tr(context: context),
-                                                style: MyTheme.gray127_14)
+                                                style: MyTheme.white07_12)
                                             : Text(
                                                 '${'sygkcs'.tr(context: context)}: ${data.freeViewCnt}/${data.totalFreeViewCnt}',
-                                                style: MyTheme.gray127_14),
+                                                style: MyTheme.white07_12),
+                                        SizedBox(width: 10.w),
+                                        Text('${'jbye'.tr(context: context)}: ',
+                                            style: MyTheme.white07_12),
+                                        Text('${member.money}',
+                                            style: MyTheme.yellow_12),
                                       ],
                                     ),
                                   )
                                 ],
-                              )),
-                            ],
-                          ),
-                        );
-                },
-              ),
-              GestureDetector(
-                onTap: () => const VipCenterRoute().push(context),
-                child: Container(
-                  width: 300.w,
-                  height: 40.w,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadiusDirectional.circular(20.w),
-                      gradient: const LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: <Color>[
-                          Color.fromRGBO(239, 205, 168, 1),
-                          Color.fromRGBO(252, 231, 207, 1)
-                        ],
-                      )),
-                  child: Selector<UserNotifier, Member?>(
-                    selector: (_, notifier) => notifier.member,
-                    builder: (context, member, child) {
-                      return Text(
-                        member == null
-                            ? ''
-                            : member.vipLevel > 0
-                                ? tr('xfvpbxk')
-                                : tr('ktvpbxk'),
-                        style: TextStyle(
-                            color: const Color.fromRGBO(46, 24, 12, 1),
-                            fontSize: 13.sp,
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w500,
-                            decoration: TextDecoration.none),
+                              ),
+                            ),
+                          ],
+                        ),
                       );
-                    },
-                  ),
-                ),
-              )
-            ],
-          ),
-        ],
+              },
+            ),
+            MyButton.gradient(
+              minimumSize: Size(260.w, 40.w),
+              onPressed: () async {
+                signCall.call();
+              },
+              text: 'ljqd'.tr(context: context),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -256,72 +398,51 @@ class _MemberView extends StatelessWidget {
 
 class _Header extends StatelessWidget {
   const _Header({required this.data});
+
   final WelfareTaskModel data;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20.w),
+        SizedBox(height: 13.w),
         Row(
           children: [
             Text(
               'flrw'.tr(context: context),
-              style: MyTheme.black26_18_semi,
+              style: MyTheme.white18bold,
             ),
             SizedBox(width: 10.w),
             Text(
               '${'ts'.tr(context: context)}: ${'rwwchsx'.tr(context: context)}',
-              style: MyTheme.gray13,
+              style: MyTheme.white04_12,
             )
           ],
         ),
-        SizedBox(height: 10.w),
+        SizedBox(height: 20.w),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('${'yqrs'.tr(context: context)}${data.invitedNum}人',
-                style: TextStyle(
-                  color: const Color.fromRGBO(26, 26, 26, 1),
-                  fontSize: ScreenUtil().setSp(15),
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w600,
-                  decoration: TextDecoration.none,
-                )),
+                style: MyTheme.white14),
             Selector<UserNotifier, Member?>(
                 builder: (context, member, child) {
                   return Text(
                       '${'wdjf'.tr(context: context)}${member?.exp ?? ''}',
-                      style: TextStyle(
-                        color: const Color.fromRGBO(26, 26, 26, 1),
-                        fontSize: ScreenUtil().setSp(15),
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w600,
-                        decoration: TextDecoration.none,
-                      ));
+                      style: MyTheme.white14);
                 },
                 selector: (_, notifier) => notifier.member),
-            GestureDetector(
-              onTap: () async {
-                const VipCenterRoute().push(context);
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16.w),
-                child: Container(
-                  width: 75.w,
-                  height: 32.w,
-                  decoration: const BoxDecoration(
-                      color: Color.fromRGBO(250, 217, 163, 1)),
-                  child: Center(
-                      child: Text(
-                    tr('dhvp'),
-                    style: MyTheme.brown_996619_13_M,
-                  )),
-                ),
+            MyButton.gradient(
+              onPressed: () async {},
+              minimumSize: Size(75.w, 32.w),
+              child: Text(
+                tr('dhvp'),
+                style: MyTheme.white12,
               ),
             )
           ],
-        )
+        ),
+        SizedBox(height: 10.w),
       ],
     );
   }
@@ -329,6 +450,7 @@ class _Header extends StatelessWidget {
 
 class _Tile extends StatelessWidget {
   const _Tile({required this.data, required this.getTaskData});
+
   final WelfareTaskListModel data;
   final VoidCallback getTaskData;
 
@@ -351,7 +473,7 @@ class _Tile extends StatelessWidget {
     /// 0 = 未开始，1 = 未完成 ，2 = 待领取奖励， 3 = 已经领取
     state = state == 0 ? 1 : state;
     return Container(
-      constraints: BoxConstraints(minHeight: 76.w),
+      constraints: BoxConstraints(minHeight: 70.w),
       child: Row(
         children: [
           SizedBox.square(
@@ -369,14 +491,14 @@ class _Tile extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '${data.title}',
-                    style: MyTheme.black1534,
+                    style: MyTheme.white14,
                   ),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '${data.subTitle}',
-                    style: MyTheme.gray153_11,
+                    style: MyTheme.white07_10,
                     maxLines: 30,
                   ),
                 ),
@@ -384,8 +506,18 @@ class _Tile extends StatelessWidget {
             ),
           ),
           SizedBox(width: 10.w),
-          GestureDetector(
-            onTap: () async {
+          MyButton.gradient(
+            gradient: state == 3
+                ? const LinearGradient(
+                    colors: [
+                      Color.fromRGBO(150, 150, 150, 1),
+                      Color.fromRGBO(150, 150, 150, 1)
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  )
+                : null,
+            onPressed: () async {
               if (state == 2) {
                 _tapSignListTask(context);
               } else {
@@ -399,61 +531,36 @@ class _Tile extends StatelessWidget {
                 }
               }
             },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16.w),
-              child: Container(
-                width: 75.w,
-                height: 32.w,
-                decoration: state == 2
-                    ? const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color.fromRGBO(235, 86, 82, 1),
-                            Color.fromRGBO(239, 133, 80, 1)
-                          ],
-                        ),
-                      )
-                    : state == 3
-                        ? const BoxDecoration(color: MyTheme.grayColor150)
-                        : const BoxDecoration(
-                            color: Color.fromRGBO(250, 217, 163, 1),
-                          ),
-                child: Center(
-                  child: Builder(builder: (context) {
-                    String text = '';
-                    text = state == 2
-                        ? 'lq'.tr(context: context)
-                        : state == 1
-                            ? 'wwc'.tr(context: context)
-                            : state == 3
-                                ? 'ylq'.tr(context: context)
-                                : 'wks'.tr(context: context);
-                    if (type == 3) {
-                      text = state == 2
-                          ? 'lq'.tr(context: context)
-                          : state == 3
-                              ? 'ylq'.tr(context: context)
-                              : 'ljxz'.tr(context: context);
-                    } else if (type >= 4 && type <= 7) {
-                      text = state == 2
-                          ? 'lq'.tr(context: context)
-                          : state == 3
-                              ? 'ylq'.tr(context: context)
-                              : 'qyq'.tr(context: context);
-                    }
-                    return Text(
-                      text,
-                      style: state == 2
-                          ? MyTheme.white255_13_M
-                          : state == 1
-                              ? MyTheme.brown_996619_13_M
-                              : state == 3
-                                  ? MyTheme.white255_13_M
-                                  : MyTheme.brown_996619_13_M,
-                    );
-                  }),
-                ),
-              ),
+            padding: EdgeInsets.zero,
+            minimumSize: Size(75.w, 32.w),
+            child: Center(
+              child: Builder(builder: (context) {
+                String text = '';
+                text = state == 2
+                    ? 'lq'.tr(context: context)
+                    : state == 1
+                        ? 'wwc'.tr(context: context)
+                        : state == 3
+                            ? 'ylq'.tr(context: context)
+                            : 'wks'.tr(context: context);
+                if (type == 3) {
+                  text = state == 2
+                      ? 'lq'.tr(context: context)
+                      : state == 3
+                          ? 'ylq'.tr(context: context)
+                          : 'ljxz'.tr(context: context);
+                } else if (type >= 4 && type <= 7) {
+                  text = state == 2
+                      ? 'lq'.tr(context: context)
+                      : state == 3
+                          ? 'ylq'.tr(context: context)
+                          : 'qyq'.tr(context: context);
+                }
+                return Text(
+                  text,
+                  style: MyTheme.white255_13,
+                );
+              }),
             ),
           )
         ],

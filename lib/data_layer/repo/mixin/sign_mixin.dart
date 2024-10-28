@@ -18,4 +18,7 @@ mixin _Sign on _BaseAppRepo implements SignDomain {
   @override
   AsyncResult signListTaskAccept(Map request) =>
       _signService.signListTaskAccept(request).deserialize().guard;
+
+  @override
+  AsyncResult signUp() => _signService.signUpt().deserialize().guard;
 }

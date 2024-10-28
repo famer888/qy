@@ -1,17 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../notifiers/home_config_notifier.dart';
-
 import '../../common_widgets/appbar_with_tabbar.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
-import '../../common_widgets/my_tab_bar.dart';
 import '../../common_widgets/screen_background.dart';
-import '../../image_paths.dart';
-import '../../theme.dart';
 import 'widgets/agent_view.dart';
 import 'widgets/app_center_view.dart';
 import 'widgets/tasks_view.dart';

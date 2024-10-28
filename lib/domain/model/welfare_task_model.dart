@@ -5,7 +5,10 @@ class WelfareTaskModel {
   int? invitedNum;
   int? exp;
   List<WelfareTaskListModel>? list;
+  List<WelfareTaskListModel>? signRewardList;
   int? incomeMoney;
+  bool? signStatus;
+  int? signNum;
 
   WelfareTaskModel(
       {this.title,
@@ -14,6 +17,9 @@ class WelfareTaskModel {
       this.invitedNum,
       this.exp,
       this.list,
+      this.signRewardList,
+      this.signStatus,
+      this.signNum,
       this.incomeMoney});
 
   WelfareTaskModel.fromJson(Map<String, dynamic> json) {
@@ -28,7 +34,15 @@ class WelfareTaskModel {
         list!.add(WelfareTaskListModel.fromJson(v));
       });
     }
+    if (json['sign_reward_list'] != null) {
+      signRewardList = <WelfareTaskListModel>[];
+      json['sign_reward_list'].forEach((v) {
+        signRewardList!.add(WelfareTaskListModel.fromJson(v));
+      });
+    }
     incomeMoney = json['income_money'];
+    signStatus = json['sign_status'];
+    signNum = json['sign_num'];
   }
 
   Map<String, dynamic> toJson() {
@@ -41,7 +55,13 @@ class WelfareTaskModel {
     if (list != null) {
       data['list'] = list!.map((v) => v.toJson()).toList();
     }
+    if (signRewardList != null) {
+      data['sign_reward_list'] =
+          signRewardList!.map((v) => v.toJson()).toList();
+    }
     data['income_money'] = incomeMoney;
+    data['sign_status'] = signStatus;
+    data['sign_num'] = signNum;
     return data;
   }
 }
@@ -58,6 +78,7 @@ class WelfareTaskListModel {
   int? sort;
   String? appUrl;
   int? progressStatus;
+  String? desc;
 
   WelfareTaskListModel(
       {this.id,
@@ -70,6 +91,7 @@ class WelfareTaskListModel {
       this.status,
       this.sort,
       this.appUrl,
+      this.desc,
       this.progressStatus});
 
   WelfareTaskListModel.fromJson(Map<String, dynamic> json) {
@@ -82,6 +104,7 @@ class WelfareTaskListModel {
     rewardValue = json['reward_value'];
     status = json['status'];
     sort = json['sort'];
+    desc = json['desc'];
     appUrl = json['app_url'];
     progressStatus = json['progress_status'];
   }
@@ -97,6 +120,7 @@ class WelfareTaskListModel {
     data['reward_value'] = rewardValue;
     data['status'] = status;
     data['sort'] = sort;
+    data['desc'] = desc;
     data['app_url'] = appUrl;
     data['progress_status'] = progressStatus;
     return data;
