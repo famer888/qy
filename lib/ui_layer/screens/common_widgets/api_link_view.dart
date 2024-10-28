@@ -1,8 +1,13 @@
+import 'dart:math';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../../../domain/model/part_nav_model.dart';
 import '../../router/routes.dart';
 import '../../utils/common_utils.dart';
+import '../image_paths.dart';
 import '../theme.dart';
 
 import '../../../domain/type_def.dart';
@@ -16,6 +21,7 @@ import '../../notifiers/home_config_notifier.dart';
 import '../../utils/my_toast.dart';
 import 'feed/feed_card.dart';
 import 'general_banner.dart';
+import 'my_image.dart';
 import 'my_list_view.dart';
 import 'my_tab_bar.dart';
 
@@ -33,6 +39,8 @@ class _ApiLinkViewState extends State<ApiLinkView> {
   late final _homeConfig = context.read<HomeConfigNotifier>();
   final ValueNotifier<List<BannerModel>> bannersNotifier = ValueNotifier([]);
   final ValueNotifier<List<NavModel>> topicsNotifier = ValueNotifier([]);
+  final ValueNotifier<List<PartModel>> partNotifier = ValueNotifier([]);
+
   late final List<NavigatorModel> titles = _homeConfig.config.sortNav ?? [];
 
   bool isInit = false;
@@ -69,6 +77,12 @@ class _ApiLinkViewState extends State<ApiLinkView> {
         final nav = data.map((x) => NavModel.fromJson(x)).toList();
         topicsNotifier.value = nav;
       }
+      if (result.data['part'] case final List data
+          when data.isNotEmpty && partNotifier.value.isEmpty) {
+        final part = data.map((x) => PartModel.fromJson(x)).toList();
+        partNotifier.value = part;
+      }
+
       return result.data['list']
           ?.map<FeedModel>((x) => FeedModel.fromJson(x))
           .toList();
@@ -87,6 +101,7 @@ class _ApiLinkViewState extends State<ApiLinkView> {
             bannersNotifier: bannersNotifier,
             topicsNotifier: topicsNotifier,
             onLinkNavTap: widget.onLinkNavTap,
+            partNotifier: partNotifier,
           ),
         ),
       ],
@@ -121,10 +136,13 @@ class _Header extends StatelessWidget {
     required this.bannersNotifier,
     required this.topicsNotifier,
     required this.onLinkNavTap,
+    required this.partNotifier,
   });
+
   final ValueNotifier<List<BannerModel>> bannersNotifier;
   final ValueNotifier<List<NavModel>> topicsNotifier;
   final ValueChanged<String> onLinkNavTap;
+  final ValueNotifier<List<PartModel>> partNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +160,99 @@ class _Header extends StatelessWidget {
             );
           },
         ),
-        SizedBox(height: 10.w),
         ValueListenableBuilder(
-          valueListenable: topicsNotifier,
+          valueListenable: partNotifier,
+          builder: (context, parts, child) {
+            if (parts.isEmpty) return const SizedBox.shrink();
+            return Padding(
+              padding: EdgeInsets.only(bottom: 5.w, top: 10.w),
+              child: GridView.builder(
+                shrinkWrap: true,
+                addRepaintBoundaries: false,
+                addAutomaticKeepAlives: false,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: parts.length,
+                padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  childAspectRatio: 80.w / 70.w,
+                  mainAxisSpacing: 10.w,
+                  crossAxisSpacing: 10.w,
+                ),
+                itemBuilder: (context, index) {
+                  final partsItem = parts[index];
+                  return GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      final linkUrl = partsItem.urlStr;
+                      final redirectType = partsItem.redirectType;
+                      if (linkUrl.isEmpty) {
+                        return;
+                      }
+                      if (redirectType < 3) {
+                        CommonUtils.openRoute(context, partsItem.toJson());
+                      } else {
+                        if (partsItem.type == '0') {
+                          onLinkNavTap(linkUrl);
+                        } else if (partsItem.type == '1') {
+                          MoreVideoRoute(name: partsItem.title, id: linkUrl)
+                              .push(context);
+                        }
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 45.w,
+                          child: MyImage.network(
+                            partsItem.icon,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            partsItem.title,
+                            style: MyTheme.white13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+        SizedBox(height: 10.w),
+        _HeaderTopicsView(
+          onLinkNavTap: onLinkNavTap,
+          topicsNotifier: topicsNotifier,
+        ),
+      ],
+    );
+  }
+}
+
+class _HeaderTopicsView extends StatefulWidget {
+  const _HeaderTopicsView({
+    required this.topicsNotifier,
+    required this.onLinkNavTap,
+  });
+  final ValueNotifier<List<NavModel>> topicsNotifier;
+  final ValueChanged<String> onLinkNavTap;
+
+  @override
+  State<_HeaderTopicsView> createState() => _HeaderTopicsViewState();
+}
+
+class _HeaderTopicsViewState extends State<_HeaderTopicsView> {
+  bool _isExpended = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ValueListenableBuilder(
+          valueListenable: widget.topicsNotifier,
           builder: (context, topics, child) {
             if (topics.isEmpty) return const SizedBox.shrink();
             return Padding(
@@ -154,7 +262,8 @@ class _Header extends StatelessWidget {
                   addRepaintBoundaries: false,
                   addAutomaticKeepAlives: false,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: topics.length,
+                  itemCount:
+                      _isExpended ? topics.length : min(8, topics.length),
                   padding:
                       EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -186,7 +295,7 @@ class _Header extends StatelessWidget {
                               CommonUtils.openRoute(context, topic.toJson());
                             } else {
                               if (topic.openType == 0) {
-                                onLinkNavTap(topic.linkUrl);
+                                widget.onLinkNavTap(topic.linkUrl);
                               } else if (topic.openType == 1) {
                                 MoreVideoRoute(
                                         name: topic.name, id: topic.linkUrl)
@@ -205,11 +314,36 @@ class _Header extends StatelessWidget {
             );
           },
         ),
-        Divider(
-          color: Colors.white.withOpacity(0.04),
-          height: 10,
-          indent: MyTheme.pagePadding,
-          endIndent: MyTheme.pagePadding,
+        Offstage(
+          offstage: widget.topicsNotifier.value.length <= 8,
+          child: InkWell(
+            onTap: () {
+              _isExpended = !_isExpended;
+              if (mounted) {
+                setState(() {});
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.w),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                  _isExpended
+                      ? 'ycgd'.tr(context: context)
+                      : 'zkckgd'.tr(context: context),
+                  style: MyTheme.white12,
+                ),
+                SizedBox(width: 3.w),
+                MyImage.asset(
+                  _isExpended
+                      ? MyImagePaths.appGrayUp
+                      : MyImagePaths.appGrayDown,
+                  width: 10.w,
+                  height: 10.w,
+                )
+              ]),
+            ),
+          ),
         ),
       ],
     );

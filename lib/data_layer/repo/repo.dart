@@ -16,6 +16,7 @@ import 'package:utils/utils.dart';
 import '../../app_config.dart';
 import '../../crypto.dart';
 import '../../domain/enum.dart';
+import '../../domain/model/ai/ai_model.dart';
 import '../../domain/model/app_center_model.dart';
 import '../../domain/model/bank_card_model.dart';
 import '../../domain/model/bit_detail_model.dart';
@@ -54,11 +55,14 @@ import '../../domain/model/topics_with_banners_model.dart';
 import '../../domain/model/video_comment_model.dart';
 import '../../domain/model/video_detail_model.dart';
 import '../../domain/model/welfare_task_model.dart';
+
+import '../../domain/remote_domain/domains/ai.dart';
 import '../../domain/result.dart';
 import '../../domain/type_def.dart';
 import '../../domain/domain.dart';
 import '../../logger.dart';
 import '../data_source/remote/account_service.dart';
+import '../data_source/remote/ai_service.dart';
 import '../data_source/remote/community_service.dart';
 import '../data_source/remote/dynamic_service.dart';
 import '../data_source/remote/element_service.dart';
@@ -91,6 +95,7 @@ part 'mixin/search_mixin.dart';
 part 'mixin/mv_mixin.dart';
 part 'mixin/message_mixin.dart';
 part 'mixin/privilege_mixin.dart';
+part 'mixin/ai_mixin.dart';
 
 class AppRepo extends _BaseAppRepo
     with
@@ -108,7 +113,8 @@ class AppRepo extends _BaseAppRepo
         _Search,
         _Mv,
         _Message,
-        _Privilege {}
+        _Privilege,
+        _AI {}
 
 abstract class _BaseAppRepo implements AppDomain {
   late final _homeService = HomeService(_apiDio);
@@ -126,6 +132,7 @@ abstract class _BaseAppRepo implements AppDomain {
   late final _mvService = MvService(_apiDio);
   late final _messageService = MessageService(_apiDio);
   late final _privilegeService = PrivilegeService(_apiDio);
+  late final _aiService = AIService(_apiDio);
 
   final _cacheManager = _CacheManager();
 

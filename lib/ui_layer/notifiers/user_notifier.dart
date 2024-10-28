@@ -124,6 +124,16 @@ class UserNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setStripCt({required int stripCt}) {
+    _member = _member.copyWith(stripCt: stripCt);
+    notifyListeners();
+  }
+
+  void setFaceCt({required int faceCt}) {
+    _member = _member.copyWith(faceCt: faceCt);
+    notifyListeners();
+  }
+
   Future logout() async {
     _userFollowingStatus.clear();
     await _remoteDomain.logout();

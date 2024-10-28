@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import '../enum.dart';
 import '../type_def.dart';
 import 'domains/account.dart';
+import 'domains/ai.dart';
 import 'domains/community.dart';
 import 'domains/dynamic.dart';
 import 'domains/element.dart';
@@ -35,7 +36,8 @@ abstract class RemoteDomain
         SearchDomain,
         MvDomain,
         MessageDomain,
-        PrivilegeDomain {
+        PrivilegeDomain,
+        AIDomain {
   Stream<MyTokenStatus?> get tokenStatusStream;
   Future<bool> initLine();
 

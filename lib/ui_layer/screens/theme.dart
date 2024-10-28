@@ -111,6 +111,11 @@ class MyTheme {
   static const bgColor = Color.fromRGBO(11, 11, 33, 1);
   static const naviColor = Color.fromRGBO(11, 11, 33, 1);
 
+  static const white02Color = Color.fromRGBO(255, 255, 255, 0.2);
+  static const white08Color = Color.fromRGBO(255, 255, 255, 0.8);
+  static const white09Color = Color.fromRGBO(255, 255, 255, 0.9);
+  static const white06Color = Color.fromRGBO(255, 255, 255, 0.6);
+
   static const blackColor18 = Color.fromRGBO(18, 18, 18, 1);
   static const blackColor25 = Color.fromRGBO(25, 25, 25, 1);
   static const blackColor22 = Color.fromRGBO(22, 22, 22, 1);
@@ -137,6 +142,34 @@ class MyTheme {
 
   static const jellyCyanColor103224185 = Color.fromRGBO(0, 210, 190, 1);
   static const jellyCyanColor108235220 = Color.fromRGBO(108, 235, 220, 1);
+
+  static final TextStyle white06_10 = TextStyle(
+    color: white06Color,
+    fontSize: 10.sp,
+    overflow: TextOverflow.ellipsis,
+    decoration: TextDecoration.none,
+  );
+
+  static final TextStyle white06_12 = TextStyle(
+    color: white06Color,
+    fontSize: 12.sp,
+    overflow: TextOverflow.ellipsis,
+    decoration: TextDecoration.none,
+  );
+
+  static final TextStyle white08_12 = TextStyle(
+    color: white08Color,
+    fontSize: 12.sp,
+    overflow: TextOverflow.ellipsis,
+    decoration: TextDecoration.none,
+  );
+
+  static final TextStyle white08_14_M = TextStyle(
+      color: white08Color,
+      fontSize: 14.sp,
+      overflow: TextOverflow.ellipsis,
+      fontWeight: FontWeight.w500,
+      decoration: TextDecoration.none);
 
   static final bloodOrange2557710_14 = TextStyle(
       fontFamily: hanyi,

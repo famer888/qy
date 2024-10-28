@@ -1,3 +1,4 @@
+import 'bit_nav_model.dart';
 import 'bit_seed_nav_model.dart';
 import 'community_nav_model.dart';
 import 'navigator_model.dart';
@@ -152,6 +153,9 @@ class Config {
     required this.wdaiStr,
     required this.vipLevelAwqStr,
     required this.vipNameAwqStr,
+    required this.faceTopNav,
+    this.faceCoins,
+    this.stripCoins,
   });
 
   final String? dayPrice;
@@ -192,6 +196,7 @@ class Config {
   final List<NavigatorModel>? forumNav;
   final List<NavigatorModel>? seedSortNav;
   final List<BitSeedNavModel> seedNav;
+  final List<BitNavModel> faceTopNav;
 
   final int payAi;
   final int? showApp;
@@ -204,6 +209,8 @@ class Config {
   final String wdaiStr;
   final List<String> vipLevelAwqStr;
   final String vipNameAwqStr;
+  final int? faceCoins;
+  final int? stripCoins;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         dayPrice: json['day_price'],
@@ -258,9 +265,13 @@ class Config {
         seedVipTip: json['seed_vip_tip'] ?? '',
         seedCoinsTip: json['seed_coins_tip'] ?? '',
         wdaiStr: json['wdai_str'] ?? '',
+        faceCoins: json['face_coins'],
         vipLevelAwqStr:
             List<String>.from(json['vip_level_awq_str']?.map((x) => x) ?? []),
         vipNameAwqStr: json['vip_name_awq_str'] ?? '',
+        faceTopNav: List<BitNavModel>.from(
+            json['face_top_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+        stripCoins: json['strip_coins'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -308,6 +319,9 @@ class Config {
         'tg_group': tgGroup,
         'seed_vip_tip': seedVipTip,
         'seed_coins_tip': seedCoinsTip,
+        'face_coins': faceCoins,
+        'face_top_nav': faceTopNav.map((e) => e).toList(),
+        'strip_coins': stripCoins,
       };
 }
 

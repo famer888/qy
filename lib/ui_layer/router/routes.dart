@@ -10,6 +10,7 @@ import '../screens/community/detail/screen.dart';
 import '../screens/community/issue/screen.dart';
 import '../screens/community/screen.dart';
 import '../screens/community/tag_detail/screen.dart';
+import '../screens/home/ai/screen.dart';
 import '../screens/home/screen.dart';
 import '../screens/local_video/screen.dart';
 import '../screens/login/screen.dart';
@@ -764,6 +765,19 @@ class LocalVideoRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return LocalVideoScreen(data: $extra);
+  }
+}
+
+@TypedGoRoute<HomeAIRoute>(path: AppRouterPaths.ai)
+class HomeAIRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const HomeAIRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const HomeAiScreen();
   }
 }
 

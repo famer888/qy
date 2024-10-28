@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../notifiers/home_config_notifier.dart';
 
+import '../../common_widgets/appbar_with_tabbar.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
 import '../../common_widgets/my_tab_bar.dart';
 import '../../common_widgets/screen_background.dart';
@@ -33,9 +34,10 @@ class _MineWelfareScreenState extends State<MineWelfareScreen>
   Widget build(BuildContext context) {
     return ScreenBackground(
       child: Scaffold(
-        appBar: _AppBar(
+        appBar: AppBarWithTabBar(
           tabController: tabController,
           titles: titles,
+          fontSize: 15.sp,
         ),
         body: TabBarView(
           controller: tabController,
@@ -44,83 +46,6 @@ class _MineWelfareScreenState extends State<MineWelfareScreen>
             KeepAliveWrapper(child: TaskView()),
             KeepAliveWrapper(child: AppCenterView()),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _AppBar({required this.tabController, required this.titles});
-
-  final TabController tabController;
-  final List<String> titles;
-
-  @override
-  final Size preferredSize = const Size.fromHeight(44);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      leadingWidth: 40.w,
-      leading: GestureDetector(
-        onTap: () {
-          context.pop();
-        },
-        child: Padding(
-          padding: EdgeInsets.only(left: 20.w),
-          child: Image.asset(
-            MyImagePaths.appBackIcon,
-            width: 20.w,
-            height: 20.w,
-          ),
-        ),
-      ),
-      actions: [SizedBox(width: 40.w)],
-      backgroundColor: Colors.transparent,
-      iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.white),
-      title: Theme(
-        data: Theme.of(context).copyWith(
-            tabBarTheme: TabBarTheme(
-          labelStyle: MyTheme.jellyCyan_15,
-          labelPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-          unselectedLabelStyle: TextStyle(
-            color: const Color.fromRGBO(255, 255, 255, 1),
-            fontSize: 15.sp,
-            overflow: TextOverflow.visible,
-            decoration: TextDecoration.none,
-          ),
-          indicatorSize: TabBarIndicatorSize.label,
-          indicator: const LineIndicator(),
-          indicatorColor: Colors.transparent,
-          overlayColor: WidgetStateProperty.resolveWith<Color>(
-            (_) => Colors.transparent,
-          ),
-          tabAlignment: TabAlignment.start,
-          dividerColor: Colors.transparent,
-        )),
-        child: RepaintBoundary(
-          child: ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(
-              scrollbars: false,
-            ),
-            child: SizedBox(
-              height: 41.w,
-              child: TabBar(
-                physics: const BouncingScrollPhysics(),
-                isScrollable: false,
-                padding: EdgeInsets.symmetric(vertical: 2.w),
-                controller: tabController,
-                tabAlignment: TabAlignment.center,
-                tabs: titles
-                    .map((title) => Tab(
-                          height: MyTheme.navbarHegiht,
-                          text: title.tr(context: context),
-                        ))
-                    .toList(),
-              ),
-            ),
-          ),
         ),
       ),
     );

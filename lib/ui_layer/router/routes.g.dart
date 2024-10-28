@@ -51,6 +51,7 @@ List<RouteBase> get $appRoutes => [
       $systemMessageRoute,
       $mediaViewerRoute,
       $localVideoRoute,
+      $homeAIRoute,
     ];
 
 RouteBase get $welcomeRoute => GoRouteData.$route(
@@ -1300,4 +1301,27 @@ extension $LocalVideoRouteExtension on LocalVideoRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
+}
+
+RouteBase get $homeAIRoute => GoRouteData.$route(
+      path: '/ai',
+      parentNavigatorKey: HomeAIRoute.$parentNavigatorKey,
+      factory: $HomeAIRouteExtension._fromState,
+    );
+
+extension $HomeAIRouteExtension on HomeAIRoute {
+  static HomeAIRoute _fromState(GoRouterState state) => const HomeAIRoute();
+
+  String get location => GoRouteData.$location(
+        '/ai',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }

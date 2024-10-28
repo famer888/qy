@@ -148,5 +148,7 @@ class AppRouterPaths {
 
   static const localVideo = '/localVideo';
 
+  static const ai = '/ai';
+
   static const webView = '/${BuildConfig.webViewPathName}/:url';
 }
