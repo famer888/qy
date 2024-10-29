@@ -200,6 +200,7 @@ class MyTheme {
   static final white07_12 = TextStyle(
     color: white07Color,
     fontSize: 12.sp,
+    overflow: TextOverflow.ellipsis,
   );
 
   static final white08_12 = TextStyle(

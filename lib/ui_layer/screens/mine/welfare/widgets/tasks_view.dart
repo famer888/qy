@@ -361,8 +361,12 @@ class _MemberView extends StatelessWidget {
                                     child: Row(
                                       children: [
                                         member.vipLevel > 0
-                                            ? Text('vpwxk'.tr(context: context),
-                                                style: MyTheme.white07_12)
+                                            ? Flexible(
+                                                child: Text(
+                                                    'vpwxk'
+                                                        .tr(context: context),
+                                                    style: MyTheme.white07_12),
+                                              )
                                             : Text(
                                                 '${'sygkcs'.tr(context: context)}: ${data.freeViewCnt}/${data.totalFreeViewCnt}',
                                                 style: MyTheme.white07_12),
