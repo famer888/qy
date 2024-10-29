@@ -360,48 +360,83 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                     blurRadius: 0.0),
               ],
             ),
-            child: BottomNavigationBar(
-              backgroundColor: MyTheme.bgColor,
-              elevation: 0,
-              type: BottomNavigationBarType.fixed,
-              selectedFontSize: 11.sp,
-              unselectedFontSize: 11.sp,
-              unselectedItemColor: const Color.fromRGBO(149, 148, 156, 1),
-              selectedItemColor: Colors.white,
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: const _Icon(MyImagePaths.appTabHomeN),
-                  activeIcon: const _Icon(MyImagePaths.appTabHomeS),
-                  label: 'sy'.tr(context: context),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Selector<UserNotifier, MyTokenStatus?>(
+                  selector: (_, userNotifier) => userNotifier.tokenStatus,
+                  builder: (context, tokenStatus, child) => tokenStatus ==
+                          MyTokenStatus.valid
+                      ? const SizedBox.shrink()
+                      : GestureDetector(
+                          onTap: () => const LoginRoute().push(context),
+                          child: Container(
+                            color: const Color(0x66ff0000),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 5.w,
+                              horizontal: 13.w,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'czts'.tr(context: context),
+                                  style: MyTheme.white11medium,
+                                ),
+                                MyImage.asset(
+                                  MyImagePaths.appOriginalArrowRight,
+                                  width: 10.w,
+                                  height: 10.w,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                 ),
-                BottomNavigationBarItem(
-                  icon: const _Icon(MyImagePaths.appTabAreaN),
-                  activeIcon: const _Icon(MyImagePaths.appTabAreaS),
-                  label: 'jq'.tr(context: context),
-                ),
-                BottomNavigationBarItem(
-                  icon: const _Icon(MyImagePaths.appTabCircleN),
-                  activeIcon: const _Icon(MyImagePaths.appTabCircleS),
-                  label: 'qz'.tr(context: context),
-                ),
-                BottomNavigationBarItem(
-                  icon: const _Icon(MyImagePaths.appTabShequN),
-                  activeIcon: const _Icon(MyImagePaths.appTabShequS),
-                  label: 'ym'.tr(context: context),
-                ),
-                BottomNavigationBarItem(
-                  icon: const _Icon(MyImagePaths.appTabDownloadN),
-                  activeIcon: const _Icon(MyImagePaths.appTabDownloadS),
-                  label: 'xz'.tr(context: context),
-                ),
-                BottomNavigationBarItem(
-                  icon: const _Icon(MyImagePaths.appTabWodeN),
-                  activeIcon: const _Icon(MyImagePaths.appTabWodeS),
-                  label: 'wd'.tr(context: context),
+                BottomNavigationBar(
+                  backgroundColor: MyTheme.bgColor,
+                  elevation: 0,
+                  type: BottomNavigationBarType.fixed,
+                  selectedFontSize: 11.sp,
+                  unselectedFontSize: 11.sp,
+                  unselectedItemColor: const Color.fromRGBO(149, 148, 156, 1),
+                  selectedItemColor: Colors.white,
+                  items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: const _Icon(MyImagePaths.appTabHomeN),
+                      activeIcon: const _Icon(MyImagePaths.appTabHomeS),
+                      label: 'sy'.tr(context: context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const _Icon(MyImagePaths.appTabAreaN),
+                      activeIcon: const _Icon(MyImagePaths.appTabAreaS),
+                      label: 'jq'.tr(context: context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const _Icon(MyImagePaths.appTabCircleN),
+                      activeIcon: const _Icon(MyImagePaths.appTabCircleS),
+                      label: 'qz'.tr(context: context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const _Icon(MyImagePaths.appTabShequN),
+                      activeIcon: const _Icon(MyImagePaths.appTabShequS),
+                      label: 'ym'.tr(context: context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const _Icon(MyImagePaths.appTabDownloadN),
+                      activeIcon: const _Icon(MyImagePaths.appTabDownloadS),
+                      label: 'xz'.tr(context: context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const _Icon(MyImagePaths.appTabWodeN),
+                      activeIcon: const _Icon(MyImagePaths.appTabWodeS),
+                      label: 'wd'.tr(context: context),
+                    ),
+                  ],
+                  currentIndex: widget.navigationShell.currentIndex,
+                  onTap: _goBranch,
                 ),
               ],
-              currentIndex: widget.navigationShell.currentIndex,
-              onTap: _goBranch,
             ),
           ),
         ),
