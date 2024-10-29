@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
-// import 'package:flurry/flurry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -131,7 +130,6 @@ class _HomeState extends State<Home> {
       _initDownloadStastu();
     }
     fetchBeforeEnterApp();
-    if (!kIsWeb) _initPlatformState();
 
     discrip = UtilEventbus().on<UtilEventbusClass>().listen((event) {
       if (event.arg["name"] == 'openwf') {
