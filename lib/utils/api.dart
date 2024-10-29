@@ -2015,6 +2015,28 @@ Future<Basic> getProductOfVIP() async {
   }
 }
 
+//获取商品-VIP升级项目
+Future<Basic> getProductOfVIPUpgrade() async {
+  try {
+    Response<dynamic> res =
+        await PlatformAwareHttp.post('/api/user/upgrade_goods');
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
+//获取商品-VIP升级项目
+Future<Basic> userVIPUpgrade({int goodsId}) async {
+  try {
+    Response<dynamic> res = await PlatformAwareHttp.post('/api/user/upgrade',
+        data: {'id': goodsId});
+    return Basic.fromJson(res.data);
+  } catch (e) {
+    return null;
+  }
+}
+
 //获取积分列表
 Future<Basic> getExpOfVIP() async {
   try {

@@ -5,6 +5,7 @@ import 'package:flutter_html/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:qypj/base/baseWidget.dart';
+import 'package:qypj/components/yy_dialog.dart';
 import 'package:qypj/pages/mine/setup.dart';
 import 'package:qypj/store/homeConfig.dart';
 import 'package:qypj/utils/extensionlibrary.dart';
@@ -19,66 +20,67 @@ import 'package:qypj/mixin/payMixin.dart';
 import 'package:qypj/utils/common.dart';
 import 'package:qypj/utils/networkImage.dart';
 
-class VipPage extends BaseWidget {
-  VipPage({Key key}) : super(key: key);
+class VipUpgradePage extends BaseWidget {
+  VipUpgradePage({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> cState() {
     // TODO: implement cState
-    return _VipPageState();
+    return _VipUpgradePageState();
   }
 }
 
-class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
+class _VipUpgradePageState extends BaseWidgetState<VipUpgradePage>
+    with PayMixin {
   final tabController = PageController();
 
   int currentTab = 0;
   String pageStatus = 'loading';
   List<dynamic> products = [];
-  List<dynamic> exps = [];
   dynamic selectP;
   bool networkErr = false;
   List rightsList = [];
   String product_vip_text = "";
+  String errorText = "";
+
+  dynamic payedInfo;
 
   _initPage() async {
     try {
-      Basic res = await getProductOfVIP();
+      Basic res = await getProductOfVIPUpgrade();
       if (res == null) {
         networkErr = true;
         setState(() {});
         return;
       }
       CommonUtils.debugPrint(res.data);
-      products = res.data["product"];
-      product_vip_text = res.data["product_vip_text"];
-      selectP = products.first;
 
-      if (products.length > 0) {
-        var firse = products[0];
-        if (firse['right'] != null) {
-          rightsList.addAll(firse['right']);
+      if (res.status == 1) {
+        networkErr = false;
+
+        payedInfo = res.data["payed"];
+        products = res.data["goods"];
+        selectP = products.first;
+
+        if (products.length > 0) {
+          var firse = products[0];
+          if (firse['right'] != null) {
+            rightsList.addAll(firse['right']);
+          }
         }
-        _getExp();
+        pageStatus = 'ready';
+      } else {
+        networkErr = true;
+
+        errorText = res.msg ?? '';
+        pageStatus = 'error';
       }
+      setState(() {});
     } catch (err) {
       CommonUtils.debugPrint(err);
       pageStatus = 'error';
       setState(() {});
     }
-  }
-
-  _getExp() {
-    getExpOfVIP().then((res) {
-      if (res.status == 1) {
-        pageStatus = 'ready';
-        exps = List.from(res.data["list"]);
-        setState(() {});
-      } else {
-        pageStatus = 'error';
-        setState(() {});
-      }
-    });
   }
 
   Widget _qyItem({String logo, String title, String text}) {
@@ -140,6 +142,97 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
     setState(() {});
   }
 
+  _showPay(Map product, String tip) {
+    int currentPay;
+    List pays;
+
+    int money = Provider.of<HomeConfig>(context, listen: false).member.money;
+    bool isInsufficient = money < 1;
+
+    YyShowDialog.showdialog(
+      context,
+      title: CommonUtils.txt('wxts'),
+      btnText: CommonUtils.txt("qr"),
+      callBack: () {
+        // if (isInsufficient) {
+        //   context.push('/${Routes.coinRecharge}');
+        // } else {
+        _upgradePay(product);
+        // }
+      },
+      cancelText: CommonUtils.txt("qx"),
+      prohibitClose: false,
+      content: (setDialogState) {
+        return DefaultTextStyle(
+            style: GQStyle.gray203_13,
+            child: Column(
+              children: [
+                RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                      text: CommonUtils.txt('sfqrsj'),
+                      style: GQStyle.gray203_13),
+                  TextSpan(text: product['pname'], style: GQStyle.blue96_13_M),
+                  TextSpan(text: '?', style: GQStyle.gray203_13),
+                ])),
+              ],
+            ));
+      },
+    );
+  }
+
+  _upgradePay(Map product) {
+    int money = Provider.of<HomeConfig>(context, listen: false).member.money;
+
+    BotToast.showLoading();
+    userVIPUpgrade(goodsId: product["id"]).then((res) {
+      BotToast.closeAllLoading();
+      if (res.status == 1) {
+        Provider.of<HomeConfig>(context, listen: false)
+            .setMoney(money - (product['pay_coins'] ?? 0));
+        CommonUtils.showText(res.msg);
+        setState(() {});
+      } else {
+        if (res.msg == '余额不足') {
+          YyShowDialog.showdialog(
+            context,
+            title: CommonUtils.txt('jbbz'),
+            btnText: CommonUtils.txt("qcz"),
+            callBack: () {
+              context.push('/${Routes.coinRecharge}');
+            },
+            cancelText: CommonUtils.txt("qx"),
+            prohibitClose: false,
+            content: (setDialogState) {
+              return DefaultTextStyle(
+                  style: GQStyle.gray203_13,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(CommonUtils.txt('ybzcz'),
+                              style: GQStyle.gray203_13),
+                          // SizedBox(width: ScreenUtil().setWidth(13.5)),
+                          // Row(
+                          //   children: [
+                          //     Text(CommonUtils.txt('ybzcz'),
+                          //         style: GQStyle.blue80_13_M),
+                          //   ],
+                          // )
+                        ],
+                      ),
+                    ],
+                  ));
+            },
+          );
+        } else {
+          CommonUtils.showText(res.msg);
+        }
+      }
+    });
+  }
+
   @override
   Widget pageBody(BuildContext context) {
     var members = Provider.of<HomeConfig>(context, listen: true).member;
@@ -147,11 +240,13 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
     return networkErr
         ? Container(
             width: double.infinity,
-            child: PageStatus.noNetWork(onTap: () {
-              networkErr = false;
-              setState(() {});
-              _initPage();
-            }),
+            child: PageStatus.noNetWork(
+                text: errorText ?? CommonUtils.txt('zzsb'),
+                onTap: () {
+                  networkErr = false;
+                  setState(() {});
+                  _initPage();
+                }),
           )
         : pageStatus == 'loading'
             ? PageStatus.loading(mounted)
@@ -169,129 +264,47 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: GQStyle.pagePadding),
-                                  height: ScreenUtil().setWidth(86),
-                                  child: Row(
+                                  child: Column(
                                     children: [
-                                      Container(
-                                        child: ClipRRect(
-                                          clipBehavior: Clip.hardEdge,
-                                          borderRadius: BorderRadius.circular(
-                                              ScreenUtil().setWidth(33.5)),
-                                          child: Container(
-                                            height: ScreenUtil().setWidth(67),
-                                            width: ScreenUtil().setWidth(67),
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  Color(0xffdfab8f),
-                                                  Color(0xffcf8856),
-                                                ],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                              ),
-                                            ),
-                                            child: Center(
-                                                child: ClipRRect(
-                                              clipBehavior: Clip.hardEdge,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      ScreenUtil()
-                                                          .setWidth(31.5)),
-                                              child: Container(
-                                                width:
-                                                    ScreenUtil().setWidth(63),
-                                                height:
-                                                    ScreenUtil().setWidth(63),
-                                                child: UserAvatar(),
-                                              ),
-                                            )),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                          width: ScreenUtil().setWidth(13)),
-                                      Expanded(
-                                          child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      Row(
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(members.nickname,
-                                                  style: GQStyle.white255_14),
-                                              SizedBox(
-                                                  width: ScreenUtil()
-                                                      .setWidth(10)),
-                                              CommonUtils.memberVip(
-                                                  members?.vip_str),
-                                              if (members.vip_upgrade == 1)
-                                                Container(
-                                                  margin: EdgeInsets.only(
-                                                      left: 5.w),
-                                                  child: GestureDetector(
-                                                      onTap: () {
-                                                        context.push(
-                                                            '/${Routes.vipupgrade}');
-                                                      },
-                                                      child: LImage(
-                                                        'qy_mine_vip_upgrade',
-                                                        width: 66.w,
-                                                        height: 21.w,
-                                                      )),
-                                                )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                              height:
-                                                  ScreenUtil().setWidth(10)),
                                           Text(
-                                            members.vipLevel < 1
-                                                ? CommonUtils.txt('khykp')
-                                                : CommonUtils.txt('dqrq') +
-                                                    ' $tempTime' +
-                                                    " ${kIsWeb ? "" : "${CommonUtils.txt('syxzcs')}：${members.video_download_value}"}",
-                                            style: GQStyle.gray163_12,
+                                            CommonUtils.txt("dqhy"),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: ScreenUtil().setSp(15),
+                                            ),
+                                          ),
+                                          Text(
+                                            payedInfo['pname'].toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: ScreenUtil().setSp(15),
+                                            ),
                                           ),
                                         ],
-                                      ))
+                                      ),
+                                      SizedBox(
+                                        height: 10.w,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            CommonUtils.txt("ksjz"),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: ScreenUtil().setSp(15),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   child: Column(
                                     children: [
-                                      SizedBox(
-                                          height: ScreenUtil().setWidth(20)),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: GQStyle.pagePadding),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              CommonUtils.txt("ktvpxs"),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    ScreenUtil().setSp(15),
-                                              ),
-                                            ),
-                                            Text(
-                                              CommonUtils.txt("zmzxs"),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    ScreenUtil().setSp(15),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                          height: ScreenUtil().setWidth(13)),
+                                      SizedBox(height: 15.w),
                                       Container(
                                         height: ScreenUtil().setWidth(130),
                                         child: ListView(
@@ -379,24 +392,6 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: ScreenUtil().setWidth(13)),
-                                    Container(
-                                      height: ScreenUtil().setWidth(154),
-                                      child: ListView(
-                                        physics: BouncingScrollPhysics(),
-                                        scrollDirection: Axis.horizontal,
-                                        children: exps
-                                            .map((e) => Row(children: [
-                                                  SizedBox(
-                                                      width: ScreenUtil()
-                                                          .setWidth(15)),
-                                                  TegItemContainer(
-                                                    exp: e,
-                                                  ),
-                                                ]))
-                                            .toList(),
-                                      ),
-                                    )
                                   ]),
                                 ),
                                 SizedBox(height: ScreenUtil().setWidth(25)),
@@ -418,7 +413,7 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
                               SizedBox(height: ScreenUtil().setWidth(10)),
                               GestureDetector(
                                 onTap: () {
-                                  showPay(selectP, product_vip_text);
+                                  _showPay(selectP, product_vip_text);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -437,7 +432,7 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
                                           child: RichText(
                                               text: TextSpan(
                                             text: CommonUtils.txt('ljzf') +
-                                                " ¥${selectP["promo_price_yuan"].split(".").first}",
+                                                " ${selectP["pay_coins"]}${CommonUtils.txt('jb')}",
                                             style: TextStyle(
                                               color: Color(0xFF60260c),
                                               fontSize:
@@ -447,15 +442,6 @@ class _VipPageState extends BaseWidgetState<VipPage> with PayMixin {
                                           )),
                                         ),
                                       ),
-                                      // Text(
-                                      //   CommonUtils.txt('ljzf') +
-                                      //       " ¥${selectP["promo_price_yuan"].split(".").first}",
-                                      //   style: TextStyle(
-                                      //     color: Color(0xFF60260c),
-                                      //     fontSize: ScreenUtil().setSp(17.8),
-                                      //     fontWeight: FontWeight.w500,
-                                      //   ),
-                                      // ),
                                     ],
                                   ),
                                 ),
@@ -580,36 +566,39 @@ class _VIPItemContainerState extends State<VIPItemContainer> with PayMixin {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.product["pname"],
-                      style: widget.product == widget.selP
-                          ? GQStyle.brown72_18
-                          : GQStyle.brown248_18,
+                    FittedBox(
+                      child: Text(
+                        widget.product["pname"],
+                        style: widget.product == widget.selP
+                            ? GQStyle.brown72_18_semi
+                            : GQStyle.brown248_18_semi,
+                      ),
                     ),
                     // SizedBox(height: ScreenUtil().setWidth(14)),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text(
-                        "¥",
+                        widget.product["pay_coins"].toString() +
+                            CommonUtils.txt('jb'),
                         style: TextStyle(
                             fontSize: ScreenUtil().setWidth(18),
                             color: widget.product == widget.selP
                                 ? Color(0xFF48170e)
                                 : Color(0xFFffffff),
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.normal),
                       ),
-                      Text(
-                        widget.product["promo_price_yuan"].split(".").first,
-                        style: TextStyle(
-                            fontSize: ScreenUtil().setWidth(30),
-                            color: widget.product == widget.selP
-                                ? Color(0xFF48170e)
-                                : Color(0xFFffffff),
-                            fontWeight: FontWeight.bold),
-                      )
+                      // Text(
+                      //   widget.product["promo_price_yuan"].split(".").first,
+                      //   style: TextStyle(
+                      //       fontSize: ScreenUtil().setWidth(20),
+                      //       color: widget.product == widget.selP
+                      //           ? Color(0xFF48170e)
+                      //           : Color(0xFFffffff),
+                      //       fontWeight: FontWeight.bold),
+                      // )
                     ]),
                     // SizedBox(height: ScreenUtil().setWidth(9)),
                     Text(
-                      "¥" + widget.product["price_yuan"].split(".").first,
+                      '¥' + widget.product["price_yuan"].split(".").first,
                       style: TextStyle(
                         fontSize: ScreenUtil().setWidth(15),
                         color: widget.product == widget.selP

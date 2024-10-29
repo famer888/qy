@@ -526,6 +526,7 @@ class Member {
     this.new_user,
     this.shortMvFreeTime,
     this.longMvFreeTime,
+    this.vip_upgrade,
     this.video_download_value,
     this.reg_tip,
     this.ads,
@@ -609,98 +610,102 @@ class Member {
   Banner ads;
   int shortMvFreeTime;
   int longMvFreeTime;
+  int vip_upgrade;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
-      post_count: json["post_count"] == null ? 0 : json["post_count"],
-      fans_count: json["fans_count"] == null ? 0 : json["fans_count"],
-      is_follow: json["is_follow"] == null ? 0 : json["is_follow"],
-      uid: json["uid"] == null ? null : json["uid"],
-      video_download_value: json["video_download_value"] == null
-          ? 0
-          : json["video_download_value"],
-      shortMvFreeTime:
-          json["shortMvFreeTime"] == null ? null : json["shortMvFreeTime"],
-      longMvFreeTime:
-          json["longMvFreeTime"] == null ? null : json["longMvFreeTime"],
-      new_user: json["new_user"] == null ? false : json["new_user"],
-      uuid: json["uuid"] == null ? null : json["uuid"],
-      reg_tip: json["reg_tip"] == null ? "" : json["reg_tip"],
-      username: json["username"] == null ? null : json["username"],
-      createdAt: json["created_at"] == null ? null : json["created_at"],
-      updatedAt: json["updated_at"] == null ? null : json["updated_at"],
-      roleId: json["role_id"] == null ? null : json["role_id"],
-      gender: json["gender"] == null ? null : json["gender"],
-      regip: json["regip"] == null ? null : json["regip"],
-      regdate: json["regdate"] == null ? null : json["regdate"],
-      lastip: json["lastip"] == null ? null : json["lastip"],
-      lastvisit: json["lastvisit"] == null ? null : json["lastvisit"],
-      expiredAt: json["expired_at"] == null ? null : json["expired_at"],
-      lastpost: json["lastpost"] == null ? null : json["lastpost"],
-      oltime: json["oltime"] == null ? null : json["oltime"],
-      pageviews: json["pageviews"] == null ? null : json["pageviews"],
-      score: json["score"] == null ? null : json["score"],
-      aff: json["aff"] == null ? null : json["aff"],
-      channel: json["channel"] == null ? null : json["channel"],
-      invitedBy: json["invited_by"] == null ? null : json["invited_by"],
-      invitedNum: json["invited_num"] == null ? null : json["invited_num"],
-      banPost: json["ban_post"] == null ? null : json["ban_post"],
-      loginCount: json["login_count"] == null ? null : json["login_count"],
-      appVersion: json["app_version"] == null ? null : json["app_version"],
-      validate: json["validate"] == null ? null : json["validate"],
-      share: json["share"] == null ? null : Share.fromJson(json["share"]),
-      isLogin: json["is_login"] == null ? null : json["is_login"],
-      nickname: json["nickname"] == null ? null : json["nickname"],
-      thumb: json["thumb"] == null ? "" : json["thumb"],
-      coins: json["coins"] == null ? null : json["coins"],
-      money: json["money"] == null ? null : json["money"],
-      incomeMoney: json["income_money"] == null ? null : json["income_money"],
-      roleType: json["role_type"] == null ? null : json["role_type"],
-      tempVip: json["temp_vip"] == null ? null : json["temp_vip"],
-      followedCount:
-          json["followed_count"] == null ? null : json["followed_count"],
-      videosCount: json["videos_count"] == null ? null : json["videos_count"],
-      fabulousCount:
-          json["fabulous_count"] == null ? null : json["fabulous_count"],
-      likesCount: json["likes_count"] == null ? null : json["likes_count"],
-      commentCount:
-          json["comment_count"] == null ? null : json["comment_count"],
-      vipLevel: json["vip_level"] == null ? null : json["vip_level"],
-      personSignnatrue:
-          json["person_signnatrue"] == null ? "" : json["person_signnatrue"],
-      oldVip: json["old_vip"] == null ? null : json["old_vip"],
-      stature: json["stature"] == null ? null : json["stature"],
-      interest: json["interest"] == null ? null : json["interest"],
-      city: json["city"] == null ? null : json["city"],
-      usedMoneyFreeNum: json["used_money_free_num"] == null
-          ? null
-          : json["used_money_free_num"],
-      agentFee: json["agent_fee"] == null ? null : json["agent_fee"],
-      agent: json["agent"] == null ? 0 : json["agent"],
-      buildId: json["build_id"] == null ? null : json["build_id"],
-      authStatus: json["auth_status"] == null ? null : json["auth_status"],
-      exp: json["exp"] == null ? 0 : json["exp"],
-      exp_con: json["exp_con"] == null ? 2 : json["exp_con"],
-      exp_down: json["exp_down"] == null ? 5 : json["exp_down"],
-      isVirtual: json["is_virtual"] == null ? null : json["is_virtual"],
-      chatUid: json["chat_uid"] == null ? null : json["chat_uid"],
-      phone: json["phone"] == null ? null : json["phone"],
-      phonePrefix: json["phone_prefix"] == null ? null : json["phone_prefix"],
-      freeViewCnt: json["free_view_cnt"] == null
-          ? null
-          : json["free_view_cnt"].runtimeType == int
-              ? json["free_view_cnt"]
-              : int.parse(json["free_view_cnt"]),
-      lastactivity: json["lastactivity"] == null ? null : json["lastactivity"],
-      thumbStr: json["thumb_str"] == null || json["thumb_str"] == ''
-          ? null
-          : json["thumb_str"],
-      oauthStr: json["oauth_str"] == null ? null : json["oauth_str"],
-      isSetPassword:
-          json["is_set_password"] == null ? null : json["is_set_password"],
-      level: json["level"] == null ? null : json["level"],
-      vip_str: json["vip_str"] == null ? "" : json["vip_str"],
-      chat: json["chat"] == null ? null : ImChatModel.fromJson(json["chat"]),
-      ads: json["ads"] == null ? null : Banner.fromJson(json["ads"]));
+        post_count: json["post_count"] == null ? 0 : json["post_count"],
+        fans_count: json["fans_count"] == null ? 0 : json["fans_count"],
+        is_follow: json["is_follow"] == null ? 0 : json["is_follow"],
+        uid: json["uid"] == null ? null : json["uid"],
+        video_download_value: json["video_download_value"] == null
+            ? 0
+            : json["video_download_value"],
+        shortMvFreeTime:
+            json["shortMvFreeTime"] == null ? null : json["shortMvFreeTime"],
+        longMvFreeTime:
+            json["longMvFreeTime"] == null ? null : json["longMvFreeTime"],
+        new_user: json["new_user"] == null ? false : json["new_user"],
+        uuid: json["uuid"] == null ? null : json["uuid"],
+        reg_tip: json["reg_tip"] == null ? "" : json["reg_tip"],
+        username: json["username"] == null ? null : json["username"],
+        createdAt: json["created_at"] == null ? null : json["created_at"],
+        updatedAt: json["updated_at"] == null ? null : json["updated_at"],
+        roleId: json["role_id"] == null ? null : json["role_id"],
+        gender: json["gender"] == null ? null : json["gender"],
+        regip: json["regip"] == null ? null : json["regip"],
+        regdate: json["regdate"] == null ? null : json["regdate"],
+        lastip: json["lastip"] == null ? null : json["lastip"],
+        lastvisit: json["lastvisit"] == null ? null : json["lastvisit"],
+        expiredAt: json["expired_at"] == null ? null : json["expired_at"],
+        lastpost: json["lastpost"] == null ? null : json["lastpost"],
+        oltime: json["oltime"] == null ? null : json["oltime"],
+        pageviews: json["pageviews"] == null ? null : json["pageviews"],
+        score: json["score"] == null ? null : json["score"],
+        aff: json["aff"] == null ? null : json["aff"],
+        channel: json["channel"] == null ? null : json["channel"],
+        invitedBy: json["invited_by"] == null ? null : json["invited_by"],
+        invitedNum: json["invited_num"] == null ? null : json["invited_num"],
+        banPost: json["ban_post"] == null ? null : json["ban_post"],
+        loginCount: json["login_count"] == null ? null : json["login_count"],
+        appVersion: json["app_version"] == null ? null : json["app_version"],
+        validate: json["validate"] == null ? null : json["validate"],
+        share: json["share"] == null ? null : Share.fromJson(json["share"]),
+        isLogin: json["is_login"] == null ? null : json["is_login"],
+        nickname: json["nickname"] == null ? null : json["nickname"],
+        thumb: json["thumb"] == null ? "" : json["thumb"],
+        coins: json["coins"] == null ? null : json["coins"],
+        money: json["money"] == null ? null : json["money"],
+        incomeMoney: json["income_money"] == null ? null : json["income_money"],
+        roleType: json["role_type"] == null ? null : json["role_type"],
+        tempVip: json["temp_vip"] == null ? null : json["temp_vip"],
+        followedCount:
+            json["followed_count"] == null ? null : json["followed_count"],
+        videosCount: json["videos_count"] == null ? null : json["videos_count"],
+        fabulousCount:
+            json["fabulous_count"] == null ? null : json["fabulous_count"],
+        likesCount: json["likes_count"] == null ? null : json["likes_count"],
+        commentCount:
+            json["comment_count"] == null ? null : json["comment_count"],
+        vipLevel: json["vip_level"] == null ? null : json["vip_level"],
+        personSignnatrue:
+            json["person_signnatrue"] == null ? "" : json["person_signnatrue"],
+        oldVip: json["old_vip"] == null ? null : json["old_vip"],
+        stature: json["stature"] == null ? null : json["stature"],
+        interest: json["interest"] == null ? null : json["interest"],
+        city: json["city"] == null ? null : json["city"],
+        usedMoneyFreeNum: json["used_money_free_num"] == null
+            ? null
+            : json["used_money_free_num"],
+        agentFee: json["agent_fee"] == null ? null : json["agent_fee"],
+        agent: json["agent"] == null ? 0 : json["agent"],
+        buildId: json["build_id"] == null ? null : json["build_id"],
+        authStatus: json["auth_status"] == null ? null : json["auth_status"],
+        exp: json["exp"] == null ? 0 : json["exp"],
+        exp_con: json["exp_con"] == null ? 2 : json["exp_con"],
+        exp_down: json["exp_down"] == null ? 5 : json["exp_down"],
+        isVirtual: json["is_virtual"] == null ? null : json["is_virtual"],
+        chatUid: json["chat_uid"] == null ? null : json["chat_uid"],
+        phone: json["phone"] == null ? null : json["phone"],
+        phonePrefix: json["phone_prefix"] == null ? null : json["phone_prefix"],
+        freeViewCnt: json["free_view_cnt"] == null
+            ? null
+            : json["free_view_cnt"].runtimeType == int
+                ? json["free_view_cnt"]
+                : int.parse(json["free_view_cnt"]),
+        lastactivity:
+            json["lastactivity"] == null ? null : json["lastactivity"],
+        thumbStr: json["thumb_str"] == null || json["thumb_str"] == ''
+            ? null
+            : json["thumb_str"],
+        oauthStr: json["oauth_str"] == null ? null : json["oauth_str"],
+        isSetPassword:
+            json["is_set_password"] == null ? null : json["is_set_password"],
+        level: json["level"] == null ? null : json["level"],
+        vip_str: json["vip_str"] == null ? "" : json["vip_str"],
+        chat: json["chat"] == null ? null : ImChatModel.fromJson(json["chat"]),
+        ads: json["ads"] == null ? null : Banner.fromJson(json["ads"]),
+        vip_upgrade: json["vip_upgrade"] == null ? null : json["vip_upgrade"],
+      );
 
   Map<String, dynamic> toJson() => {
         "post_count": post_count == null ? 0 : post_count,
@@ -778,6 +783,7 @@ class Member {
         "ads": ads == null ? null : ads.toJson(),
         "vip_str": vip_str,
         "chat": chat?.toJson(),
+        "vip_upgrade": vip_upgrade == null ? null : vip_upgrade,
       };
 }
 

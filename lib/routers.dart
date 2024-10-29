@@ -6,6 +6,7 @@ import 'package:qypj/pages/mine/collect_page.dart';
 import 'package:qypj/pages/mine/imtochat_page.dart';
 import 'package:qypj/pages/mine/mine_post_page.dart';
 import 'package:qypj/pages/mine/original_enter.dart';
+import 'package:qypj/pages/mine/vip_upgrade_page.dart';
 import 'package:qypj/pages/welfare/welfare_page.dart';
 import 'package:qypj/pages/welfare/welfare_task_alone_page.dart';
 import 'package:go_router/go_router.dart';
@@ -89,6 +90,7 @@ class Routes {
   static String recentlyupdate = 'recentlyupdate'; // 最近更新
   static String kwantsharetousers = 'kwantsharetousers'; // 去推广
   static String vip = 'vip'; //会员充值页面
+  static String vipupgrade = 'vipupgrade'; //会员升级页面
 
   static String search = 'search';
   static String searchResult = 'searchResult/:title';
@@ -897,6 +899,26 @@ class Routes {
           builder: (context, state) => CustomerService(),
         ),
       ]),
+      GoRoute(
+          path: vipupgrade,
+          builder: (context, state) => VipUpgradePage(),
+          routes: [
+            GoRoute(
+                path: rechargeRecord,
+                builder: (context, state) {
+                  return RechargeRecord(args: state.params);
+                },
+                routes: [
+                  GoRoute(
+                    path: customerService,
+                    builder: (context, state) => CustomerService(),
+                  ),
+                ]),
+            GoRoute(
+              path: customerService,
+              builder: (context, state) => CustomerService(),
+            ),
+          ]),
       GoRoute(
         path: appCenter,
         builder: (context, state) => AppCenter(),

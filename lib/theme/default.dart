@@ -944,10 +944,26 @@ class GQStyle {
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
+  static TextStyle brown72_18_semi = TextStyle(
+      fontFamily: hanyi,
+      color: Color.fromRGBO(72, 23, 14, 1),
+      fontSize: ScreenUtil().setSp(18),
+      fontWeight: FontWeight.w600,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
   static TextStyle brown248_18 = TextStyle(
       fontFamily: hanyi,
       color: Color.fromRGBO(255, 255, 255, 1),
       fontSize: ScreenUtil().setSp(18),
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static TextStyle brown248_18_semi = TextStyle(
+      fontFamily: hanyi,
+      color: Color.fromRGBO(255, 255, 255, 1),
+      fontSize: ScreenUtil().setSp(18),
+      fontWeight: FontWeight.w600,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
