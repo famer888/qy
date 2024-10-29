@@ -365,35 +365,6 @@ class _VipUpgradePageState extends BaseWidgetState<VipUpgradePage>
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  child: Column(children: [
-                                    SizedBox(height: ScreenUtil().setWidth(25)),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: GQStyle.pagePadding),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            CommonUtils.txt("jfdh"),
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: ScreenUtil().setSp(15),
-                                            ),
-                                          ),
-                                          Text(
-                                            "${CommonUtils.txt("dqjf")}${members.exp}",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: ScreenUtil().setSp(15),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ]),
-                                ),
                                 SizedBox(height: ScreenUtil().setWidth(25)),
                               ],
                             ),
