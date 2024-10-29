@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../domain/model/ai/ai_model.dart';
+import '../../../../../../domain/model/ai/ai_nav_model.dart';
 import '../../../../../../domain/model/banner_model.dart';
-import '../../../../../../domain/model/bit_nav_model.dart';
 import '../../../../../../domain/remote_domain/domains/ai.dart';
 import '../../../../../notifiers/home_config_notifier.dart';
 import '../../../../../utils/my_toast.dart';
@@ -26,7 +26,7 @@ class _FaceSwapperViewState extends State<FaceSwapperView> {
   final ValueNotifier<List<BannerModel>> bannersNotifier = ValueNotifier([]);
   late final homeConfig = context.read<HomeConfigNotifier>();
 
-  late final List<BitNavModel> titles = homeConfig.config.faceTopNav;
+  late final List<AiNavModel> titles = homeConfig.config.faceTopNav;
 
   bool isInit = false;
 
@@ -78,7 +78,7 @@ class _FaceSwapperViewState extends State<FaceSwapperView> {
         unselectedLabelStyle: MyTheme.whiteOpacity612w400,
         titles: isInit ? [for (final title in titles) title.name] : [],
         views: [
-          for (final BitNavModel nav in titles)
+          for (final nav in titles)
             MyListView.grid(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
               childAspectRatio: FaceSwapperCard.aspectRatio,

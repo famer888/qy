@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../common_widgets/my_button.dart';
 import '../../../theme.dart';
 
 class PostButton extends StatelessWidget {

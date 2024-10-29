@@ -41,6 +41,12 @@ abstract class CacheDomain
 
   /// 清除搜索记录
   Future<void> clearSearchHistory();
+
+  ///获取直播弹幕开关，默认true：开
+  Future<bool> readIsBarrage();
+
+  ///更新直播弹幕开关
+  Future<void> upsertIsBarrage(bool isBarrage);
 }
 
 abstract class VideoDownloadCacheDomain {

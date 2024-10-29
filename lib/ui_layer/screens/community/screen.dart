@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import '../../../domain/api_validator.dart';
 import '../../../domain/domain.dart';
 import '../../notifiers/home_config_notifier.dart';
-import '../../notifiers/user_notifier.dart';
 import '../../router/routes.dart';
 import '../image_paths.dart';
 

@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +10,6 @@ import '../../../domain/model/post_model.dart';
 import '../../utils/my_toast.dart';
 import '../common_widgets/my_tab_bar.dart';
 import '../../notifiers/home_config_notifier.dart';
-import '../../utils/common_utils.dart';
 import '../common_widgets/general_banner.dart';
 import '../common_widgets/my_list_view.dart';
 import '../common_widgets/post/card/card.dart';
@@ -28,7 +26,7 @@ class _BitContentViewState extends State<BitContentView> {
   late final _domain = context.read<SeedDomain>();
   late final _homeConfig = context.read<HomeConfigNotifier>();
   final ValueNotifier<List<BannerModel>> _bannersNotifier = ValueNotifier([]);
-  late final List<BitSeedNavModel> _titles = _homeConfig.config.seedNav ?? [];
+  late final List<BitSeedNavModel> _titles = _homeConfig.config.seedNav;
 
   bool isInit = false;
 

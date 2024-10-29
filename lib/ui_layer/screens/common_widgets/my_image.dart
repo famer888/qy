@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:utils/widgets/frams_separate_widget.dart';
 
 import '../../utils/common_utils.dart';
 import '../image_paths.dart';

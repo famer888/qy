@@ -9,7 +9,6 @@ import '../../../domain/model/creator_info_model.dart';
 import '../../../domain/model/member_model.dart';
 import '../../notifiers/user_notifier.dart';
 import '../../router/routes.dart';
-import '../../utils/common_utils.dart';
 import '../../utils/my_toast.dart';
 import '../common_widgets/member_vip.dart';
 import '../common_widgets/my_app_bar.dart';

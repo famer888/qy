@@ -17,6 +17,7 @@ class _CacheManager implements CacheDomain {
   final _searchHistoryKey = 'search_history';
   final _downloadVideoTasksKey = 'download_video_tasks';
   final _chatsKey = 'imchats';
+  final _isBarrageKey = 'isBarrage';
 
   Future<void> init() async {
     if (_isInitialized) return;
@@ -137,4 +138,12 @@ class _CacheManager implements CacheDomain {
   @override
   Future<void> upsertChats({required String chats}) =>
       chatBox.upsert(_chatsKey, chats);
+
+  @override
+  Future<bool> readIsBarrage() async =>
+      await appBox.read(_isBarrageKey) ?? true;
+  @override
+  Future<void> upsertIsBarrage(bool isBarrage) async {
+    return appBox.upsert(_isBarrageKey, isBarrage);
+  }
 }

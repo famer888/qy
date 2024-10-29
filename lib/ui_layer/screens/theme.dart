@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyTheme {
-  static const LinearGradient shareButtonGradient = LinearGradient(
+  static const shareButtonGradient = LinearGradient(
     colors: [Color.fromRGBO(55, 110, 246, 1), Color.fromRGBO(100, 150, 252, 1)],
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
@@ -10,53 +10,53 @@ class MyTheme {
 
   static const blueColor81_151_241 = Color.fromRGBO(55, 110, 246, 1);
 
-  static final TextStyle yellow16w600 = TextStyle(
+  static final yellow16w600 = TextStyle(
       color: const Color.fromRGBO(232, 197, 174, 1),
       fontSize: 16.sp,
       fontWeight: FontWeight.w500,
       overflow: TextOverflow.visible,
       decoration: TextDecoration.none);
-  static final TextStyle whiteOpacity612w400 = TextStyle(
+  static final whiteOpacity612w400 = TextStyle(
     color: Colors.white.withOpacity(0.6),
     fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     overflow: TextOverflow.ellipsis,
   );
-  static final TextStyle whiteOpacity614w400 = TextStyle(
+  static final whiteOpacity614w400 = TextStyle(
       color: Colors.white.withOpacity(0.6),
       fontSize: 14.sp,
       fontWeight: FontWeight.w400,
       overflow: TextOverflow.visible,
       decoration: TextDecoration.none);
-  static final TextStyle white14w400 = TextStyle(
+  static final white14w400 = TextStyle(
       color: Colors.white,
       fontSize: 14.sp,
       fontWeight: FontWeight.w400,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
-  static final TextStyle white12w500 = TextStyle(
+  static final white12w500 = TextStyle(
     color: Colors.white,
     fontSize: 12.sp,
     fontWeight: FontWeight.w500,
   );
 
-  static final TextStyle whiteOpacity612w500 = TextStyle(
+  static final whiteOpacity612w500 = TextStyle(
       color: Colors.white.withOpacity(0.6),
       fontSize: 12.sp,
       fontWeight: FontWeight.w500);
 
-  static final InputBorder inputBorder = OutlineInputBorder(
+  static final inputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(0.0),
     borderSide: const BorderSide(color: Colors.transparent, width: 0),
   );
 
-  static LinearGradient gradient_84_55 = const LinearGradient(
+  static const gradient_84_55 = LinearGradient(
     colors: [Color.fromRGBO(84, 158, 241, 1), Color.fromRGBO(55, 93, 245, 1)],
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
   );
 
-  static LinearGradient gradient_228_246 = const LinearGradient(
+  static const gradient_228_246 = LinearGradient(
     // colors: [Color(0xff00edfd), Color(0xffbbe954)],
     colors: [
       Color.fromRGBO(228, 177, 145, 1),
@@ -71,15 +71,15 @@ class MyTheme {
     jellyCyanColor108235220
   ];
 
-  static const LinearGradient gradient_90_114 = LinearGradient(
+  static const gradient_90_114 = LinearGradient(
     colors: gradient_90_114_colors,
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
   );
 
-  static const Color imageBgColor = Color.fromRGBO(255, 255, 255, 0.03);
+  static const imageBgColor = Color.fromRGBO(255, 255, 255, 0.03);
 
-  static final TextStyle jellyCyan_18 = TextStyle(
+  static final jellyCyan_18 = TextStyle(
       color: jellyCyanColor103224185,
       fontSize: 18.sp,
       overflow: TextOverflow.visible,
@@ -126,6 +126,7 @@ class MyTheme {
   static const blackColor38 = Color.fromRGBO(38, 38, 38, 1);
   static const blackColor49 = Color.fromRGBO(49, 49, 49, 1);
   static const blackColor61 = Color.fromRGBO(61, 61, 61, 1);
+  static const blackColor25505 = Color.fromRGBO(0, 0, 0, 0.5);
 
   static const bloodOrange2501046 = Color.fromRGBO(250, 104, 6, 1);
   static const bloodOrange2557710 = Color.fromRGBO(255, 77, 11, 1);
@@ -136,6 +137,7 @@ class MyTheme {
   static const grayColor180 = Color.fromRGBO(180, 180, 180, 1);
   static const grayColor150 = Color.fromRGBO(150, 150, 150, 1);
   static const yellow255240 = Color.fromRGBO(255, 240, 0, 1);
+  static const orange24718713 = Color.fromRGBO(247, 187, 13, 1);
 
   static const goldColor234_202_147 = Color.fromRGBO(234, 202, 147, 1);
 
@@ -147,67 +149,84 @@ class MyTheme {
   static const jellyCyanColor103224185 = Color.fromRGBO(0, 210, 190, 1);
   static const jellyCyanColor108235220 = Color.fromRGBO(108, 235, 220, 1);
 
-  static final TextStyle yellow_11 = TextStyle(
+  static final yellow_11 = TextStyle(
       color: yellow255240,
       fontSize: 11.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
-  static final TextStyle yellow_12 = TextStyle(
+  static final yellow_12 = TextStyle(
       color: yellow255240,
       fontSize: 12.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
-  static final TextStyle yellow_14 = TextStyle(
+  static final yellow_14 = TextStyle(
       color: yellow255240,
       fontSize: 14.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
-  static final TextStyle yellow_16 = TextStyle(
+  static final yellow_16 = TextStyle(
       color: yellow255240,
       fontSize: 16.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
-  static final TextStyle white04_12 = TextStyle(
+  static final white04_12 = TextStyle(
       color: const Color.fromRGBO(255, 255, 255, 0.4),
       fontSize: 12.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
-  static final TextStyle white06_10 = TextStyle(
+  static final white06_10 = TextStyle(
     color: white06Color,
     fontSize: 10.sp,
     overflow: TextOverflow.ellipsis,
     decoration: TextDecoration.none,
   );
 
-  static final TextStyle white06_12 = TextStyle(
+  static final white06_12 = TextStyle(
     color: white06Color,
     fontSize: 12.sp,
     overflow: TextOverflow.ellipsis,
     decoration: TextDecoration.none,
   );
+  static final white06_14_M = TextStyle(
+    color: white06Color,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+  );
 
-  static final TextStyle white07_10 =
-      TextStyle(color: white07Color, fontSize: 10.sp);
-  static final TextStyle white07_12 = TextStyle(
+  static final white07_10 = TextStyle(color: white07Color, fontSize: 10.sp);
+  static final white07_12 = TextStyle(
     color: white07Color,
     fontSize: 12.sp,
   );
 
-  static final TextStyle white08_12 = TextStyle(
+  static final white08_12 = TextStyle(
     color: white08Color,
     fontSize: 12.sp,
     overflow: TextOverflow.ellipsis,
     decoration: TextDecoration.none,
   );
 
-  static final TextStyle white08_14_M = TextStyle(
+  static final white08_14_M = TextStyle(
       color: white08Color,
       fontSize: 14.sp,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w500,
+      decoration: TextDecoration.none);
+
+  static final white09_10 = TextStyle(
+      color: const Color.fromRGBO(255, 255, 255, 0.9),
+      fontSize: 10.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static final white09_15_M = TextStyle(
+      color: const Color.fromRGBO(255, 255, 255, 0.9),
+      fontSize: 15.sp,
+      fontWeight: FontWeight.w500,
+      overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
   static final white15_M = TextStyle(
@@ -238,6 +257,19 @@ class MyTheme {
       fontWeight: FontWeight.w500,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
+
+  static final orange247_13 = TextStyle(
+      color: orange24718713,
+      fontSize: 13.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static final blue80_13_M_Line = TextStyle(
+    color: MyTheme.jellyCyanColor103224185,
+    fontSize: 13.sp,
+    decoration: TextDecoration.underline,
+    decorationColor: jellyCyanColor103224185,
+  );
 
   static final brown11medium = TextStyle(
       fontFamily: hanyi,
@@ -422,13 +454,21 @@ class MyTheme {
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
+  static final gray203_16 = TextStyle(
+    color: const Color.fromRGBO(190, 189, 194, 1),
+    fontSize: 16.sp,
+    overflow: TextOverflow.ellipsis,
+    decoration: TextDecoration.none,
+  );
+
   static final black51_20_M = TextStyle(
-      fontFamily: hanyi,
-      color: const Color.fromRGBO(51, 51, 51, 1),
-      fontSize: 20.sp,
-      overflow: TextOverflow.ellipsis,
-      fontWeight: FontWeight.w500,
-      decoration: TextDecoration.none);
+    fontFamily: hanyi,
+    color: const Color.fromRGBO(51, 51, 51, 1),
+    fontSize: 20.sp,
+    overflow: TextOverflow.ellipsis,
+    fontWeight: FontWeight.w500,
+    decoration: TextDecoration.none,
+  );
 
   static final black51_18_B = TextStyle(
       fontFamily: hanyi,
@@ -2865,7 +2905,7 @@ class MyTheme {
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
-  static TextStyle jellyCyan_25_semi = TextStyle(
+  static final jellyCyan_25_semi = TextStyle(
       fontFamily: hanyi,
       color: jellyCyanColor103224185,
       fontSize: ScreenUtil().setSp(25),

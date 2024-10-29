@@ -28,12 +28,13 @@ class MyListView<T> extends StatefulWidget {
     this.crossAxisSpacing = 8,
     this.mainAxisSpacing = 8,
     this.crossAxisCount = 2,
-    this.contentPadding,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     this.pageSize = 15,
     this.scrollController,
     this.noMoreItemsIndicator,
-  }) : type = MyListViewType.grid;
+    this.isNeedMore = true,
+  })  : type = MyListViewType.grid,
+        contentPadding = null;
 
   const MyListView.list({
     super.key,
@@ -46,6 +47,7 @@ class MyListView<T> extends StatefulWidget {
     this.pageSize = 15,
     this.scrollController,
     this.noMoreItemsIndicator,
+    this.isNeedMore = true,
   })  : childAspectRatio = 167 / 142,
         crossAxisCount = 2,
         crossAxisSpacing = 8,
@@ -67,7 +69,7 @@ class MyListView<T> extends StatefulWidget {
   final ScrollController? scrollController;
 
   final Widget? noMoreItemsIndicator;
-
+  final bool? isNeedMore; //是否需要上拉刷新功能,默认true：需要
   @override
   MyListViewState<T> createState() => MyListViewState<T>();
 }
@@ -107,6 +109,10 @@ class MyListViewState<T> extends State<MyListView<T>> {
     try {
       final items = (await widget.onFetchingMore(pageKey, _pageSize))!;
       if (!mounted) return;
+      if ((widget.isNeedMore ?? false) == false && pageKey == 2) {
+        //不需要上拉刷新功能
+        return;
+      }
 
       final isLastPage = items.isEmpty;
       if (isLastPage) {
@@ -172,18 +178,20 @@ class MyListViewState<T> extends State<MyListView<T>> {
                 noMoreItemsIndicatorBuilder: (context) =>
                     widget.noMoreItemsIndicator ??
                     DataStatusText(
-                      text: 'wydx'.tr(context: context),
+                      text: 'wydx'.tr(context: context), //-----我是有底线的-----
                     ),
                 firstPageProgressIndicatorBuilder: (context) =>
                     const LoadingView(),
                 firstPageErrorIndicatorBuilder: (context) =>
                     NetworkErrorView(onTap: _onRefresh),
                 newPageErrorIndicatorBuilder: (context) => DataStatusText(
-                  text: 'djjz'.tr(context: context),
+                  text: 'djjz'.tr(context: context), //加载失败，点击重新加载
                   onTap: pagingController.retryLastFailedRequest,
                 ),
                 newPageProgressIndicatorBuilder: (context) =>
-                    const MoreLoading(),
+                    (widget.isNeedMore ?? false)
+                        ? const MoreLoading()
+                        : Container(),
                 itemBuilder: widget.itemBuilder,
               ),
             ),
@@ -206,7 +214,9 @@ class MyListViewState<T> extends State<MyListView<T>> {
                   onTap: pagingController.retryLastFailedRequest,
                 ),
                 newPageProgressIndicatorBuilder: (context) =>
-                    const MoreLoading(),
+                    (widget.isNeedMore ?? false)
+                        ? const MoreLoading()
+                        : Container(),
                 itemBuilder: widget.itemBuilder,
               ),
               separatorBuilder: (context, index) => SizedBox(

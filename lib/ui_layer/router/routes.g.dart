@@ -52,6 +52,8 @@ List<RouteBase> get $appRoutes => [
       $mediaViewerRoute,
       $localVideoRoute,
       $homeAIRoute,
+      $liveVideoDetailRoute,
+      $monitorVideoDetailRoute,
     ];
 
 RouteBase get $welcomeRoute => GoRouteData.$route(
@@ -1314,6 +1316,58 @@ extension $HomeAIRouteExtension on HomeAIRoute {
 
   String get location => GoRouteData.$location(
         '/ai',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $liveVideoDetailRoute => GoRouteData.$route(
+      path: '/liveVideoDetail/:id',
+      parentNavigatorKey: LiveVideoDetailRoute.$parentNavigatorKey,
+      factory: $LiveVideoDetailRouteExtension._fromState,
+    );
+
+extension $LiveVideoDetailRouteExtension on LiveVideoDetailRoute {
+  static LiveVideoDetailRoute _fromState(GoRouterState state) =>
+      LiveVideoDetailRoute(
+        state.pathParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/liveVideoDetail/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $monitorVideoDetailRoute => GoRouteData.$route(
+      path: '/monitorVideoDetail/:id',
+      parentNavigatorKey: MonitorVideoDetailRoute.$parentNavigatorKey,
+      factory: $MonitorVideoDetailRouteExtension._fromState,
+    );
+
+extension $MonitorVideoDetailRouteExtension on MonitorVideoDetailRoute {
+  static MonitorVideoDetailRoute _fromState(GoRouterState state) =>
+      MonitorVideoDetailRoute(
+        state.pathParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/monitorVideoDetail/${Uri.encodeComponent(id)}',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -1,6 +1,7 @@
-import 'bit_nav_model.dart';
+import 'ai/ai_nav_model.dart';
 import 'bit_seed_nav_model.dart';
-import 'community_nav_model.dart';
+import 'live/live_nav_model.dart';
+import 'monitor/monitor_nav_model.dart';
 import 'navigator_model.dart';
 
 class HomeData {
@@ -154,8 +155,10 @@ class Config {
     required this.vipLevelAwqStr,
     required this.vipNameAwqStr,
     required this.faceTopNav,
-    this.faceCoins,
-    this.stripCoins,
+    required this.faceCoins,
+    required this.stripCoins,
+    required this.liveTopNav,
+    required this.monitorTopNav,
   });
 
   final String? dayPrice;
@@ -196,7 +199,9 @@ class Config {
   final List<NavigatorModel>? forumNav;
   final List<NavigatorModel>? seedSortNav;
   final List<BitSeedNavModel> seedNav;
-  final List<BitNavModel> faceTopNav;
+  final List<AiNavModel> faceTopNav;
+  final List<LiveNavModel> liveTopNav;
+  final List<MonitorNavModel> monitorTopNav;
 
   final int payAi;
   final int? showApp;
@@ -269,9 +274,14 @@ class Config {
         vipLevelAwqStr:
             List<String>.from(json['vip_level_awq_str']?.map((x) => x) ?? []),
         vipNameAwqStr: json['vip_name_awq_str'] ?? '',
-        faceTopNav: List<BitNavModel>.from(
-            json['face_top_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+        faceTopNav: List<AiNavModel>.from(
+            json['face_top_nav']?.map((x) => AiNavModel.fromJson(x)) ?? []),
         stripCoins: json['strip_coins'],
+        liveTopNav: List<LiveNavModel>.from(
+            json['live_top_nav']?.map((x) => LiveNavModel.fromJson(x)) ?? []),
+        monitorTopNav: List<MonitorNavModel>.from(
+            json['monitor_top_nav']?.map((x) => MonitorNavModel.fromJson(x)) ??
+                []),
       );
 
   Map<String, dynamic> toJson() => {
@@ -322,6 +332,8 @@ class Config {
         'face_coins': faceCoins,
         'face_top_nav': faceTopNav.map((e) => e).toList(),
         'strip_coins': stripCoins,
+        'live_top_nav': liveTopNav.map((e) => e).toList(),
+        'monitor_top_nav': monitorTopNav.map((e) => e).toList(),
       };
 }
 

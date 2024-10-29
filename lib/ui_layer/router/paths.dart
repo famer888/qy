@@ -151,4 +151,10 @@ class AppRouterPaths {
   static const ai = '/ai';
 
   static const webView = '/${BuildConfig.webViewPathName}/:url';
+
+  /// 直播视频详情页
+  static const liveVideoDetail = '/liveVideoDetail/:id';
+
+  /// 监控视频详情页
+  static const monitorVideoDetail = '/monitorVideoDetail/:id';
 }

@@ -154,7 +154,6 @@ class _Body extends StatefulWidget {
 
 class _BodyState extends State<_Body> {
   late final _appDomain = context.read<CommunityDomain>();
-  late final _config = context.read<HomeConfigNotifier>().config;
   AsyncValue<List<CircleCommunityNavModel>> _asyncValue = const AsyncInit();
 
   @override

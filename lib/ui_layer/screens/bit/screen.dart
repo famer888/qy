@@ -6,7 +6,6 @@ import '../../../domain/domain.dart';
 import '../../../domain/model/bit_nav_model.dart';
 import '../common_widgets/my_tab_bar.dart';
 import '../common_widgets/screen_background.dart';
-import '../common_widgets/search_app_bar.dart';
 import '../common_widgets/status/loading.dart';
 import '../common_widgets/status/network_error.dart';
 import 'content.dart';

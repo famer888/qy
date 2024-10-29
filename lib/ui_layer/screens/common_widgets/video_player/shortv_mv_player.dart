@@ -34,6 +34,7 @@ class ShortvMvPlayer extends StatefulWidget {
     this.noBack = false,
     this.isLive = false,
     this.needCheckAspectRatio = false,
+    this.needSlide = true,
   });
   final VideoData info;
   final bool isLocal;
@@ -42,6 +43,7 @@ class ShortvMvPlayer extends StatefulWidget {
 
   /// 显示全屏按钮是否判断视频长宽比
   final bool needCheckAspectRatio;
+  final bool needSlide;//是否需要滑动快进，默认需要
 
   @override
   State<ShortvMvPlayer> createState() => _ShortvMvPlayerState();
@@ -126,6 +128,7 @@ class _ShortvMvPlayerState extends State<ShortvMvPlayer> with NVideoURLMinxin {
                   isPreview: isPreview,
                   noBack: widget.noBack,
                   needCheckAspectRatio: widget.needCheckAspectRatio,
+                  needSlide: widget.needSlide,
                   shareVp: () {
                     const MineWelfareRoute(index: 1).push(context);
                   },
@@ -149,7 +152,8 @@ class _ShortvMvPlayerState extends State<ShortvMvPlayer> with NVideoURLMinxin {
                 videoFit: BoxFit.contain,
                 controls: SinkPortraitLandWidget(
                   info: widget.info,
-                  noBack: true,
+                  needSlide: widget.needSlide,
+                  noBack: false,
                   closeBarrage: (flag) {
                     opened = flag;
                     if (mounted) setState(() {});
@@ -164,7 +168,7 @@ class _ShortvMvPlayerState extends State<ShortvMvPlayer> with NVideoURLMinxin {
     Member member = context.read<UserNotifier>().member;
     bool isInsufficient = member.money < (widget.info.coins!);
     if (goby && !isInsufficient) {
-      byVideoRes(member.money - widget.info.coins!); //直接购买
+      byVideoRes(member.money - widget.info.coins!, goby); //直接购买
       return;
     }
     if (widget.info.isfree == 2) {
@@ -181,7 +185,7 @@ class _ShortvMvPlayerState extends State<ShortvMvPlayer> with NVideoURLMinxin {
               if (isInsufficient) {
                 const CoinRechargeRoute().push(context);
               } else {
-                byVideoRes(member.money - widget.info.coins!);
+                byVideoRes(member.money - widget.info.coins!, goby);
               }
             },
             content: DefaultTextStyle(
@@ -241,12 +245,15 @@ class _ShortvMvPlayerState extends State<ShortvMvPlayer> with NVideoURLMinxin {
     }
   }
 
-  Future byVideoRes(int money) async {
+  Future byVideoRes(int money, bool goby) async {
     MyToast.showLoading(text: tr('gmzz'));
     final userNotifier = context.read<UserNotifier>();
     final res =
         await context.read<MvDomain>().buyVideo(id: widget.info.id ?? 0);
     MyToast.closeAllLoading();
+    if (mounted && !goby) {
+      context.pop();
+    }
     if (res.isValid) {
       userNotifier.setMoney(money: money);
       widget.info.source240 = res.data['url'];
@@ -272,6 +279,7 @@ class SinkPortraitLandWidget extends StatefulWidget {
     this.nowByKb,
     this.closeBarrage,
     this.needCheckAspectRatio = false,
+    this.needSlide = true,
     required this.noBack,
   });
   final bool isBack;
@@ -288,6 +296,8 @@ class SinkPortraitLandWidget extends StatefulWidget {
 
   /// 显示全屏按钮是否判断视频长宽比
   final bool needCheckAspectRatio;
+  final bool needSlide;//是否需要滑动快进，默认需要
+
   @override
   State<SinkPortraitLandWidget> createState() => _SinkPortraitLandWidgetState();
 }
@@ -327,7 +337,7 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                 '$mapKey X',
                 style: TextStyle(
                   color: _speed == speedVals
-                      ? MyTheme.jellyCyanColor103224185
+                      ? const Color.fromRGBO(90, 75, 235, 1)
                       : Colors.white,
                   fontSize: 16,
                 ),
@@ -369,42 +379,75 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
       children: [
         Positioned.fill(
           child: FlickShowControlsAction(
-            child: FlickSeekVideoAction(
-              duration: const Duration(seconds: 60),
+            child: widget.needSlide ? FlickSlideVideoAction(
+              fontSize: 16,
               child: Center(
                 child: flag
                     ? Center(
-                        child: SizedBox(
-                          height: 40,
-                          width: 40,
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.grey[400],
-                            strokeWidth: 1.5,
-                          ),
-                        ),
-                      )
+                  child: SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.grey[400],
+                      strokeWidth: 1.5,
+                    ),
+                  ),
+                )
                     : const FlickAutoHideChild(
-                        showIfVideoNotInitialized: false,
-                        child: FlickPlayToggle(
-                          replayChild: MyImage.asset(
-                            MyImagePaths.appVReplayN,
-                            width: 40,
-                            height: 40,
-                          ),
-                          playChild: MyImage.asset(
-                            MyImagePaths.appVPlayN,
-                            width: 40,
-                            height: 40,
-                          ),
-                          pauseChild: MyImage.asset(
-                            MyImagePaths.appVPauseN,
-                            width: 40,
-                            height: 40,
-                          ),
-                        ),
-                      ),
+                  showIfVideoNotInitialized: false,
+                  child: FlickPlayToggle(
+                    replayChild: MyImage.asset(
+                      MyImagePaths.appVReplayN,
+                      width: 40,
+                      height: 40,
+                    ),
+                    playChild: MyImage.asset(
+                      MyImagePaths.appVPlayN,
+                      width: 40,
+                      height: 40,
+                    ),
+                    pauseChild: MyImage.asset(
+                      MyImagePaths.appVPauseN,
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ) :
+            FlickSeekVideoAction(child: Center(
+              child: flag
+                  ? Center(
+                child: SizedBox(
+                  height: 40,
+                  width: 40,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.grey[400],
+                    strokeWidth: 1.5,
+                  ),
+                ),
+              )
+                  : const FlickAutoHideChild(
+                showIfVideoNotInitialized: false,
+                child: FlickPlayToggle(
+                  replayChild: MyImage.asset(
+                    MyImagePaths.appVReplayN,
+                    width: 40,
+                    height: 40,
+                  ),
+                  playChild: MyImage.asset(
+                    MyImagePaths.appVPlayN,
+                    width: 40,
+                    height: 40,
+                  ),
+                  pauseChild: MyImage.asset(
+                    MyImagePaths.appVPauseN,
+                    width: 40,
+                    height: 40,
+                  ),
+                ),
+              ),
+            )),
           ),
         ),
         FlickAutoHideChild(
@@ -478,7 +521,7 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                                       ),
                                     )
                                   : Container(),
-                              (rate > 1 || !widget.needCheckAspectRatio) ||
+                              (rate > 1 || !widget.needCheckAspectRatio) && !widget.isPreview ||
                                       kIsWeb && !widget.isPreview
                                   ? Padding(
                                       padding: const EdgeInsets.only(left: 10),
@@ -493,10 +536,12 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                                             color: Colors.white),
                                         toggleFullscreen: () {
                                           if (kIsWeb) {
-                                            html.VideoElement video = html
-                                                    .document
-                                                    .querySelector('video')
-                                                as html.VideoElement;
+                                            List<html.VideoElement> elements =
+                                            html.document.querySelectorAll('video');
+                                            if (elements.isEmpty) return;
+
+                                            html.VideoElement video = elements.last;
+
                                             video.muted = false;
                                             video.volume = 1;
                                             video.setAttribute(
@@ -531,9 +576,12 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                                 handleRadius: 6,
                                 curveRadius: 4,
                                 backgroundColor: Colors.white24,
-                                bufferedColor: Colors.white38,
-                                playedColor: MyTheme.jellyCyanColor103224185,
-                                handleColor: Colors.transparent,
+                                bufferedColor:
+                                    const Color.fromRGBO(90, 75, 235, 0.38),
+                                playedColor:
+                                    const Color.fromRGBO(90, 75, 235, 1),
+                                handleColor:
+                                    const Color.fromRGBO(90, 75, 235, 1),
                               ),
                             )
                           : Container(),
@@ -555,9 +603,9 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                MyTheme.jellyCyanColor103224185
+                                const Color.fromRGBO(90, 75, 235, 1)
                                     .withAlpha((0.6 * 255).toInt()),
-                                MyTheme.jellyCyanColor103224185
+                                const Color.fromRGBO(90, 75, 235, 1)
                                     .withAlpha((0.6 * 255).toInt()),
                               ],
                               begin: Alignment.centerLeft,
@@ -616,26 +664,29 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
             }
             return GestureDetector(
               behavior: HitTestBehavior.translucent,
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.1),
-                      offset: Offset(0, 0),
-                      spreadRadius: 5,
-                      blurRadius: 5,
-                    )
-                  ],
-                ),
-                alignment: Alignment.center,
-                child: const MyImage.asset(
-                  MyImagePaths.appNavBackWN,
-                  width: 18,
-                  height: 18,
-                  fit: BoxFit.contain,
+              child: SafeArea(
+                top: false,
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.1),
+                        offset: Offset(0, 0),
+                        spreadRadius: 5,
+                        blurRadius: 5,
+                      )
+                    ],
+                  ),
+                  alignment: Alignment.center,
+                  child: const MyImage.asset(
+                    MyImagePaths.appNavBackWN,
+                    width: 18,
+                    height: 18,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               onTap: () {
@@ -749,7 +800,7 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                   height: 32.w,
                   width: 110.w,
                   decoration: const BoxDecoration(
-                    gradient: MyTheme.btnGradient_ff00edfd_ffbbe954,
+                    gradient: MyTheme.gradient_90_114,
                     borderRadius: BorderRadius.all(Radius.circular(3)),
                   ),
                   child: Center(
@@ -768,7 +819,7 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                   height: 32.w,
                   width: 110.w,
                   decoration: const BoxDecoration(
-                    gradient: MyTheme.btnGradient_ff00edfd_ffbbe954,
+                    gradient: MyTheme.gradient_90_114,
                     borderRadius: BorderRadius.all(Radius.circular(3)),
                   ),
                   child: Center(

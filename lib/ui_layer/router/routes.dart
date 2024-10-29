@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/model/video_detail_model.dart';
+import '../screens/bit/live/detail/screen.dart';
+import '../screens/bit/monitor/detail/screen.dart';
 import '../screens/community/circle_screen.dart';
 import '../screens/community/module/screen.dart';
 import '../screens/bit/screen.dart';
@@ -778,6 +780,40 @@ class HomeAIRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const HomeAiScreen();
+  }
+}
+
+@TypedGoRoute<LiveVideoDetailRoute>(path: AppRouterPaths.liveVideoDetail)
+class LiveVideoDetailRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const LiveVideoDetailRoute(this.id);
+  final String id;
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.removeDuplicatePush(location);
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return LiveVideoDetailScreen(id: id);
+  }
+}
+
+@TypedGoRoute<MonitorVideoDetailRoute>(path: AppRouterPaths.monitorVideoDetail)
+class MonitorVideoDetailRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const MonitorVideoDetailRoute(this.id);
+  final String id;
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.removeDuplicatePush(location);
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return MonitorVideoDetailScreen(id: id);
   }
 }
 

@@ -20,12 +20,24 @@ class MineWelfareScreen extends StatefulWidget {
 class _MineWelfareScreenState extends State<MineWelfareScreen>
     with TickerProviderStateMixin {
   late final config = context.read<HomeConfigNotifier>().config;
-  late final titles =
-      config.showApp == 1 ? ['dlzq', 'flrw', 'yytj'] : ['dlzq', 'flrw'];
+
+  late final data = [
+    ('dlzq', const KeepAliveWrapper(child: AgentView())),
+    ('flrw', const KeepAliveWrapper(child: TaskView())),
+    if (config.showApp == 1)
+      ('yytj', const KeepAliveWrapper(child: AppCenterView())),
+  ];
+
   late final tabController = TabController(
-      length: titles.length, vsync: this, initialIndex: widget.index);
+    length: data.length,
+    vsync: this,
+    initialIndex: widget.index,
+  );
+
   @override
   Widget build(BuildContext context) {
+    final titles = [for (final e in data) e.$1];
+    final children = [for (final e in data) e.$2];
     return ScreenBackground(
       child: Scaffold(
         appBar: AppBarWithTabBar(
@@ -35,11 +47,7 @@ class _MineWelfareScreenState extends State<MineWelfareScreen>
         ),
         body: TabBarView(
           controller: tabController,
-          children: const [
-            KeepAliveWrapper(child: AgentView()),
-            KeepAliveWrapper(child: TaskView()),
-            KeepAliveWrapper(child: AppCenterView()),
-          ],
+          children: children,
         ),
       ),
     );

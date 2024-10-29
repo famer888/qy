@@ -18,13 +18,13 @@ class AutoEncryptAndDecryptInterceptor extends Interceptor {
     }
     // options.data = await fd.compute(PlatformAwareCrypto.encryptReqParams, data);
     options.data = PlatformAwareCrypto.encryptReqParams(data);
-    logger.i({
-      'baseUrl': options.baseUrl,
-      'path': options.path,
-      'header': options.headers,
-      'data': data,
-      'encrypt': options.data,
-    });
+    // logger.i({
+    //   'baseUrl': options.baseUrl,
+    //   'path': options.path,
+    //   'header': options.headers,
+    //   'data': data,
+    //   'encrypt': options.data,
+    // });
 
     return super.onRequest(options, handler);
   }
@@ -37,11 +37,11 @@ class AutoEncryptAndDecryptInterceptor extends Interceptor {
       // response.data = await PlatformAwareCrypto.decryptResData(response.data);
     }
 
-    logger.i({
-      'path': response.requestOptions.path,
-      'data': response.data,
-      'encrypt': response.data['data'],
-    });
+    // logger.i({
+    //   'path': response.requestOptions.path,
+    //   'data': response.data,
+    //   'encrypt': response.data['data'],
+    // });
 
     return super.onResponse(response, handler);
   }
