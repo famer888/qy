@@ -185,7 +185,20 @@ class _WodeState extends BaseWidgetState<Wode> {
               members.agent == 1
                   ? Icon(Icons.verified_sharp,
                       size: 17.w, color: Color.fromRGBO(247, 208, 93, 1))
-                  : Container()
+                  : Container(),
+              if (members.vip_upgrade == 1)
+                Container(
+                  margin: EdgeInsets.only(left: 5.w),
+                  child: GestureDetector(
+                      onTap: () {
+                        context.push('/${Routes.vipupgrade}');
+                      },
+                      child: LImage(
+                        'qy_mine_vip_upgrade',
+                        width: 66.w,
+                        height: 21.w,
+                      )),
+                )
             ],
           ),
           SizedBox(

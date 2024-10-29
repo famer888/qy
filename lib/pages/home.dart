@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flurry/flurry.dart';
+// import 'package:flurry/flurry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -168,10 +168,10 @@ class _HomeState extends State<Home> {
   }
 
   _initPlatformState() async {
-    await Flurry.initialize(
-      androidKey: "G87MKKWNTHCDM2RJQS4Z",
-      iosKey: "JWZPHSYDH2WB728P6DQX",
-    );
+    // await Flurry.initialize(
+    //   androidKey: "G87MKKWNTHCDM2RJQS4Z",
+    //   iosKey: "JWZPHSYDH2WB728P6DQX",
+    // );
   }
 
   // 初始化下载状态
