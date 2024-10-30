@@ -97,7 +97,7 @@ class RegularDialog extends StatelessWidget {
                             child: Center(
                               child: Text(
                                 cancelText ?? '',
-                                style: MyTheme.hexa3a2a2_13_M,
+                                style: MyTheme.white255_13_M,
                               ),
                             ),
                           ),

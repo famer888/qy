@@ -2,71 +2,42 @@ part of '../repo.dart';
 
 mixin _AI on _BaseAppRepo implements AIDomain {
   @override
-  AsyncResult<AIWithBannersModel> aIListFaceMaterial({
+  AsyncResult<AIFaceMaterialsWithBannersModel> faceMaterialList({
     required int id,
     required int page,
     required int limit,
+    required String sort,
+    required String type,
   }) =>
       _aiService
-          .aIListFaceMaterial(
-            id: id,
-            page: page,
-            limit: limit,
-          )
-          .deserializeJsonBy(AIWithBannersModel.fromJson)
+          .faceMaterialList(
+              id: id, page: page, limit: limit, sort: sort, type: type)
+          .deserializeJsonBy(AIFaceMaterialsWithBannersModel.fromJson)
           .guard;
 
   @override
-  AsyncResult<List<AIModel>?> aIMyFace({
-    required int status,
-    required int page,
-    required int limit,
+  AsyncResult changeFace({
+    required int id,
+    required String thumb,
+    required int thumbW,
+    required int thumbH,
   }) =>
       _aiService
-          .aIMyFace(
-            status: status,
-            page: page,
-            limit: limit,
-          )
-          .deserializeJsonListBy((e) => e.map(AIModel.fromJson).toList())
-          .guard;
-
-  @override
-  AsyncResult<List<AIModel>?> aIMyStrip({
-    required int status,
-    required int page,
-    required int limit,
-  }) =>
-      _aiService
-          .aIMyStrip(
-            status: status,
-            page: page,
-            limit: limit,
-          )
-          .deserializeJsonListBy((e) => e.map(AIModel.fromJson).toList())
-          .guard;
-
-  @override
-  AsyncResult aIChangeFace(
-          {required int id,
-          required String thumb,
-          required int thumbW,
-          required int thumbH}) =>
-      _aiService
-          .aIChangeFace(id: id, thumb: thumb, thumbW: thumbW, thumbH: thumbH)
+          .changeFace(id: id, thumb: thumb, thumbW: thumbW, thumbH: thumbH)
           .deserialize()
           .guard;
 
   @override
-  AsyncResult aICustomizeFace(
-          {required String ground,
-          required int groundW,
-          required int groundH,
-          required String thumb,
-          required int thumbW,
-          required int thumbH}) =>
+  AsyncResult customizeFace({
+    required String ground,
+    required int groundW,
+    required int groundH,
+    required String thumb,
+    required int thumbW,
+    required int thumbH,
+  }) =>
       _aiService
-          .aICustomizeFace(
+          .customizeFace(
               ground: ground,
               groundW: groundW,
               groundH: groundH,
@@ -77,19 +48,46 @@ mixin _AI on _BaseAppRepo implements AIDomain {
           .guard;
 
   @override
-  AsyncResult aIDelFace({required int id}) =>
-      _aiService.aIDelFace(id: id).deserialize().guard;
-
-  @override
-  AsyncResult aIDelStrip({required int id}) =>
-      _aiService.aIDelStrip(id: id).deserialize().guard;
-
-  @override
-  AsyncResult aIStrip(
-          {required String thumb, required int thumbW, required int thumbH}) =>
+  AsyncResult strip({
+    required String thumb,
+    required int thumbW,
+    required int thumbH,
+  }) =>
       _aiService
-          .aIStrip(thumb: thumb, thumbW: thumbW, thumbH: thumbH)
+          .strip(thumb: thumb, thumbW: thumbW, thumbH: thumbH)
           .deserialize()
+          .guard;
+
+  @override
+  AsyncResult<List<AIFaceMaterials>?> aIMyFace({
+    required int status,
+    required int page,
+    required int limit,
+  }) =>
+      _aiService
+          .aIMyFace(
+            status: status,
+            page: page,
+            limit: limit,
+          )
+          .deserializeJsonListBy(
+              (e) => e.map(AIFaceMaterials.fromJson).toList())
+          .guard;
+
+  @override
+  AsyncResult<List<AIFaceMaterials>?> aIMyStrip({
+    required int status,
+    required int page,
+    required int limit,
+  }) =>
+      _aiService
+          .aIMyStrip(
+            status: status,
+            page: page,
+            limit: limit,
+          )
+          .deserializeJsonListBy(
+              (e) => e.map(AIFaceMaterials.fromJson).toList())
           .guard;
 
   @override

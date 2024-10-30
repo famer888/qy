@@ -2,37 +2,23 @@ import '../../model/ai/ai_model.dart';
 import '../../type_def.dart';
 
 abstract class AIDomain {
-  ///换脸素材列表
-  AsyncResult<AIWithBannersModel?> aIListFaceMaterial({
-    required int id, // home/config中face_top_nav中的ID
+  /// 换脸列表排序
+  AsyncResult<AIFaceMaterialsWithBannersModel> faceMaterialList({
+    required int id,
     required int page,
     required int limit,
+    required String sort,
+    required String type,
   });
 
-  ///我的换脸记录
-  AsyncResult<List<AIModel>?> aIMyFace({
-    required int status, // 0-待处理 1-处理中 2-已成功 3-已失败
-    required int page,
-    required int limit,
-  });
-
-  ///我的脱衣记录
-  AsyncResult<List<AIModel>?> aIMyStrip({
-    required int status, // 0-待处理 1-处理中 2-已成功 3-已失败
-    required int page,
-    required int limit,
-  });
-
-  ///素材换脸
-  AsyncResult aIChangeFace({
+  AsyncResult changeFace({
     required int id,
     required String thumb,
     required int thumbW,
     required int thumbH,
   });
 
-  ///自定义换脸
-  AsyncResult aICustomizeFace({
+  AsyncResult customizeFace({
     required String ground,
     required int groundW,
     required int groundH,
@@ -41,21 +27,24 @@ abstract class AIDomain {
     required int thumbH,
   });
 
-  ///删除我的换脸记录
-  AsyncResult aIDelFace({
-    required int id,
-  });
-
-  ///删除我的脱衣记录
-  AsyncResult aIDelStrip({
-    required int id,
-  });
-
-  ///脱衣
-  AsyncResult aIStrip({
+  AsyncResult strip({
     required String thumb,
     required int thumbW,
     required int thumbH,
+  });
+
+  ///我的换脸记录
+  AsyncResult<List<AIFaceMaterials>?> aIMyFace({
+    required int status, // 0-待处理 1-处理中 2-已成功 3-已失败
+    required int page,
+    required int limit,
+  });
+
+  ///我的脱衣记录
+  AsyncResult<List<AIFaceMaterials>?> aIMyStrip({
+    required int status, // 0-待处理 1-处理中 2-已成功 3-已失败
+    required int page,
+    required int limit,
   });
 
   /// 删除我的脱衣记录

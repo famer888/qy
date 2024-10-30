@@ -5,8 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'widgets/clothes_remover/view.dart';
-import 'widgets/face_swapper/view.dart';
+import 'widgets/clothes_remover/screen.dart';
+import 'widgets/face_swapper/screen.dart';
 
 class HomeAiScreen extends StatefulWidget {
   const HomeAiScreen({super.key});
@@ -17,7 +17,7 @@ class HomeAiScreen extends StatefulWidget {
 
 class _HomeAiScreenState extends State<HomeAiScreen>
     with TickerProviderStateMixin {
-  late final navList = ['aihl'.tr(), 'aity'.tr()];
+  late final navList = ['aihl'.tr(), 'aiqy'.tr()];
   late final tabController = TabController(length: navList.length, vsync: this);
   @override
   Widget build(BuildContext context) {

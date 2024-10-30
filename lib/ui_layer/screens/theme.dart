@@ -196,10 +196,23 @@ class MyTheme {
     fontWeight: FontWeight.w500,
   );
 
+  static final white06_18 = TextStyle(
+      color: white06Color,
+      fontSize: 18.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
   static final white07_10 = TextStyle(color: white07Color, fontSize: 10.sp);
+  static final white07_11 = TextStyle(color: white07Color, fontSize: 11.sp);
+
   static final white07_12 = TextStyle(
     color: white07Color,
     fontSize: 12.sp,
+    overflow: TextOverflow.ellipsis,
+  );
+  static final white07_14 = TextStyle(
+    color: white07Color,
+    fontSize: 14.sp,
     overflow: TextOverflow.ellipsis,
   );
 
@@ -262,6 +275,11 @@ class MyTheme {
   static final orange247_13 = TextStyle(
       color: orange24718713,
       fontSize: 13.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+  static final orange247_15 = TextStyle(
+      color: orange24718713,
+      fontSize: 15.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
@@ -2658,7 +2676,7 @@ class MyTheme {
   static final white13 = TextStyle(
       fontFamily: hanyi,
       color: const Color.fromRGBO(255, 255, 255, 1),
-      fontSize: 14.sp,
+      fontSize: 13.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 

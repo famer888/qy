@@ -124,13 +124,13 @@ class UserNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setStripCt({required int stripCt}) {
-    _member = _member.copyWith(stripCt: stripCt);
+  void setStripValue({required int num}) {
+    _member = _member.copyWith(stripValue: num);
     notifyListeners();
   }
 
-  void setFaceCt({required int faceCt}) {
-    _member = _member.copyWith(faceCt: faceCt);
+  void setImgFaceValue({required int num}) {
+    _member = _member.copyWith(imgFaceValue: num);
     notifyListeners();
   }
 

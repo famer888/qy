@@ -1,14 +1,10 @@
-import 'package:dotted_decoration/dotted_decoration.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import 'dart:developer' as developer;
-
-import '../../../../../../../domain/api_validator.dart';
 import '../../../../../../../domain/model/ai/ai_model.dart';
 import '../../../../../../../domain/model/member_model.dart';
 import '../../../../../../../domain/remote_domain/domains/ai.dart';
@@ -25,410 +21,341 @@ import '../../../../../theme.dart';
 class FaceSwapSheetView extends StatefulWidget {
   const FaceSwapSheetView({super.key, required this.data});
 
-  final AIModel data;
+  final AIFaceMaterials data;
 
   @override
   State<FaceSwapSheetView> createState() => _FaceSwapSheetViewState();
 }
 
 class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
-  String _aiRule = ''; //换脸规则
-
-  Map imgMap = {};
-
-  final ImagePicker _picker = ImagePicker();
-  late final homeConfigNotifier = context.read<HomeConfigNotifier>();
+  late final _homeConfig = context.read<HomeConfigNotifier>();
+  late final faceCoinsValue = _homeConfig.config.faceCoins;
   late final userNotifier = context.read<UserNotifier>();
+  late final aiDomain = context.read<AIDomain>();
 
-  @override
-  void initState() {
-    super.initState();
+  Map uploadObject = {};
 
-    _aiRule = tr('airuledesc');
-  }
+  Future<void> imagePickerAssets() async {
+    if (await CommonUtils.pickImage(limitSize: 2) case final xFile?) {
+      MyToast.showLoading(text: 'scz'.tr());
+      final result = await _homeConfig.uploadImage(xFile);
+      if (result != null && result['code'] == 1) {
+        final url = "${result['msg']}";
 
-  @override
-  void dispose() {
-    super.dispose();
+        final image = await decodeImageFromList(await xFile.readAsBytes());
+
+        uploadObject = {
+          'media_url': url,
+          'url': _homeConfig.config.imgBase + url,
+          'thumb_width': image.width,
+          'thumb_height': image.height,
+        };
+
+        if (mounted) {
+          setState(() {});
+        }
+      } else {
+        MyToast.showText(text: result?['msg'] ?? 'failed');
+      }
+      MyToast.closeAllLoading();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final sheetHeight = ScreenUtil().screenHeight * 0.7;
-
-    String imgUrl = '';
-    if (imgMap.isNotEmpty) {
-      imgUrl = imgMap['url'];
-      imgUrl = imgUrl.substring(1); //删除第一个字符/
-      imgUrl = homeConfigNotifier.config.imgBase + imgUrl;
-    }
-
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-      color: MyTheme.bgColor,
-      height: sheetHeight,
-      child: Stack(
-        children: [
-          SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 13.w),
-                Center(
-                  child: Text(
-                    widget.data.title ?? '',
-                    style: MyTheme.white20medium,
-                    maxLines: 1,
-                  ),
-                ),
-                SizedBox(height: 13.w),
-                Row(
+    final item = widget.data;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xff0b0b21),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.w),
+          topRight: Radius.circular(10.w),
+        ),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(15.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 5.w),
+                width: double.infinity,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              // _isChooseFaceImage = false;
-                              // _showImagePicker();
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 200.w,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.05),
-                                  borderRadius: BorderRadius.circular(7.w)),
-                              child: MyImage.network(
-                                widget.data.thumb ?? '',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 20.w),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              _showImagePicker();
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 200.w,
-                              decoration: imgMap.isEmpty
-                                  ? DottedDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(7.w)),
-                                      shape: Shape.box,
-                                      color: MyTheme.cyanColor00edfd,
-                                      strokeWidth: 1.w)
-                                  : null,
-                              alignment: Alignment.center,
-                              child: imgMap.isNotEmpty
-                                  ? MyImage.network(imgUrl)
-                                  : Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        MyImage.asset(
-                                          MyImagePaths.appUploadImg,
-                                          width: 35.w,
-                                          height: 35.w,
-                                        ),
-                                        SizedBox(height: 5.w),
-                                        Text(
-                                          tr('sclbtp'), //上传脸部图片
-                                          style: MyTheme.white08_12,
-                                        ),
-                                        SizedBox(height: 5.w),
-                                        Text(
-                                          tr('tpdxbcg2mb'), //图片大小不超过2MB
-                                          style: MyTheme.white06_10,
-                                        )
-                                      ],
-                                    ),
-                            ),
-                          ),
-                        ],
+                    Text('${'mob'.tr()}-${item.title}',
+                        style: MyTheme.white15_M),
+                    const SizedBox.shrink(),
+                    InkWell(
+                      onTap: () => context.pop(),
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        width: 44.w,
+                        height: 44.w,
+                        child: MyImage.asset(
+                          MyImagePaths.appIssueClose,
+                          width: 11.w,
+                          height: 11.w,
+                        ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 13.w),
-                Text(
-                  tr('aizysx'), //注意事项
-                  style: MyTheme.white15semibold,
+              ),
+              SizedBox(height: 5.w),
+              SizedBox(
+                height: 140.w,
+                child: MyImage.network(
+                  item.thumb,
+                  fit: BoxFit.fitHeight,
+                  borderRadius: 6.w,
+                  backgroundColor: Colors.white.withOpacity(0.08),
                 ),
-                SizedBox(height: 10.w),
-                Text(
-                  _aiRule,
-                  style: MyTheme.white06_12,
-                  maxLines: 100,
-                ),
-                SizedBox(height: 25.w),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      children: [
-                        MyImage.asset(
-                          MyImagePaths.appAiFaceSampleCorrect,
-                          width: 55.w,
-                          height: 55.w,
-                        ),
-                        SizedBox(height: 8.w),
-                        Text(
-                          tr('zmwzd'),
-                          style: MyTheme.white14,
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        MyImage.asset(
-                          MyImagePaths.appAiFaceSampleGlasses,
-                          width: 55.w,
-                          height: 55.w,
-                        ),
-                        SizedBox(height: 8.w),
-                        Text(
-                          tr('bzdmb'),
-                          style: MyTheme.white14,
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        MyImage.asset(
-                          MyImagePaths.appAiFaceSampleMask,
-                          width: 55.w,
-                          height: 55.w,
-                        ),
-                        SizedBox(height: 8.w),
-                        Text(
-                          tr('bzdyj'),
-                          style: MyTheme.white14,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 30.w),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: _postTakeOff,
-                  child: Container(
-                    margin:
-                        EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-                    height: 50.w,
-                    decoration: BoxDecoration(
-                        gradient: MyTheme.gradient_90_114,
-                        borderRadius: BorderRadius.circular(25.w)),
-                    child: Center(
-                      child: Builder(builder: (context) {
-                        final faceCt = userNotifier.member.faceCt ?? 0;
-                        final faceCoins =
-                            homeConfigNotifier.config.faceCoins ?? 0;
-                        String text = tr('tjdd'); //提交订单
-                        if (faceCt > 0) {
-                          //有剩余免费次数
-                          text += '(${tr('aijrsy')}$faceCt${tr('ci')})';
-                        } else {
-                          text += '($faceCoins${tr('jb')}/${tr('ci')})';
-                        }
-                        return Text(
-                          text,
-                          style: MyTheme.white16medium,
-                        );
-                      }),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Positioned(
-              //关闭按钮
-              top: 13.w,
-              right: 0.w,
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                child: MyImage.asset(
-                  MyImagePaths.appCircleClose,
-                  width: 25.w,
-                  height: 25.w,
-                  fit: BoxFit.contain,
-                ),
+              ),
+              SizedBox(height: 10.w),
+              Row(
+                children: [
+                  Text('sclbxx'.tr(context: context), style: MyTheme.white15_M),
+                  const SizedBox.shrink(),
+                ],
+              ),
+              SizedBox(height: 10.w),
+              GestureDetector(
                 onTap: () {
-                  context.pop();
+                  imagePickerAssets().then((e) {
+                    setState(() {});
+                  });
                 },
-              )),
+                child: Container(
+                  width: double.infinity,
+                  height: 140.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                    color: Colors.white.withOpacity(0.08),
+                  ),
+                  child: uploadObject.isEmpty
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            const MyImage.asset(
+                              MyImagePaths.appUploadImg,
+                              width: 60,
+                              height: 49,
+                            ),
+                            SizedBox(height: 8.w),
+                            Text('djscrwxx'.tr(context: context),
+                                style: MyTheme.white07_12),
+                            SizedBox(height: 5.w),
+                            Text(
+                              'tpdxbcg2mb'.tr(context: context),
+                              style: MyTheme.white07_12,
+                            ),
+                          ],
+                        )
+                      : Stack(
+                          children: [
+                            MyImage.network(
+                              uploadObject['url'],
+                              fit: BoxFit.fitHeight,
+                              borderRadius: 6.w,
+                              backgroundColor: MyTheme.imageBgColor,
+                            ),
+                            Positioned(
+                                top: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      uploadObject = {};
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(5.w),
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xFF3094FF)),
+                                    child: Center(
+                                        child: Icon(
+                                      Icons.delete_forever,
+                                      size: 20.sp,
+                                      color: Colors.white,
+                                    )),
+                                  ),
+                                ))
+                          ],
+                        ),
+                ),
+              ),
+              SizedBox(height: 10.w),
+              Text('zyss'.tr(context: context), style: MyTheme.white15_M),
+              SizedBox(height: 5.w),
+              ...List.generate(
+                5,
+                (i) => Text('zyss${i + 1}'.tr(context: context),
+                    style: MyTheme.white07_11),
+              ),
+              SizedBox(height: 10.w),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  UploadFaceTip(
+                      thumb: MyImagePaths.uploadFaceRight,
+                      title: 'zqwzl'.tr(context: context)),
+                  UploadFaceTip(
+                      thumb: MyImagePaths.uploadFaceError1,
+                      title: 'zdlb'.tr(context: context)),
+                  UploadFaceTip(
+                      thumb: MyImagePaths.uploadFaceError2,
+                      title: 'zdyj'.tr(context: context))
+                ],
+              ),
+              SizedBox(height: 20.w),
+              Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text('${'xhjb'.tr(context: context)}：',
+                        style: MyTheme.white13),
+                    Text('$faceCoinsValue', style: MyTheme.yellow_12),
+                    SizedBox(width: 10.w),
+                    Text('${'mfcs'.tr(context: context)}：',
+                        style: MyTheme.white13),
+                    Selector<UserNotifier, int>(
+                        selector: (_, config) => config.member.imgFaceValue,
+                        builder: (context, number, child) {
+                          return Text('$number', style: MyTheme.yellow_12);
+                        }),
+                    const Expanded(child: SizedBox()),
+                    GestureDetector(
+                      onTap: () async {
+                        if (uploadObject.isEmpty) {
+                          MyToast.showText(
+                              text: 'qsctp'.tr(context: context)); //请上传图片
+                          return;
+                        }
+                        MyToast.showLoading();
+
+                        Member? user = userNotifier.member;
+                        final userCoins = user.money; //用户剩余金币
+
+                        final result = await aiDomain.changeFace(
+                            id: item.id,
+                            thumb: uploadObject['media_url'],
+                            thumbW: uploadObject['thumb_width'],
+                            thumbH: uploadObject['thumb_height']);
+                        BotToast.closeAllLoading();
+                        if (result.status == 1) {
+                          setState(() {
+                            uploadObject = {};
+                          });
+                          MyToast.showText(text: result.msg ?? '提交成功');
+
+                          final imgFaceValue =
+                              userNotifier.member.imgFaceValue - 1;
+                          if (imgFaceValue >= 0) {
+                            //更新用户剩余次数
+                            userNotifier.setImgFaceValue(num: imgFaceValue);
+                          } else {
+                            //免费次数不够直接扣金币，刷新用户金币余额
+                            userNotifier.setMoney(
+                                money: userNotifier.member.money -
+                                    faceCoinsValue); //更新用户的金币数量
+                          }
+                          context.pop();
+                        } else {
+                          if (result.msg != '余额不足') {
+                            MyToast.showText(text: result.msg ?? '提交失败');
+                            return;
+                          }
+                          //余额不足，提示金币不足
+                          CommonUtils.showDialog(
+                            context: context,
+                            builder: (context) => RegularDialog(
+                              buttonText: 'qwcz'.tr(),
+                              cancelText: 'qx'.tr(),
+                              title: 'ts'.tr(),
+                              content: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: '${tr('ndyebz')}\n${tr('syjb')}',
+                                      style: MyTheme.white255_15,
+                                    ),
+                                    TextSpan(
+                                      text: '$userCoins',
+                                      style: MyTheme.yellow_12,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              confirmOnTap: () {
+                                //前往充值
+                                context.pop();
+                                const CoinRechargeRoute().push(context);
+                              },
+                              cancelOnTap: () {
+                                //取消
+                                context.pop();
+                              },
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 5.w,
+                          horizontal: 15.w,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.w),
+                          gradient: MyTheme.btnGradient_ff00edfd_ffbbe954,
+                        ),
+                        child: Center(
+                          child: Text('ljzz'.tr(context: context),
+                              style: MyTheme.white14),
+                        ),
+                      ),
+                    )
+                  ]),
+              SizedBox(height: 10.w)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class UploadFaceTip extends StatelessWidget {
+  const UploadFaceTip({super.key, required this.thumb, required this.title});
+
+  final String thumb;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Column(
+        children: [
+          Image.asset(
+            thumb,
+            width: 60.w,
+            fit: BoxFit.fitHeight,
+          ),
+          SizedBox(height: 10.w),
+          Text(
+            title,
+            style: MyTheme.white13,
+          )
         ],
       ),
     );
-  }
-
-  //提交订单
-  _postTakeOff() {
-    if (imgMap.isEmpty) {
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'qd'.tr(),
-          title: 'ts'.tr(),
-          content: Text(
-            'qxztp'.tr(),
-            style: MyTheme.white255_15,
-          ),
-          confirmOnTap: () {
-            context.pop();
-          },
-        ),
-      );
-      return;
-    }
-
-    Member? user = userNotifier.member;
-    final userCoins = user.money; //用户剩余金币
-    final faceCt = user.faceCt ?? 0; //当日剩余次数
-    final needCoins = homeConfigNotifier.config.faceCoins ?? 0; //处理一张图片所需金币
-
-    if (faceCt > 0) {
-      //有剩余次数-直接提交订单
-      _faceSwapOptonal(0, faceCt);
-    } else {
-      //直接使用金币
-      if (userCoins >= needCoins) {
-        //余额充足-直接提交订单
-        _faceSwapOptonal(needCoins, faceCt);
-      } else {
-        //余额不足，提示金币不足
-        CommonUtils.showDialog(
-          context: context,
-          builder: (context) => RegularDialog(
-            buttonText: 'qwcz'.tr(),
-            cancelText: 'qx'.tr(),
-            title: 'ts'.tr(),
-            content: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
-                  TextSpan(
-                    text: '${tr('ndyebz')}\n${tr('syjb')}',
-                    style: MyTheme.white255_15,
-                  ),
-                  TextSpan(
-                    text: '$userCoins',
-                    style: MyTheme.bloodOrange2557710_14,
-                  )
-                ])),
-            confirmOnTap: () {
-              //前往充值
-              context.pop();
-              const CoinRechargeRoute().push(context);
-            },
-            cancelOnTap: () {
-              //取消
-              context.pop();
-            },
-          ),
-        );
-      }
-    }
-  }
-
-  //素材换脸接口操作
-  Future<void> _faceSwapOptonal(int needCoins, int faceCt) async {
-    MyToast.showLoading(text: tr('aiscz'));
-    final aiDomain = context.read<AIDomain>();
-    final res = await aiDomain.aIChangeFace(
-        id: widget.data.id ?? 0,
-        thumb: imgMap['url'],
-        thumbH: imgMap['thumb_height'],
-        thumbW: imgMap['thumb_width']);
-    MyToast.closeAllLoading();
-    if (res.isValid) {
-      if (needCoins == 0) {
-        //使用剩余次数不需要金币时更新用户剩余次数
-        userNotifier.setFaceCt(faceCt: faceCt - 1);
-      } else {
-        userNotifier.setMoney(
-            money: userNotifier.member.money - needCoins); //更新用户的金币数量
-      }
-
-      if (mounted) {
-        setState(() {
-          imgMap = {}; //清空图片数据，可重新选择上传图片
-        });
-      }
-      _showSuccesDialog();
-    } else {
-      MyToast.showText(text: res.msg ?? '');
-    }
-  }
-
-  void _showSuccesDialog() {
-    CommonUtils.showDialog(
-      context: context,
-      builder: (context) => RegularDialog(
-        buttonText: 'gb'.tr(),
-        title: 'ts'.tr(),
-        content: Text(
-          textAlign: TextAlign.center,
-          tr('tjcgck'),
-          style: MyTheme.white255_15,
-          maxLines: 6,
-        ),
-        confirmOnTap: () {
-          context.pop();
-        },
-      ),
-    );
-  }
-
-  void _showImagePicker() {
-    _imagePickerAssets();
-  }
-
-  Future<void> _imagePickerAssets() async {
-    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
-    if (file != null) {
-      bool flag = await CommonUtils.pngLimit2MSize(file);
-      if (flag) return;
-      uploadFileImg(file);
-    }
-  }
-
-  //选择图片成功先生成服务器
-  void uploadFileImg(XFile xFile) async {
-    MyToast.showLoading(text: 'scz'.tr());
-    final result = await homeConfigNotifier.uploadImage(xFile);
-
-    developer.log('AI-换脸：图片上传返回数据：$result');
-
-    if (result != null && result['code'] == 1) {
-      final url = "${result['msg']}";
-
-      final image = await decodeImageFromList(await xFile.readAsBytes());
-
-      imgMap = {
-        'url': url,
-        'thumb_width': image.width,
-        'thumb_height': image.height,
-      };
-
-      if (mounted) {
-        setState(() {});
-      }
-    } else {
-      MyToast.showText(text: result?['msg'] ?? 'failed');
-    }
-    MyToast.closeAllLoading();
   }
 }

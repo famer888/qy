@@ -155,6 +155,7 @@ class Config {
     required this.vipLevelAwqStr,
     required this.vipNameAwqStr,
     required this.faceTopNav,
+    required this.faceSortNav,
     required this.faceCoins,
     required this.stripCoins,
     required this.liveTopNav,
@@ -199,7 +200,9 @@ class Config {
   final List<NavigatorModel>? forumNav;
   final List<NavigatorModel>? seedSortNav;
   final List<BitSeedNavModel> seedNav;
-  final List<AiNavModel> faceTopNav;
+  final List<AiFaceTopicModel> faceTopNav;
+  final List<AiFaceSortModel> faceSortNav;
+
   final List<LiveNavModel> liveTopNav;
   final List<MonitorNavModel> monitorTopNav;
 
@@ -214,8 +217,8 @@ class Config {
   final String wdaiStr;
   final List<String> vipLevelAwqStr;
   final String vipNameAwqStr;
-  final int? faceCoins;
-  final int? stripCoins;
+  final int faceCoins;
+  final int stripCoins;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         dayPrice: json['day_price'],
@@ -270,13 +273,17 @@ class Config {
         seedVipTip: json['seed_vip_tip'] ?? '',
         seedCoinsTip: json['seed_coins_tip'] ?? '',
         wdaiStr: json['wdai_str'] ?? '',
-        faceCoins: json['face_coins'],
+        faceCoins: json['face_coins'] ?? 0,
         vipLevelAwqStr:
             List<String>.from(json['vip_level_awq_str']?.map((x) => x) ?? []),
         vipNameAwqStr: json['vip_name_awq_str'] ?? '',
-        faceTopNav: List<AiNavModel>.from(
-            json['face_top_nav']?.map((x) => AiNavModel.fromJson(x)) ?? []),
-        stripCoins: json['strip_coins'],
+        faceTopNav: List<AiFaceTopicModel>.from(
+            json['face_top_nav']?.map((x) => AiFaceTopicModel.fromJson(x)) ??
+                []),
+        faceSortNav: List<AiFaceSortModel>.from(
+            json['face_sort_nav']?.map((x) => AiFaceSortModel.fromJson(x)) ??
+                []),
+        stripCoins: json['strip_coins'] ?? 0,
         liveTopNav: List<LiveNavModel>.from(
             json['live_top_nav']?.map((x) => LiveNavModel.fromJson(x)) ?? []),
         monitorTopNav: List<MonitorNavModel>.from(
@@ -331,6 +338,7 @@ class Config {
         'seed_coins_tip': seedCoinsTip,
         'face_coins': faceCoins,
         'face_top_nav': faceTopNav.map((e) => e).toList(),
+        'face_sort_nav': faceSortNav.map((e) => e).toList(),
         'strip_coins': stripCoins,
         'live_top_nav': liveTopNav.map((e) => e).toList(),
         'monitor_top_nav': monitorTopNav.map((e) => e).toList(),

@@ -235,7 +235,7 @@ class CommonUtils {
     }
   }
 
-  static Future<bool> pngLimit2MSize(XFile file) async {
+  static Future<bool> pngLimit2MSize(XFile file, {int size = 100}) async {
     int length = await file.length();
     if (length / 1024 > 2000) {
       MyToast.showText(
@@ -247,39 +247,44 @@ class CommonUtils {
   }
 
   /// xfile限制图片大小
-  static Future<bool> _pngLimitSize(XFile file) async {
-    int length = await file.length();
-    if (length / 1024 > 800) {
-      MyToast.showText(text: 'qxzbkbp'.tr());
-      return false;
-    }
-    return true;
-  }
-
-  /// xfile限制视频大小
-  static Future<bool> _videoLimitSize(XFile file, {int size = 100}) async {
+  static Future<bool> _pngLimitSize(XFile file, int size) async {
     int length = await file.length();
     if (length / (1024 * 1024) > size) {
       MyToast.showText(
-        text:
-            kIsWeb ? 'qxzbmbv'.tr().replaceAll('100', '$size') : 'qxzbmbv'.tr(),
+        text: 'qxzbkbp'.tr(
+          namedArgs: {'size': '$size'},
+        ),
       );
       return false;
     }
     return true;
   }
 
-  static Future<XFile?> pickImage() async {
+  /// xfile限制视频大小
+  static Future<bool> _videoLimitSize(XFile file, int size) async {
+    int length = await file.length();
+    if (length / (1024 * 1024) > size) {
+      MyToast.showText(
+        text: 'qxzbmbv'.tr(
+          namedArgs: {'size': '$size'},
+        ),
+      );
+      return false;
+    }
+    return true;
+  }
+
+  static Future<XFile?> pickImage({int limitSize = 1}) async {
     if (await ImagePicker().pickImage(source: ImageSource.gallery)
-        case final xFile? when await _pngLimitSize(xFile)) {
+        case final xFile? when await _pngLimitSize(xFile, limitSize)) {
       return xFile;
     }
     return null;
   }
 
-  static Future<XFile?> pickVideo() async {
+  static Future<XFile?> pickVideo({int limitSize = 100}) async {
     if (await ImagePicker().pickVideo(source: ImageSource.gallery)
-        case final xFile? when await _videoLimitSize(xFile)) {
+        case final xFile? when await _videoLimitSize(xFile, limitSize)) {
       return xFile;
     }
     return null;

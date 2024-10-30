@@ -130,13 +130,20 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
       final notice = popAds[index];
       final nextIndex = index + 1;
 
+      ///fix toast cancelFunc bug
+      bool isClosed = false;
+
       BotToast.showWidget(
         toastBuilder: (cancelFunc) => AdDialog(
           cancel: () {
+            if (isClosed) return;
+            isClosed = true;
             cancelFunc();
             _showDialog(index: nextIndex);
           },
           confirm: () {
+            if (isClosed) return;
+            isClosed = true;
             cancelFunc();
             _showDialog(index: nextIndex);
             _adOnTap(notice: notice);
