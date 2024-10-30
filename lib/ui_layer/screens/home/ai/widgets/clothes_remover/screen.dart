@@ -129,8 +129,35 @@ class _ClothesRemoverViewState extends State<ClothesRemoverView> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: [
-      MyIndicator(onRefresh: _initData),
       SliverList.list(children: [
+        SizedBox(height: 10.w),
+        Container(
+            padding: EdgeInsets.symmetric(vertical: 5.w),
+            margin: EdgeInsets.symmetric(horizontal: 10.w),
+            alignment: Alignment.center,
+            color: Colors.white.withOpacity(0.08),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('clyzzpdfy'.tr(context: context), style: MyTheme.white14),
+                Text('$stripCoinsValue', style: MyTheme.yellow_14),
+                Text('jb'.tr(context: context), style: MyTheme.yellow_14),
+                Text('，', style: MyTheme.white14),
+                Selector<UserNotifier, int>(
+                    selector: (_, config) => config.member.stripValue,
+                    builder: (context, number, child) {
+                      return Row(
+                        children: [
+                          Text('nymfcs'.tr(context: context),
+                              style: MyTheme.white14),
+                          Text('$number', style: MyTheme.yellow_14),
+                          Text('ci'.tr(context: context),
+                              style: MyTheme.white14)
+                        ],
+                      );
+                    })
+              ],
+            )),
         SizedBox(height: 10.w),
         Padding(
           padding: piaddings,
@@ -141,7 +168,7 @@ class _ClothesRemoverViewState extends State<ClothesRemoverView> {
               height: 140.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                color: const Color(0xff1b1c2b),
+                color: Colors.white.withOpacity(0.08),
               ),
               child: uploadObject.isEmpty
                   ? Column(
@@ -149,14 +176,19 @@ class _ClothesRemoverViewState extends State<ClothesRemoverView> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Icon(Icons.add,
-                            color: const Color(0xff9f9f9f), size: 26.w),
+                        const MyImage.asset(
+                          MyImagePaths.appUploadImg,
+                          width: 60,
+                          height: 49,
+                        ),
+                        SizedBox(height: 8.w),
                         Text('djscrwxx'.tr(context: context),
-                            style: MyTheme.white13),
-                        Text('tpdxbcg2mb'.tr(context: context),
-                            style: TextStyle(
-                                fontSize: 10.sp,
-                                color: const Color(0xff9f9f9f))),
+                            style: MyTheme.white07_12),
+                        SizedBox(height: 5.w),
+                        Text(
+                          'tpdxbcg2mb'.tr(context: context),
+                          style: MyTheme.white07_12,
+                        ),
                       ],
                     )
                   : Stack(
@@ -195,29 +227,6 @@ class _ClothesRemoverViewState extends State<ClothesRemoverView> {
         ),
         SizedBox(height: 10.w),
         Center(
-            child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('clyzzpdfy'.tr(context: context), style: MyTheme.white14),
-            Text('$stripCoinsValue', style: MyTheme.yellow_14),
-            Text('jb'.tr(context: context), style: MyTheme.yellow_14),
-            Text('，', style: MyTheme.white14),
-            Selector<UserNotifier, int>(
-                selector: (_, config) => config.member.stripValue,
-                builder: (context, number, child) {
-                  return Row(
-                    children: [
-                      Text('nymfcs'.tr(context: context),
-                          style: MyTheme.white14),
-                      Text('$number', style: MyTheme.yellow_14),
-                      Text('ci'.tr(context: context), style: MyTheme.white14)
-                    ],
-                  );
-                })
-          ],
-        )),
-        SizedBox(height: 10.w),
-        Center(
           child: GestureDetector(
             onTap: onSubmitOffDerobe,
             child: Padding(
@@ -238,18 +247,20 @@ class _ClothesRemoverViewState extends State<ClothesRemoverView> {
             ),
           ),
         ),
-        SizedBox(height: 20.w),
+        SizedBox(height: 10.w),
         Padding(
           padding: piaddings,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 10.w),
-              TipText(content: 'zyss'.tr(context: context)),
-              TipText(content: 'zyss1'.tr(context: context)),
-              TipText(content: 'zyss2'.tr(context: context)),
-              TipText(content: 'zyss3'.tr(context: context)),
-              TipText(content: 'zyss4'.tr(context: context)),
-              TipText(content: 'zyss5'.tr(context: context)),
+              Text('zyss'.tr(context: context), style: MyTheme.white15_M),
+              SizedBox(height: 5.w),
+              ...List.generate(
+                5,
+                (i) => Text('zyss${i + 1}'.tr(context: context),
+                    style: MyTheme.white07_11),
+              ),
             ],
           ),
         ),
@@ -294,43 +305,35 @@ class PictureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 172.w,
-      child: Stack(
-        children: [
-          Image.asset(
-            thumb,
-            width: 172.w,
-            height: 230.w,
-            fit: BoxFit.contain,
-          ),
-          Positioned(
-              top: 5.w,
-              left: 5.w,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10.w),
+      child: SizedBox(
+        width: 172.w,
+        child: Stack(
+          children: [
+            Image.asset(
+              thumb,
+              width: 172.w,
+              height: 230.w,
+              fit: BoxFit.contain,
+            ),
+            Positioned(
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 2.w, horizontal: 3.w),
+                padding: EdgeInsets.symmetric(vertical: 6.w, horizontal: 5.w),
                 decoration: BoxDecoration(
                   color: const Color(0xff009dff),
-                  borderRadius: BorderRadius.all(Radius.circular(3.w)),
+                  borderRadius:
+                      BorderRadius.only(bottomRight: Radius.circular(10.w)),
                 ),
-                child: Text(text, style: MyTheme.white12),
-              ))
-        ],
+                child: Text(
+                  text,
+                  style: MyTheme.white12medium,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
-    );
-  }
-}
-
-class TipText extends StatelessWidget {
-  const TipText({super.key, required this.content});
-  final String content;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(content, style: MyTheme.white11),
-        const SizedBox.shrink(),
-      ],
     );
   }
 }
