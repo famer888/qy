@@ -9,6 +9,8 @@ import 'package:utils/utils.dart';
 import 'data_layer/repo/repo.dart';
 import 'domain/domain.dart';
 import 'domain/remote_domain/domains/ai.dart';
+import 'domain/remote_domain/domains/live.dart';
+import 'domain/remote_domain/domains/monitor.dart';
 import 'ui_layer/notifiers/chat_notifier.dart';
 import 'ui_layer/notifiers/home_config_notifier.dart';
 import 'ui_layer/notifiers/user_notifier.dart';
@@ -53,6 +55,8 @@ void main() async {
         Provider<MessageDomain>(lazy: false, create: (_) => appRepo),
         Provider<PrivilegeDomain>(lazy: false, create: (_) => appRepo),
         Provider<AIDomain>(lazy: false, create: (_) => appRepo),
+        Provider<LiveDomain>(lazy: false, create: (_) => appRepo),
+        Provider<MonitorDomain>(lazy: false, create: (_) => appRepo),
         Provider<DownloadUtil>(
             lazy: false, create: (_) => DownloadUtil(cache: appRepo.cache)),
         ChangeNotifierProvider(create: (_) => HomeConfigNotifier(appRepo)),

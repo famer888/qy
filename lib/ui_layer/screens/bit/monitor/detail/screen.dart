@@ -67,12 +67,12 @@ class _MonitorVideoDetailScreenState extends State<MonitorVideoDetailScreen> {
   Widget build(BuildContext context) {
     return ScreenBackground(
       child: SafeArea(
-        // bottom: false,
+        bottom: false,
         child: Scaffold(
-          // extendBodyBehindAppBar: true,
           appBar: MyAppBar(
-              title: _asyncValue.data?.monitor.title,
-              backgroundColor: Colors.black),
+            title: _asyncValue.data?.monitor.title,
+            backgroundColor: Colors.black,
+          ),
           floatingActionButton: GestureDetector(
             onTap: () {
               context.pop();

@@ -81,6 +81,7 @@ class _TabBarWithViewState extends State<TabBarWithView>
     TabBarType.line => MyTabBarTheme.line(
         labelStyle: widget.labelStyle,
         unselectedLabelStyle: widget.unselectedLabelStyle,
+        tabAlignment: widget.isScrollable ? TabAlignment.start : null,
       ),
     TabBarType.fillColor => MyTabBarTheme.fillColor(
         tabAlignment: widget.isScrollable ? TabAlignment.start : null,
@@ -157,6 +158,7 @@ class MyTabBarTheme extends TabBarTheme {
   factory MyTabBarTheme.line({
     TextStyle? labelStyle,
     TextStyle? unselectedLabelStyle,
+    TabAlignment? tabAlignment,
   }) =>
       MyTabBarTheme(
         labelStyle: labelStyle ?? MyTheme.jellyCyan_18,
@@ -174,7 +176,7 @@ class MyTabBarTheme extends TabBarTheme {
         overlayColor: WidgetStateProperty.resolveWith<Color>(
           (_) => Colors.transparent,
         ),
-        tabAlignment: TabAlignment.start,
+        tabAlignment: tabAlignment,
         dividerColor: Colors.transparent,
       );
 

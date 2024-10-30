@@ -14,11 +14,12 @@ class MonitorScreen extends StatefulWidget {
 
 class _MonitorScreenState extends State<MonitorScreen> {
   late final config = context.read<HomeConfigNotifier>().config;
-  late final navList = config.liveTopNav;
+  late final navList = config.monitorTopNav;
 
   @override
   Widget build(BuildContext context) {
     return TabBarWithView.line(
+      isScrollable: false,
       titles: [for (final e in navList) e.name],
       views: [for (final e in navList) MonitorVideoView(id: e.id)],
     );

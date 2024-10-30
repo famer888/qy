@@ -33,8 +33,13 @@ class VideoCommentListModel {
         aff: json['aff']?.toInt(),
         mvId: json['mv_id']?.toInt(),
         mvAff: json['mv_aff']?.toInt(),
-        content: json['content']?.toString(),
-        likeCount: json['like_count']?.toInt() ?? 0,
+        //直播/监控评论列表数据返回text/like_fct字段，解析做区分
+        content: json['content'] != null
+            ? json['content']?.toString()
+            : json['text']?.toString(),
+        likeCount: json['like_count'] != null
+            ? json['like_count']?.toInt() ?? 0
+            : json['like_fct']?.toInt() ?? 0,
         replayCount: json['replay_count']?.toInt(),
         status: json['status']?.toInt(),
         createdAt: json['created_at']?.toString(),
