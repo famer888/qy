@@ -89,11 +89,12 @@ class _TaskViewState extends State<TaskView> {
         SliverList.list(children: [
           SizedBox(height: 13.w),
           _MemberView(
-              data: data,
-              signCall: () {
-                ///立即签到
-                _signUp();
-              }),
+            data: data,
+            signCall: () {
+              ///立即签到
+              _signUp();
+            },
+          ),
           _signInContent(data),
           Container(
             decoration: BoxDecoration(
@@ -141,13 +142,8 @@ class _TaskViewState extends State<TaskView> {
     return data.signRewardList == null
         ? Container()
         : Container(
-            height: 325.w,
             margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
             padding: EdgeInsets.all(MyTheme.pagePadding),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadiusDirectional.circular(10.w),
-              color: MyTheme.white008Color,
-            ),
             child: Column(children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -177,39 +173,39 @@ class _TaskViewState extends State<TaskView> {
                 ],
               ),
               SizedBox(height: 10.w),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 150 / 200,
-                ),
-                itemCount: data.signRewardList?.length,
-                itemBuilder: (context, index) =>
-                    siginItem(data.signRewardList![index], data.signNum ?? 0),
-              ),
-              SizedBox(height: 13.w),
+              LayoutBuilder(builder: (_, c) {
+                final spacing = 10.w;
+                final itemW = (c.maxWidth - spacing * 3) / 4;
+                final dataList = [...data.signRewardList!];
+                final latestItem = dataList.removeLast();
+                return Wrap(
+                  spacing: spacing,
+                  runSpacing: spacing,
+                  children: [
+                    for (final e in dataList)
+                      SizedBox(
+                        width: itemW,
+                        child: siginItem(e, data.signNum ?? 0),
+                      ),
+                    SizedBox(
+                      width: itemW * 2 + spacing,
+                      child: siginItem(latestItem, data.signNum ?? 0),
+                    ),
+                  ],
+                );
+              }),
+              SizedBox(height: 15.w),
               GestureDetector(
                 onTap: () {
                   //兑换VIP
                   const VipCenterRoute().push(context);
                 },
-                child: Container(
-                  width: 300.w,
-                  height: 40.w,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadiusDirectional.circular(20.w),
-                    color: MyTheme.jellyCyanColor,
-                  ),
-                  child: Text(
-                    tr('dhvp'),
-                    style: MyTheme.white15_M,
-                  ),
+                child: MyButton.gradient(
+                  onPressed: () async {},
+                  minimumSize: Size(260.w, 40.w),
+                  text: 'dhvp'.tr(context: context),
                 ),
-              )
+              ),
             ]),
           );
   }
@@ -437,7 +433,9 @@ class _Header extends StatelessWidget {
                 },
                 selector: (_, notifier) => notifier.member),
             MyButton.gradient(
-              onPressed: () async {},
+              onPressed: () async {
+                const VipCenterRoute().push(context);
+              },
               minimumSize: Size(75.w, 32.w),
               child: Text(
                 tr('dhvp'),
