@@ -17,6 +17,7 @@ import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../../my_button.dart';
 import '../../my_image.dart';
+import '../my_dialog.dart';
 import 'regular_dialog.dart';
 
 class PayDialog extends StatefulWidget {
@@ -46,9 +47,9 @@ class _PayDialogState extends State<PayDialog> {
   late final userNotifier = context.read<UserNotifier>();
 
   _payError() {
-    CommonUtils.showDialog(
+    MyDialog.showDialog(
       context: context,
-      builder: (context) => RegularDialog(
+      child: RegularDialog(
         title: 'ts'.tr(context: context),
         buttonText: 'zdl'.tr(context: context),
         content: DefaultTextStyle(

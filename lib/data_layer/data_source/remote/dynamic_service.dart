@@ -1,11 +1,20 @@
+import 'package:dio/dio.dart';
+
+import '../../../domain/exception.dart';
 import '../../../domain/type_def.dart';
-import 'base_service.dart';
 
-class DynamicService extends BaseService {
-  DynamicService(super._dio);
+class DynamicService {
+  DynamicService(this._dio);
 
-  @override
-  final service = '';
+  final Dio _dio;
+
+  AsyncJson post(String path, {Object? data}) async {
+    final result = (await _dio.post(path, data: data)).data;
+    if (result == null) {
+      throw ResponseNullException();
+    }
+    return result;
+  }
 
   AsyncJson getConstructByApiLink({
     required String apiLink,

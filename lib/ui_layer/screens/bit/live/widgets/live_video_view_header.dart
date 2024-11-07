@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../domain/model/banner_model.dart';
-import '../../../../../domain/model/marquee_tips.dart';
+import '../../../../../domain/model/tip_model.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/general_banner.dart';
 import '../../../common_widgets/marquee.dart';
@@ -16,7 +16,7 @@ class LiveVideoViewHeader extends StatelessWidget {
   });
 
   final ValueNotifier<List<BannerModel>> bannersNotifier;
-  final ValueNotifier<List<MarqueeTipsModel>> tipsNotifier;
+  final ValueNotifier<List<TipModel>> tipsNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +37,7 @@ class LiveVideoViewHeader extends StatelessWidget {
         SizedBox(height: 4.w),
         ValueListenableBuilder(
           valueListenable: tipsNotifier,
-          builder: (context, tips, child) {
-            if (tips.isEmpty) return const SizedBox.shrink();
-            return MarqueeWidget(children: [
-              for (final tip in tips)
-                GestureDetector(
-                  onTap: () {
-                    CommonUtils.openRoute(context, tip.toJson());
-                  },
-                  child: Text(
-                    tip.title ?? '',
-                    style: MyTheme.white14,
-                  ),
-                ),
-            ]);
-          },
+          builder: (_, tips, __) => MyMarqueeTipsWidget(tips: tips),
         ),
       ],
     );

@@ -1,15 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../router/routes.dart';
-import '../../../../../domain/model/feed/feed_model.dart';
-import '../../../../utils/common_utils.dart';
-import '../../../theme.dart';
-import '../../my_image.dart';
+import '../../../../../../domain/model/video/video_model.dart';
+import '../../../../../router/routes.dart';
+import '../../../../../utils/common_utils.dart';
+import '../../../../theme.dart';
+import '../../../my_image.dart';
 
-class VideoCard extends StatelessWidget {
-  const VideoCard({super.key, required this.data});
-  final FeedVideoModel data;
+class VideoCardView extends StatelessWidget {
+  const VideoCardView({super.key, required this.data});
+  final VideoCardVideoModel data;
 
   String get imageUrl => CommonUtils.getThumb(data.toJson());
 

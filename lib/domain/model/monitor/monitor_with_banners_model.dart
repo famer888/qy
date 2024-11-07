@@ -1,10 +1,10 @@
 import '../banner_model.dart';
-import '../marquee_tips.dart';
+import '../tip_model.dart';
 
 class MonitorWithBannersModel {
   List<MonitorModel>? monitors;
   List<BannerModel>? banners;
-  List<MarqueeTipsModel>? tips;
+  List<TipModel>? tips;
 
   MonitorWithBannersModel({this.monitors, this.banners, this.tips});
 
@@ -14,8 +14,8 @@ class MonitorWithBannersModel {
             json['monitors'].map((e) => MonitorModel.fromJson(e))),
         banners: List<BannerModel>.from(
             json['banners'].map((e) => BannerModel.fromJson(e))),
-        tips: List<MarqueeTipsModel>.from(
-            json['tips'].map((e) => MarqueeTipsModel.fromJson(e))),
+        tips:
+            List<TipModel>.from(json['tips'].map((e) => TipModel.fromJson(e))),
       );
 
   Map<String, dynamic> toJson() =>

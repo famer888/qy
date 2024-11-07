@@ -3,18 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/model/feed/feed_model.dart';
+import '../../../domain/model/video/video_model.dart';
 import '../../../domain/remote_domain/domains/mv.dart';
-import '../common_widgets/feed/feed_card.dart';
+import '../../notifiers/home_config_notifier.dart';
 import '../common_widgets/keep_alive_wrapper.dart';
 import '../common_widgets/my_app_bar.dart';
 import '../common_widgets/my_list_view.dart';
 import '../common_widgets/my_tab_bar.dart';
 import '../common_widgets/screen_background.dart';
+import '../common_widgets/video/card/video_card.dart';
 import '../theme.dart';
 
 class MoreVideoScreen extends StatefulWidget {
-  const MoreVideoScreen({super.key, required this.name, required this.id});
+  const MoreVideoScreen({
+    super.key,
+    required this.name,
+    required this.id,
+  });
 
   final String name;
   final String id;
@@ -24,6 +29,8 @@ class MoreVideoScreen extends StatefulWidget {
 }
 
 class _MoreVideoScreenState extends State<MoreVideoScreen> {
+  late final navs =
+      context.read<HomeConfigNotifier>().homeData.config.mvSecondSortNav;
   @override
   Widget build(BuildContext context) {
     return ScreenBackground(
@@ -38,23 +45,13 @@ class _MoreVideoScreenState extends State<MoreVideoScreen> {
         ),
         tabBarHeight: 32.w,
         isScrollable: true,
-        titles: [
-          'zxpx'.tr(context: context),
-          'rdpx'.tr(context: context),
-        ],
+        titles: [for (final nav in navs) nav.title],
         views: [
-          KeepAliveWrapper(
-            child: _VideoView(
-              sort: 'new',
+          for (final nav in navs)
+            _VideoView(
+              sort: nav.type,
               id: widget.id,
             ),
-          ),
-          KeepAliveWrapper(
-            child: _VideoView(
-              sort: 'hot',
-              id: widget.id,
-            ),
-          ),
         ],
       ),
     ));
@@ -72,7 +69,7 @@ class _VideoView extends StatefulWidget {
 class _VideoViewState extends State<_VideoView> {
   late final mvDomain = context.read<MvDomain>();
 
-  Future<List<FeedModel>> _getData({
+  Future<List<VideoCardModel>> _getData({
     required int page,
     required int pageSize,
   }) async {
@@ -90,9 +87,9 @@ class _VideoViewState extends State<_VideoView> {
   Widget build(BuildContext context) {
     return MyListView.grid(
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-      childAspectRatio: FeedCard.aspectRatio,
+      childAspectRatio: VideoCard.aspectRatio,
       crossAxisSpacing: 8.w,
-      itemBuilder: (_, item, __) => FeedCard(feed: item),
+      itemBuilder: (_, item, __) => VideoCard(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

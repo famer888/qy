@@ -43,13 +43,13 @@ abstract class LiveDomain {
   AsyncResult getLiveComment({required String text, required int id});
 
   /// 直播评论列表
-  AsyncResult<List<VideoCommentListModel>?> getLiveListComment(
+  AsyncResult<List<CommentModel>?> getLiveListComment(
       {required int id, required int page, required int limit});
 
   /// 直播点赞
-  AsyncResult getLiveLikeComment({required int id});
+  AsyncResult toggleLiveCommentLike({required int id});
 
-  /// 直播点赞
+  /// 直播打赏
   AsyncResult getLiveReward({required int id, required int coins});
 
   /// 直播热门推荐列表

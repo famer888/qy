@@ -27,7 +27,7 @@ class _IncomeDetailViewState extends State<IncomeDetailView> {
     required int currentPage,
     required int limit,
   }) async {
-    final result = await _userDomain.earnTotalInfo(
+    final result = await _userDomain.getEarnTotalInfo(
       limit: limit,
       page: currentPage,
       lastIx: _lastIx,

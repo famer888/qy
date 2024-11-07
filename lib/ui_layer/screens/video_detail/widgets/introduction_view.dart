@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
-import '../../../../domain/model/feed/feed_model.dart';
+import '../../../../domain/model/video/video_model.dart';
 import '../../../../domain/model/video_detail_model.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../router/routes.dart';
@@ -298,7 +298,7 @@ class RecommendListView extends StatefulWidget {
 class _RecommendListViewState extends State<RecommendListView> {
   late final mvDomain = context.read<MvDomain>();
 
-  AsyncValue<List<FeedModel>> _asyncValue = const AsyncInit();
+  AsyncValue<List<VideoCardModel>> _asyncValue = const AsyncInit();
 
   @override
   void initState() {
@@ -362,7 +362,7 @@ class AdSingleColumnCard extends StatelessWidget {
     required this.data,
     this.imageRatio = 175 / 108,
   });
-  final FeedAdModel data;
+  final VideoCardAdModel data;
   final double imageRatio;
   @override
   Widget build(BuildContext context) {
@@ -453,7 +453,7 @@ class VideoSingleColumCard extends StatelessWidget {
     required this.data,
     this.imageRatio = 175 / 108,
   });
-  final FeedVideoModel data;
+  final VideoCardVideoModel data;
   final double imageRatio;
   @override
   Widget build(BuildContext context) {

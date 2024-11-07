@@ -10,6 +10,7 @@ import '../../../../../../domain/remote_domain/domains/live.dart';
 import '../../../../../const.dart';
 import '../../../../../utils/common_utils.dart';
 import '../../../../../utils/my_toast.dart';
+import '../../../../common_widgets/comment_tile.dart';
 import '../../../../common_widgets/member_vip.dart';
 import '../../../../common_widgets/my_avatar.dart';
 import '../../../../common_widgets/my_image.dart';
@@ -36,7 +37,7 @@ class _LiveVideoCommentViewState extends State<LiveVideoCommentView> {
 
   late final liveDomain = context.read<LiveDomain>();
 
-  Future<List<VideoCommentListModel>?> _getData({
+  Future<List<CommentModel>?> _getData({
     required int currentPage,
     required int limit,
   }) async {
@@ -80,7 +81,20 @@ class _LiveVideoCommentViewState extends State<LiveVideoCommentView> {
           Expanded(
             child: MyListView.list(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              itemBuilder: (context, item, index) => _CommentTile(data: item),
+              itemBuilder: (context, item, index) => CommentTile(
+                data: item,
+                changeLike: () async {
+                  if (item.id case final id?) {
+                    final res = await liveDomain.toggleLiveCommentLike(id: id);
+                    if (res.isValid) {
+                      return true;
+                    } else if (res.msg case final msg?) {
+                      MyToast.showText(text: msg);
+                    }
+                  }
+                  return false;
+                },
+              ),
               onFetchingMore: (currentPage, pageSize) =>
                   _getData(currentPage: currentPage, limit: pageSize),
             ),
@@ -97,129 +111,5 @@ class _LiveVideoCommentViewState extends State<LiveVideoCommentView> {
         ],
       ),
     );
-  }
-}
-
-class _CommentTile extends StatelessWidget {
-  const _CommentTile({super.key, required this.data});
-  final VideoCommentListModel data;
-
-  @override
-  Widget build(BuildContext context) {
-    final member = data.member;
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(height: 15.w),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          MyAvatar(
-            thumb: member?.thumb ?? '',
-            size: 30.w,
-          ),
-          SizedBox(width: 10.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: 180.w),
-                      child: Text(
-                        member?.nickname ?? '',
-                        style: MyTheme.white23_12,
-                      ),
-                    ),
-                    SizedBox(width: 2.w),
-                    if (member?.agent == 1)
-                      Icon(
-                        Icons.verified_sharp,
-                        size: 11.w,
-                        color: const Color.fromRGBO(247, 208, 93, 1),
-                      )
-                  ],
-                ),
-                SizedBox(height: 4.w),
-                Row(
-                  children: [
-                    MemberVipWidget(
-                      showText: member?.vipStr,
-                      height: 14,
-                      fontSize: 7,
-                      margin: 5,
-                    ),
-                    Text(
-                      RelativeDateFormat.format(
-                          date: DateTime.parse(data.createdAt ?? '')),
-                      style: MyTheme.gray163_11,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          StatefulBuilder(builder: (_, setState) {
-            final isLike = data.isLike == 1;
-            return GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () async {
-                if (data.id case final id?) {
-                  final liveDomain = context.read<LiveDomain>();
-                  final res = await liveDomain.getLiveLikeComment(id: id);
-                  if (res.isValid) {
-                    data.isLike = isLike ? 0 : 1;
-                    isLike ? data.likeCount-- : data.likeCount++;
-                    setState(() {});
-                  } else if (res.msg case final msg?) {
-                    MyToast.showText(text: msg);
-                  }
-                }
-              },
-              child: SizedBox(
-                width: 40.w,
-                child: Column(
-                  children: [
-                    MyImage.asset(
-                      isLike
-                          ? MyImagePaths.appCommReviewH
-                          : MyImagePaths.appCommReviewN,
-                      width: 20.w,
-                      height: 20.w,
-                    ),
-                    SizedBox(height: 1.w),
-                    Text(
-                      CommonUtils.renderFixedNumber(data.likeCount),
-                      style: MyTheme.gray203_12,
-                    )
-                  ],
-                ),
-              ),
-            );
-          })
-        ],
-      ),
-      SizedBox(height: 13.w),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 40.w),
-            child: Text(
-              CommonUtils.convertEmojiAndHtml(data.content ?? ''),
-              style: MyTheme.gray208_13,
-              textAlign: TextAlign.left,
-              maxLines: UILayerConst.maxLine,
-            ),
-          ),
-        ],
-      ),
-      SizedBox(height: 15.w),
-      Container(
-        height: 0.5.w,
-        color: const Color(0xFF15152a),
-      )
-    ]);
   }
 }

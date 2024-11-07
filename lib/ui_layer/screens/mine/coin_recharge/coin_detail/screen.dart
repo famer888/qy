@@ -34,7 +34,7 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
     required int currentPage,
     required int limit,
   }) async {
-    final result = await appDomain.getListMoneyDetail(
+    final result = await appDomain.getMoneyDetailList(
       page: currentPage,
       limit: limit,
       type: filterType,

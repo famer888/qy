@@ -13,13 +13,13 @@ import '../theme.dart';
 import '../../../domain/type_def.dart';
 import '../../../domain/domain.dart';
 import '../../../domain/model/banner_model.dart';
-import '../../../domain/model/feed/feed_model.dart';
+import '../../../domain/model/video/video_model.dart';
 import '../../../domain/model/link_model.dart';
 import '../../../domain/model/nav_model.dart';
 import '../../../domain/model/navigator_model.dart';
 import '../../notifiers/home_config_notifier.dart';
 import '../../utils/my_toast.dart';
-import 'feed/feed_card.dart';
+import 'video/card/video_card.dart';
 import 'general_banner.dart';
 import 'my_image.dart';
 import 'my_list_view.dart';
@@ -45,7 +45,7 @@ class _ApiLinkViewState extends State<ApiLinkView> {
 
   bool isInit = false;
 
-  Future<List<FeedModel>?> _getData({
+  Future<List<VideoCardModel>?> _getData({
     required int page,
     required int pageSize,
     required String type,
@@ -84,7 +84,7 @@ class _ApiLinkViewState extends State<ApiLinkView> {
       }
 
       return result.data['list']
-          ?.map<FeedModel>((x) => FeedModel.fromJson(x))
+          ?.map<VideoCardModel>((x) => VideoCardModel.fromJson(x))
           .toList();
     } else {
       MyToast.showText(text: result.msg ?? '');
@@ -116,9 +116,9 @@ class _ApiLinkViewState extends State<ApiLinkView> {
           for (final NavigatorModel nav in titles)
             MyListView.grid(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              childAspectRatio: FeedCard.aspectRatio,
+              childAspectRatio: VideoCard.aspectRatio,
               crossAxisSpacing: 8.w,
-              itemBuilder: (context, item, index) => FeedCard(feed: item),
+              itemBuilder: (context, item, index) => VideoCard(data: item),
               onFetchingMore: (currentPage, pageSize) => _getData(
                 page: currentPage,
                 pageSize: pageSize,

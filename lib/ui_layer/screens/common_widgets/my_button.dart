@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,6 +11,8 @@ enum _Type {
   lowEmphasis,
   gradient,
 }
+
+typedef AsyncCallback = FutureOr<void> Function();
 
 class MyButton extends StatefulWidget {
   const MyButton.highEmphasis({
@@ -85,7 +88,7 @@ class _MyButtonState extends State<MyButton> {
         height: 20,
         width: 20,
         child: CircularProgressIndicator(
-          strokeWidth: 3,
+          strokeWidth: 2,
           color: Colors.white,
         ),
       );
@@ -93,7 +96,7 @@ class _MyButtonState extends State<MyButton> {
       child = widget.child!;
     } else if (widget.text != null) {
       child = Text(
-        widget.text!,
+        widget.text!.tr(context: context),
         textAlign: TextAlign.center,
         style: MyTheme.white255_15_semibold,
       );
@@ -116,14 +119,16 @@ class _MyButtonState extends State<MyButton> {
             }
           };
 
+    final shape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(
+          widget.borderRadius ?? (minimumSize?.height ?? 8.w) / 2),
+    );
+
     return switch (widget._type) {
       _Type.highEmphasis => FilledButton(
           style: FilledButton.styleFrom(
             backgroundColor: widget.color,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  widget.borderRadius ?? (minimumSize?.height ?? 8.w) / 2),
-            ),
+            shape: shape,
             minimumSize: minimumSize,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: padding,
@@ -134,10 +139,7 @@ class _MyButtonState extends State<MyButton> {
       _Type.gradient => GradientElevatedButton(
           style: GradientElevatedButton.styleFrom(
             gradient: widget.gradient ?? MyTheme.btnGradient_ff00edfd_ffbbe954,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  widget.borderRadius ?? (minimumSize?.height ?? 8.w) / 2),
-            ),
+            shape: shape,
             minimumSize: minimumSize,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: padding,
@@ -149,10 +151,7 @@ class _MyButtonState extends State<MyButton> {
           style: OutlinedButton.styleFrom(
             backgroundColor: const Color(0x19ECAE37),
             side: const BorderSide(width: 1.0, color: Color(0x99ECAE37)),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  widget.borderRadius ?? (minimumSize?.height ?? 8.w) / 2),
-            ),
+            shape: shape,
             minimumSize: minimumSize,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: padding,

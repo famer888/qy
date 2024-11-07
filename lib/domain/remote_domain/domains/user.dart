@@ -12,7 +12,7 @@ abstract class UserDomain {
   AsyncResult<Member> getUserInfo();
 
   /// 关注用户/取消关注
-  AsyncJson communityFollowUser({required String aff});
+  AsyncJson toggleCommunityFollowUser({required String aff});
 
   /// 修改用户头像、昵称、签名
   AsyncResult updateUserInfo({
@@ -22,32 +22,32 @@ abstract class UserDomain {
   });
 
   /// 填写邀请码
-  AsyncResult toInvitation({required String affCode});
+  AsyncResult sendInvitation({required String affCode});
 
   /// 金币明细
-  AsyncResult<List<CoinDetail>> getListMoneyDetail({
+  AsyncResult<List<CoinDetail>> getMoneyDetailList({
     required int page,
     required MyCoinFilterType type,
     required int limit,
   });
 
   /// 提现  银行卡列表
-  AsyncResult<BankList> cashBankCardList({
+  AsyncResult<BankList> getBankCardList({
     required int page,
     required int limit,
   });
 
   /// 提现  添加银行卡
-  AsyncJson cashAddBankCard({
+  AsyncJson addBankCard({
     required String card,
     required String name,
   });
 
   /// 提现  删除银行卡
-  AsyncJson cashDeleteBankCard({required int cardId});
+  AsyncJson deleteBankCard({required int cardId});
 
   /// 收益汇总
-  AsyncResult<MineIncomeDetailData> earnTotalInfo({
+  AsyncResult<MineIncomeDetailData> getEarnTotalInfo({
     String source = '',
     required int page,
     required int limit,
@@ -55,7 +55,7 @@ abstract class UserDomain {
   });
 
   /// 我的帖子
-  AsyncResult<List<TieztModel>> userMyPosts({
+  AsyncResult<List<TieztModel>> getMyPostList({
     String cate = 'release',
     required int page,
     required int limit,
@@ -72,22 +72,29 @@ abstract class UserDomain {
   /// 用户收藏   type: 1 mv  2 book 3 story 4 link 5 soundBook 6pic
   AsyncResult userFavorites({required int type, required int id});
 
+  /// 收藏/取消收藏,
+  AsyncResult toggleUserFavorite({required MyModuleType type, required int id});
+
+  /// 评论点赞/取消点赞
+  AsyncResult toggleUserCommentLike(
+      {required MyModuleType type, required int id});
+
+  /// 点赞/取消点赞
+  AsyncResult toggleUserLike({required MyModuleType type, required int id});
+
   /// 我购买的
-  AsyncResult getUserBuy({
+  AsyncResult getPurchasedList({
     required int page,
     required int limit,
     required int type,
   });
 
   /// 我的关注
-  AsyncResult<FollowingUser> userListFollow({
+  AsyncResult<FollowingUser> getFollowList({
     required int page,
     required int limit,
     required String lastIx,
   });
-
-  /// 填写邀请码
-  AsyncResult sendInvitation({required String affCode});
 
   /// 清除缓存
   AsyncJson clearCached();

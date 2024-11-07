@@ -35,19 +35,6 @@ class CommonUtils {
     }
   }
 
-  static Future<void> showDialog({
-    required BuildContext context,
-    required WidgetBuilder builder,
-    bool barrierDismissible = true,
-  }) async {
-    await showGeneralDialog(
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      context: context,
-      barrierDismissible: barrierDismissible,
-      pageBuilder: (pageBuilderContext, __, ___) => builder(pageBuilderContext),
-    );
-  }
-
   static const _isDebug = !(bool.fromEnvironment('dart.vm.product'));
 
   static log(dynamic object) {
@@ -196,7 +183,8 @@ class CommonUtils {
   }
 
   static openRoute(BuildContext context, Map data) {
-    if (data['link_url'] case final url? when url.isNotEmpty) {
+    if (data['link_url'] ?? data['url_str'] case final url?
+        when url.isNotEmpty) {
       ///上报点击量
       context.read<HomeDomain>().reqAdClickCount(
             id: data['report_id'],

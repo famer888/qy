@@ -237,7 +237,7 @@ class _MonitorMvPlayerState extends State<MonitorMvPlayer>
   //点赞监控
   void likeMonitor() async {
     final monitorDomain = context.read<MonitorDomain>();
-    final res = await monitorDomain.monitorLike(id: widget.info.id ?? 0);
+    final res = await monitorDomain.toggleMonitorLike(id: widget.info.id ?? 0);
     if (res.isValid) {
       if (res.data['is_like'] == 0) {
         widget.info.isLike = 0;
@@ -812,7 +812,7 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
   //点赞监控
   void likeMonitor() async {
     final monitorDomain = context.read<MonitorDomain>();
-    final res = await monitorDomain.monitorLike(id: widget.info?.id ?? 0);
+    final res = await monitorDomain.toggleMonitorLike(id: widget.info?.id ?? 0);
     if (res.isValid) {
       if (res.data['is_like'] == 0) {
         widget.info?.isLike = 0;

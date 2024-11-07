@@ -82,7 +82,7 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
 
   Future _getDefaultBankCard() async {
     try {
-      final res = await userDomain.cashBankCardList(page: 1, limit: 10);
+      final res = await userDomain.getBankCardList(page: 1, limit: 10);
       if (res.isValid) {
         if (res.data?.list case final list? when list.isNotEmpty) {
           for (BankCard bankCard in res.data!.list) {

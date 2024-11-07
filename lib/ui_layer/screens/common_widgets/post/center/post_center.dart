@@ -26,7 +26,7 @@ class _PostCenterState extends State<PostCenter> {
   Future<List<TieztModel>> getData(
       {required int currentPage, required int limit}) async {
     final res = await (isSelf
-        ? userDomain.userMyPosts(page: currentPage, limit: limit)
+        ? userDomain.getMyPostList(page: currentPage, limit: limit)
         : communityDomain.peerCenterPost(
             page: currentPage, aff: widget.aff ?? '', limit: limit));
 

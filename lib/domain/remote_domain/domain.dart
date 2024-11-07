@@ -5,14 +5,17 @@ import '../enum.dart';
 import '../type_def.dart';
 import 'domains/account.dart';
 import 'domains/ai.dart';
+import 'domains/comic.dart';
 import 'domains/community.dart';
 import 'domains/dynamic.dart';
 import 'domains/element.dart';
 import 'domains/home.dart';
+import 'domains/index.dart';
 import 'domains/live.dart';
 import 'domains/message.dart';
 import 'domains/monitor.dart';
 import 'domains/mv.dart';
+import 'domains/novel.dart';
 import 'domains/order.dart';
 import 'domains/privilege.dart';
 import 'domains/proxy.dart';
@@ -41,7 +44,10 @@ abstract class RemoteDomain
         PrivilegeDomain,
         AIDomain,
         LiveDomain,
-        MonitorDomain {
+        MonitorDomain,
+        ComicDomain,
+        NovelDomain,
+        IndexDomain {
   Stream<MyTokenStatus?> get tokenStatusStream;
   Future<bool> initLine();
 

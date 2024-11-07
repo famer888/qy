@@ -1,10 +1,10 @@
 import '../banner_model.dart';
-import '../marquee_tips.dart';
+import '../tip_model.dart';
 
 class LiveWithBannersModel {
   List<LiveModel>? lives;
   List<BannerModel>? banners;
-  List<MarqueeTipsModel>? tips;
+  List<TipModel>? tips;
 
   LiveWithBannersModel({this.lives, this.banners, this.tips});
 
@@ -14,8 +14,8 @@ class LiveWithBannersModel {
             json['lives'].map((e) => LiveModel.fromJson(e))),
         banners: List<BannerModel>.from(
             json['banners'].map((e) => BannerModel.fromJson(e))),
-        tips: List<MarqueeTipsModel>.from(
-            json['tips'].map((e) => MarqueeTipsModel.fromJson(e))),
+        tips:
+            List<TipModel>.from(json['tips'].map((e) => TipModel.fromJson(e))),
       );
 
   Map<String, dynamic> toJson() =>
@@ -111,7 +111,7 @@ class LiveHlsModel {
 class RecommendLiveWithBannersModel {
   List<LiveThemesModel>? themes;
   List<BannerModel>? banners;
-  List<MarqueeTipsModel>? tips;
+  List<TipModel>? tips;
 
   RecommendLiveWithBannersModel({this.themes, this.banners, this.tips});
 
@@ -121,8 +121,8 @@ class RecommendLiveWithBannersModel {
             json['themes'].map((e) => LiveThemesModel.fromJson(e))),
         banners: List<BannerModel>.from(
             json['banners'].map((e) => BannerModel.fromJson(e))),
-        tips: List<MarqueeTipsModel>.from(
-            json['tips'].map((e) => MarqueeTipsModel.fromJson(e))),
+        tips:
+            List<TipModel>.from(json['tips'].map((e) => TipModel.fromJson(e))),
       );
 
   Map<String, dynamic> toJson() =>

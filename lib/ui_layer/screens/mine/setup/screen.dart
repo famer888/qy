@@ -15,6 +15,7 @@ import '../../../notifiers/user_notifier.dart';
 import '../../../router/routes.dart';
 import '../../../utils/common_utils.dart';
 import '../../../utils/my_toast.dart';
+import '../../common_widgets/dialog/my_dialog.dart';
 import '../../common_widgets/dialog/widgets/png_dialog.dart';
 import '../../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../../common_widgets/my_app_bar.dart';
@@ -39,9 +40,9 @@ class _MineSetupScreenState extends State<MineSetupScreen> {
 
   void _editNickName({required vipLevel}) {
     if (vipLevel < 1) {
-      CommonUtils.showDialog(
+      MyDialog.showDialog(
         context: context,
-        builder: (context) => RegularDialog(
+        child: RegularDialog(
           buttonText: 'ljkt'.tr(),
           title: 'ts'.tr(),
           content: Text(
@@ -81,9 +82,9 @@ class _MineSetupScreenState extends State<MineSetupScreen> {
 
   Future<void> showUploadImg({required int vipLevel}) async {
     if (vipLevel < 1) {
-      CommonUtils.showDialog(
+      MyDialog.showDialog(
         context: context,
-        builder: (context) => PNGDialog(
+        child: PNGDialog(
           buttonText: 'ljkt'.tr(),
           title: 'ts'.tr(),
           cancelText: 'qx'.tr(),

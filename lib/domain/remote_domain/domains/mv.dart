@@ -1,11 +1,11 @@
-import '../../model/feed/feed_model.dart';
+import '../../model/video/video_model.dart';
 import '../../model/video_comment_model.dart';
 import '../../model/video_detail_model.dart';
 import '../../type_def.dart';
 
 abstract class MvDomain {
   /// 视频搜索
-  AsyncResult<List<FeedVideoModel>> videoSearch({
+  AsyncResult<List<VideoCardVideoModel>> videoSearch({
     required int page,
     required int limit,
     required String word,
@@ -13,7 +13,7 @@ abstract class MvDomain {
   });
 
   /// 常规更多
-  AsyncResult<List<FeedModel>> getListConstructWithParam({
+  AsyncResult<List<VideoCardModel>> getListConstructWithParam({
     required String id,
     required int limit,
     required int page,
@@ -24,10 +24,10 @@ abstract class MvDomain {
   AsyncResult<VideoDetailData> getVideoDetail({required String id});
 
   /// 视频详情推荐视频
-  AsyncResult<List<FeedModel>> getDetailRecommendList({required String id});
+  AsyncResult<List<VideoCardModel>> getDetailRecommendList({required String id});
 
   /// 获取视频的评论
-  AsyncResult<VideoCommentModel> cartoonListCommentMv({
+  AsyncResult<CommentListModel> getVideoCommentList({
     required String id,
     required String lastIx,
     required int page,
@@ -35,10 +35,10 @@ abstract class MvDomain {
   });
 
   /// 对视频的评论点赞
-  AsyncResult cartoonCommentMvLike({required int id});
+  AsyncResult toggleCommentLike({required int id});
 
   /// 对视频发布评论
-  AsyncResult cartoonCreateCommentMv({
+  AsyncResult sendVideoComment({
     required String id,
     required String content,
   });

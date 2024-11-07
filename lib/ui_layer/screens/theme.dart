@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyTheme {
+  static const LinearGradient grayBgGradient = LinearGradient(
+    colors: [Color.fromRGBO(0, 0, 0, 0.6), Color.fromRGBO(0, 0, 0, 0)],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
+
   static const shareButtonGradient = LinearGradient(
     colors: [Color.fromRGBO(55, 110, 246, 1), Color.fromRGBO(100, 150, 252, 1)],
     begin: Alignment.centerLeft,
@@ -113,6 +119,7 @@ class MyTheme {
 
   static const white008Color = Color.fromRGBO(255, 255, 255, 0.08);
   static const white02Color = Color.fromRGBO(255, 255, 255, 0.2);
+  static const white04Color = Color.fromRGBO(255, 255, 255, 0.4);
   static const white06Color = Color.fromRGBO(255, 255, 255, 0.6);
   static const white07Color = Color.fromRGBO(255, 255, 255, 0.7);
   static const white08Color = Color.fromRGBO(255, 255, 255, 0.8);
@@ -171,9 +178,21 @@ class MyTheme {
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
+  static final white04_11 = TextStyle(
+      color: white04Color,
+      fontSize: 11.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
   static final white04_12 = TextStyle(
-      color: const Color.fromRGBO(255, 255, 255, 0.4),
+      color: white04Color,
       fontSize: 12.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static final white04_14 = TextStyle(
+      color: white04Color,
+      fontSize: 14.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
@@ -215,6 +234,17 @@ class MyTheme {
     fontSize: 14.sp,
     overflow: TextOverflow.ellipsis,
   );
+  static final white07_15 = TextStyle(
+    color: white07Color,
+    fontSize: 15.sp,
+    overflow: TextOverflow.ellipsis,
+  );
+
+  static final white07_16 = TextStyle(
+    color: white07Color,
+    fontSize: 16.sp,
+    overflow: TextOverflow.ellipsis,
+  );
 
   static final white08_12 = TextStyle(
     color: white08Color,
@@ -248,6 +278,13 @@ class MyTheme {
       color: Colors.white,
       fontSize: 15.sp,
       fontWeight: FontWeight.w500,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static final white16 = TextStyle(
+      fontFamily: hanyi,
+      color: Colors.white,
+      fontSize: 16.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 

@@ -27,6 +27,9 @@ class AppRouterPaths {
   /// 标签视频列表
   static const moreVideo = '/moreVideo/:name/:id';
 
+  /// 更多推荐视频列表
+  static const moreRecommendVideo = '/moreRecommendVideo/:name/:id/:type';
+
   /// 搜索
   static const search = '/search';
 
@@ -148,8 +151,6 @@ class AppRouterPaths {
 
   static const localVideo = '/localVideo';
 
-  static const ai = '/ai';
-
   static const webView = '/${BuildConfig.webViewPathName}/:url';
 
   /// 直播视频详情页
@@ -157,4 +158,31 @@ class AppRouterPaths {
 
   /// 监控视频详情页
   static const monitorVideoDetail = '/monitorVideoDetail/:id';
+
+  /// 更多漫画列表
+  static const moreComic = '/moreComic/:title/:sort';
+
+  /// 分类漫画列表
+  static const sortComic = '/sortComic';
+
+  /// 最新漫画列表
+  static const newComic = '/newComic';
+
+  /// 完结漫画列表
+  static const endComic = '/endComic';
+
+  /// 排行榜漫画列表
+  static const rankComic = '/rankComic';
+
+  /// 漫画详情
+  static const comicDetail = '/comicDetail';
+
+  /// 漫画阅读界面
+  static const comicReader = '/comicReader';
+
+  /// ai科技
+  static const aiService = '/aiService';
+
+  /// 精采发现
+  static const discovery = '/discovery';
 }

@@ -28,9 +28,7 @@ class DanSanHDialog extends StatelessWidget {
                 left: 15, right: 15, top: title == null ? 0 : 25, bottom: 33.5),
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(5),
-              ),
+              borderRadius: BorderRadius.circular(5),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,

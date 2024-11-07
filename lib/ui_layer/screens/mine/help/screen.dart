@@ -51,7 +51,7 @@ class _MineHelpScreenState extends State<MineHelpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final helpList = context.read<HomeConfigNotifier>().homeData.help ?? [];
+    final helpList = context.read<HomeConfigNotifier>().homeData.help;
     return ScreenBackground(
       child: Scaffold(
         appBar: MyAppBar(title: 'cjwt'.tr(context: context)),

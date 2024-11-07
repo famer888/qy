@@ -6,14 +6,14 @@ mixin _User on _BaseAppRepo implements UserDomain {
       _userService.getUserInfo().deserializeJsonBy(Member.fromJson).guard;
 
   @override
-  AsyncResult toInvitation({required String affCode}) =>
-      _userService.toInvitation(affCode: affCode).deserialize().guard;
+  AsyncResult sendInvitation({required String affCode}) =>
+      _userService.postInvitation(affCode: affCode).deserialize().guard;
 
   @override
-  AsyncJson communityFollowUser({
+  AsyncJson toggleCommunityFollowUser({
     required String aff,
   }) =>
-      _userService.communityFollowUser(aff: aff);
+      _userService.toggleFollow(aff: aff);
 
   @override
   AsyncResult updateUserInfo({
@@ -27,58 +27,58 @@ mixin _User on _BaseAppRepo implements UserDomain {
           .guard;
 
   @override
-  AsyncResult<List<CoinDetail>> getListMoneyDetail({
+  AsyncResult<List<CoinDetail>> getMoneyDetailList({
     required int page,
     required MyCoinFilterType type,
     required int limit,
   }) =>
       _userService
-          .getListMoneyDetail(page: page, type: type.stringType, limit: limit)
+          .getMoneyDetailList(page: page, type: type.stringType, limit: limit)
           .deserializeJsonListBy((e) => e.map(CoinDetail.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<BankList> cashBankCardList({
+  AsyncResult<BankList> getBankCardList({
     required int page,
     required int limit,
   }) =>
       _userService
-          .cashBankCardList(page: page, limit: limit)
+          .getBankCardList(page: page, limit: limit)
           .deserializeJsonBy(BankList.fromJson)
           .guard;
 
   @override
-  AsyncJson cashAddBankCard({
+  AsyncJson addBankCard({
     required String card,
     required String name,
   }) =>
-      _userService.cashAddBankCard(card: card, name: name);
+      _userService.addBankCard(card: card, name: name);
 
   @override
-  AsyncJson cashDeleteBankCard({required int cardId}) =>
-      _userService.cashDeleteBankCard(cardId: cardId);
+  AsyncJson deleteBankCard({required int cardId}) =>
+      _userService.deleteBankCard(cardId: cardId);
 
   @override
-  AsyncResult<MineIncomeDetailData> earnTotalInfo({
+  AsyncResult<MineIncomeDetailData> getEarnTotalInfo({
     String source = '',
     required int page,
     required int limit,
     required String lastIx,
   }) =>
       _userService
-          .earnTotalInfo(
+          .getEarnTotalInfo(
               page: page, lastIx: lastIx, limit: limit, source: source)
           .deserializeJsonBy(MineIncomeDetailData.fromJson)
           .guard;
 
   @override
-  AsyncResult<List<TieztModel>> userMyPosts({
+  AsyncResult<List<TieztModel>> getMyPostList({
     String cate = 'release',
     required int page,
     required int limit,
   }) =>
       _userService
-          .userMyPosts(page: page, limit: limit, cate: cate)
+          .getMyPostList(page: page, limit: limit, cate: cate)
           .deserializeJsonListBy((e) => e.map(TieztModel.fromJson).toList())
           .guard;
 
@@ -102,36 +102,57 @@ mixin _User on _BaseAppRepo implements UserDomain {
               .guard;
 
   @override
-  AsyncResult userFavorites({required int type, required int id}) =>
+  AsyncResult userFavorites({
+    required int type,
+    required int id,
+  }) =>
       _userService.userFavorites(type: type, id: id).deserialize().guard;
 
   @override
-  AsyncResult getUserBuy({
+  AsyncResult toggleUserFavorite({
+    required MyModuleType type,
+    required int id,
+  }) =>
+      _userService
+          .toggleUserFavorite(type: type.index, id: id)
+          .deserialize()
+          .guard;
+
+  @override
+  AsyncResult toggleUserCommentLike(
+          {required MyModuleType type, required int id}) =>
+      _userService
+          .toggleUserCommentLike(type: type.index, id: id)
+          .deserialize()
+          .guard;
+
+  @override
+  AsyncResult getPurchasedList({
     required int page,
     required int limit,
     required int type,
   }) =>
       type == 1
           ? _userService
-              .getUserBuy(page: page, type: type, limit: limit)
+              .getPurchasedList(page: page, type: type, limit: limit)
               .deserializeJsonBy(MineVideoListModel.fromJson)
               .guard
           : _userService
-              .getUserBuy(page: page, type: type, limit: limit)
+              .getPurchasedList(page: page, type: type, limit: limit)
               .deserializeJsonBy(MineTieztListModel.fromJson)
               .guard;
 
   @override
-  AsyncResult<FollowingUser> userListFollow(
+  AsyncResult<FollowingUser> getFollowList(
           {required int page, required int limit, required String lastIx}) =>
       _userService
-          .userListFollow(page: page, lastIx: lastIx, limit: limit)
+          .getFollowList(page: page, lastIx: lastIx, limit: limit)
           .deserializeJsonBy(FollowingUser.fromJson)
           .guard;
 
   @override
-  AsyncResult sendInvitation({required String affCode}) =>
-      _userService.sendInvitation(affCode: affCode).deserialize().guard;
+  AsyncResult toggleUserLike({required MyModuleType type, required int id}) =>
+      _userService.toggleUserLike(type: type.index, id: id).deserialize().guard;
 
   @override
   AsyncJson clearCached() => _userService.clearCached();

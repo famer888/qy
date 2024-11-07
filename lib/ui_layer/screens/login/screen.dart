@@ -10,6 +10,7 @@ import '../../../domain/domain.dart';
 import '../../notifiers/user_notifier.dart';
 import '../../utils/common_utils.dart';
 import '../../utils/my_toast.dart';
+import '../common_widgets/dialog/my_dialog.dart';
 import '../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../common_widgets/my_app_bar.dart';
 import '../common_widgets/my_button.dart';
@@ -84,10 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
     MyToast.showText(text: result.msg ?? '');
   }
 
-  Future<void> _showAlert() async => await CommonUtils.showDialog(
+  Future<void> _showAlert() async => await MyDialog.showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (context) => RegularDialog(
+        child: RegularDialog(
           title: 'ts'.tr(context: context),
           buttonText: 'fzzhqbc'.tr(context: context),
           content: Column(

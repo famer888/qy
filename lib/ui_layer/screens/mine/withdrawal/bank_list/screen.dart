@@ -38,7 +38,7 @@ class _MineWithdrawalBankListScreenState
     required int currentPage,
     required int limit,
   }) async {
-    final res = await userDomain.cashBankCardList(
+    final res = await userDomain.getBankCardList(
       page: currentPage,
       limit: limit,
     );
@@ -154,7 +154,7 @@ class _MineWithdrawalBankListScreenState
     try {
       if (card.isNotEmpty && name.isNotEmpty) {
         MyToast.showLoading();
-        final result = await userDomain.cashAddBankCard(card: card, name: name);
+        final result = await userDomain.addBankCard(card: card, name: name);
         if (result.isValid) {
           await listViewKey.currentState?.reloadPage();
         } else {
@@ -199,7 +199,7 @@ class _MineWithdrawalBankListScreenState
   Future<void> _sendDeleteBankCard({required BankCard bankcard}) async {
     try {
       MyToast.showLoading();
-      final result = await userDomain.cashDeleteBankCard(cardId: bankcard.id!);
+      final result = await userDomain.deleteBankCard(cardId: bankcard.id!);
 
       if (result.isValid) {
         if (bankcard == selectedCardNotifier.value) {

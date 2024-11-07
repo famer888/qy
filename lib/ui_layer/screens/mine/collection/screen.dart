@@ -24,6 +24,12 @@ class MineCollectionScreen extends StatefulWidget {
 }
 
 class _MineCollectionScreenState extends State<MineCollectionScreen> {
+  final data = {
+    'shp': const _VideoView(),
+    'tiezt': const _TieztView(type: _TieztType.community),
+    'zhoz': const _TieztView(type: _TieztType.bit),
+  };
+
   @override
   Widget build(BuildContext context) {
     return ScreenBackground(
@@ -45,21 +51,9 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
           ),
           tabBarHeight: 40.w,
           isScrollable: true,
-          titles: [
-            'shp'.tr(context: context),
-            'tiezt'.tr(context: context),
-            'zhoz'.tr(context: context),
-          ],
-          views: const [
-            KeepAliveWrapper(
-              child: _VideoView(),
-            ),
-            KeepAliveWrapper(
-              child: _TieztView(type: _TieztType.community),
-            ),
-            KeepAliveWrapper(
-              child: _TieztView(type: _TieztType.bit),
-            ),
+          titles: [for (final title in data.keys) title.tr(context: context)],
+          views: [
+            for (final view in data.values) KeepAliveWrapper(child: view)
           ],
         ),
       ),

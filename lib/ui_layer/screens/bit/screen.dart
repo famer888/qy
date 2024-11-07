@@ -12,6 +12,7 @@ import '../common_widgets/screen_background.dart';
 import '../common_widgets/status/loading.dart';
 import '../common_widgets/status/network_error.dart';
 import '../theme.dart';
+import 'comic/screen.dart';
 import 'content.dart';
 import 'live/screen.dart';
 import 'monitor/screen.dart';
@@ -27,7 +28,7 @@ class _BitScreenState extends State<BitScreen> with TickerProviderStateMixin {
   late final data = {
     '直播': const LiveScreen(),
     '监控': const MonitorScreen(),
-    '漫画': const SizedBox(),
+    '漫画': const ComicScreen(),
     '小说': const SizedBox(),
     '种子': const _SeedScreen(),
   };

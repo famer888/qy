@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../domain/model/comic/comic_model.dart';
 import '../../domain/model/video_detail_model.dart';
+import '../screens/bit/comic/comic_detail/screen.dart';
+import '../screens/bit/comic/comic_part_content/comic_end_content.dart';
+import '../screens/bit/comic/comic_part_content/comic_more_content.dart';
+import '../screens/bit/comic/comic_part_content/comic_new_content.dart';
+import '../screens/bit/comic/comic_part_content/comic_rank_content.dart';
+import '../screens/bit/comic/comic_part_content/comic_sort_content.dart';
+import '../screens/bit/comic/comic_reader/screen.dart';
 import '../screens/bit/live/detail/screen.dart';
 import '../screens/bit/monitor/detail/screen.dart';
 import '../screens/community/circle_screen.dart';
@@ -12,6 +20,7 @@ import '../screens/community/detail/screen.dart';
 import '../screens/community/issue/screen.dart';
 import '../screens/community/screen.dart';
 import '../screens/community/tag_detail/screen.dart';
+import '../screens/discovery/screen.dart';
 import '../screens/home/ai/screen.dart';
 import '../screens/home/screen.dart';
 import '../screens/local_video/screen.dart';
@@ -46,6 +55,7 @@ import '../screens/mine/welfare/screen.dart';
 import '../screens/mine/withdrawal/bank_list/screen.dart';
 import '../screens/mine/withdrawal/record/screen.dart';
 import '../screens/mine/withdrawal/screen.dart';
+import '../screens/more_video/recommend/screen.dart';
 import '../screens/more_video/screen.dart';
 import '../screens/restricted/screen.dart';
 import '../screens/search/result/screen.dart';
@@ -716,6 +726,31 @@ class MoreVideoRoute extends GoRouteData {
   }
 }
 
+@TypedGoRoute<MoreRecommendVideoRoute>(path: AppRouterPaths.moreRecommendVideo)
+class MoreRecommendVideoRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const MoreRecommendVideoRoute({
+    required this.name,
+    required this.id,
+    required this.type,
+  });
+
+  final String name;
+  final int id;
+  final int type;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return MoreRecommendVideoScreen(
+      name: name,
+      id: id,
+      type: type,
+    );
+  }
+}
+
 @TypedGoRoute<MessageCenterRoute>(path: AppRouterPaths.mineMessageCenter)
 class MessageCenterRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
@@ -726,6 +761,19 @@ class MessageCenterRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const MessageCenterScreen();
+  }
+}
+
+@TypedGoRoute<DiscoveryRoute>(path: AppRouterPaths.discovery)
+class DiscoveryRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const DiscoveryRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const DiscoveryScreen();
   }
 }
 
@@ -770,7 +818,7 @@ class LocalVideoRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<HomeAIRoute>(path: AppRouterPaths.ai)
+@TypedGoRoute<HomeAIRoute>(path: AppRouterPaths.aiService)
 class HomeAIRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
@@ -817,6 +865,114 @@ class MonitorVideoDetailRoute extends GoRouteData {
   }
 }
 
+@TypedGoRoute<MoreComicRoute>(path: AppRouterPaths.moreComic)
+class MoreComicRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const MoreComicRoute({required this.title, required this.sort});
+
+  final String title;
+  final String sort;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ComicMoreContent(
+      title: title,
+      sort: sort,
+    );
+  }
+}
+
+@TypedGoRoute<ComicSortRoute>(path: AppRouterPaths.sortComic)
+class ComicSortRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicSortRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ComicSortContent();
+  }
+}
+
+@TypedGoRoute<ComicNewRoute>(path: AppRouterPaths.newComic)
+class ComicNewRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicNewRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ComicNewContent();
+  }
+}
+
+@TypedGoRoute<ComicEndRoute>(path: AppRouterPaths.endComic)
+class ComicEndRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicEndRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ComicEndContent();
+  }
+}
+
+@TypedGoRoute<ComicRankRoute>(path: AppRouterPaths.rankComic)
+class ComicRankRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicRankRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ComicRankContent();
+  }
+}
+
+// @TypedGoRoute<ComicDetailRoute>(path: AppRouterPaths.comicDetail)
+// class ComicDetailRoute extends GoRouteData {
+//   static final GlobalKey<NavigatorState> $parentNavigatorKey =
+//       AppRouter.rootNavigatorKey;
+//
+//   const ComicDetailRoute(this.$extra);
+//
+//   final String $extra;
+//
+//   Future<T?> push<T>(BuildContext context) =>
+//       context.removeDuplicatePush(location, extra: $extra);
+//
+//   @override
+//   Widget build(BuildContext context, GoRouterState state) {
+//     return ComicDetailScreen(id: $extra);
+//   }
+// }
+
+@TypedGoRoute<ComicReaderRoute>(path: AppRouterPaths.comicReader)
+class ComicReaderRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicReaderRoute({
+    required this.$extra,
+    required this.chapterIndex,
+  });
+
+  final ComicDetailModel $extra;
+  final int chapterIndex;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ComicReaderScreen(data: $extra, chapterIndex: chapterIndex);
+  }
+}
+
 extension _MyPushHelper on BuildContext {
   Future<T?> removeDuplicatePush<T>(String location, {Object? extra}) async {
     final router = GoRouter.of(this);
@@ -829,5 +985,40 @@ extension _MyPushHelper on BuildContext {
     matchList.addAll(newMatchList);
 
     return push<T>(location, extra: extra);
+  }
+}
+
+@TypedShellRoute<MyShellRouteData>(
+  routes: <TypedRoute<RouteData>>[
+    TypedGoRoute<ComicDetailRoute>(path: AppRouterPaths.comicDetail),
+  ],
+)
+class MyShellRouteData extends ShellRouteData {
+  const MyShellRouteData();
+
+  @override
+  Widget builder(
+    BuildContext context,
+    GoRouterState state,
+    Widget navigator,
+  ) {
+    return navigator;
+  }
+}
+
+class ComicDetailRoute extends GoRouteData {
+  // static final GlobalKey<NavigatorState> $parentNavigatorKey =
+  //     AppRouter.rootNavigatorKey;
+
+  const ComicDetailRoute(this.$extra);
+
+  final String $extra;
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.removeDuplicatePush(location, extra: $extra);
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ComicDetailScreen(id: $extra);
   }
 }

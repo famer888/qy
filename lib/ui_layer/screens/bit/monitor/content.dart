@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/model/banner_model.dart';
-import '../../../../domain/model/marquee_tips.dart';
+import '../../../../domain/model/tip_model.dart';
 import '../../../../domain/model/monitor/monitor_with_banners_model.dart';
 import '../../../../domain/remote_domain/domains/monitor.dart';
 import '../../../utils/common_utils.dart';
@@ -24,7 +24,7 @@ class MonitorVideoView extends StatefulWidget {
 class _MonitorVideoViewState extends State<MonitorVideoView> {
   late final _domain = context.read<MonitorDomain>();
   final _bannersNotifier = ValueNotifier<List<BannerModel>>([]);
-  final _tipsNotifier = ValueNotifier<List<MarqueeTipsModel>>([]);
+  final _tipsNotifier = ValueNotifier<List<TipModel>>([]);
 
   Future<List<MonitorModel>?> _getData(int page, int pageSize) async {
     final result = await _domain.getMonitorIndex(
@@ -72,7 +72,7 @@ class _Header extends StatelessWidget {
   });
 
   final ValueNotifier<List<BannerModel>> bannersNotifier;
-  final ValueNotifier<List<MarqueeTipsModel>> tipsNotifier;
+  final ValueNotifier<List<TipModel>> tipsNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -93,23 +93,7 @@ class _Header extends StatelessWidget {
         SizedBox(height: 4.w),
         ValueListenableBuilder(
           valueListenable: tipsNotifier,
-          builder: (context, tips, child) {
-            if (tips.isEmpty) return const SizedBox.shrink();
-            return MarqueeWidget(
-              children: [
-                for (final tip in tips)
-                  GestureDetector(
-                    onTap: () {
-                      CommonUtils.openRoute(context, tip.toJson());
-                    },
-                    child: Text(
-                      tip.title ?? '',
-                      style: MyTheme.white14,
-                    ),
-                  ),
-              ],
-            );
-          },
+          builder: (_, tips, __) => MyMarqueeTipsWidget(tips: tips),
         ),
       ],
     );

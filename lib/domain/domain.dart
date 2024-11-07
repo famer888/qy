@@ -23,7 +23,13 @@ abstract class LocaleDomain {
 }
 
 abstract class CacheDomain
-    implements VideoDownloadCacheDomain, ChatCacheDomain {
+    implements
+        SearchCacheDomain,
+        VideoDownloadCacheDomain,
+        ChatCacheDomain,
+        LiveCacheDomain,
+        ComicCacheDomain,
+        NovelCacheDomain {
   /// 大于500M清理磁盘
   Future<void> clearImageCacheIfNeed({bool force = false});
 
@@ -32,7 +38,9 @@ abstract class CacheDomain
 
   /// 获取官网链结缓存
   Future<String?> readOfficeWeb();
+}
 
+abstract class SearchCacheDomain {
   /// 取得搜索记录
   Future<List<String>> readSearchHistory();
 
@@ -41,12 +49,6 @@ abstract class CacheDomain
 
   /// 清除搜索记录
   Future<void> clearSearchHistory();
-
-  ///获取直播弹幕开关，默认true：开
-  Future<bool> readIsBarrage();
-
-  ///更新直播弹幕开关
-  Future<void> upsertIsBarrage(bool isBarrage);
 }
 
 abstract class VideoDownloadCacheDomain {
@@ -59,4 +61,40 @@ abstract class ChatCacheDomain {
   Future<String> readChats();
 
   Future<void> upsertChats({required String chats});
+}
+
+abstract class LiveCacheDomain {
+  /// 获取直播弹幕开关，默认true：开
+  Future<bool> readIsBarrage();
+
+  /// 更新直播弹幕开关
+  Future<void> upsertIsBarrage(bool isBarrage);
+}
+
+abstract class ComicCacheDomain {
+  /// 取得漫画阅读到第几章节
+  Future<Map<String, int>> readComicReaderChapterIndex();
+
+  /// 记录漫画阅读章节
+  Future<void> upsertComicReaderChapterIndex(Map<String, int> data);
+}
+
+abstract class NovelCacheDomain {
+  /// 取得小说阅读到第几章节
+  Future<Map<String, int>> readNovelReaderChapterIndex();
+
+  /// 记录小说阅读章节
+  Future<void> upsertNovelReaderChapterIndex(Map<String, int> data);
+
+  /// 取得小说字体设置大小
+  Future<double> readNovelReaderFontSize();
+
+  /// 记录小说字体设置大小
+  Future<void> upsertNovelFontSize({required double fontSize});
+
+  /// 取得小说阅读设置背景颜色
+  Future<int> readNovelReaderBgColorIndex();
+
+  /// 记录小说背景颜色设置值
+  Future<void> upsertNovelBgColorIndex({required int index});
 }

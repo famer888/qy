@@ -17,7 +17,11 @@ class _CacheManager implements CacheDomain {
   final _searchHistoryKey = 'search_history';
   final _downloadVideoTasksKey = 'download_video_tasks';
   final _chatsKey = 'imchats';
-  final _isBarrageKey = 'isBarrage';
+  final _isBarrageKey = 'is_barrage';
+  final _comicChapterKey = 'comic_chapter';
+  final _novelChapterKey = 'novel_chapter';
+  final _novelFontSizeKey = 'novel_font_size';
+  final _novelBgColorKey = 'novel_bg_color';
 
   Future<void> init() async {
     if (_isInitialized) return;
@@ -145,5 +149,53 @@ class _CacheManager implements CacheDomain {
   @override
   Future<void> upsertIsBarrage(bool isBarrage) async {
     return appBox.upsert(_isBarrageKey, isBarrage);
+  }
+
+  @override
+  Future<void> upsertComicReaderChapterIndex(Map<String, int> data) =>
+      appBox.upsert(_comicChapterKey, data);
+
+  @override
+  Future<Map<String, int>> readComicReaderChapterIndex() async {
+    if (await appBox.read(_comicChapterKey) case final data?) {
+      return Map<String, int>.from(data);
+    }
+    return {};
+  }
+
+  @override
+  Future<void> upsertNovelReaderChapterIndex(Map<String, int> data) =>
+      appBox.upsert(_novelChapterKey, data);
+
+  @override
+  Future<Map<String, int>> readNovelReaderChapterIndex() async {
+    if (await appBox.read(_novelChapterKey) case final data?) {
+      return Map<String, int>.from(data);
+    }
+    return {};
+  }
+
+  @override
+  Future<void> upsertNovelFontSize({required double fontSize}) =>
+      appBox.upsert(_novelFontSizeKey, fontSize);
+
+  @override
+  Future<double> readNovelReaderFontSize() async {
+    if (await appBox.read(_novelFontSizeKey) case final fontSize?) {
+      return fontSize;
+    }
+    return 15;
+  }
+
+  @override
+  Future<void> upsertNovelBgColorIndex({required int index}) =>
+      appBox.upsert(_novelBgColorKey, index);
+
+  @override
+  Future<int> readNovelReaderBgColorIndex() async {
+    if (await appBox.read(_novelBgColorKey) case final index?) {
+      return index;
+    }
+    return 1;
   }
 }

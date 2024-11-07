@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/model/banner_model.dart';
 import '../../../../../domain/model/live/live_with_banners_model.dart';
-import '../../../../../domain/model/marquee_tips.dart';
+import '../../../../../domain/model/tip_model.dart';
 import '../../../../../domain/remote_domain/domains/live.dart';
 
 import '../../../../utils/my_toast.dart';
@@ -23,7 +23,7 @@ class LiveVideoView extends StatefulWidget {
 class _LiveVideoViewState extends State<LiveVideoView> {
   late final _domain = context.read<LiveDomain>();
   final _bannersNotifier = ValueNotifier<List<BannerModel>>([]);
-  final _tipsNotifier = ValueNotifier<List<MarqueeTipsModel>>([]);
+  final _tipsNotifier = ValueNotifier<List<TipModel>>([]);
 
   Future<List<LiveModel>?> _getData(int page, int pageSize) async {
     final result = await _domain.getLiveIndex(

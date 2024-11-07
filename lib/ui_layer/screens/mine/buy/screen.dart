@@ -79,7 +79,7 @@ class _VideoViewState extends State<_VideoView> {
     required int page,
     required int pageSize,
   }) async {
-    final result = await userDomain.getUserBuy(
+    final result = await userDomain.getPurchasedList(
       page: page,
       limit: pageSize,
       type: 1,
@@ -127,7 +127,7 @@ class _TieztViewState extends State<_TieztView> {
     required int page,
     required int pageSize,
   }) async {
-    final result = await userDomain.getUserBuy(
+    final result = await userDomain.getPurchasedList(
       page: page,
       limit: pageSize,
       type: widget.type.id,

@@ -11,10 +11,12 @@ class UserService extends BaseService {
   AsyncJson getUserInfo() => post('/userInfo');
 
   /// 填写邀请码
-  AsyncJson toInvitation({required String affCode}) =>
+  AsyncJson postInvitation({
+    required String affCode,
+  }) =>
       post('/invitation', data: {'aff_code': affCode});
 
-  AsyncJson communityFollowUser({required String aff}) =>
+  AsyncJson toggleFollow({required String aff}) =>
       post('/toggle_follow', data: {
         'aff': aff,
       });
@@ -32,7 +34,7 @@ class UserService extends BaseService {
       });
 
   /// 扣币明细
-  AsyncJson getListMoneyDetail({
+  AsyncJson getMoneyDetailList({
     required int page,
     required int limit,
     required String type,
@@ -43,11 +45,8 @@ class UserService extends BaseService {
         'type': type,
       });
 
-  /// 清除缓存
-  AsyncJson clearCached() => post('/clear_cached');
-
   /// 提现  银行卡列表
-  AsyncJson cashBankCardList({
+  AsyncJson getBankCardList({
     required int page,
     required int limit,
   }) =>
@@ -57,7 +56,7 @@ class UserService extends BaseService {
       });
 
   /// 提现  添加银行卡
-  AsyncJson cashAddBankCard({
+  AsyncJson addBankCard({
     required String card,
     required String name,
   }) =>
@@ -67,11 +66,11 @@ class UserService extends BaseService {
       });
 
   /// 提现  删除银行卡
-  AsyncJson cashDeleteBankCard({required int cardId}) =>
+  AsyncJson deleteBankCard({required int cardId}) =>
       post('/del_bankcard', data: {'id': cardId});
 
   /// 收益汇总
-  AsyncJson earnTotalInfo({
+  AsyncJson getEarnTotalInfo({
     String source = '',
     required int page,
     required int limit,
@@ -85,7 +84,7 @@ class UserService extends BaseService {
       });
 
   /// 我的帖子
-  AsyncJson userMyPosts({
+  AsyncJson getMyPostList({
     String cate = 'release',
     required int page,
     required int limit,
@@ -120,8 +119,38 @@ class UserService extends BaseService {
         'type': type,
       });
 
+  /// 收藏/取消收藏,type 1 - 长视频 2 - 短视频 3 - 漫画 4 - 帖子 5 - 种子 6 - 语音 7 - 直播 8 - '动漫   9-黄游
+  AsyncJson toggleUserFavorite({
+    required int type,
+    required int id,
+  }) =>
+      post('/favorite', data: {
+        'id': id,
+        'type': type,
+      });
+
+  ///评论点赞/取消点赞,type 1 - 长视频 2 - 短视频 3 - 漫画 4 - 帖子 5 - 种子 6 - 语音 7 - 直播 8 - '动漫   9-黄游
+  AsyncJson toggleUserCommentLike({
+    required int type,
+    required int id,
+  }) =>
+      post('/comment_like', data: {
+        'type': type,
+        'id': id,
+      });
+
+  ///点赞/取消点赞,type 1 - 长视频 2 - 短视频 3 - 漫画 4 - 帖子 5 - 种子 6 - 语音 7 - 直播 8 - '动漫   9-黄游
+  AsyncJson toggleUserLike({
+    required int type,
+    required int id,
+  }) =>
+      post('/like', data: {
+        'type': type,
+        'id': id,
+      });
+
   /// 我购买的
-  AsyncJson getUserBuy({
+  AsyncJson getPurchasedList({
     required int limit,
     required int page,
     required int type,
@@ -133,7 +162,7 @@ class UserService extends BaseService {
       });
 
   /// 我的关注
-  AsyncJson userListFollow({
+  AsyncJson getFollowList({
     required int page,
     required int limit,
     required String lastIx,
@@ -144,9 +173,6 @@ class UserService extends BaseService {
         'last_ix': lastIx,
       });
 
-  /// 填写邀请码
-  AsyncJson sendInvitation({
-    required String affCode,
-  }) =>
-      post('/invitation', data: {'aff_code': affCode});
+  /// 清除缓存
+  AsyncJson clearCached() => post('/clear_cached');
 }

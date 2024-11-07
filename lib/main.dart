@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -9,9 +10,13 @@ import 'package:utils/utils.dart';
 import 'data_layer/repo/repo.dart';
 import 'domain/domain.dart';
 import 'domain/remote_domain/domains/ai.dart';
+import 'domain/remote_domain/domains/comic.dart';
+import 'domain/remote_domain/domains/index.dart';
 import 'domain/remote_domain/domains/live.dart';
 import 'domain/remote_domain/domains/monitor.dart';
+import 'domain/remote_domain/domains/novel.dart';
 import 'ui_layer/notifiers/chat_notifier.dart';
+import 'ui_layer/notifiers/comic_notifier.dart';
 import 'ui_layer/notifiers/home_config_notifier.dart';
 import 'ui_layer/notifiers/user_notifier.dart';
 import 'ui_layer/router/router.dart';
@@ -37,28 +42,33 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        Provider<AppDomain>(lazy: false, create: (_) => appRepo),
-        Provider<CacheDomain>(lazy: false, create: (_) => appRepo.cache),
-        Provider<HomeDomain>(lazy: false, create: (_) => appRepo),
-        Provider<UserDomain>(lazy: false, create: (_) => appRepo),
-        Provider<ElementDomain>(lazy: false, create: (_) => appRepo),
-        Provider<DynamicDomain>(lazy: false, create: (_) => appRepo),
-        Provider<CommunityDomain>(lazy: false, create: (_) => appRepo),
-        Provider<SeedDomain>(lazy: false, create: (_) => appRepo),
-        Provider<OrderDomain>(lazy: false, create: (_) => appRepo),
-        Provider<SignDomain>(lazy: false, create: (_) => appRepo),
-        Provider<AccountDomain>(lazy: false, create: (_) => appRepo),
-        Provider<ProxyDomain>(lazy: false, create: (_) => appRepo),
-        Provider<WithdrawDomain>(lazy: false, create: (_) => appRepo),
-        Provider<SearchDomain>(lazy: false, create: (_) => appRepo),
-        Provider<MvDomain>(lazy: false, create: (_) => appRepo),
-        Provider<MessageDomain>(lazy: false, create: (_) => appRepo),
-        Provider<PrivilegeDomain>(lazy: false, create: (_) => appRepo),
-        Provider<AIDomain>(lazy: false, create: (_) => appRepo),
-        Provider<LiveDomain>(lazy: false, create: (_) => appRepo),
-        Provider<MonitorDomain>(lazy: false, create: (_) => appRepo),
+        Provider<AppDomain>.value(value: appRepo),
+        Provider<CacheDomain>.value(value: appRepo.cache),
+        Provider<HomeDomain>.value(value: appRepo),
+        Provider<UserDomain>.value(value: appRepo),
+        Provider<ElementDomain>.value(value: appRepo),
+        Provider<DynamicDomain>.value(value: appRepo),
+        Provider<CommunityDomain>.value(value: appRepo),
+        Provider<SeedDomain>.value(value: appRepo),
+        Provider<OrderDomain>.value(value: appRepo),
+        Provider<SignDomain>.value(value: appRepo),
+        Provider<AccountDomain>.value(value: appRepo),
+        Provider<ProxyDomain>.value(value: appRepo),
+        Provider<WithdrawDomain>.value(value: appRepo),
+        Provider<SearchDomain>.value(value: appRepo),
+        Provider<MvDomain>.value(value: appRepo),
+        Provider<MessageDomain>.value(value: appRepo),
+        Provider<PrivilegeDomain>.value(value: appRepo),
+        Provider<AIDomain>.value(value: appRepo),
+        Provider<LiveDomain>.value(value: appRepo),
+        Provider<MonitorDomain>.value(value: appRepo),
+        Provider<ComicDomain>.value(value: appRepo),
+        Provider<NovelDomain>.value(value: appRepo),
+        Provider<IndexDomain>.value(value: appRepo),
         Provider<DownloadUtil>(
-            lazy: false, create: (_) => DownloadUtil(cache: appRepo.cache)),
+          lazy: false,
+          create: (_) => DownloadUtil(cache: appRepo.cache),
+        ),
         ChangeNotifierProvider(create: (_) => HomeConfigNotifier(appRepo)),
         ChangeNotifierProvider(create: (_) => UserNotifier(appRepo)),
         ChangeNotifierProxyProvider<UserNotifier, ChatNotifier?>(
@@ -77,7 +87,7 @@ void main() async {
                     oauthId: appRepo.getOAuthId(),
                   );
           },
-          create: (BuildContext context) => null,
+          create: (_) => null,
         ),
       ],
       child: EasyLocalization(

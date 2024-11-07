@@ -24,12 +24,15 @@ import '../../domain/model/bit_nav_model.dart';
 import '../../domain/model/cash_withdraw_rule_model.dart';
 import '../../domain/model/coin_detail_model.dart';
 import '../../domain/model/collection_model.dart';
+import '../../domain/model/comic/comic_item_model.dart';
+import '../../domain/model/comic/comic_model.dart';
 import '../../domain/model/community_nav_model.dart';
 import '../../domain/model/community_with_banner_model.dart';
 import '../../domain/model/creator_info_model.dart';
 import '../../domain/model/element_model.dart';
 import '../../domain/model/exp_of_vip_model.dart';
-import '../../domain/model/feed/feed_model.dart';
+import '../../domain/model/video/recommend_video_with_banners_model.dart';
+import '../../domain/model/video/video_model.dart';
 import '../../domain/model/feedback_data_model.dart';
 import '../../domain/model/follow_user_model.dart';
 import '../../domain/model/home_data_model.dart';
@@ -41,6 +44,7 @@ import '../../domain/model/mine_withdrawal_record_model.dart';
 import '../../domain/model/monitor/monitor_video_detail_data.dart';
 import '../../domain/model/monitor/monitor_with_banners_model.dart';
 import '../../domain/model/notice_message.dart';
+import '../../domain/model/novel/novel_model.dart';
 import '../../domain/model/official_group_model.dart';
 import '../../domain/model/order_model.dart';
 import '../../domain/model/post_model.dart';
@@ -61,22 +65,28 @@ import '../../domain/model/video_detail_model.dart';
 import '../../domain/model/welfare_task_model.dart';
 
 import '../../domain/remote_domain/domains/ai.dart';
+import '../../domain/remote_domain/domains/comic.dart';
+import '../../domain/remote_domain/domains/index.dart';
 import '../../domain/remote_domain/domains/live.dart';
 import '../../domain/remote_domain/domains/monitor.dart';
+import '../../domain/remote_domain/domains/novel.dart';
 import '../../domain/result.dart';
 import '../../domain/type_def.dart';
 import '../../domain/domain.dart';
 import '../../logger.dart';
 import '../data_source/remote/account_service.dart';
 import '../data_source/remote/ai_service.dart';
+import '../data_source/remote/comic_service.dart';
 import '../data_source/remote/community_service.dart';
 import '../data_source/remote/dynamic_service.dart';
 import '../data_source/remote/element_service.dart';
 import '../data_source/remote/home_service.dart';
+import '../data_source/remote/index_service.dart';
 import '../data_source/remote/live_service.dart';
 import '../data_source/remote/message_service.dart';
 import '../data_source/remote/monitor_service.dart';
 import '../data_source/remote/mv_service.dart';
+import '../data_source/remote/novel_service.dart';
 import '../data_source/remote/order_service.dart';
 import '../data_source/remote/privilege_service.dart';
 import '../data_source/remote/proxy_service.dart';
@@ -106,6 +116,9 @@ part 'mixin/privilege_mixin.dart';
 part 'mixin/ai_mixin.dart';
 part 'mixin/live_mixin.dart';
 part 'mixin/monitor_mixin.dart';
+part 'mixin/novel_mixin.dart';
+part 'mixin/comic_mixin.dart';
+part 'mixin/index_mixin.dart';
 
 class AppRepo extends _BaseAppRepo
     with
@@ -126,7 +139,10 @@ class AppRepo extends _BaseAppRepo
         _Privilege,
         _AI,
         _Live,
-        _Monitor {}
+        _Monitor,
+        _Novel,
+        _Comic,
+        _Index {}
 
 abstract class _BaseAppRepo implements AppDomain {
   late final _homeService = HomeService(_apiDio);
@@ -147,6 +163,9 @@ abstract class _BaseAppRepo implements AppDomain {
   late final _aiService = AIService(_apiDio);
   late final _liveService = LiveService(_apiDio);
   late final _monitorService = MonitorService(_apiDio);
+  late final _comicService = ComicService(_apiDio);
+  late final _novelService = NovelService(_apiDio);
+  late final _indexService = IndexService(_apiDio);
 
   final _cacheManager = _CacheManager();
 

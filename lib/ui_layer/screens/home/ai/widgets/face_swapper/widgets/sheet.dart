@@ -13,6 +13,7 @@ import '../../../../../../notifiers/user_notifier.dart';
 import '../../../../../../router/routes.dart';
 import '../../../../../../utils/common_utils.dart';
 import '../../../../../../utils/my_toast.dart';
+import '../../../../../common_widgets/dialog/my_dialog.dart';
 import '../../../../../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../../../../../common_widgets/my_image.dart';
 import '../../../../../image_paths.dart';
@@ -273,10 +274,12 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
                             MyToast.showText(text: result.msg ?? '提交失败');
                             return;
                           }
+
+                          if (!context.mounted) return;
                           //余额不足，提示金币不足
-                          CommonUtils.showDialog(
+                          MyDialog.showDialog(
                             context: context,
-                            builder: (context) => RegularDialog(
+                            child: RegularDialog(
                               buttonText: 'qwcz'.tr(),
                               cancelText: 'qx'.tr(),
                               title: 'ts'.tr(),

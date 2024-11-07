@@ -48,7 +48,7 @@ class UserNotifier extends ChangeNotifier {
     if (_isLoadingFollowUser.contains(id)) return;
     _isLoadingFollowUser.add(id);
 
-    final res = await _remoteDomain.communityFollowUser(aff: id);
+    final res = await _remoteDomain.toggleCommunityFollowUser(aff: id);
     if (res.isValid) {
       if (!_userFollowingStatus.remove(id)) {
         _userFollowingStatus.add(id);

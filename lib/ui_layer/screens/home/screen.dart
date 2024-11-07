@@ -16,13 +16,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late final homeConfigNotifier = context.read<HomeConfigNotifier>();
   late final id = homeConfigNotifier.config.navId;
+  late final navPrepend = homeConfigNotifier.config.navPrepend;
 
   @override
   Widget build(BuildContext context) {
     return ScreenBackground(
       child: Scaffold(
         appBar: const SearchAppBar(),
-        body: TopNaviView(id: id),
+        body: TopNaviView(
+          id: id,
+          preTopNav: navPrepend,
+        ),
       ),
     );
   }

@@ -1,4 +1,32 @@
 import 'package:flutter/material.dart';
+import '../../../domain/model/tip_model.dart';
+import '../../utils/common_utils.dart';
+import '../theme.dart';
+
+class MyMarqueeTipsWidget extends StatelessWidget {
+  const MyMarqueeTipsWidget({super.key, required this.tips});
+  final List<TipModel> tips;
+  @override
+  Widget build(BuildContext context) {
+    if (tips.isEmpty) return const SizedBox.shrink();
+
+    return MarqueeWidget(
+      children: [
+        for (final tip in tips)
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              CommonUtils.openRoute(context, tip.toJson());
+            },
+            child: Text(
+              tip.title ?? '',
+              style: MyTheme.white14,
+            ),
+          ),
+      ],
+    );
+  }
+}
 
 class MarqueeWidget extends StatefulWidget {
   const MarqueeWidget({
@@ -17,7 +45,7 @@ class MarqueeWidget extends StatefulWidget {
 }
 
 class _MarqueeWidgetState extends State<MarqueeWidget> {
-  final _controller = ScrollController();
+  final _controller = _ScrollController();
 
   @override
   void initState() {
@@ -25,6 +53,12 @@ class _MarqueeWidgetState extends State<MarqueeWidget> {
       Future.doWhile(_scroll);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -38,15 +72,13 @@ class _MarqueeWidgetState extends State<MarqueeWidget> {
             scrollDirection: Axis.horizontal,
             controller: _controller,
             physics: const NeverScrollableScrollPhysics(),
-            child: Row(
-              children: [
+            child: Row(children: [
+              blankSpace,
+              for (final child in widget.children) ...[
+                child,
                 blankSpace,
-                for (final child in widget.children) ...[
-                  child,
-                  blankSpace,
-                ]
               ],
-            ),
+            ]),
           ),
         );
       },
@@ -54,9 +86,9 @@ class _MarqueeWidgetState extends State<MarqueeWidget> {
   }
 
   Future<bool> _scroll() async {
-    if (!_controller.hasClients) return false;
-
     await Future.delayed(widget.pauseDuration);
+
+    if (!_controller.hasClients) return false;
 
     _controller.jumpTo(0);
     final maxScrollExtent = _controller.position.maxScrollExtent;
@@ -70,4 +102,79 @@ class _MarqueeWidgetState extends State<MarqueeWidget> {
 
     return true;
   }
+}
+
+class _ScrollController extends ScrollController {
+  @override
+  ScrollPosition createScrollPosition(
+    ScrollPhysics physics,
+    ScrollContext context,
+    ScrollPosition? oldPosition,
+  ) {
+    return _ScrollPositionWithSingleContext(
+      physics: physics,
+      context: context,
+      initialPixels: initialScrollOffset,
+      keepScrollOffset: keepScrollOffset,
+      oldPosition: oldPosition,
+      debugLabel: debugLabel,
+    );
+  }
+}
+
+class _ScrollPositionWithSingleContext extends ScrollPositionWithSingleContext {
+  _ScrollPositionWithSingleContext({
+    required super.physics,
+    required super.context,
+    double? initialPixels = 0.0,
+    super.keepScrollOffset,
+    super.oldPosition,
+    super.debugLabel,
+  });
+
+  @override
+  Future<void> animateTo(
+    double to, {
+    required Duration duration,
+    required Curve curve,
+  }) {
+    if (_nearEqual(to, pixels, physics.toleranceFor(this).distance)) {
+      // Skip the animation, go straight to the position as we are already close.
+      jumpTo(to);
+      return Future<void>.value();
+    }
+
+    final DrivenScrollActivity activity = _DrivenScrollActivity(
+      this,
+      from: pixels,
+      to: to,
+      duration: duration,
+      curve: curve,
+      vsync: context.vsync,
+    );
+    beginActivity(activity);
+    return activity.done;
+  }
+}
+
+class _DrivenScrollActivity extends DrivenScrollActivity {
+  _DrivenScrollActivity(
+    super.delegate, {
+    required super.from,
+    required super.to,
+    required super.duration,
+    required super.curve,
+    required super.vsync,
+  });
+
+  @override
+  bool get shouldIgnorePointer => false;
+}
+
+bool _nearEqual(double? a, double? b, double epsilon) {
+  assert(epsilon >= 0.0);
+  if (a == null || b == null) {
+    return a == b;
+  }
+  return (a > (b - epsilon)) && (a < (b + epsilon)) || a == b;
 }

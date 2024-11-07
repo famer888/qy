@@ -1,4 +1,4 @@
-class MarqueeTipsModel {
+class TipModel {
   final int? id;
   final String? title;
   final String? type;
@@ -7,7 +7,7 @@ class MarqueeTipsModel {
   final String? urlStr;
   final int? redirectType;
 
-  MarqueeTipsModel(
+  TipModel(
       {this.id,
       this.title,
       this.type,
@@ -16,8 +16,7 @@ class MarqueeTipsModel {
       this.urlStr,
       this.redirectType});
 
-  factory MarqueeTipsModel.fromJson(Map<String, dynamic> json) =>
-      MarqueeTipsModel(
+  factory TipModel.fromJson(Map<String, dynamic> json) => TipModel(
         id: json['id'],
         title: json['title'],
         type: json['type'],

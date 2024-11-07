@@ -49,7 +49,7 @@ class MvService extends BaseService {
       post('/getDetailRecommendList', data: {'id': id});
 
   /// 获取视频的评论
-  AsyncJson cartoonListCommentMv({
+  AsyncJson getVideoCommentList({
     required String id,
     required String lastIx,
     required int page,
@@ -63,11 +63,11 @@ class MvService extends BaseService {
       });
 
   /// 对视频的评论点赞
-  AsyncJson cartoonCommentMvLike({required int id}) =>
+  AsyncJson toggleVideoCommentLike({required int id}) =>
       post('/toggle_comment_like', data: {'id': id});
 
   /// 对视频发布评论
-  AsyncJson cartoonCreateCommentMv({
+  AsyncJson sendVideoComment({
     required String id,
     required String content,
   }) =>

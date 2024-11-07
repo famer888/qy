@@ -4,16 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/domain.dart';
-import '../../../../domain/model/feed/feed_model.dart';
+import '../../../../domain/model/video/video_model.dart';
 import '../../../../domain/model/post_model.dart';
-import '../../common_widgets/feed/feed_card.dart';
+import '../../common_widgets/video/card/video_card.dart';
+import '../../common_widgets/video/card/widgets/video_view.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
 import '../../common_widgets/my_app_bar.dart';
 import '../../common_widgets/my_list_view.dart';
 import '../../common_widgets/my_tab_bar.dart';
 import '../../common_widgets/post/card/card.dart';
 import '../../common_widgets/screen_background.dart';
-import '../../common_widgets/feed/card/video_card.dart';
 import '../../theme.dart';
 
 class SearchResultScreen extends StatefulWidget {
@@ -70,7 +70,7 @@ class _VideoView extends StatefulWidget {
 class _VideoViewState extends State<_VideoView> {
   late final mvDomain = context.read<MvDomain>();
 
-  Future<List<FeedVideoModel>> _getData({
+  Future<List<VideoCardVideoModel>> _getData({
     required int page,
     required int pageSize,
   }) async {
@@ -84,9 +84,9 @@ class _VideoViewState extends State<_VideoView> {
   Widget build(BuildContext context) {
     return MyListView.grid(
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-      childAspectRatio: FeedCard.aspectRatio,
+      childAspectRatio: VideoCard.aspectRatio,
       crossAxisSpacing: 8.w,
-      itemBuilder: (_, item, __) => VideoCard(data: item),
+      itemBuilder: (_, item, __) => VideoCardView(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

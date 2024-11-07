@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-part 'feed_model.freezed.dart';
-part 'feed_model.g.dart';
+part 'video_model.freezed.dart';
+part 'video_model.g.dart';
 
 @Freezed(
-  unionKey: 'feed_type',
+  unionKey: '__type',
   when: FreezedWhenOptions(when: false, whenOrNull: false, maybeWhen: false),
   map: FreezedMapOptions(maybeMap: false, mapOrNull: false, map: true),
   fromJson: true,
@@ -12,9 +12,9 @@ part 'feed_model.g.dart';
   equal: false,
   makeCollectionsUnmodifiable: true,
 )
-class FeedModel with _$FeedModel {
+class VideoCardModel with _$VideoCardModel {
   @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory FeedModel.video(
+  const factory VideoCardModel.video(
     int id,
     int? aff,
     String title,
@@ -35,10 +35,10 @@ class FeedModel with _$FeedModel {
     int discount,
     int discountCoins,
     bool isPackage,
-  ) = FeedVideoModel;
+  ) = VideoCardVideoModel;
 
   @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory FeedModel.ad(
+  const factory VideoCardModel.ad(
     int id,
     String title,
     String? description,
@@ -66,14 +66,14 @@ class FeedModel with _$FeedModel {
     int reportId,
     int reportType,
     String? subTitle,
-  ) = FeedAdModel;
+  ) = VideoCardAdModel;
 
-  factory FeedModel.fromJson(Map<String, dynamic> json) {
+  factory VideoCardModel.fromJson(Map<String, dynamic> json) {
     if (json['url'] != null) {
-      json['feed_type'] = 'ad';
+      json['__type'] = 'ad';
     } else {
-      json['feed_type'] = 'video';
+      json['__type'] = 'video';
     }
-    return _$FeedModelFromJson(json);
+    return _$VideoCardModelFromJson(json);
   }
 }

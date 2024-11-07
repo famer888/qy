@@ -43,12 +43,12 @@ abstract class MonitorDomain {
   AsyncResult getMonitorComment({required String text, required int id});
 
   /// 监控评论列表
-  AsyncResult<List<VideoCommentListModel>?> getMonitorListComment(
+  AsyncResult<List<CommentModel>?> getMonitorListComment(
       {required int id, required int page, required int limit});
 
   /// 监控评论点赞
-  AsyncResult getMonitorLikeComment({required int id});
+  AsyncResult toggleMonitorCommentLike({required int id});
 
   /// 监控点赞
-  AsyncResult monitorLike({required int id});
+  AsyncResult toggleMonitorLike({required int id});
 }

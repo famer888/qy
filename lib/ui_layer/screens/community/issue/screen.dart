@@ -12,6 +12,7 @@ import '../../../../domain/model/video_detail_model.dart';
 import '../../../../domain/type_def.dart';
 
 import '../../../notifiers/home_config_notifier.dart';
+import '../../common_widgets/dialog/my_dialog.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../../utils/common_utils.dart';
 
@@ -476,10 +477,10 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
         }
 
         if (mounted) {
-          CommonUtils.showDialog(
+          MyDialog.showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (context) => RegularDialog(
+            child: RegularDialog(
               title: 'fbcg'.tr(context: context),
               buttonText: 'qd'.tr(context: context),
               confirmOnTap: () {

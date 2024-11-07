@@ -51,3 +51,37 @@ enum MyCoinFilterType {
         MyCoinFilterType.expenditure => '2',
       };
 }
+
+enum MyModuleType {
+  _,
+
+  /// 长视频
+  video,
+
+  /// 短视频
+  shortVideo,
+
+  /// 漫画
+  comic,
+
+  /// 帖子
+  article,
+
+  /// 种子
+  bit,
+
+  /// 语音
+  voice,
+
+  /// 直播
+  live,
+
+  /// 动漫
+  cartoon,
+
+  /// 黄游
+  hGame,
+
+  /// 小说
+  novel,
+}

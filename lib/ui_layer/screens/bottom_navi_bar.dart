@@ -109,7 +109,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
       final uri = Uri.parse(html.window.location.href);
       final affCode = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
       if (affCode.isNotEmpty) {
-        domain.toInvitation(affCode: affCode);
+        domain.sendInvitation(affCode: affCode);
       }
     } else {
       final result = await Clipboard.getData(Clipboard.kTextPlain);
@@ -117,7 +117,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
           when clipTextList.length > 1 &&
               clipTextList[0] == BuildConfig.affCodeKey) {
         if (clipTextList[1] case final affCode when affCode.isNotEmpty) {
-          domain.toInvitation(affCode: affCode);
+          domain.sendInvitation(affCode: affCode);
         }
       }
     }

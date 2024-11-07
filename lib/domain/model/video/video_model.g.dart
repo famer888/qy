@@ -1,13 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'feed_model.dart';
+part of 'video_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$FeedVideoModelImpl _$$FeedVideoModelImplFromJson(Map<String, dynamic> json) =>
-    _$FeedVideoModelImpl(
+_$VideoCardVideoModelImpl _$$VideoCardVideoModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$VideoCardVideoModelImpl(
       (json['id'] as num).toInt(),
       (json['aff'] as num?)?.toInt(),
       json['title'] as String,
@@ -28,11 +29,11 @@ _$FeedVideoModelImpl _$$FeedVideoModelImplFromJson(Map<String, dynamic> json) =>
       (json['discount'] as num).toInt(),
       (json['discount_coins'] as num).toInt(),
       json['is_package'] as bool,
-      $type: json['feed_type'] as String?,
+      $type: json['__type'] as String?,
     );
 
-Map<String, dynamic> _$$FeedVideoModelImplToJson(
-        _$FeedVideoModelImpl instance) =>
+Map<String, dynamic> _$$VideoCardVideoModelImplToJson(
+        _$VideoCardVideoModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'aff': instance.aff,
@@ -54,11 +55,12 @@ Map<String, dynamic> _$$FeedVideoModelImplToJson(
       'discount': instance.discount,
       'discount_coins': instance.discountCoins,
       'is_package': instance.isPackage,
-      'feed_type': instance.$type,
+      '__type': instance.$type,
     };
 
-_$FeedAdModelImpl _$$FeedAdModelImplFromJson(Map<String, dynamic> json) =>
-    _$FeedAdModelImpl(
+_$VideoCardAdModelImpl _$$VideoCardAdModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$VideoCardAdModelImpl(
       (json['id'] as num).toInt(),
       json['title'] as String,
       json['description'] as String?,
@@ -86,10 +88,11 @@ _$FeedAdModelImpl _$$FeedAdModelImplFromJson(Map<String, dynamic> json) =>
       (json['report_id'] as num).toInt(),
       (json['report_type'] as num).toInt(),
       json['sub_title'] as String?,
-      $type: json['feed_type'] as String?,
+      $type: json['__type'] as String?,
     );
 
-Map<String, dynamic> _$$FeedAdModelImplToJson(_$FeedAdModelImpl instance) =>
+Map<String, dynamic> _$$VideoCardAdModelImplToJson(
+        _$VideoCardAdModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
@@ -118,5 +121,5 @@ Map<String, dynamic> _$$FeedAdModelImplToJson(_$FeedAdModelImpl instance) =>
       'report_id': instance.reportId,
       'report_type': instance.reportType,
       'sub_title': instance.subTitle,
-      'feed_type': instance.$type,
+      '__type': instance.$type,
     };

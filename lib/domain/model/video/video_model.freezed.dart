@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'feed_model.dart';
+part of 'video_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,29 +14,29 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-FeedModel _$FeedModelFromJson(Map<String, dynamic> json) {
-  switch (json['feed_type']) {
+VideoCardModel _$VideoCardModelFromJson(Map<String, dynamic> json) {
+  switch (json['__type']) {
     case 'video':
-      return FeedVideoModel.fromJson(json);
+      return VideoCardVideoModel.fromJson(json);
     case 'ad':
-      return FeedAdModel.fromJson(json);
+      return VideoCardAdModel.fromJson(json);
 
     default:
-      throw CheckedFromJsonException(json, 'feed_type', 'FeedModel',
-          'Invalid union type "${json['feed_type']}"!');
+      throw CheckedFromJsonException(json, '__type', 'VideoCardModel',
+          'Invalid union type "${json['__type']}"!');
   }
 }
 
 /// @nodoc
-mixin _$FeedModel {
+mixin _$VideoCardModel {
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FeedVideoModel value) video,
-    required TResult Function(FeedAdModel value) ad,
+    required TResult Function(VideoCardVideoModel value) video,
+    required TResult Function(VideoCardAdModel value) ad,
   }) =>
       throw _privateConstructorUsedError;
 
@@ -46,8 +46,8 @@ mixin _$FeedModel {
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$FeedVideoModelImpl implements FeedVideoModel {
-  const _$FeedVideoModelImpl(
+class _$VideoCardVideoModelImpl implements VideoCardVideoModel {
+  const _$VideoCardVideoModelImpl(
       this.id,
       this.aff,
       this.title,
@@ -72,8 +72,8 @@ class _$FeedVideoModelImpl implements FeedVideoModel {
       : _tagList = tagList,
         $type = $type ?? 'video';
 
-  factory _$FeedVideoModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$FeedVideoModelImplFromJson(json);
+  factory _$VideoCardVideoModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VideoCardVideoModelImplFromJson(json);
 
   @override
   final int id;
@@ -122,33 +122,33 @@ class _$FeedVideoModelImpl implements FeedVideoModel {
   @override
   final bool isPackage;
 
-  @JsonKey(name: 'feed_type')
+  @JsonKey(name: '__type')
   final String $type;
 
   @override
   String toString() {
-    return 'FeedModel.video(id: $id, aff: $aff, title: $title, tags: $tags, isfree: $isfree, countPlay: $countPlay, countPlayFake: $countPlayFake, duration: $duration, createdAt: $createdAt, countComment: $countComment, coins: $coins, playCt: $playCt, refreshAt: $refreshAt, coverHorizontal: $coverHorizontal, sourceOriginStr: $sourceOriginStr, tagList: $tagList, isPay: $isPay, discount: $discount, discountCoins: $discountCoins, isPackage: $isPackage)';
+    return 'VideoCardModel.video(id: $id, aff: $aff, title: $title, tags: $tags, isfree: $isfree, countPlay: $countPlay, countPlayFake: $countPlayFake, duration: $duration, createdAt: $createdAt, countComment: $countComment, coins: $coins, playCt: $playCt, refreshAt: $refreshAt, coverHorizontal: $coverHorizontal, sourceOriginStr: $sourceOriginStr, tagList: $tagList, isPay: $isPay, discount: $discount, discountCoins: $discountCoins, isPackage: $isPackage)';
   }
 
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FeedVideoModel value) video,
-    required TResult Function(FeedAdModel value) ad,
+    required TResult Function(VideoCardVideoModel value) video,
+    required TResult Function(VideoCardAdModel value) ad,
   }) {
     return video(this);
   }
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$FeedVideoModelImplToJson(
+    return _$$VideoCardVideoModelImplToJson(
       this,
     );
   }
 }
 
-abstract class FeedVideoModel implements FeedModel {
-  const factory FeedVideoModel(
+abstract class VideoCardVideoModel implements VideoCardModel {
+  const factory VideoCardVideoModel(
       final int id,
       final int? aff,
       final String title,
@@ -168,10 +168,10 @@ abstract class FeedVideoModel implements FeedModel {
       final int isPay,
       final int discount,
       final int discountCoins,
-      final bool isPackage) = _$FeedVideoModelImpl;
+      final bool isPackage) = _$VideoCardVideoModelImpl;
 
-  factory FeedVideoModel.fromJson(Map<String, dynamic> json) =
-      _$FeedVideoModelImpl.fromJson;
+  factory VideoCardVideoModel.fromJson(Map<String, dynamic> json) =
+      _$VideoCardVideoModelImpl.fromJson;
 
   @override
   int get id;
@@ -201,8 +201,8 @@ abstract class FeedVideoModel implements FeedModel {
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$FeedAdModelImpl implements FeedAdModel {
-  const _$FeedAdModelImpl(
+class _$VideoCardAdModelImpl implements VideoCardAdModel {
+  const _$VideoCardAdModelImpl(
       this.id,
       this.title,
       this.description,
@@ -233,8 +233,8 @@ class _$FeedAdModelImpl implements FeedAdModel {
       {final String? $type})
       : $type = $type ?? 'ad';
 
-  factory _$FeedAdModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$FeedAdModelImplFromJson(json);
+  factory _$VideoCardAdModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VideoCardAdModelImplFromJson(json);
 
   @override
   final int id;
@@ -291,33 +291,33 @@ class _$FeedAdModelImpl implements FeedAdModel {
   @override
   final String? subTitle;
 
-  @JsonKey(name: 'feed_type')
+  @JsonKey(name: '__type')
   final String $type;
 
   @override
   String toString() {
-    return 'FeedModel.ad(id: $id, title: $title, description: $description, imgUrl: $imgUrl, urlConfig: $urlConfig, position: $position, androidDownUrl: $androidDownUrl, iosDownUrl: $iosDownUrl, type: $type, status: $status, oauthType: $oauthType, mvM3U8: $mvM3U8, channel: $channel, createdAt: $createdAt, router: $router, startAt: $startAt, endAt: $endAt, clicked: $clicked, sort: $sort, urlStr: $urlStr, linkUrl: $linkUrl, url: $url, resourceUrl: $resourceUrl, redirectType: $redirectType, reportId: $reportId, reportType: $reportType, subTitle: $subTitle)';
+    return 'VideoCardModel.ad(id: $id, title: $title, description: $description, imgUrl: $imgUrl, urlConfig: $urlConfig, position: $position, androidDownUrl: $androidDownUrl, iosDownUrl: $iosDownUrl, type: $type, status: $status, oauthType: $oauthType, mvM3U8: $mvM3U8, channel: $channel, createdAt: $createdAt, router: $router, startAt: $startAt, endAt: $endAt, clicked: $clicked, sort: $sort, urlStr: $urlStr, linkUrl: $linkUrl, url: $url, resourceUrl: $resourceUrl, redirectType: $redirectType, reportId: $reportId, reportType: $reportType, subTitle: $subTitle)';
   }
 
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FeedVideoModel value) video,
-    required TResult Function(FeedAdModel value) ad,
+    required TResult Function(VideoCardVideoModel value) video,
+    required TResult Function(VideoCardAdModel value) ad,
   }) {
     return ad(this);
   }
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$FeedAdModelImplToJson(
+    return _$$VideoCardAdModelImplToJson(
       this,
     );
   }
 }
 
-abstract class FeedAdModel implements FeedModel {
-  const factory FeedAdModel(
+abstract class VideoCardAdModel implements VideoCardModel {
+  const factory VideoCardAdModel(
       final int id,
       final String title,
       final String? description,
@@ -344,10 +344,10 @@ abstract class FeedAdModel implements FeedModel {
       final int redirectType,
       final int reportId,
       final int reportType,
-      final String? subTitle) = _$FeedAdModelImpl;
+      final String? subTitle) = _$VideoCardAdModelImpl;
 
-  factory FeedAdModel.fromJson(Map<String, dynamic> json) =
-      _$FeedAdModelImpl.fromJson;
+  factory VideoCardAdModel.fromJson(Map<String, dynamic> json) =
+      _$VideoCardAdModelImpl.fromJson;
 
   @override
   int get id;

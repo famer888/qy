@@ -84,7 +84,7 @@ class _FollowingUserViewState extends State<FollowingUserView> {
     required int page,
     required int pageSize,
   }) async {
-    final res = await userDomain.userListFollow(
+    final res = await userDomain.getFollowList(
         page: page, limit: pageSize, lastIx: lastIx);
 
     if (res.isValid) {
