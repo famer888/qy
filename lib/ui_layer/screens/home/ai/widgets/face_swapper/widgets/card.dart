@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:utils/utils.dart';
 
 import '../../../../../../../domain/model/ai/ai_model.dart';
 import '../../../../../../utils/common_utils.dart';
@@ -97,7 +96,7 @@ class FaceSwapperCard extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 6.w),
-              Text(data.title ?? '', style: MyTheme.white244_15_M, maxLines: 1),
+              Text(data.title, style: MyTheme.white244_15_M, maxLines: 1),
             ],
           ),
         ],

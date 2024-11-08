@@ -1,22 +1,15 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/model/video_comment_model.dart';
 import '../../../../domain/remote_domain/domains/mv.dart';
-import '../../../const.dart';
-import '../../../utils/common_utils.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/comment_tile.dart';
-import '../../common_widgets/member_vip.dart';
-import '../../common_widgets/my_avatar.dart';
-import '../../common_widgets/my_image.dart';
 import '../../common_widgets/my_list_view.dart';
 import '../../common_widgets/post/comment_input.dart';
-import '../../image_paths.dart';
 import '../../theme.dart';
 
 class CommentView extends StatefulWidget {
@@ -56,7 +49,7 @@ class _CommentViewState extends State<CommentView> {
       MyToast.showText(text: msg);
     }
 
-    return result.data!.list!;
+    return result.data!.list;
   }
 
   Future<void> _sendComment({required String text}) async {

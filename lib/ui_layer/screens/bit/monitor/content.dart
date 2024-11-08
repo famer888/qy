@@ -6,7 +6,6 @@ import '../../../../domain/model/banner_model.dart';
 import '../../../../domain/model/tip_model.dart';
 import '../../../../domain/model/monitor/monitor_with_banners_model.dart';
 import '../../../../domain/remote_domain/domains/monitor.dart';
-import '../../../utils/common_utils.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/general_banner.dart';
 import '../../common_widgets/marquee.dart';

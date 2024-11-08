@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import '../../../domain/type_def.dart';
 import '../../../domain/domain.dart';
 import '../../notifiers/user_notifier.dart';
-import '../../utils/common_utils.dart';
 import '../../utils/my_toast.dart';
 import '../common_widgets/dialog/my_dialog.dart';
 import '../common_widgets/dialog/widgets/regular_dialog.dart';

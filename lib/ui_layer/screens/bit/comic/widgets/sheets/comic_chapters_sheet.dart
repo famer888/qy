@@ -9,6 +9,7 @@ import '../../../../common_widgets/my_image.dart';
 import '../../../../image_paths.dart';
 import '../../../../theme.dart';
 import '../../card/comic_chapter_card.dart';
+import '../../mixin/route_to_reader.dart';
 
 class ComicChaptersSheetView extends StatefulWidget {
   const ComicChaptersSheetView({super.key, required this.chapters});
@@ -19,7 +20,8 @@ class ComicChaptersSheetView extends StatefulWidget {
   State<ComicChaptersSheetView> createState() => _ComicChaptersSheetViewState();
 }
 
-class _ComicChaptersSheetViewState extends State<ComicChaptersSheetView> {
+class _ComicChaptersSheetViewState extends State<ComicChaptersSheetView>
+    with RouteToReaderMixin {
   late final height = 1.sh - 1.sw * 193 / 375;
 
   bool isDes = true; //默认正序
@@ -116,8 +118,18 @@ class _ComicChaptersSheetViewState extends State<ComicChaptersSheetView> {
                             itemCount: chapters.length,
                             itemBuilder: (_, index) {
                               final chapter = chapters[index];
-                              return ComicChapterCard(
-                                data: chapter,
+                              return GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  context.pop();
+                                  routeToReader(
+                                    context,
+                                    isDes ? index : chapters.length - 1 - index,
+                                  );
+                                },
+                                child: ComicChapterCard(
+                                  data: chapter,
+                                ),
                               );
                             },
                           ),

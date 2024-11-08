@@ -30,7 +30,7 @@ class ComicRecommendContent extends StatefulWidget {
 
 class _ComicRecommendContentState extends State<ComicRecommendContent> {
   late final _homeConfig = context.read<HomeConfigNotifier>();
-  late final List<ComicNavModel> titles = _homeConfig.config.comicTopNav ?? [];
+  late final List<ComicNavModel> titles = _homeConfig.config.comicTopNav;
   final _bannersNotifier = ValueNotifier<List<BannerModel>>([]);
   final _tipsNotifier = ValueNotifier<List<TipModel>>([]);
   final _partNotifier = ValueNotifier<List<PartModel>>([]);

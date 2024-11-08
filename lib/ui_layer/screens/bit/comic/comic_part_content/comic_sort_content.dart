@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../domain/model/comic/comic_item_model.dart';
-import '../../../../../domain/model/comic/comic_model.dart';
 import '../../../../../domain/remote_domain/domains/comic.dart';
 import '../../../../notifiers/home_config_notifier.dart';
 import '../../../../utils/my_toast.dart';
@@ -24,7 +23,7 @@ class ComicSortContent extends StatefulWidget {
 class _ComicSortContentState extends State<ComicSortContent> {
   late final _domain = context.read<ComicDomain>();
   late final _homeConfig = context.read<HomeConfigNotifier>();
-  late final comicTypeNavs = _homeConfig.config.comicTypeNav ?? [];
+  late final comicTypeNavs = _homeConfig.config.comicTypeNav;
 
   Map _filterTempMap = {
     'end': 'all',

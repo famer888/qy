@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../domain/model/banner_model.dart';
 import '../../../../../domain/model/tip_model.dart';
-import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/general_banner.dart';
 import '../../../common_widgets/marquee.dart';
 import '../../../theme.dart';

@@ -11,7 +11,6 @@ import '../../../../../../domain/remote_domain/domains/comic.dart';
 import '../../../../../../domain/remote_domain/domains/user.dart';
 import '../../../../../utils/my_toast.dart';
 import '../../../../common_widgets/comment_tile.dart';
-import '../../../../common_widgets/localization_text.dart';
 import '../../../../common_widgets/my_image.dart';
 import '../../../../common_widgets/my_list_view.dart';
 import '../../../../common_widgets/post/comment_input.dart';

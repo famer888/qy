@@ -37,7 +37,7 @@ class AppRouterPaths {
   static const searchResult = '/searchResult/:title';
 
   /// 社区标签
-  static const communityTagDetail = '/communityTagDetail/:id';
+  static const communityTagDetail = '/communityTagDetail';
 
   /// 社区帖子详情
   static const communityTieztDetail = '/communityTieztDetail/:id';
@@ -154,10 +154,10 @@ class AppRouterPaths {
   static const webView = '/${BuildConfig.webViewPathName}/:url';
 
   /// 直播视频详情页
-  static const liveVideoDetail = '/liveVideoDetail/:id';
+  static const liveVideoDetail = '/liveVideoDetail';
 
   /// 监控视频详情页
-  static const monitorVideoDetail = '/monitorVideoDetail/:id';
+  static const monitorVideoDetail = '/monitorVideoDetail';
 
   /// 更多漫画列表
   static const moreComic = '/moreComic/:title/:sort';

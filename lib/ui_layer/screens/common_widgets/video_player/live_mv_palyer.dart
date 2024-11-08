@@ -70,8 +70,6 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
 
   bool isbarrage = true;
 
-  final _barrageKey = GlobalKey<BarrageState>();
-
   bool isShowChangeLine = false; //是否显示切换线路弹窗
 
   final GlobalKey<_SinkPortraitLandWidgetState>
@@ -347,8 +345,7 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
                         return;
                       }
                       context.pop();
-                      var payMoney =
-                          int.parse(_dsTextFieldController.text) ?? 0;
+                      var payMoney = int.parse(_dsTextFieldController.text);
                       bool isSufficient = member.money > payMoney;
                       if (isSufficient) {
                         //足够余额打赏
@@ -781,8 +778,6 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
         Provider.of<FlickVideoManager>(context);
     FlickControlManager controlManager =
         Provider.of<FlickControlManager>(context);
-    FlickDisplayManager flickDisplayManager =
-        Provider.of<FlickDisplayManager>(context);
 
     bool flag = (flickVideoManager.videoPlayerValue!.isBuffering &&
             flickVideoManager.videoPlayerValue!.isPlaying) ||
@@ -1209,8 +1204,7 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
                         return;
                       }
                       context.pop();
-                      var payMoney =
-                          int.parse(_dsTextFieldController.text) ?? 0;
+                      var payMoney = int.parse(_dsTextFieldController.text);
                       bool isSufficient = member.money > payMoney;
                       if (isSufficient) {
                         //足够余额打赏

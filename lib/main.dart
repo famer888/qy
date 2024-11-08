@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -16,7 +15,6 @@ import 'domain/remote_domain/domains/live.dart';
 import 'domain/remote_domain/domains/monitor.dart';
 import 'domain/remote_domain/domains/novel.dart';
 import 'ui_layer/notifiers/chat_notifier.dart';
-import 'ui_layer/notifiers/comic_notifier.dart';
 import 'ui_layer/notifiers/home_config_notifier.dart';
 import 'ui_layer/notifiers/user_notifier.dart';
 import 'ui_layer/router/router.dart';

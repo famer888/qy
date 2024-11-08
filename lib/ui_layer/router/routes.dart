@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../domain/model/comic/comic_model.dart';
 import '../../domain/model/video_detail_model.dart';
 import '../screens/bit/comic/comic_detail/screen.dart';
 import '../screens/bit/comic/comic_part_content/comic_end_content.dart';
@@ -9,6 +8,7 @@ import '../screens/bit/comic/comic_part_content/comic_new_content.dart';
 import '../screens/bit/comic/comic_part_content/comic_rank_content.dart';
 import '../screens/bit/comic/comic_part_content/comic_sort_content.dart';
 import '../screens/bit/comic/comic_reader/screen.dart';
+import '../screens/bit/comic/widgets/di/comic_di_widget.dart';
 import '../screens/bit/live/detail/screen.dart';
 import '../screens/bit/monitor/detail/screen.dart';
 import '../screens/community/circle_screen.dart';
@@ -583,16 +583,16 @@ class CommunityTagDetailRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
 
-  const CommunityTagDetailRoute(this.id);
+  const CommunityTagDetailRoute(this.$extra);
 
-  final String id;
+  final String $extra;
 
   Future<T?> push<T>(BuildContext context) =>
-      context.removeDuplicatePush(location);
+      context.removeDuplicatePush(location, extra: $extra);
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return CommunityTagDetailScreen(id: id);
+    return CommunityTagDetailScreen(id: $extra);
   }
 }
 
@@ -836,15 +836,15 @@ class LiveVideoDetailRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
 
-  const LiveVideoDetailRoute(this.id);
-  final String id;
+  const LiveVideoDetailRoute(this.$extra);
+  final String $extra;
 
   Future<T?> push<T>(BuildContext context) =>
-      context.removeDuplicatePush(location);
+      context.removeDuplicatePush(location, extra: $extra);
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return LiveVideoDetailScreen(id: id);
+    return LiveVideoDetailScreen(id: $extra);
   }
 }
 
@@ -853,15 +853,15 @@ class MonitorVideoDetailRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
 
-  const MonitorVideoDetailRoute(this.id);
-  final String id;
+  const MonitorVideoDetailRoute(this.$extra);
+  final String $extra;
 
   Future<T?> push<T>(BuildContext context) =>
       context.removeDuplicatePush(location);
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return MonitorVideoDetailScreen(id: id);
+    return MonitorVideoDetailScreen(id: $extra);
   }
 }
 
@@ -954,22 +954,46 @@ class ComicRankRoute extends GoRouteData {
 //   }
 // }
 
-@TypedGoRoute<ComicReaderRoute>(path: AppRouterPaths.comicReader)
-class ComicReaderRoute extends GoRouteData {
+@TypedShellRoute<ComicShellRouteData>(
+  routes: <TypedRoute<RouteData>>[
+    TypedGoRoute<ComicDetailRoute>(path: AppRouterPaths.comicDetail),
+    TypedGoRoute<ComicReaderRoute>(path: AppRouterPaths.comicReader),
+  ],
+)
+class ComicShellRouteData extends ShellRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
 
-  const ComicReaderRoute({
-    required this.$extra,
-    required this.chapterIndex,
-  });
+  @override
+  Widget builder(
+    BuildContext context,
+    GoRouterState state,
+    Widget navigator,
+  ) {
+    return ComicDIWidget(child: navigator);
+  }
+}
 
-  final ComicDetailModel $extra;
-  final int chapterIndex;
+class ComicDetailRoute extends GoRouteData {
+  const ComicDetailRoute(this.$extra);
+
+  final String $extra;
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.removeDuplicatePush(location, extra: $extra);
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ComicReaderScreen(data: $extra, chapterIndex: chapterIndex);
+    return ComicDetailScreen(id: $extra);
+  }
+}
+
+class ComicReaderRoute extends GoRouteData {
+  const ComicReaderRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ComicReaderScreen();
   }
 }
 
@@ -985,40 +1009,5 @@ extension _MyPushHelper on BuildContext {
     matchList.addAll(newMatchList);
 
     return push<T>(location, extra: extra);
-  }
-}
-
-@TypedShellRoute<MyShellRouteData>(
-  routes: <TypedRoute<RouteData>>[
-    TypedGoRoute<ComicDetailRoute>(path: AppRouterPaths.comicDetail),
-  ],
-)
-class MyShellRouteData extends ShellRouteData {
-  const MyShellRouteData();
-
-  @override
-  Widget builder(
-    BuildContext context,
-    GoRouterState state,
-    Widget navigator,
-  ) {
-    return navigator;
-  }
-}
-
-class ComicDetailRoute extends GoRouteData {
-  // static final GlobalKey<NavigatorState> $parentNavigatorKey =
-  //     AppRouter.rootNavigatorKey;
-
-  const ComicDetailRoute(this.$extra);
-
-  final String $extra;
-
-  Future<T?> push<T>(BuildContext context) =>
-      context.removeDuplicatePush(location, extra: $extra);
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return ComicDetailScreen(id: $extra);
   }
 }

@@ -164,12 +164,12 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
           .guard;
 
   @override
-  AsyncResult<ComicChaptersDetaiModel> comicChapterDetail({
+  AsyncResult<ComicChaptersDetailModel> comicChapterDetail({
     required int id,
   }) =>
       _comicService
           .comicChapterDetail(id: id)
-          .deserializeJsonBy(ComicChaptersDetaiModel.fromJson)
+          .deserializeJsonBy(ComicChaptersDetailModel.fromJson)
           .guard;
 
   @override

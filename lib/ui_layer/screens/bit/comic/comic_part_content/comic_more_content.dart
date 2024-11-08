@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../domain/model/comic/comic_item_model.dart';
-import '../../../../../domain/model/comic/comic_model.dart';
 import '../../../../../domain/remote_domain/domains/comic.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_app_bar.dart';

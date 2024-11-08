@@ -15,7 +15,6 @@ import '../../../../../utils/my_toast.dart';
 import '../../../../common_widgets/dialog/my_dialog.dart';
 import '../../../../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../../../../common_widgets/my_image.dart';
-import '../../../../common_widgets/my_list_view.dart';
 import '../../../../image_paths.dart';
 import '../../../../theme.dart';
 
@@ -95,7 +94,7 @@ class _ClothesRemoverViewState extends State<ClothesRemoverView> {
         return;
       }
       //余额不足，提示金币不足
-      if(!mounted) return;
+      if (!mounted) return;
       MyDialog.showDialog(
         context: context,
         child: RegularDialog(

@@ -389,8 +389,6 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
         Provider.of<FlickVideoManager>(context);
     FlickControlManager controlManager =
         Provider.of<FlickControlManager>(context);
-    FlickDisplayManager flickDisplayManager =
-        Provider.of<FlickDisplayManager>(context);
 
     bool flag = (flickVideoManager.videoPlayerValue!.isBuffering &&
             flickVideoManager.videoPlayerValue!.isPlaying) ||

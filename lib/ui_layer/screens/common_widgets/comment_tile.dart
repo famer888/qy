@@ -65,7 +65,7 @@ class CommentTile extends StatelessWidget {
                     ),
                     Text(
                       RelativeDateFormat.format(
-                          date: DateTime.parse(data.createdAt ?? '')),
+                          date: DateTime.parse(data.createdAt)),
                       style: MyTheme.gray163_11,
                     ),
                   ],
@@ -117,7 +117,7 @@ class CommentTile extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(left: 40.w),
             child: Text(
-              CommonUtils.convertEmojiAndHtml(data.content ?? ''),
+              CommonUtils.convertEmojiAndHtml(data.content),
               style: MyTheme.gray208_13,
               textAlign: TextAlign.left,
               maxLines: UILayerConst.maxLine,

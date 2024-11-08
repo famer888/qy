@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/model/banner_model.dart';
 import '../../../../../domain/model/comic/comic_item_model.dart';
-import '../../../../../domain/model/comic/comic_model.dart';
 import '../../../../../domain/model/tip_model.dart';
 import '../../../../../domain/remote_domain/domains/comic.dart';
 import '../../../../notifiers/home_config_notifier.dart';

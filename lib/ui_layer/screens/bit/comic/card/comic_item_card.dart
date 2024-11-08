@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../domain/model/comic/comic_item_model.dart';
-import '../../../../../domain/model/comic/comic_model.dart';
 import '../../../../router/routes.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/my_image.dart';

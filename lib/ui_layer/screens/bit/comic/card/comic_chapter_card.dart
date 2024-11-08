@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../domain/model/comic/comic_model.dart';
-import '../../../../router/routes.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/my_image.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
+import '../mixin/route_to_reader.dart';
 
 class ComicChapterCard extends StatelessWidget {
   const ComicChapterCard({super.key, required this.data});
@@ -17,36 +17,30 @@ class ComicChapterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        // ComicReaderRoute($extra: null, chapterIndex: null);
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5.w),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 172.w,
-              height: 82.w,
-              child: MyImage.network(
-                imgUrl,
-                borderRadius: 5.w,
-                fit: BoxFit.cover,
-              ),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5.w),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 172.w,
+            height: 82.w,
+            child: MyImage.network(
+              imgUrl,
+              borderRadius: 5.w,
+              fit: BoxFit.cover,
             ),
-            SizedBox(width: 10.w),
-            Expanded(
-              child: Text(
-                data.title ?? '',
-                style: MyTheme.white14,
-                maxLines: 1,
-              ),
+          ),
+          SizedBox(width: 10.w),
+          Expanded(
+            child: Text(
+              data.title ?? '',
+              style: MyTheme.white14,
+              maxLines: 1,
             ),
-            SizedBox(width: 10.w),
-            isFreeBadge(data)
-          ],
-        ),
+          ),
+          SizedBox(width: 10.w),
+          isFreeBadge(data)
+        ],
       ),
     );
   }

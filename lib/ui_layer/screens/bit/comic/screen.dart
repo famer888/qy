@@ -16,12 +16,12 @@ class ComicScreen extends StatefulWidget {
 
 class _ComicScreenState extends State<ComicScreen> {
   late final _homeConfig = context.read<HomeConfigNotifier>();
-  late final List<ComicNavModel> titles = _homeConfig.config.comicTopNav ?? [];
+  late final List<ComicNavModel> titles = _homeConfig.config.comicTopNav;
 
   @override
   Widget build(BuildContext context) {
     return TabBarWithView.line(
-        titles: titles.map((e) => e.name ?? '').toList(),
+        titles: titles.map((e) => e.name).toList(),
         views: titles.map((e) {
           if (e.type == '2') {
             //推荐

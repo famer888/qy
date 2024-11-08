@@ -125,7 +125,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
 
   // 显示弹窗
   void _showDialog({int index = 0}) {
-    if (homeConfigNotifier.homeData.popAds case final popAds?
+    if (homeConfigNotifier.homeData.popAds case final popAds
         when popAds.length > index) {
       final notice = popAds[index];
       final nextIndex = index + 1;

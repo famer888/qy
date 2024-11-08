@@ -10,12 +10,9 @@ import 'package:provider/provider.dart';
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/video_detail_model.dart';
 import '../../../../domain/type_def.dart';
-
 import '../../../notifiers/home_config_notifier.dart';
 import '../../common_widgets/dialog/my_dialog.dart';
 import '../../common_widgets/screen_background.dart';
-import '../../../utils/common_utils.dart';
-
 import '../../../../domain/model/topic_model.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../utils/my_toast.dart';

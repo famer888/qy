@@ -29,7 +29,7 @@ class _RecommendVideoItemCardState extends State<RecommendVideoItemCard> {
               Row(
                 children: [
                   Text(
-                    widget.data.title ?? '',
+                    widget.data.title,
                     style: MyTheme.white15_M,
                   ),
                   SizedBox(width: 5.w),
@@ -52,12 +52,12 @@ class _RecommendVideoItemCardState extends State<RecommendVideoItemCard> {
             ],
           ),
         ),
-        if (widget.data.items?.isNotEmpty == true)
+        if (widget.data.items.isNotEmpty == true)
           GridView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.data.items!.length,
+            itemCount: widget.data.items.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: VideoCard.aspectRatio,
@@ -65,8 +65,8 @@ class _RecommendVideoItemCardState extends State<RecommendVideoItemCard> {
               crossAxisSpacing: 8.w,
             ),
             itemBuilder: (context, index) {
-              final partsItem = widget.data.items?[index];
-              return VideoCard(data: partsItem!);
+              final partsItem = widget.data.items[index];
+              return VideoCard(data: partsItem);
             },
           ),
       ],

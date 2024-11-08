@@ -57,25 +57,24 @@ class RecommendComicWithBannersModel {
 }
 
 class ComicDetailWithBannersModel {
-  List<ComicItemsModel>? recommend;
-  List<BannerModel>? banner;
-  ComicDetailModel? detail;
+  ComicDetailWithBannersModel({
+    required this.recommend,
+    required this.banner,
+    required this.detail,
+  });
 
-  ComicDetailWithBannersModel({this.recommend, this.banner, this.detail});
+  final List<ComicItemsModel> recommend;
+  final List<BannerModel> banner;
+  final ComicDetailModel detail;
 
   factory ComicDetailWithBannersModel.fromJson(Map<String, dynamic> json) =>
       ComicDetailWithBannersModel(
         recommend: List<ComicItemsModel>.from(
-            json['recommend'].map((e) => ComicItemsModel.fromJson(e))),
+            json['recommend'].map((e) => ComicItemsModel.fromJson(e)) ?? []),
         banner: List<BannerModel>.from(
-            json['banner'].map((e) => BannerModel.fromJson(e))),
-        detail: json['detail'] == null
-            ? null
-            : ComicDetailModel.fromJson(json['detail']),
+            json['banner'].map((e) => BannerModel.fromJson(e)) ?? []),
+        detail: ComicDetailModel.fromJson(json['detail']),
       );
-
-  Map<String, dynamic> toJson() =>
-      {'recommend': recommend, 'banner': banner, 'detail': detail};
 }
 
 class ComicDetailModel {
@@ -223,20 +222,14 @@ class ComicChapterModel {
       };
 }
 
-class ComicChaptersDetaiModel {
-  List<ComicChapterModel>? pics;
+class ComicChaptersDetailModel {
+  ComicChaptersDetailModel({required this.pics});
 
-  ComicChaptersDetaiModel({
-    this.pics,
-  });
+  final List<ComicChapterModel> pics;
 
-  factory ComicChaptersDetaiModel.fromJson(Map<String, dynamic> json) =>
-      ComicChaptersDetaiModel(
+  factory ComicChaptersDetailModel.fromJson(Map<String, dynamic> json) =>
+      ComicChaptersDetailModel(
         pics: List<ComicChapterModel>.from(
-            json['pics'].map((e) => ComicChapterModel.fromJson(e))),
+            json['pics'].map((e) => ComicChapterModel.fromJson(e)) ?? []),
       );
-
-  Map<String, dynamic> toJson() => {
-        'pics': pics?.map((e) => e.toJson()),
-      };
 }

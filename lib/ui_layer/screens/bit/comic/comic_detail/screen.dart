@@ -3,12 +3,9 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../domain/async_value.dart';
-import '../../../../../domain/enum.dart';
-import '../../../../../domain/model/banner_model.dart';
 import '../../../../../domain/model/comic/comic_item_model.dart';
 import '../../../../../domain/model/comic/comic_model.dart';
 import '../../../../../domain/remote_domain/domains/comic.dart';
@@ -26,6 +23,8 @@ import '../../../common_widgets/status/network_error.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../card/comic_item_card.dart';
+import '../mixin/route_to_reader.dart';
+import '../widgets/di/notifier.dart';
 import '../widgets/sheets/comic_chapters_sheet.dart';
 import '../widgets/sheets/comic_comment_sheet.dart';
 
@@ -41,6 +40,7 @@ class ComicDetailScreen extends StatefulWidget {
 
 class _ComicDetailScreenState extends State<ComicDetailScreen> {
   late final _domain = context.read<ComicDomain>();
+  late final _comicChangeNotifier = context.read<ComicChangeNotifier>();
 
   AsyncValue<ComicDetailWithBannersModel> _asyncValue = const AsyncInit();
 
@@ -65,6 +65,9 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
     final res = await _domain.comicDetail(id: int.parse(widget.id));
     if (res.data case final data?) {
       _asyncValue = AsyncData(data);
+      if (mounted) {
+        _comicChangeNotifier.setCurrentComic(data.detail);
+      }
     } else {
       if (res.msg case final msg? when msg.isNotEmpty) {
         MyToast.showText(text: msg);
@@ -103,8 +106,6 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
 
   Widget configContentView(ComicDetailWithBannersModel data) {
     final detail = data.detail;
-    if (detail == null) return const SizedBox();
-
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -121,10 +122,10 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 12.w),
-              _TagsView(tags: data.detail?.tag),
+              _TagsView(tags: data.detail.tag),
               SizedBox(height: 18.w),
               ExpandableText(
-                data.detail?.intro ?? '',
+                data.detail.intro ?? '',
                 style: MyTheme.white07_14,
                 trimLines: 3,
               ),
@@ -140,12 +141,12 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
               ),
               SizedBox(height: 15.w),
               GeneralBanner(
-                data: data.banner ?? [],
+                data: data.banner,
                 aspectRatio: 7 / 2,
               ),
               SizedBox(height: 10.w),
               _RecommendView(
-                recommends: data.recommend ?? [],
+                recommends: data.recommend,
               ),
             ],
           ),
@@ -244,7 +245,7 @@ class _TagsView extends StatelessWidget {
   }
 }
 
-class _ChaptersView extends StatelessWidget {
+class _ChaptersView extends StatelessWidget with RouteToReaderMixin {
   const _ChaptersView({
     required this.isEnd,
     required this.chapters,
@@ -304,23 +305,28 @@ class _ChaptersView extends StatelessWidget {
             itemCount: chapters.length,
             itemBuilder: (_, index) {
               final chapter = chapters[index];
-              return SizedBox(
-                width: 160.w,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 90.w,
-                      child: MyImage.network(
-                        chapter.cover ?? '',
-                        borderRadius: 10.w,
+              return GestureDetector(
+                onTap: () {
+                  routeToReader(context, index);
+                },
+                child: SizedBox(
+                  width: 160.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 90.w,
+                        child: MyImage.network(
+                          chapter.cover ?? '',
+                          borderRadius: 10.w,
+                        ),
                       ),
-                    ),
-                    Text(
-                      chapter.title ?? '',
-                      style: MyTheme.white14,
-                    ),
-                  ],
+                      Text(
+                        chapter.title ?? '',
+                        style: MyTheme.white14,
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

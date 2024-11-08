@@ -78,7 +78,7 @@ abstract class ComicDomain {
   });
 
   ///漫画章节详情
-  AsyncResult<ComicChaptersDetaiModel> comicChapterDetail({
+  AsyncResult<ComicChaptersDetailModel> comicChapterDetail({
     required int id,
   });
 
