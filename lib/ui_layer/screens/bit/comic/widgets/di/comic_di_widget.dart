@@ -6,7 +6,6 @@ import 'notifier.dart';
 
 class ComicDIWidget extends StatefulWidget {
   const ComicDIWidget({super.key, required this.child});
-
   final Widget child;
 
   @override
@@ -17,7 +16,10 @@ class _ComicDIWidgetState extends State<ComicDIWidget> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ComicChangeNotifier(context.read<CacheDomain>()),
+      create: (context) => ComicChangeNotifier(
+        context.read<CacheDomain>(),
+        context.read<UserDomain>(),
+      ),
       child: widget.child,
     );
   }

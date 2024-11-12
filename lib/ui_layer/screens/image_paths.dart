@@ -3,6 +3,7 @@ class MyImagePaths {
   static const appDlPenal = './assets/images/app_dl_penal.png';
   static const appMineHelp = './assets/images/app_mine_help.png';
   static const appFabuVideo = './assets/images/app_fabu_video.png';
+  static const appComicReaderMenu = './assets/images/app_comic_reader_menu.png';
   static const appCommunCmtN = './assets/images/app_commun_cmt_n.png';
   static const appMineJellyShareQrBg = './assets/images/app_mine_jelly_share_qr_bg.png';
   static const uploadFaceError1 = './assets/images/upload_face_error_1.png';
@@ -12,6 +13,7 @@ class MyImagePaths {
   static const appZfAgnN = './assets/images/app_zf_agn_n.png';
   static const appMineInvitedCode = './assets/images/app_mine_invited_code.png';
   static const appDlcy = './assets/images/app_dlcy.png';
+  static const appPrevIcon = './assets/images/app_prev_icon.png';
   static const appTabAreaN = './assets/images/app_tab_area_n.png';
   static const appNovelSet = './assets/images/app_novel_set.png';
   static const appSingInVip = './assets/images/app_singIn_vip.png';
@@ -84,6 +86,7 @@ class MyImagePaths {
   static const appVipBannerBackground = './assets/images/app_vip_banner_background.png';
   static const appMineOriginalEnter = './assets/images/app_mine_original_enter.png';
   static const appNovelVoicePause = './assets/images/app_novel_voice_pause.png';
+  static const appNextIcon = './assets/images/app_next_icon.png';
   static const appFabuPicture = './assets/images/app_fabu_picture.png';
   static const appViewIcon = './assets/images/app_view_icon.png';
   static const appUpdateUpBg = './assets/images/app_update_up_bg.png';

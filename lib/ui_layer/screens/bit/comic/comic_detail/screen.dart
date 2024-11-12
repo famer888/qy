@@ -50,12 +50,6 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    PaintingBinding.instance.imageCache.clear();
-    super.dispose();
-  }
-
   _getData() async {
     if (_asyncValue.isLoading) return;
     setState(() {
@@ -106,52 +100,145 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
 
   Widget configContentView(ComicDetailWithBannersModel data) {
     final detail = data.detail;
-    return ListView(
-      padding: EdgeInsets.zero,
+    return Column(
       children: [
-        _Header(
-          title: detail.title,
-          cover: detail.cover,
-          commentCt: detail.commentCt,
-          favoriteCt: detail.favoriteFct,
-          viewCt: detail.viewCt,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        Expanded(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
             children: [
-              SizedBox(height: 12.w),
-              _TagsView(tags: data.detail.tag),
-              SizedBox(height: 18.w),
-              ExpandableText(
-                data.detail.intro ?? '',
-                style: MyTheme.white07_14,
-                trimLines: 3,
+              _Header(
+                title: detail.title,
+                cover: detail.cover,
+                commentCt: detail.commentCt,
+                favoriteCt: detail.favoriteFct,
+                viewCt: detail.viewCt,
               ),
-              SizedBox(height: 15.w),
-              _ChaptersView(
-                isEnd: detail.isEnd == 1,
-                chapters: detail.chapters ?? [],
-              ),
-              SizedBox(height: 15.w),
-              _CommentView(
-                id: detail.id ?? 0,
-                totalCt: detail.commentCt ?? 0,
-              ),
-              SizedBox(height: 15.w),
-              GeneralBanner(
-                data: data.banner,
-                aspectRatio: 7 / 2,
-              ),
-              SizedBox(height: 10.w),
-              _RecommendView(
-                recommends: data.recommend,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 12.w),
+                    _TagsView(tags: data.detail.tag),
+                    SizedBox(height: 18.w),
+                    ExpandableText(
+                      data.detail.intro ?? '',
+                      style: MyTheme.white07_14,
+                      trimLines: 3,
+                    ),
+                    SizedBox(height: 15.w),
+                    _ChaptersView(
+                      isEnd: detail.isEnd == 1,
+                      chapters: detail.chapters,
+                    ),
+                    SizedBox(height: 15.w),
+                    _CommentView(
+                      id: detail.id ?? 0,
+                      totalCt: detail.commentCt ?? 0,
+                    ),
+                    SizedBox(height: 15.w),
+                    GeneralBanner(
+                      data: data.banner,
+                      aspectRatio: 7 / 2,
+                    ),
+                    SizedBox(height: 10.w),
+                    _RecommendView(
+                      recommends: data.recommend,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
+        const _Footer(),
       ],
+    );
+  }
+}
+
+class _Footer extends StatelessWidget with RouteToReaderMixin {
+  const _Footer();
+
+  @override
+  Widget build(BuildContext context) {
+    final comicChangeNotifier = context.read<ComicChangeNotifier>();
+    final detail = comicChangeNotifier.currentComic;
+    return Container(
+      color: const Color(0xff111127),
+      child: SafeArea(
+        top: false,
+        child: Selector<ComicChangeNotifier, int?>(
+          builder: (_, lastReadIndex, __) {
+            final index = lastReadIndex ?? 0;
+            return Padding(
+              padding: EdgeInsets.all(10.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      detail.chapters[index].title ?? '',
+                      style: MyTheme.white14,
+                      maxLines: 2,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Selector<ComicChangeNotifier, bool>(
+                          builder: (_, isFavorite, __) {
+                            return SizedBox(
+                              width: 50.w,
+                              child: GestureDetector(
+                                onTap: () {
+                                  comicChangeNotifier.toggleFavorite();
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    MyImage.asset(
+                                      isFavorite
+                                          ? MyImagePaths.appCollectOn
+                                          : MyImagePaths.appCollectOff,
+                                      width: 18.7.w,
+                                      height: 18.7.w,
+                                    ),
+                                    SizedBox(width: 2.w),
+                                    Text(
+                                      isFavorite
+                                          ? 'ysc'.tr(context: context)
+                                          : 'sc'.tr(context: context),
+                                      style: MyTheme.gray190_12,
+                                    ),
+                                    SizedBox(width: 15.w),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          selector: (_, notifier) =>
+                              notifier.currentComic.isFavorite == 1),
+                      MyButton.highEmphasis(
+                        color: MyTheme.jellyCyanColor103224185,
+                        onPressed: () {
+                          routeToReader(context, index);
+                        },
+                        borderRadius: 30.w,
+                        child: LocalizationText(
+                          lastReadIndex == null ? 'ksyd' : 'jxyd',
+                          style: MyTheme.white14Medium,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
+          selector: (_, notifier) => notifier.currentChapterIndex,
+        ),
+      ),
     );
   }
 }
@@ -435,6 +522,7 @@ class _RecommendView extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             final item = recommends[index];
+
             return ComicItemCard(data: item);
           },
         )

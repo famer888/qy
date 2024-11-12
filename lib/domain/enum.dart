@@ -53,8 +53,6 @@ enum MyCoinFilterType {
 }
 
 enum MyModuleType {
-  _,
-
   /// 长视频
   video,
 
@@ -70,18 +68,23 @@ enum MyModuleType {
   /// 种子
   bit,
 
-  /// 语音
-  voice,
-
   /// 直播
   live,
 
-  /// 动漫
-  cartoon,
-
-  /// 黄游
-  hGame,
+  /// 监控
+  monitor,
 
   /// 小说
-  novel,
+  novel;
+
+  int get typeIndex => switch (this) {
+        MyModuleType.video => 1,
+        MyModuleType.shortVideo => 11,
+        MyModuleType.article => 14,
+        MyModuleType.bit => 15,
+        MyModuleType.live => 16,
+        MyModuleType.novel => 18,
+        MyModuleType.comic => 17,
+        MyModuleType.monitor => 19,
+      };
 }

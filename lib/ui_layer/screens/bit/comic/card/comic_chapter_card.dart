@@ -8,7 +8,6 @@ import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/my_image.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
-import '../mixin/route_to_reader.dart';
 
 class ComicChapterCard extends StatelessWidget {
   const ComicChapterCard({super.key, required this.data});

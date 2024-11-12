@@ -114,7 +114,7 @@ mixin _User on _BaseAppRepo implements UserDomain {
     required int id,
   }) =>
       _userService
-          .toggleUserFavorite(type: type.index, id: id)
+          .toggleUserFavorite(type: type.typeIndex, id: id)
           .deserialize()
           .guard;
 
@@ -122,7 +122,7 @@ mixin _User on _BaseAppRepo implements UserDomain {
   AsyncResult toggleUserCommentLike(
           {required MyModuleType type, required int id}) =>
       _userService
-          .toggleUserCommentLike(type: type.index, id: id)
+          .toggleUserCommentLike(type: type.typeIndex, id: id)
           .deserialize()
           .guard;
 

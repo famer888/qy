@@ -86,16 +86,16 @@ class ComicDetailModel {
   final String? createdAt;
   final int? viewFct;
   final int? viewCt;
-  int? favoriteFct;
+  int favoriteFct;
   final String? renewedAt;
   final int? commentCt;
   final String? tag;
   final int? isEnd;
   final String? intro;
-  int? isFavorite;
+  int isFavorite;
   int? isLike;
   int? likeFct;
-  final List<ComicChapterModel>? chapters;
+  final List<ComicChapterModel> chapters;
 
   ComicDetailModel({
     this.id,
@@ -106,16 +106,16 @@ class ComicDetailModel {
     this.createdAt,
     this.viewFct,
     this.viewCt,
-    this.favoriteFct,
+    required this.favoriteFct,
     this.renewedAt,
     this.commentCt,
     this.tag,
     this.isEnd,
     this.intro,
-    this.isFavorite,
+    required this.isFavorite,
     this.isLike,
     this.likeFct,
-    this.chapters,
+    required this.chapters,
   });
 
   factory ComicDetailModel.fromJson(Map<String, dynamic> json) =>
@@ -128,17 +128,17 @@ class ComicDetailModel {
         createdAt: json['created_at'],
         viewFct: json['view_fct'],
         viewCt: json['view_ct'],
-        favoriteFct: json['favorite_fct'],
+        favoriteFct: json['favorite_fct'] ?? 0,
         renewedAt: json['renewed_at'],
         commentCt: json['comment_ct'],
         tag: json['tag'],
         isEnd: json['is_end'],
         intro: json['intro'],
-        isFavorite: json['is_favorite'],
+        isFavorite: json['is_favorite'] ?? 0,
         isLike: json['is_like'],
         likeFct: json['like_fct'],
         chapters: List<ComicChapterModel>.from(
-            json['chapters'].map((e) => ComicChapterModel.fromJson(e))),
+            json['chapters'].map((e) => ComicChapterModel.fromJson(e)) ?? []),
       );
 
   Map<String, dynamic> toJson() => {

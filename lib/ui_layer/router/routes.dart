@@ -936,24 +936,6 @@ class ComicRankRoute extends GoRouteData {
   }
 }
 
-// @TypedGoRoute<ComicDetailRoute>(path: AppRouterPaths.comicDetail)
-// class ComicDetailRoute extends GoRouteData {
-//   static final GlobalKey<NavigatorState> $parentNavigatorKey =
-//       AppRouter.rootNavigatorKey;
-//
-//   const ComicDetailRoute(this.$extra);
-//
-//   final String $extra;
-//
-//   Future<T?> push<T>(BuildContext context) =>
-//       context.removeDuplicatePush(location, extra: $extra);
-//
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) {
-//     return ComicDetailScreen(id: $extra);
-//   }
-// }
-
 @TypedShellRoute<ComicShellRouteData>(
   routes: <TypedRoute<RouteData>>[
     TypedGoRoute<ComicDetailRoute>(path: AppRouterPaths.comicDetail),
@@ -963,6 +945,8 @@ class ComicRankRoute extends GoRouteData {
 class ComicShellRouteData extends ShellRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
+  static final GlobalKey<NavigatorState> $navigatorKey =
+      GlobalKey<NavigatorState>();
 
   @override
   Widget builder(
@@ -970,13 +954,14 @@ class ComicShellRouteData extends ShellRouteData {
     GoRouterState state,
     Widget navigator,
   ) {
-    return ComicDIWidget(child: navigator);
+    return ComicDIWidget(
+      child: navigator,
+    );
   }
 }
 
 class ComicDetailRoute extends GoRouteData {
   const ComicDetailRoute(this.$extra);
-
   final String $extra;
 
   Future<T?> push<T>(BuildContext context) =>
@@ -991,6 +976,9 @@ class ComicDetailRoute extends GoRouteData {
 class ComicReaderRoute extends GoRouteData {
   const ComicReaderRoute();
 
+  // Future<T?> push<T>(BuildContext context) =>
+  //     context.removeDuplicatePush(location);
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const ComicReaderScreen();
@@ -1001,13 +989,24 @@ extension _MyPushHelper on BuildContext {
   Future<T?> removeDuplicatePush<T>(String location, {Object? extra}) async {
     final router = GoRouter.of(this);
 
-    final matchList = router.routerDelegate.currentConfiguration.matches;
-    final newMatchList = matchList
-        .where((element) => element.matchedLocation != location)
-        .toList();
-    matchList.clear();
-    matchList.addAll(newMatchList);
+    router.routerDelegate.currentConfiguration.matches
+        .removeDuplicate(location);
 
     return push<T>(location, extra: extra);
+  }
+}
+
+extension _MatchsHelper on List<RouteMatchBase> {
+  void removeDuplicate(String location) {
+    final newMatchList = where((element) {
+      switch (element) {
+        case ShellRouteMatch e:
+          e.matches.removeDuplicate(location);
+        default:
+      }
+      return element.matchedLocation != location;
+    }).toList();
+    clear();
+    addAll(newMatchList);
   }
 }

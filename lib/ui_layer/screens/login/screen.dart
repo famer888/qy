@@ -191,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _register();
                               },
                               borderRadius: 8,
-                              text: 'zc'.tr(context: context),
+                              text: 'zc',
                             ),
                             MyButton.gradient(
                               minimumSize: Size(140.w, 40.w),
@@ -199,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _login();
                               },
                               borderRadius: 8,
-                              text: 'dl'.tr(context: context),
+                              text: 'dl',
                             ),
                           ],
                         ),

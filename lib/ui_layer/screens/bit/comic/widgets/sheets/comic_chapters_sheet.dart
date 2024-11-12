@@ -12,9 +12,12 @@ import '../../card/comic_chapter_card.dart';
 import '../../mixin/route_to_reader.dart';
 
 class ComicChaptersSheetView extends StatefulWidget {
-  const ComicChaptersSheetView({super.key, required this.chapters});
+  const ComicChaptersSheetView(
+      {super.key, required this.chapters, this.onTapChapterIndex});
 
   final List<ComicChapterModel> chapters;
+
+  final ValueChanged<int>? onTapChapterIndex;
 
   @override
   State<ComicChaptersSheetView> createState() => _ComicChaptersSheetViewState();
@@ -121,11 +124,16 @@ class _ComicChaptersSheetViewState extends State<ComicChaptersSheetView>
                               return GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
+                                  final targetIndex = isDes
+                                      ? index
+                                      : chapters.length - 1 - index;
                                   context.pop();
-                                  routeToReader(
-                                    context,
-                                    isDes ? index : chapters.length - 1 - index,
-                                  );
+                                  if (widget.onTapChapterIndex
+                                      case final onTapChapterIndex?) {
+                                    onTapChapterIndex(targetIndex);
+                                  } else {
+                                    routeToReader(context, targetIndex);
+                                  }
                                 },
                                 child: ComicChapterCard(
                                   data: chapter,
