@@ -356,7 +356,7 @@ class _ChaptersView extends StatelessWidget with RouteToReaderMixin {
   int getFreeCount() {
     int freeCount = 0;
     for (final chapter in chapters) {
-      if (chapter.type == 1) {
+      if (chapter.isPay != 1) {
         break;
       }
       freeCount++;
