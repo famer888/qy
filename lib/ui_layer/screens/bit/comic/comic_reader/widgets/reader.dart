@@ -71,10 +71,6 @@ class _ChapterReaderState extends State<ChapterReader> {
   void initState() {
     widget.chapterController.setScrollController(scrollController);
     _getData();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      progressNotifier.value = (0, 0);
-    });
-
     super.initState();
   }
 

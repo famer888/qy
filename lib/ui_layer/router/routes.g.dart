@@ -1567,7 +1567,6 @@ extension $ComicRankRouteExtension on ComicRankRoute {
 }
 
 RouteBase get $comicShellRouteData => ShellRouteData.$route(
-      navigatorKey: ComicShellRouteData.$navigatorKey,
       parentNavigatorKey: ComicShellRouteData.$parentNavigatorKey,
       factory: $ComicShellRouteDataExtension._fromState,
       routes: [

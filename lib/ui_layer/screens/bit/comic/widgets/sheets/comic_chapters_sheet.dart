@@ -135,9 +135,7 @@ class _ComicChaptersSheetViewState extends State<ComicChaptersSheetView>
                                     routeToReader(context, targetIndex);
                                   }
                                 },
-                                child: ComicChapterCard(
-                                  data: chapter,
-                                ),
+                                child: ComicChaptersSheetCard(data: chapter),
                               );
                             },
                           ),

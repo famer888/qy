@@ -945,8 +945,6 @@ class ComicRankRoute extends GoRouteData {
 class ComicShellRouteData extends ShellRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
-  static final GlobalKey<NavigatorState> $navigatorKey =
-      GlobalKey<NavigatorState>();
 
   @override
   Widget builder(
@@ -964,8 +962,24 @@ class ComicDetailRoute extends GoRouteData {
   const ComicDetailRoute(this.$extra);
   final String $extra;
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.removeDuplicatePush(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) {
+    final router = GoRouter.of(context);
+
+    final routes = router.configuration.routes;
+    routes.removeWhere((route) {
+      if (route is ShellRouteBase) {
+        for (var e in route.routes) {
+          if (e is GoRoute && e.path == location) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+    routes.add($comicShellRouteData);
+
+    return context.removeDuplicatePush(location, extra: $extra);
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -988,9 +1002,9 @@ class ComicReaderRoute extends GoRouteData {
 extension _MyPushHelper on BuildContext {
   Future<T?> removeDuplicatePush<T>(String location, {Object? extra}) async {
     final router = GoRouter.of(this);
+    final matches = router.routerDelegate.currentConfiguration.matches;
 
-    router.routerDelegate.currentConfiguration.matches
-        .removeDuplicate(location);
+    matches.removeDuplicate(location);
 
     return push<T>(location, extra: extra);
   }

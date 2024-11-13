@@ -251,6 +251,7 @@ class MyPagingController<ItemType> extends PagingController<int, ItemType> {
   Future<void> refresh() async {
     try {
       final items = await firstFetchCallBack(firstPageKey, pageSize);
+
       if (items != null) {
         value = PagingState(
           nextPageKey: items.isEmpty ? null : firstPageKey + 1,

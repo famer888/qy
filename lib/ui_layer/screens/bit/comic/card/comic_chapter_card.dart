@@ -9,8 +9,8 @@ import '../../../common_widgets/my_image.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
 
-class ComicChapterCard extends StatelessWidget {
-  const ComicChapterCard({super.key, required this.data});
+class ComicChaptersSheetCard extends StatelessWidget {
+  const ComicChaptersSheetCard({super.key, required this.data});
   final ComicChapterModel data;
   String get imgUrl => data.cover ?? '';
 

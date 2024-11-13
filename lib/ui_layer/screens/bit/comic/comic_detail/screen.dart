@@ -59,9 +59,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
     final res = await _domain.comicDetail(id: int.parse(widget.id));
     if (res.data case final data?) {
       _asyncValue = AsyncData(data);
-      if (mounted) {
-        _comicChangeNotifier.setCurrentComic(data.detail);
-      }
+      _comicChangeNotifier.setCurrentComic(data.detail);
     } else {
       if (res.msg case final msg? when msg.isNotEmpty) {
         MyToast.showText(text: msg);

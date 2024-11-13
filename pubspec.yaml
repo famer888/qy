@@ -72,8 +72,8 @@ dev_dependencies:
   flutter_lints: ^3.0.2
   freezed: ^2.4.7
   json_serializable: ^6.7.1
-  build_runner: ^2.4.8
-  go_router_builder: ^2.4.0
+  build_runner: ^2.4.11
+  go_router_builder: ^2.7.1
   analyzer: ^6.4.1
   flutter_native_splash: ^2.4.0
 

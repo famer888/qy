@@ -96,7 +96,7 @@ class _MyButtonState extends State<MyButton> {
       child = widget.child!;
     } else if (widget.text != null) {
       child = Text(
-        widget.text!.tr(context: context),
+        widget.text!,
         textAlign: TextAlign.center,
         style: MyTheme.white255_15_semibold,
       );

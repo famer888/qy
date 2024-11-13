@@ -166,10 +166,10 @@ class ComicDetailModel {
 class ComicChapterModel {
   final int? pId;
   final int? id;
-  final int? type;
-  final int? coins;
+  final int type;
+  final int coins;
   final String? title;
-  int? isPay;
+  int isPay;
   final String? payTip;
   final String? cover; //章节封面
 
@@ -181,10 +181,10 @@ class ComicChapterModel {
   ComicChapterModel({
     this.pId,
     this.id,
-    this.type,
-    this.coins,
+    required this.type,
+    required this.coins,
     this.title,
-    this.isPay,
+    required this.isPay,
     this.payTip,
     this.cover,
     this.thumb,
@@ -196,10 +196,10 @@ class ComicChapterModel {
       ComicChapterModel(
         pId: json['p_id'],
         id: json['id'],
-        type: json['type'],
-        coins: json['coins'],
+        type: json['type'] ?? 0,
+        coins: json['coins'] ?? 0,
         title: json['title'],
-        isPay: json['is_pay'],
+        isPay: json['is_pay'] ?? 0,
         payTip: json['pay_tip'],
         cover: json['cover'],
         thumb: json['thumb'],
