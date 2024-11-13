@@ -297,7 +297,7 @@ class PayView extends StatelessWidget {
               padding:
                   EdgeInsets.symmetric(horizontal: MyTheme.pagePadding * 2),
               child: Text(
-                payTip.isEmpty ? payTip : 'gmvkwz'.tr(context: context),
+                payTip.trim().isEmpty ? 'gmvkwz'.tr(context: context) : payTip,
                 style: MyTheme.white16medium,
                 maxLines: 10,
                 textAlign: TextAlign.center,
