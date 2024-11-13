@@ -155,8 +155,10 @@ class MyImagePaths {
   static const appGouWhite = './assets/images/app_gou_white.png';
   static const appCustomerServiceSelectImg = './assets/images/app_customer_service_select_img.png';
   static const appRenqiIcon = './assets/images/app_renqi_icon.png';
+  static const appComicCollectOn = './assets/images/app_comic_collect_on.png';
   static const appOnDanmu = './assets/images/app_on_danmu.png';
   static const appSingInJf = './assets/images/app_singIn_jf.png';
+  static const appComicCollectOff = './assets/images/app_comic_collect_off.png';
   static const appCardBottomBg = './assets/images/app_card_bottom_bg.png';
   static const appStritpBefore = './assets/images/app_stritp_before.png';
   static const appFigureN = './assets/images/app_figure_n.png';

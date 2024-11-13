@@ -156,91 +156,6 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
   }
 }
 
-class _Footer extends StatelessWidget with RouteToReaderMixin {
-  const _Footer();
-
-  @override
-  Widget build(BuildContext context) {
-    final comicChangeNotifier = context.read<ComicChangeNotifier>();
-    final detail = comicChangeNotifier.currentComic;
-    return Container(
-      color: const Color(0xff111127),
-      child: SafeArea(
-        top: false,
-        child: Selector<ComicChangeNotifier, int?>(
-          builder: (_, lastReadIndex, __) {
-            final index = lastReadIndex ?? 0;
-            return Padding(
-              padding: EdgeInsets.all(10.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      detail.chapters[index].title ?? '',
-                      style: MyTheme.white14,
-                      maxLines: 2,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Selector<ComicChangeNotifier, bool>(
-                          builder: (_, isFavorite, __) {
-                            return SizedBox(
-                              width: 50.w,
-                              child: GestureDetector(
-                                onTap: () {
-                                  comicChangeNotifier.toggleFavorite();
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    MyImage.asset(
-                                      isFavorite
-                                          ? MyImagePaths.appCollectOn
-                                          : MyImagePaths.appCollectOff,
-                                      width: 18.7.w,
-                                      height: 18.7.w,
-                                    ),
-                                    SizedBox(width: 2.w),
-                                    Text(
-                                      isFavorite
-                                          ? 'ysc'.tr(context: context)
-                                          : 'sc'.tr(context: context),
-                                      style: MyTheme.gray190_12,
-                                    ),
-                                    SizedBox(width: 15.w),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                          selector: (_, notifier) =>
-                              notifier.currentComic.isFavorite == 1),
-                      MyButton.highEmphasis(
-                        color: MyTheme.jellyCyanColor103224185,
-                        onPressed: () {
-                          routeToReader(context, index);
-                        },
-                        borderRadius: 30.w,
-                        child: LocalizationText(
-                          lastReadIndex == null ? 'ksyd' : 'jxyd',
-                          style: MyTheme.white14Medium,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
-          },
-          selector: (_, notifier) => notifier.currentChapterIndex,
-        ),
-      ),
-    );
-  }
-}
-
 class _Header extends StatelessWidget {
   const _Header({
     required this.title,
@@ -525,6 +440,92 @@ class _RecommendView extends StatelessWidget {
           },
         )
       ],
+    );
+  }
+}
+
+class _Footer extends StatelessWidget with RouteToReaderMixin {
+  const _Footer();
+
+  @override
+  Widget build(BuildContext context) {
+    final comicChangeNotifier = context.read<ComicChangeNotifier>();
+    final detail = comicChangeNotifier.currentComic;
+    return Container(
+      color: const Color(0xff111127),
+      child: SafeArea(
+        top: false,
+        child: Selector<ComicChangeNotifier, int?>(
+          builder: (_, lastReadIndex, __) {
+            final index = lastReadIndex ?? 0;
+            return Padding(
+              padding: EdgeInsets.all(10.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      detail.chapters[index].title ?? '',
+                      style: MyTheme.white14,
+                      maxLines: 2,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Selector<ComicChangeNotifier, bool>(
+                        builder: (_, isFavorite, __) {
+                          return SizedBox(
+                            width: 50.w,
+                            child: GestureDetector(
+                              onTap: () {
+                                comicChangeNotifier.toggleFavorite();
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  MyImage.asset(
+                                    isFavorite
+                                        ? MyImagePaths.appComicCollectOn
+                                        : MyImagePaths.appComicCollectOff,
+                                    width: 18.7.w,
+                                    height: 18.7.w,
+                                  ),
+                                  SizedBox(width: 2.w),
+                                  Text(
+                                    isFavorite
+                                        ? 'ysc'.tr(context: context)
+                                        : 'sc'.tr(context: context),
+                                    style: MyTheme.gray190_12,
+                                  ),
+                                  SizedBox(width: 15.w),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        selector: (_, notifier) =>
+                            notifier.currentComic.isFavorite == 1,
+                      ),
+                      MyButton.highEmphasis(
+                        color: MyTheme.jellyCyanColor103224185,
+                        onPressed: () {
+                          routeToReader(context, index);
+                        },
+                        borderRadius: 30.w,
+                        child: LocalizationText(
+                          lastReadIndex == null ? 'ksyd' : 'jxyd',
+                          style: MyTheme.white14Medium,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
+          selector: (_, notifier) => notifier.currentChapterIndex,
+        ),
+      ),
     );
   }
 }

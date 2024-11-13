@@ -79,30 +79,75 @@ class _ComicReaderScreenState extends State<ComicReaderScreen>
       appBar: ComicAppBar(
         animationController: panelAnimationController,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Selector<ComicChangeNotifier, int>(
-              selector: (_, notifier) => notifier.currentChapterIndex,
-              builder: (_, index, __) {
-                return Flexible(
-                  child: Text(
-                    chapters[index].title ?? '',
-                    style: MyTheme.white18mudium,
+            Flexible(
+              child: Row(
+                children: [
+                  Selector<ComicChangeNotifier, int>(
+                    selector: (_, notifier) => notifier.currentChapterIndex,
+                    builder: (_, index, __) {
+                      return Flexible(
+                        child: Text(
+                          chapters[index].title ?? '',
+                          style: MyTheme.white18mudium,
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                  SizedBox(width: 5.w),
+                  ValueListenableBuilder(
+                    valueListenable: chapterController.progressNotifier,
+                    builder: (_, value, __) {
+                      if (value.$2 == 0) {
+                        return const SizedBox();
+                      }
+                      return Text(
+                        '${value.$1}/${value.$2}',
+                        style: MyTheme.white07_12,
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-            SizedBox(width: 5.w),
-            ValueListenableBuilder(
-              valueListenable: chapterController.progressNotifier,
-              builder: (_, value, __) {
-                if (value.$2 == 0) {
-                  return const SizedBox();
-                }
-                return Text(
-                  '${value.$1}/${value.$2}',
-                  style: MyTheme.white07_12,
-                );
-              },
+            Row(
+              children: [
+                Selector<ComicChangeNotifier, bool>(
+                  builder: (_, isFavorite, __) {
+                    return GestureDetector(
+                      onTap: () {
+                        comicChangeNotifier.toggleFavorite();
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyImage.asset(
+                            isFavorite
+                                ? MyImagePaths.appComicCollectOn
+                                : MyImagePaths.appComicCollectOff,
+                            width: 21.w,
+                            height: 21.w,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  selector: (_, notifier) =>
+                      notifier.currentComic.isFavorite == 1,
+                ),
+                SizedBox(width: 10.w),
+                GestureDetector(
+                  onTap: () {
+                    const MineShareToUserRoute().push(context);
+                  },
+                  child: MyImage.asset(
+                    MyImagePaths.appNavShare,
+                    width: 23.w,
+                    height: 23.w,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
