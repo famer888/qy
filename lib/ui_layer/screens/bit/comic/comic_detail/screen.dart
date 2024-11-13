@@ -24,7 +24,7 @@ import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../card/comic_item_card.dart';
 import '../mixin/route_to_reader.dart';
-import '../widgets/di/notifier.dart';
+import '../di/notifier.dart';
 import '../widgets/sheets/comic_chapters_sheet.dart';
 import '../widgets/sheets/comic_comment_sheet.dart';
 

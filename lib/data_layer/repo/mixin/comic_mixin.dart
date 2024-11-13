@@ -50,17 +50,14 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
           .guard;
 
   @override
-  AsyncResult<List<ComicItemsModel>?> comicTypeList(
-          {required String themeId,
-          required String sort,
-          required String end,
-          required int page,
-          required int limit}) =>
+  AsyncResult<List<ComicItemsModel>?> comicTypeList({
+    required Map<String, String> sortParams,
+    required int page,
+    required int limit,
+  }) =>
       _comicService
           .comicTypeList(
-            themeId: themeId,
-            sort: sort,
-            end: end,
+            sortParams: sortParams,
             page: page,
             limit: limit,
           )

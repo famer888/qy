@@ -23,19 +23,12 @@ class ComicService extends BaseService {
       post('/theme',
           data: {'id': id, 'sort': sort, 'page': page, 'limit': limit});
 
-  AsyncJson comicTypeList(
-          {required String themeId,
-          required String sort,
-          required String end,
-          required int page,
-          required int limit}) =>
-      post('/type', data: {
-        'theme_id': themeId,
-        'sort': sort,
-        'end': end,
-        'page': page,
-        'limit': limit
-      });
+  AsyncJson comicTypeList({
+    required Map<String, String> sortParams,
+    required int page,
+    required int limit,
+  }) =>
+      post('/type', data: {'page': page, 'limit': limit, ...sortParams});
 
   AsyncJson comicNewList({required int page, required int limit}) =>
       post('/new', data: {'page': page, 'limit': limit});

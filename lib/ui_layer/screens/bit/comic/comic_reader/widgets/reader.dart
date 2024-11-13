@@ -43,7 +43,7 @@ class ChapterReader extends StatefulWidget {
 
 class _ChapterReaderState extends State<ChapterReader> {
   late final _domain = context.read<ComicDomain>();
-  AsyncValue<List<ComicChapterModel>> _asyncValue = const AsyncInit();
+  AsyncValue<List<ComicChapterPicModel>> _asyncValue = const AsyncInit();
   bool isScrolling = false;
   ChapterReaderController get chapterController => widget.chapterController;
 
@@ -159,7 +159,7 @@ class _ChapterReaderState extends State<ChapterReader> {
     );
   }
 
-  Widget buildReader(List<ComicChapterModel> pics) {
+  Widget buildReader(List<ComicChapterPicModel> pics) {
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollInfo) {
         switch (scrollInfo.runtimeType) {

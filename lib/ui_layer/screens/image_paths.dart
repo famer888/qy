@@ -104,6 +104,7 @@ class MyImagePaths {
   static const appMineSetting = './assets/images/app_mine_setting.png';
   static const appWdTzxxN = './assets/images/app_wd_tzxx_n.png';
   static const app2024ComFenxiangOn = './assets/images/app_2024_com_fenxiang_on.png';
+  static const appMarqueeIcon = './assets/images/app_marquee_icon.png';
   static const appTabDownloadS = './assets/images/app_tab_download_s.png';
   static const appMineMessage = './assets/images/app_mine_message.png';
   static const app2024SqGz = './assets/images/app_2024_sq_gz.png';

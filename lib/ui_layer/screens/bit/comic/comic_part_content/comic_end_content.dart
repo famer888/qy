@@ -21,8 +21,10 @@ class ComicEndContent extends StatefulWidget {
 class _ComicEndContentState extends State<ComicEndContent> {
   late final _domain = context.read<ComicDomain>();
 
-  Future<List<ComicItemsModel>?> _getData(
-      {required int page, required int pageSize}) async {
+  Future<List<ComicItemsModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
     final result = await _domain.comicEndList(page: page, limit: pageSize);
 
     if (result.status == 1) {

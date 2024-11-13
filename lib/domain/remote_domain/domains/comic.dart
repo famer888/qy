@@ -20,11 +20,9 @@ abstract class ComicDomain {
 
   ///分类筛选列表
   AsyncResult<List<ComicItemsModel>?> comicTypeList({
-    required String themeId, //分类ID
-    required String sort, // 分类排序
-    required String end, //是否完结
     required int page,
     required int limit,
+    required Map<String, String> sortParams,
   });
 
   ///除了推荐以外的分类列表

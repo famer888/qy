@@ -3,7 +3,7 @@ import '../../../../../../domain/api_validator.dart';
 import '../../../../../../domain/domain.dart';
 import '../../../../../../domain/enum.dart';
 import '../../../../../../domain/model/comic/comic_model.dart';
-import '../../../../../utils/debounce.dart';
+import '../../../../utils/debounce.dart';
 
 class ComicChangeNotifier extends ChangeNotifier {
   ComicChangeNotifier(this._cache, this._userDomain) {

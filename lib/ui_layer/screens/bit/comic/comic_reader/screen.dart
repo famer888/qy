@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/model/comic/comic_model.dart';
-import '../../../../../domain/model/member_model.dart';
 import '../../../../../domain/remote_domain/domains/comic.dart';
 import '../../../../notifiers/user_notifier.dart';
 import '../../../../router/routes.dart';
@@ -15,7 +14,7 @@ import '../../../common_widgets/my_button.dart';
 import '../../../common_widgets/my_image.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
-import '../widgets/di/notifier.dart';
+import '../di/notifier.dart';
 import 'controller/chapter_reader_controller.dart';
 import 'widgets/app_bar.dart';
 import 'widgets/bottom_panel.dart';

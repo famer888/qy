@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../domain/model/comic/comic_model.dart';
-import '../../../../utils/common_utils.dart';
-import '../../../common_widgets/my_image.dart';
-import '../../../image_paths.dart';
-import '../../../theme.dart';
+import '../../../../../../domain/model/comic/comic_model.dart';
+import '../../../../../utils/common_utils.dart';
+import '../../../../common_widgets/my_image.dart';
+import '../../../../image_paths.dart';
+import '../../../../theme.dart';
 
 class ComicChaptersSheetCard extends StatelessWidget {
   const ComicChaptersSheetCard({super.key, required this.data});

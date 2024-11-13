@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../domain/model/tip_model.dart';
 import '../../utils/common_utils.dart';
+import '../image_paths.dart';
 import '../theme.dart';
+import 'my_image.dart';
 
 class MyMarqueeTipsWidget extends StatelessWidget {
   const MyMarqueeTipsWidget({super.key, required this.tips});
@@ -10,20 +13,35 @@ class MyMarqueeTipsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (tips.isEmpty) return const SizedBox.shrink();
 
-    return MarqueeWidget(
-      children: [
-        for (final tip in tips)
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              CommonUtils.openRoute(context, tip.toJson());
-            },
-            child: Text(
-              tip.title ?? '',
-              style: MyTheme.white14,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      child: Row(
+        children: [
+          MyImage.asset(
+            MyImagePaths.appMarqueeIcon,
+            width: 20.w,
+            height: 20.w,
+          ),
+          SizedBox(width: 5.w),
+          Expanded(
+            child: MarqueeWidget(
+              children: [
+                for (final tip in tips)
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      CommonUtils.openRoute(context, tip.toJson());
+                    },
+                    child: Text(
+                      tip.title ?? '',
+                      style: MyTheme.white14,
+                    ),
+                  ),
+              ],
             ),
           ),
-      ],
+        ],
+      ),
     );
   }
 }

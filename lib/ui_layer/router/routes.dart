@@ -8,7 +8,7 @@ import '../screens/bit/comic/comic_part_content/comic_new_content.dart';
 import '../screens/bit/comic/comic_part_content/comic_rank_content.dart';
 import '../screens/bit/comic/comic_part_content/comic_sort_content.dart';
 import '../screens/bit/comic/comic_reader/screen.dart';
-import '../screens/bit/comic/widgets/di/comic_di_widget.dart';
+import '../screens/bit/comic/di/comic_di_widget.dart';
 import '../screens/bit/live/detail/screen.dart';
 import '../screens/bit/monitor/detail/screen.dart';
 import '../screens/community/circle_screen.dart';
@@ -857,7 +857,7 @@ class MonitorVideoDetailRoute extends GoRouteData {
   final String $extra;
 
   Future<T?> push<T>(BuildContext context) =>
-      context.removeDuplicatePush(location);
+      context.removeDuplicatePush(location, extra: $extra);
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -989,9 +989,6 @@ class ComicDetailRoute extends GoRouteData {
 
 class ComicReaderRoute extends GoRouteData {
   const ComicReaderRoute();
-
-  // Future<T?> push<T>(BuildContext context) =>
-  //     context.removeDuplicatePush(location);
 
   @override
   Widget build(BuildContext context, GoRouterState state) {

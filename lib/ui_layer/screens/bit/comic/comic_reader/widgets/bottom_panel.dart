@@ -6,7 +6,7 @@ import '../../../../common_widgets/localization_text.dart';
 import '../../../../common_widgets/my_image.dart';
 import '../../../../image_paths.dart';
 import '../../../../theme.dart';
-import '../../widgets/di/notifier.dart';
+import '../../di/notifier.dart';
 import '../../widgets/sheets/comic_chapters_sheet.dart';
 import '../controller/chapter_reader_controller.dart';
 import 'my_thumb.dart';

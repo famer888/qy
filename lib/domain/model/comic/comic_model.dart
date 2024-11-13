@@ -173,11 +173,6 @@ class ComicChapterModel {
   final String? payTip;
   final String? cover; //章节封面
 
-  //章节详情
-  final String? thumb;
-  final int? thumbW;
-  final int? thumbH;
-
   ComicChapterModel({
     this.pId,
     this.id,
@@ -187,9 +182,6 @@ class ComicChapterModel {
     required this.isPay,
     this.payTip,
     this.cover,
-    this.thumb,
-    this.thumbW,
-    this.thumbH,
   });
 
   factory ComicChapterModel.fromJson(Map<String, dynamic> json) =>
@@ -202,9 +194,6 @@ class ComicChapterModel {
         isPay: json['is_pay'] ?? 0,
         payTip: json['pay_tip'],
         cover: json['cover'],
-        thumb: json['thumb'],
-        thumbW: json['thumb_w'],
-        thumbH: json['thumb_h'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -216,6 +205,25 @@ class ComicChapterModel {
         'is_pay': isPay,
         'pay_tip': payTip,
         'cover': cover,
+      };
+}
+
+class ComicChapterPicModel {
+  ComicChapterPicModel(
+      {required this.thumb, required this.thumbW, required this.thumbH});
+
+  final String thumb;
+  final int thumbW;
+  final int thumbH;
+
+  factory ComicChapterPicModel.fromJson(Map<String, dynamic> json) =>
+      ComicChapterPicModel(
+        thumb: json['thumb'],
+        thumbW: json['thumb_w'],
+        thumbH: json['thumb_h'],
+      );
+
+  Map<String, dynamic> toJson() => {
         'thumb': thumb,
         'thumb_w': thumbW,
         'thumb_h': thumbH,
@@ -225,11 +233,11 @@ class ComicChapterModel {
 class ComicChaptersDetailModel {
   ComicChaptersDetailModel({required this.pics});
 
-  final List<ComicChapterModel> pics;
+  final List<ComicChapterPicModel> pics;
 
   factory ComicChaptersDetailModel.fromJson(Map<String, dynamic> json) =>
       ComicChaptersDetailModel(
-        pics: List<ComicChapterModel>.from(
-            json['pics'].map((e) => ComicChapterModel.fromJson(e)) ?? []),
+        pics: List<ComicChapterPicModel>.from(
+            json['pics'].map((e) => ComicChapterPicModel.fromJson(e)) ?? []),
       );
 }

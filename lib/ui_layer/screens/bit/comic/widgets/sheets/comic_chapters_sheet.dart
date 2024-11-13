@@ -8,7 +8,7 @@ import '../../../../common_widgets/localization_text.dart';
 import '../../../../common_widgets/my_image.dart';
 import '../../../../image_paths.dart';
 import '../../../../theme.dart';
-import '../../card/comic_chapter_card.dart';
+import 'comic_chapters_sheet_card.dart';
 import '../../mixin/route_to_reader.dart';
 
 class ComicChaptersSheetView extends StatefulWidget {
