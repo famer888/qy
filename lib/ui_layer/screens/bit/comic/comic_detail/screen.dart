@@ -188,6 +188,7 @@ class _Header extends StatelessWidget {
           Positioned(
             left: MyTheme.pagePadding,
             bottom: 5.w,
+            right: 5.w,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,6 +196,7 @@ class _Header extends StatelessWidget {
                 Text(
                   title ?? '',
                   style: MyTheme.white18bold,
+                  maxLines: 2,
                 ),
                 SizedBox(height: 5.w),
                 Text(
