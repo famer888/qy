@@ -30,7 +30,7 @@ class ComicTypeNavModel {
 
   factory ComicTypeNavModel.fromJson(Map<String, dynamic> json) =>
       ComicTypeNavModel(
-        value: '${json['value']}',
+        value: json['value']?.toString() ?? '',
         title: json['title'] ?? '',
       );
 }
