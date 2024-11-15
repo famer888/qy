@@ -153,6 +153,7 @@ class Config {
     required this.comicSortNav,
     required this.comicTypeNav,
     required this.mvSecondSortNav,
+    required this.mvDiscoverSortNav,
     required this.novelNav,
     required this.novelTypeNav,
     required this.novelSortNav,
@@ -183,11 +184,15 @@ class Config {
   final int? navId;
   final int? awNavid;
 
+  ///视频
   final List<NavigatorModel>? sortNav;
+  final List<NavigatorModel> mvDiscoverSortNav;
   final List<NavigatorModel> mvSecondSortNav;
 
+  ///社区
   final List<NavigatorModel>? forumNav;
 
+  ///种子
   final List<SeedSortModel> seedNav;
 
   final List<AiFaceTopicModel> faceTopNav; //AI换脸分类
@@ -247,6 +252,10 @@ class Config {
         mvSecondSortNav: List<NavigatorModel>.from(json['mv_second_sort_nav']
                 ?.map((x) => NavigatorModel.fromJson(x)) ??
             []),
+        mvDiscoverSortNav: List<NavigatorModel>.from(
+            json['mv_discover_sort_nav']
+                    ?.map((x) => NavigatorModel.fromJson(x)) ??
+                []),
         forumNav: List<NavigatorModel>.from(
             json['forum_nav']?.map((x) => NavigatorModel.fromJson(x)) ?? []),
         seedNav: List<SeedSortModel>.from(

@@ -20,11 +20,19 @@ abstract class MvDomain {
     required String sort,
   });
 
+  /// 发现精彩
+  AsyncResult<List<VideoCardModel>> getDiscoverVideoList({
+    required int limit,
+    required int page,
+    required String sort,
+  });
+
   /// 获取视频详情
   AsyncResult<VideoDetailData> getVideoDetail({required String id});
 
   /// 视频详情推荐视频
-  AsyncResult<List<VideoCardModel>> getDetailRecommendList({required String id});
+  AsyncResult<List<VideoCardModel>> getDetailRecommendList(
+      {required String id});
 
   /// 获取视频的评论
   AsyncResult<CommentListModel> getVideoCommentList({

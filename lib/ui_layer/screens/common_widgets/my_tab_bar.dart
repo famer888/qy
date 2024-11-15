@@ -23,12 +23,14 @@ class TabBarWithView extends StatefulWidget {
     this.unselectedLabelStyle,
     this.tabController,
   })  : type = TabBarType.line,
+        tabPadding = null,
         tabBarRightWidget = null;
 
   const TabBarWithView.fillColor({
     super.key,
     required this.titles,
     required this.views,
+    this.tabPadding,
     this.tabBarPadding,
     this.tabBarHeight,
     this.isScrollable = false,
@@ -44,6 +46,8 @@ class TabBarWithView extends StatefulWidget {
   final List<Widget> views;
   final bool isScrollable;
   final EdgeInsetsGeometry? tabBarPadding;
+  final EdgeInsetsGeometry? tabPadding;
+
   final double? tabBarHeight;
   final Widget? tabBarRightWidget;
   final TextStyle? labelStyle;
@@ -64,7 +68,8 @@ class _TabBarWithViewState extends State<TabBarWithView>
             TabBarType.fillColor => Tab(
                 height: MyTheme.navbarHegiht,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  padding: widget.tabPadding ??
+                      EdgeInsets.symmetric(horizontal: 10.w),
                   child: Text(
                     title,
                   ),

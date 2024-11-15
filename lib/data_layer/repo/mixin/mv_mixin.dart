@@ -29,6 +29,17 @@ mixin _Mv on _BaseAppRepo implements MvDomain {
           .guard;
 
   @override
+  AsyncResult<List<VideoCardModel>> getDiscoverVideoList({
+    required int limit,
+    required int page,
+    required String sort,
+  }) =>
+      _mvService
+          .getDiscoverVideoList(limit: limit, page: page, sort: sort)
+          .deserializeJsonListBy((e) => e.map(VideoCardModel.fromJson).toList())
+          .guard;
+
+  @override
   AsyncResult<VideoDetailData> getVideoDetail({required String id}) =>
       _mvService
           .getVideoDetail(id: id)

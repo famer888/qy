@@ -38,6 +38,21 @@ class MvService extends BaseService {
         },
       );
 
+  /// 类别列表
+  AsyncJson getDiscoverVideoList({
+    required int limit,
+    required int page,
+    required String sort,
+  }) =>
+      post(
+        '/discover',
+        data: {
+          'page': page,
+          'limit': limit,
+          'sort': sort,
+        },
+      );
+
   /// 获取视频详情
   AsyncJson getVideoDetail({
     required String id,
