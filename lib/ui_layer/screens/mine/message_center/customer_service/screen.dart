@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/async_value.dart';
-import '../../../../../domain/model/feedback_data_model.dart';
+import '../../../../../domain/model/mine/feedback_message/feedback_message_model.dart';
 import '../../../../../domain/remote_domain/domains/message.dart';
 import '../../../../notifiers/home_config_notifier.dart';
 import '../../../../utils/common_utils.dart';
@@ -38,7 +38,7 @@ class _MineCustomerServiceScreenState extends State<MineCustomerServiceScreen> {
 
   AsyncValue _asyncValue = const AsyncInit();
 
-  final data = <FeedBackData>[];
+  final data = <FeedBackMessageModel>[];
 
   final focusNode = FocusNode();
 
@@ -77,7 +77,7 @@ class _MineCustomerServiceScreenState extends State<MineCustomerServiceScreen> {
         final sendFeedingRes = await _messageDomain.sendFeeding(
             content: url, type: 2, helpType: 0);
         if (sendFeedingRes.isValid) {
-          final message = FeedBackData.fromJson({
+          final message = FeedBackMessageModel.fromJson({
             'messageType': 2,
             'status': 1,
             'createdAt': null,
@@ -102,7 +102,7 @@ class _MineCustomerServiceScreenState extends State<MineCustomerServiceScreen> {
       final result =
           await _messageDomain.sendFeeding(content: text, type: 1, helpType: 0);
       if (result.isValid) {
-        final message = FeedBackData.fromJson({
+        final message = FeedBackMessageModel.fromJson({
           'messageType': 1,
           'status': 1,
           'createdAt': null,
@@ -248,7 +248,7 @@ class _Tips extends StatelessWidget {
 
 class _UserBubble extends StatelessWidget {
   const _UserBubble({required this.item});
-  final FeedBackData item;
+  final FeedBackMessageModel item;
 
   @override
   Widget build(BuildContext context) {
@@ -321,7 +321,7 @@ class _UserBubble extends StatelessWidget {
 
 class _ServiceBubble extends StatelessWidget {
   const _ServiceBubble({required this.item});
-  final FeedBackData item;
+  final FeedBackMessageModel item;
 
   @override
   Widget build(BuildContext context) {

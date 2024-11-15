@@ -125,6 +125,7 @@ class MyTheme {
   static const white08Color = Color.fromRGBO(255, 255, 255, 0.8);
   static const white09Color = Color.fromRGBO(255, 255, 255, 0.9);
 
+  static const blackColor07 = Color.fromRGBO(0, 0, 0, 0.7);
   static const blackColor18 = Color.fromRGBO(18, 18, 18, 1);
   static const blackColor25 = Color.fromRGBO(25, 25, 25, 1);
   static const blackColor22 = Color.fromRGBO(22, 22, 22, 1);

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../domain/api_validator.dart';
 import '../../../domain/enum.dart';
-import '../../../domain/model/media_model.dart';
+import '../../../domain/model/post/post_media_model.dart';
 import '../../../domain/model/video_detail_model.dart';
 import '../../../domain/remote_domain/domains/community.dart';
 import '../../../domain/type_def.dart';
@@ -91,7 +91,7 @@ class _MediaViewerScreenState extends State<MediaViewerScreen> {
                     scaleState = value;
                   },
                   builder: (context, index) {
-                    var e = widget.pramas['resources'][index] as MediaModel;
+                    var e = widget.pramas['resources'][index] as PostMediaModel;
                     return PhotoViewGalleryPageOptions.customChild(
                       initialScale: 1.0,
                       minScale: 1.0,
@@ -177,7 +177,7 @@ class ShortVPlayer extends StatefulWidget {
     super.key,
     required this.data,
   });
-  final MediaModel data;
+  final PostMediaModel data;
 
   @override
   State<ShortVPlayer> createState() => _ShortVPlayerState();

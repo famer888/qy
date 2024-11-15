@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../domain/model/collection_model.dart';
+import '../../../../domain/model/mine/video/mine_video_model.dart';
 import '../../../router/routes.dart';
 import '../../../utils/common_utils.dart';
 import '../../theme.dart';
@@ -10,7 +10,7 @@ import '../../common_widgets/my_image.dart';
 
 class MineVideoTile extends StatelessWidget {
   const MineVideoTile({super.key, required this.data});
-  final MineVideoCardData data;
+  final MineVideoModel data;
   @override
   Widget build(BuildContext context) {
     double w = (1.sw - MyTheme.pagePadding * 2 - 4.w) / 2;

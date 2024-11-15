@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../domain/model/collection_model.dart';
-import '../../../../domain/model/post_model.dart';
+import '../../../../domain/enum.dart';
+import '../../../../domain/model/mine/post/mine_post_list_model.dart';
+import '../../../../domain/model/mine/video/mine_video_model.dart';
+import '../../../../domain/model/mine/video/mine_video_list_model.dart';
+import '../../../../domain/model/post/post_model.dart';
 import '../../../../domain/remote_domain/domains/user.dart';
 import '../../../../domain/result.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
@@ -24,6 +27,12 @@ class MineBuyScreen extends StatefulWidget {
 }
 
 class _MineBuyScreenState extends State<MineBuyScreen> {
+  final data = {
+    'shp': const _VideoView(),
+    'tiezt': const _PostView(type: ModuleType.post),
+    'zhoz': const _PostView(type: ModuleType.seed),
+  };
+
   @override
   Widget build(BuildContext context) {
     return ScreenBackground(
@@ -44,20 +53,10 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
           tabBarHeight: 40.w,
           isScrollable: true,
           titles: [
-            'shp'.tr(context: context),
-            'tiezt'.tr(context: context),
-            'zhoz'.tr(context: context),
+            for (final title in data.keys) title.tr(context: context),
           ],
-          views: const [
-            KeepAliveWrapper(
-              child: _VideoView(),
-            ),
-            KeepAliveWrapper(
-              child: _TieztView(type: _TieztType.community),
-            ),
-            KeepAliveWrapper(
-              child: _TieztView(type: _TieztType.bit),
-            ),
+          views: [
+            for (final view in data.values) KeepAliveWrapper(child: view),
           ],
         ),
       ),
@@ -75,7 +74,7 @@ class _VideoView extends StatefulWidget {
 class _VideoViewState extends State<_VideoView> {
   late final userDomain = context.read<UserDomain>();
 
-  Future<List<MineVideoCardData>> _getData({
+  Future<List<MineVideoModel>> _getData({
     required int page,
     required int pageSize,
   }) async {
@@ -101,26 +100,16 @@ class _VideoViewState extends State<_VideoView> {
   }
 }
 
-enum _TieztType {
-  community,
-  bit;
+class _PostView extends StatefulWidget {
+  const _PostView({required this.type});
 
-  int get id => switch (this) {
-        _TieztType.community => 14,
-        _TieztType.bit => 15,
-      };
-}
-
-class _TieztView extends StatefulWidget {
-  const _TieztView({required this.type});
-
-  final _TieztType type;
+  final ModuleType type;
 
   @override
-  State<_TieztView> createState() => _TieztViewState();
+  State<_PostView> createState() => _PostViewState();
 }
 
-class _TieztViewState extends State<_TieztView> {
+class _PostViewState extends State<_PostView> {
   late final userDomain = context.read<UserDomain>();
 
   Future<List<PostModel>> _getData({
@@ -131,7 +120,7 @@ class _TieztViewState extends State<_TieztView> {
       page: page,
       limit: pageSize,
       type: widget.type.id,
-    ) as Result<MineTieztListModel>;
+    ) as Result<MinePostListModel>;
 
     return result.data!.list!;
   }
@@ -141,8 +130,9 @@ class _TieztViewState extends State<_TieztView> {
     return MyListView.list(
       contentPadding: 15.w,
       itemBuilder: (context, item, index) => switch (widget.type) {
-        _TieztType.community => PostCard.community(data: item),
-        _TieztType.bit => PostCard.bit(data: item),
+        ModuleType.post => PostCard(data: item),
+        ModuleType.seed => PostCard.seed(data: item),
+        _ => const SizedBox.shrink(),
       },
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,

@@ -257,60 +257,65 @@ class _HeaderTopicsViewState extends State<_HeaderTopicsView> {
             if (topics.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.only(bottom: 5.w),
-              child: GridView.builder(
-                  shrinkWrap: true,
-                  addRepaintBoundaries: false,
-                  addAutomaticKeepAlives: false,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount:
-                      _isExpended ? topics.length : min(8, topics.length),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    childAspectRatio: 80.w / 35.w,
-                    mainAxisSpacing: 10.w,
-                    crossAxisSpacing: 10.w,
-                  ),
-                  itemBuilder: (context, index) {
-                    final topic = topics[index];
-                    return DecoratedBox(
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2.w),
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 250),
+                alignment: Alignment.topCenter,
+                curve: Curves.ease,
+                child: GridView.builder(
+                    shrinkWrap: true,
+                    addRepaintBoundaries: false,
+                    addAutomaticKeepAlives: false,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount:
+                        _isExpended ? topics.length : min(8, topics.length),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      childAspectRatio: 80.w / 35.w,
+                      mainAxisSpacing: 10.w,
+                      crossAxisSpacing: 10.w,
+                    ),
+                    itemBuilder: (context, index) {
+                      final topic = topics[index];
+                      return DecoratedBox(
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2.w),
+                          ),
+                          color: const Color(0xff262631),
                         ),
-                        color: const Color(0xff262631),
-                      ),
-                      child: Center(
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            final linkUrl = topic.linkUrl;
-                            final redirectType = topic.redirectType;
-                            if (linkUrl.isEmpty) {
-                              return;
-                            }
-
-                            if (redirectType < 3) {
-                              CommonUtils.openRoute(context, topic.toJson());
-                            } else {
-                              if (topic.openType == 0) {
-                                widget.onLinkNavTap(topic.linkUrl);
-                              } else if (topic.openType == 1) {
-                                MoreVideoRoute(
-                                        name: topic.name, id: topic.linkUrl)
-                                    .push(context);
+                        child: Center(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              final linkUrl = topic.linkUrl;
+                              final redirectType = topic.redirectType;
+                              if (linkUrl.isEmpty) {
+                                return;
                               }
-                            }
-                          },
-                          child: Text(
-                            topic.name,
-                            style: MyTheme.white13,
+
+                              if (redirectType < 3) {
+                                CommonUtils.openRoute(context, topic.toJson());
+                              } else {
+                                if (topic.openType == 0) {
+                                  widget.onLinkNavTap(topic.linkUrl);
+                                } else if (topic.openType == 1) {
+                                  MoreVideoRoute(
+                                          name: topic.name, id: topic.linkUrl)
+                                      .push(context);
+                                }
+                              }
+                            },
+                            child: Text(
+                              topic.name,
+                              style: MyTheme.white13,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+              ),
             );
           },
         ),

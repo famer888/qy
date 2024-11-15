@@ -1,3 +1,4 @@
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,8 +18,15 @@ class ChapterReaderController {
 
   double get picsHeight => _picsHeight;
   double _picsHeight = 0.0;
+
+  double _picHeight = 0.0;
+
   void setPicsHeight(double value) {
     _picsHeight = value;
+  }
+
+  void setPicHeight(double value) {
+    _picHeight = value;
   }
 
   final scrollWeight = 6000 / 1.sh;
@@ -61,8 +69,28 @@ class ChapterReaderController {
   void jumpToPic(int index) {
     final len = progressNotifier.value.$2;
     if (len == 0) return;
-    final picH = picsHeight / (len - 1);
-    scrollController.jumpTo(picH * (index - 1));
+    // final picH = picsHeight / (len - 1);
+    scrollController.jumpTo(_picHeight * (index - 1));
     updateProgress();
+  }
+
+  void tapPrev() {
+    final nextOffset = scrollController.offset - _picHeight;
+    scrollController.animateTo(
+      max(nextOffset, 0),
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.linear,
+    );
+  }
+
+  void tapNext() {
+    if (checkIsEnded()) return;
+    final nextOffset = scrollController.offset + _picHeight;
+
+    scrollController.animateTo(
+      min(nextOffset, picsHeight),
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.linear,
+    );
   }
 }

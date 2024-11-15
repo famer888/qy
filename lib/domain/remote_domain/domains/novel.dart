@@ -1,10 +1,11 @@
+import '../../model/novel/novel_item_model.dart';
 import '../../model/novel/novel_model.dart';
 import '../../model/video_comment_model.dart';
 import '../../type_def.dart';
 
 abstract class NovelDomain {
   ///小说推荐接口
-  AsyncResult<RecommendNovelWithBannersModel> novelReComment({
+  AsyncResult<RecommendNovelWithBannersModel> novelRecommend({
     required int page,
     required int limit,
   });
@@ -18,54 +19,52 @@ abstract class NovelDomain {
   });
 
   ///更多
-  AsyncResult<List<NovelItemsModel>?> novelMoreList({
+  AsyncResult<List<NovelItemModel>?> novelMoreList({
     required String sort,
     required int page,
     required int limit,
   });
 
   ///分类筛选列表
-  AsyncResult<List<NovelItemsModel>?> novelTypeList({
-    required String themeId, //分类ID
-    required String sort, // 分类排序
-    required String end, //是否完结
+  AsyncResult<List<NovelItemModel>?> novelTypeList({
     required int page,
     required int limit,
+    required Map<String, String> sortParams,
   });
 
   ///最新列表
-  AsyncResult<List<NovelItemsModel>?> novelNewList({
+  AsyncResult<List<NovelItemModel>?> novelNewList({
     required int page,
     required int limit,
   });
 
   ///连载列表
-  AsyncResult<List<NovelItemsModel>?> novelUpdatingList({
+  AsyncResult<List<NovelItemModel>?> novelUpdatingList({
     required int page,
     required int limit,
   });
 
   ///完结列表
-  AsyncResult<List<NovelItemsModel>?> novelEndList({
+  AsyncResult<List<NovelItemModel>?> novelEndList({
     required int page,
     required int limit,
   });
 
   ///搜索列表
-  AsyncResult<List<NovelItemsModel>?> novelSearchList({
+  AsyncResult<List<NovelItemModel>?> novelSearchList({
     required String word,
     required int page,
     required int limit,
   });
 
   ///我的小说收藏列表
-  AsyncResult<List<NovelItemsModel>?> novelFavoriteList({
+  AsyncResult<List<NovelItemModel>?> novelFavoriteList({
     required int page,
     required int limit,
   });
 
   ///我的小说购买列表
-  AsyncResult<List<NovelItemsModel>?> novelBuyList({
+  AsyncResult<List<NovelItemModel>?> novelBuyList({
     required int page,
     required int limit,
   });
@@ -104,7 +103,7 @@ abstract class NovelDomain {
   });
 
   ///大家都在看
-  AsyncResult<List<NovelItemsModel>?> novelSeeList({
+  AsyncResult<List<NovelItemModel>?> novelSeeList({
     required int page,
     required int limit,
   });

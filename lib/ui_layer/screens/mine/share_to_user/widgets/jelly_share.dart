@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../../../../../domain/model/proxy_detail_model.dart';
+import '../../../../../domain/model/mine/proxy/proxy_detail_model.dart';
 import '../../../../notifiers/user_notifier.dart';
 import '../../../common_widgets/my_image.dart';
 import '../../../image_paths.dart';
@@ -12,7 +12,7 @@ import '../../../theme.dart';
 
 class JellyShareCard extends StatelessWidget {
   const JellyShareCard({super.key, required this.proxyDetail});
-  final ProxyDetail? proxyDetail;
+  final ProxyDetailModel? proxyDetail;
 
   @override
   Widget build(BuildContext context) {

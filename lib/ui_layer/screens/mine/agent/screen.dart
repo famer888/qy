@@ -8,7 +8,7 @@ import '../../../../domain/api_validator.dart';
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/member_model.dart';
-import '../../../../domain/model/proxy_detail_model.dart';
+import '../../../../domain/model/mine/proxy/proxy_detail_model.dart';
 import '../../../notifiers/home_config_notifier.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../router/routes.dart';
@@ -32,7 +32,7 @@ class _MineAgentScreenState extends State<MineAgentScreen> {
   late final proxyDomain = context.read<ProxyDomain>();
   late final member = context.read<UserNotifier>().member;
 
-  AsyncValue<ProxyDetail?> _asyncValue = const AsyncInit();
+  AsyncValue<ProxyDetailModel?> _asyncValue = const AsyncInit();
 
   @override
   void initState() {

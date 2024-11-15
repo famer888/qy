@@ -47,13 +47,13 @@ mixin _Order on _BaseAppRepo implements OrderDomain {
           cardId: cardId, amount: amount, type: type);
 
   @override
-  AsyncResult<List<MineWithdrawalRecord>> cashWithdrawList({
+  AsyncResult<List<WithdrawalRecordModel>> cashWithdrawList({
     required int page,
     required int limit,
   }) =>
       _orderService
           .cashWithdrawList(page: page, limit: limit)
           .deserializeJsonListBy(
-              (e) => e.map(MineWithdrawalRecord.fromJson).toList())
+              (e) => e.map(WithdrawalRecordModel.fromJson).toList())
           .guard;
 }

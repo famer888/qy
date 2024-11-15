@@ -23,18 +23,10 @@ class NovelService extends BaseService {
       post('/rec_more', data: {'sort': sort, 'page': page, 'limit': limit});
 
   AsyncJson novelTypeList(
-          {required String themeId,
-          required String sort,
-          required String end,
+          {required Map<String, String> sortParams,
           required int page,
           required int limit}) =>
-      post('/type', data: {
-        'theme_id': themeId,
-        'sort': sort,
-        'end': end,
-        'page': page,
-        'limit': limit
-      });
+      post('/type', data: {'page': page, 'limit': limit, ...sortParams});
 
   AsyncJson novelNewList({required int page, required int limit}) =>
       post('/new', data: {'page': page, 'limit': limit});

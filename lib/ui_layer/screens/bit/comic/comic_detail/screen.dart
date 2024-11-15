@@ -5,13 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/async_value.dart';
+import '../../../../../domain/enum.dart';
 import '../../../../../domain/model/comic/comic_item_model.dart';
 import '../../../../../domain/model/comic/comic_model.dart';
+import '../../../../../domain/model/video_comment_model.dart';
 import '../../../../../domain/remote_domain/domains/comic.dart';
+import '../../../../../domain/remote_domain/domains/user.dart';
 import '../../../../router/routes.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
+import '../../../common_widgets/comment_tile.dart';
 import '../../../common_widgets/expandable_text.dart';
 import '../../../common_widgets/general_banner.dart';
 import '../../../common_widgets/localization_text.dart';
@@ -25,8 +30,8 @@ import '../../../theme.dart';
 import '../card/comic_item_card.dart';
 import '../mixin/route_to_reader.dart';
 import '../di/notifier.dart';
-import '../widgets/sheets/comic_chapters_sheet.dart';
-import '../widgets/sheets/comic_comment_sheet.dart';
+import '../sheets/comic_chapters_sheet.dart';
+import '../sheets/comic_comment_sheet.dart';
 
 ///漫画详情界面
 class ComicDetailScreen extends StatefulWidget {
@@ -55,13 +60,24 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
     setState(() {
       _asyncValue = const AsyncLoading();
     });
+    final id = int.tryParse(widget.id) ?? 0;
+    final results = await Future.wait([
+      _domain.comicDetail(id: id),
+      _domain.comicCommentList(id: id, page: 1, limit: 2)
+    ]);
 
-    final res = await _domain.comicDetail(id: int.parse(widget.id));
-    if (res.data case final data?) {
+    final detailRes = results[0];
+
+    if (detailRes.data case final ComicDetailWithBannersModel data?) {
+      if (results[1].data case final List<CommentModel> comments?
+          when comments.isNotEmpty) {
+        data.detail.comments.clear();
+        data.detail.comments.addAll(comments);
+      }
       _asyncValue = AsyncData(data);
-      _comicChangeNotifier.setCurrentComic(data.detail);
+      await _comicChangeNotifier.setCurrentComic(data.detail);
     } else {
-      if (res.msg case final msg? when msg.isNotEmpty) {
+      if (detailRes.msg case final msg? when msg.isNotEmpty) {
         MyToast.showText(text: msg);
       }
       _asyncValue = const AsyncError();
@@ -121,7 +137,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                     _TagsView(tags: data.detail.tag),
                     SizedBox(height: 18.w),
                     ExpandableText(
-                      data.detail.intro ?? '',
+                      data.detail.intro,
                       style: MyTheme.white07_14,
                       trimLines: 3,
                     ),
@@ -132,8 +148,9 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                     ),
                     SizedBox(height: 15.w),
                     _CommentView(
-                      id: detail.id ?? 0,
-                      totalCt: detail.commentCt ?? 0,
+                      id: detail.id,
+                      totalCt: detail.commentCt,
+                      comments: detail.comments,
                     ),
                     SizedBox(height: 15.w),
                     GeneralBanner(
@@ -321,6 +338,7 @@ class _ChaptersView extends StatelessWidget with RouteToReaderMixin {
                         child: MyImage.network(
                           chapter.cover ?? '',
                           borderRadius: 10.w,
+                          width: 160.w,
                         ),
                       ),
                       Text(
@@ -369,9 +387,15 @@ class _ChaptersView extends StatelessWidget with RouteToReaderMixin {
 }
 
 class _CommentView extends StatelessWidget {
-  const _CommentView({super.key, required this.id, required this.totalCt});
+  const _CommentView({
+    super.key,
+    required this.id,
+    required this.totalCt,
+    required this.comments,
+  });
   final int id;
   final int totalCt;
+  final List<CommentModel> comments;
   Future<T?> showChaptersBottomSheet<T>(BuildContext context) {
     return showModalBottomSheet(
       context: context,
@@ -393,14 +417,18 @@ class _CommentView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('pl'.tr(context: context), style: MyTheme.white16bold),
-
-        ///TODO
-        const SizedBox(height: 100),
+        for (final comment in comments)
+          CommentTile(
+            data: comment,
+            moduleType: ModuleType.comic,
+          ),
         MyButton.highEmphasis(
           color: MyTheme.white008Color,
           borderRadius: 15.w,
           minimumSize: Size.fromHeight(30.w),
-          child: LocalizationText('ckgd', style: MyTheme.white12),
+          child: Text(
+              '${'ckgd'.tr(context: context)}$totalCt${'tpl'.tr(context: context)}',
+              style: MyTheme.white12),
           onPressed: () {
             showChaptersBottomSheet(context);
           },
@@ -412,7 +440,7 @@ class _CommentView extends StatelessWidget {
 
 class _RecommendView extends StatelessWidget {
   const _RecommendView({required this.recommends});
-  final List<ComicItemsModel> recommends;
+  final List<ComicItemModel> recommends;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'media_model.dart';
+import 'post/post_media_model.dart';
 import 'topic_model.dart';
 import 'user_model.dart';
 
@@ -45,7 +45,7 @@ class TopicDetail {
   int? isPay;
   final UserModel? user;
   final TopicModel? topic;
-  final List<MediaModel>? medias;
+  final List<PostMediaModel>? medias;
 
   TopicDetail({
     this.aff,
@@ -138,7 +138,7 @@ class TopicDetail {
         topic:
             json['topic'] == null ? null : TopicModel.fromJson(json['topic']),
         medias: json['medias'] != null
-            ? List.from(json['medias'].map((e) => MediaModel.fromJson(e)))
+            ? List.from(json['medias'].map((e) => PostMediaModel.fromJson(e)))
             : null,
       );
 }

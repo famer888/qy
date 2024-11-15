@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../domain/domain.dart';
-import '../../../../../../domain/remote_domain/domains/comic.dart';
 import 'notifier.dart';
 
 class ComicDIWidget extends StatefulWidget {

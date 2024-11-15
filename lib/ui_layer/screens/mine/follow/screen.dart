@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/domain.dart';
-import '../../../../domain/model/follow_user_model.dart';
+import '../../../../domain/model/mine/following/following_user_model.dart';
 import '../../../../domain/model/topic_model.dart';
 import '../../../../domain/type_def.dart';
 import '../../../notifiers/user_notifier.dart';
@@ -80,7 +80,7 @@ class _FollowingUserViewState extends State<FollowingUserView> {
   late final userNotifier = context.read<UserNotifier>();
 
   String lastIx = '';
-  Future<List<FollowingUserData>> _getData({
+  Future<List<FollowingUserModel>> _getData({
     required int page,
     required int pageSize,
   }) async {
@@ -90,15 +90,15 @@ class _FollowingUserViewState extends State<FollowingUserView> {
     if (res.isValid) {
       lastIx = res.data?.lastIx ?? '';
       userNotifier.patchUserFollowStatus(
-          res.data?.followFansModelList?.map((e) => '${e.aff}') ?? [], []);
+          res.data?.list.map((e) => '${e.aff}') ?? [], []);
     } else if (res.msg case final msg? when msg.isNotEmpty) {
       MyToast.showText(text: msg);
     }
 
-    return res.data!.followFansModelList!;
+    return res.data!.list;
   }
 
-  Widget _buildTile(FollowingUserData data) {
+  Widget _buildTile(FollowingUserModel data) {
     final aff = '${data.aff}';
     return Column(children: [
       GestureDetector(

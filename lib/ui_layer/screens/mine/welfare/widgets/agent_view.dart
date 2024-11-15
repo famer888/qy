@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/async_value.dart';
 import '../../../../../domain/model/member_model.dart';
-import '../../../../../domain/model/proxy_detail_model.dart';
+import '../../../../../domain/model/mine/proxy/proxy_detail_model.dart';
 import '../../../../../domain/remote_domain/domains/proxy.dart';
 import '../../../../notifiers/home_config_notifier.dart';
 import '../../../../notifiers/user_notifier.dart';
@@ -39,7 +39,7 @@ class _AgentViewState extends State<AgentView> {
   late final member = context.read<UserNotifier>().member;
   late final config = context.read<HomeConfigNotifier>().config;
 
-  AsyncValue<ProxyDetail?> _asyncValue = const AsyncInit();
+  AsyncValue<ProxyDetailModel?> _asyncValue = const AsyncInit();
 
   /// 是否显示申请页面
   bool showApplyPage = false;
@@ -108,7 +108,7 @@ class _AgentViewState extends State<AgentView> {
         ),
       );
 
-  Widget _buildDataView(ProxyDetail? data) {
+  Widget _buildDataView(ProxyDetailModel? data) {
     return showApplyPage
         ? MineAgentApplyView(
             applySuccess: () {

@@ -7,7 +7,7 @@ import '../../../../common_widgets/my_image.dart';
 import '../../../../image_paths.dart';
 import '../../../../theme.dart';
 import '../../di/notifier.dart';
-import '../../widgets/sheets/comic_chapters_sheet.dart';
+import '../../sheets/comic_chapters_sheet.dart';
 import '../controller/chapter_reader_controller.dart';
 import 'my_thumb.dart';
 
@@ -205,7 +205,8 @@ class _BottomPanelState extends State<BottomPanel>
                             child: const Padding(
                               padding: EdgeInsets.all(3),
                               child: MyImage.asset(
-                                  MyImagePaths.appComicReaderMenu),
+                                MyImagePaths.appReaderMenu,
+                              ),
                             ),
                             onTap: () {
                               showBottomSheet(context);

@@ -1,6 +1,6 @@
-import '../../model/app_center_model.dart';
+import '../../model/mine/welfare/app_center_model.dart';
 import '../../model/home_data_model.dart';
-import '../../model/official_group_model.dart';
+import '../../model/mine/official_group/official_group_model.dart';
 import '../../type_def.dart';
 
 abstract class HomeDomain {

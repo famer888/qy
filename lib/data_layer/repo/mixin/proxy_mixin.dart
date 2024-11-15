@@ -2,28 +2,29 @@ part of '../repo.dart';
 
 mixin _Proxy on _BaseAppRepo implements ProxyDomain {
   @override
-  AsyncResult<ProxyDetail> getProxyDetail() => _proxyService
+  AsyncResult<ProxyDetailModel> getProxyDetail() => _proxyService
       .getProxyDetail()
-      .deserializeJsonBy(ProxyDetail.fromJson)
+      .deserializeJsonBy(ProxyDetailModel.fromJson)
       .guard;
 
   @override
-  AsyncResult<ProxyInviteRecordData> getProxyInviteRecord({
+  AsyncResult<ProxyInviteRecordListModel> getProxyInviteRecord({
     required int currentPage,
     required int limit,
   }) =>
       _proxyService
           .getProxyInviteRecord(page: currentPage, limit: limit)
-          .deserializeJsonBy(ProxyInviteRecordData.fromJson)
+          .deserializeJsonBy(ProxyInviteRecordListModel.fromJson)
           .guard;
 
   @override
-  AsyncResult<List<ProxyProfit>> getProxyProfitList({
+  AsyncResult<List<ProxyProfitModel>> getProxyProfitList({
     required int page,
     required int limit,
   }) =>
       _proxyService
           .getProxyProfitList(page: page, limit: limit)
-          .deserializeJsonListBy((e) => e.map(ProxyProfit.fromJson).toList())
+          .deserializeJsonListBy(
+              (e) => e.map(ProxyProfitModel.fromJson).toList())
           .guard;
 }

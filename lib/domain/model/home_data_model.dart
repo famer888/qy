@@ -1,7 +1,10 @@
 import 'ai/ai_nav_model.dart';
-import 'bit_seed_nav_model.dart';
+import 'novel/novel_nav_model.dart';
+import 'novel/novel_sort_nav_model.dart';
+import 'novel/novel_type_nav_model.dart';
+import 'seed/seed_sort_model.dart';
 import 'comic/comic_nav_model.dart';
-import 'comic/comic_sort_model.dart';
+import 'comic/comic_sort_nav_model.dart';
 import 'comic/comic_type_nav_model.dart';
 import 'live/live_nav_model.dart';
 import 'monitor/monitor_nav_model.dart';
@@ -130,7 +133,6 @@ class Config {
     this.solution,
     this.sortNav,
     this.forumNav,
-    this.seedSortNav,
     required this.seedNav,
     this.showApp,
     required this.potatoGroup,
@@ -151,6 +153,9 @@ class Config {
     required this.comicSortNav,
     required this.comicTypeNav,
     required this.mvSecondSortNav,
+    required this.novelNav,
+    required this.novelTypeNav,
+    required this.novelSortNav,
     this.navPrepend,
   });
 
@@ -183,18 +188,24 @@ class Config {
 
   final List<NavigatorModel>? forumNav;
 
-  final List<NavigatorModel>? seedSortNav;
-  final List<BitSeedNavModel> seedNav;
+  final List<SeedSortModel> seedNav;
 
   final List<AiFaceTopicModel> faceTopNav; //AI换脸分类
   final List<AiFaceSortModel> faceSortNav; //AI换脸排序
-
+  ///直播
   final List<LiveNavModel> liveTopNav; //直播分类
+  ///监控
   final List<MonitorNavModel> monitorTopNav; //监控分类
 
+  ///漫画
   final List<ComicNavModel> comicTopNav; //漫画分类
-  final List<ComicSortModel> comicSortNav; //漫画排序
+  final List<ComicSortNavModel> comicSortNav; //漫画排序
   final List<ComicTypeNavListModel> comicTypeNav; //漫画排序条件
+
+  ///小说
+  final List<NovelNavModel> novelNav; //小说分类
+  final List<NovelSortNavModel> novelSortNav; //小说排序
+  final List<NovelTypeNavListModel> novelTypeNav; //小说排序条件
 
   final int payAi;
   final int? showApp;
@@ -238,11 +249,8 @@ class Config {
             []),
         forumNav: List<NavigatorModel>.from(
             json['forum_nav']?.map((x) => NavigatorModel.fromJson(x)) ?? []),
-        seedSortNav: List<NavigatorModel>.from(
-            json['seed_sort_nav']?.map((x) => NavigatorModel.fromJson(x)) ??
-                []),
-        seedNav: List<BitSeedNavModel>.from(
-            json['seed_nav']?.map((x) => BitSeedNavModel.fromJson(x)) ?? []),
+        seedNav: List<SeedSortModel>.from(
+            json['seed_nav']?.map((x) => SeedSortModel.fromJson(x)) ?? []),
         payAi: json['pay_ai'] ?? 0,
         showApp: json['show_app'],
         potatoGroup: json['potato_group'] ?? '',
@@ -268,14 +276,22 @@ class Config {
                 []),
         comicTopNav: List<ComicNavModel>.from(
             json['comic_top_nav']?.map((x) => ComicNavModel.fromJson(x)) ?? []),
-        comicSortNav: List<ComicSortModel>.from(
-            json['comic_sort_nav']?.map((x) => ComicSortModel.fromJson(x)) ??
+        comicSortNav: List<ComicSortNavModel>.from(
+            json['comic_sort_nav']?.map((x) => ComicSortNavModel.fromJson(x)) ??
                 []),
         comicTypeNav: List<ComicTypeNavListModel>.from(json['comic_type_nav']
                 ?.map((x) => ComicTypeNavListModel.fromJson(x)) ??
             []),
         navPrepend: List<PreTopNavModel>.from(
             json['nav_prepend']?.map((x) => PreTopNavModel.fromJson(x)) ?? []),
+        novelNav: List<NovelNavModel>.from(
+            json['novel_nav']?.map((x) => NovelNavModel.fromJson(x)) ?? []),
+        novelTypeNav: List<NovelTypeNavListModel>.from(json['novel_type_nav']
+                ?.map((x) => NovelTypeNavListModel.fromJson(x)) ??
+            []),
+        novelSortNav: List<NovelSortNavModel>.from(
+            json['novel_sort']?.map((x) => NovelSortNavModel.fromJson(x)) ??
+                []),
       );
 }
 

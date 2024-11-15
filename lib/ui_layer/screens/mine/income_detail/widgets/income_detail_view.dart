@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/domain.dart';
-import '../../../../../domain/model/income_detail_data_model.dart';
+import '../../../../../domain/model/mine/income/mine_income_detail_model.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_list_view.dart';
@@ -23,7 +23,7 @@ class _IncomeDetailViewState extends State<IncomeDetailView> {
   late final _userDomain = context.read<UserDomain>();
   String _lastIx = '';
 
-  Future<List<MineIncomeDetail>> _getData({
+  Future<List<MineIncomeDetailModel>> _getData({
     required int currentPage,
     required int limit,
   }) async {
@@ -58,7 +58,7 @@ class _IncomeDetailViewState extends State<IncomeDetailView> {
 
 class MineIncomeDetailItem extends StatelessWidget {
   const MineIncomeDetailItem({super.key, required this.data});
-  final MineIncomeDetail data;
+  final MineIncomeDetailModel data;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

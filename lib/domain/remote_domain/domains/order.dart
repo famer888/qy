@@ -1,5 +1,5 @@
 import '../../enum.dart';
-import '../../model/mine_withdrawal_record_model.dart';
+import '../../model/mine/withdrawal/withdraw_record_model.dart';
 import '../../model/order_model.dart';
 import '../../model/product_vip_coin_model.dart';
 import '../../type_def.dart';
@@ -33,7 +33,7 @@ abstract class OrderDomain {
   });
 
   ///提现  提现列表
-  AsyncResult<List<MineWithdrawalRecord>> cashWithdrawList({
+  AsyncResult<List<WithdrawalRecordModel>> cashWithdrawList({
     required int page,
     required int limit,
   });

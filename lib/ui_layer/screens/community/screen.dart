@@ -12,7 +12,7 @@ import '../../router/routes.dart';
 import '../image_paths.dart';
 
 import '../../../domain/async_value.dart';
-import '../../../domain/model/community_nav_model.dart';
+import '../../../domain/model/post/community/community_post_nav_model.dart';
 import '../../router/router.dart';
 import '../common_widgets/my_image.dart';
 import '../common_widgets/my_tab_bar.dart';
@@ -154,7 +154,7 @@ class _Body extends StatefulWidget {
 class _BodyState extends State<_Body> {
   late final _appDomain = context.read<CommunityDomain>();
   late final _config = context.read<HomeConfigNotifier>().config;
-  AsyncValue<List<CommunityNavModel>> _asyncValue = const AsyncInit();
+  AsyncValue<List<CommunityPostNavModel>> _asyncValue = const AsyncInit();
 
   @override
   void initState() {
@@ -173,7 +173,7 @@ class _BodyState extends State<_Body> {
     setState(() {
       if (result.data case final data? when result.isValid) {
         if (_config.wdaiStr.isNotEmpty) {
-          data.add(CommunityNavModel(id: 100, title: _config.wdaiStr));
+          data.add(CommunityPostNavModel(id: 100, title: _config.wdaiStr));
         }
         _asyncValue = AsyncData(data);
       } else {

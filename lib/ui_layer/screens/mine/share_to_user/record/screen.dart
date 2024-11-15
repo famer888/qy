@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/domain.dart';
-import '../../../../../domain/model/proxy_invite_record_model.dart';
+import '../../../../../domain/model/mine/proxy/proxy_invite_record_model.dart';
 import '../../../../router/routes.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_app_bar.dart';
@@ -24,7 +24,7 @@ class _MineShareToUserRecordScreenState
     extends State<MineShareToUserRecordScreen> {
   late final _domain = context.read<ProxyDomain>();
 
-  Future<List<ProxyInviteRecord>> _getData({
+  Future<List<ProxyInviteRecordModel>> _getData({
     required int currentPage,
     required int limit,
   }) async {
@@ -87,7 +87,7 @@ class _MineShareToUserRecordScreenState
 
 class ShareRecordItem extends StatelessWidget {
   const ShareRecordItem({super.key, required this.data});
-  final ProxyInviteRecord data;
+  final ProxyInviteRecordModel data;
   @override
   Widget build(BuildContext context) {
     return Container(

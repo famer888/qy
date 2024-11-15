@@ -2,17 +2,19 @@ part of '../repo.dart';
 
 mixin _Sign on _BaseAppRepo implements SignDomain {
   @override
-  AsyncResult<ExpOfVIPData> getExpOfVIP() =>
-      _signService.getExpOfVIP().deserializeJsonBy(ExpOfVIPData.fromJson).guard;
+  AsyncResult<ExpOfVIPListModel> getExpOfVIP() => _signService
+      .getExpOfVIP()
+      .deserializeJsonBy(ExpOfVIPListModel.fromJson)
+      .guard;
 
   @override
   AsyncJson expConvertVIP({required int id}) =>
       _signService.expConvertVIP(id: id);
 
   @override
-  AsyncResult<WelfareTaskModel> signListTask() => _signService
+  AsyncResult<WelfareTaskListModel> signListTask() => _signService
       .signListTask()
-      .deserializeJsonBy(WelfareTaskModel.fromJson)
+      .deserializeJsonBy(WelfareTaskListModel.fromJson)
       .guard;
 
   @override

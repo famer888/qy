@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/video/video_model.dart';
-import '../../../../domain/model/post_model.dart';
+import '../../../../domain/model/post/post_model.dart';
 import '../../common_widgets/video/card/video_card.dart';
 import '../../common_widgets/video/card/widgets/video_view.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
@@ -123,7 +123,7 @@ class _TieztViewState extends State<_TieztView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => PostCard.community(data: item),
+      itemBuilder: (context, item, index) => PostCard(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -147,7 +147,7 @@ class _ZhozViewState extends State<_ZhozView> {
     required int page,
     required int pageSize,
   }) async {
-    final result = await seedDomain.searchBit(
+    final result = await seedDomain.searchSeed(
       page: page,
       limit: pageSize,
       word: widget.word,
@@ -160,7 +160,7 @@ class _ZhozViewState extends State<_ZhozView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => PostCard.bit(data: item),
+      itemBuilder: (context, item, index) => PostCard.seed(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

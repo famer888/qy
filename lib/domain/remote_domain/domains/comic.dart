@@ -5,21 +5,21 @@ import '../../type_def.dart';
 
 abstract class ComicDomain {
   ///漫画推荐接口
-  AsyncResult<RecommendComicWithBannersModel> comicReComment({
+  AsyncResult<RecommendComicWithBannersModel> comicRecommend({
     required int id,
     required int page,
     required int limit,
   });
 
   ///首页推荐更多/换一换
-  AsyncResult<List<ComicItemsModel>?> comicMoreChangeList({
+  AsyncResult<List<ComicItemModel>?> comicMoreChangeList({
     required String sort, // rec漫画推荐接口中comics字段下value的值
     required int page,
     required int limit,
   });
 
   ///分类筛选列表
-  AsyncResult<List<ComicItemsModel>?> comicTypeList({
+  AsyncResult<List<ComicItemModel>?> comicTypeList({
     required int page,
     required int limit,
     required Map<String, String> sortParams,
@@ -34,38 +34,38 @@ abstract class ComicDomain {
   });
 
   ///最新列表
-  AsyncResult<List<ComicItemsModel>?> comicNewList({
+  AsyncResult<List<ComicItemModel>?> comicNewList({
     required int page,
     required int limit,
   });
 
   ///完结列表
-  AsyncResult<List<ComicItemsModel>?> comicEndList({
+  AsyncResult<List<ComicItemModel>?> comicEndList({
     required int page,
     required int limit,
   });
 
   ///排行榜列表
-  AsyncResult<List<ComicItemsModel>?> comicRankList({
+  AsyncResult<List<ComicItemModel>?> comicRankList({
     required int page,
     required int limit,
   });
 
   ///搜索列表
-  AsyncResult<List<ComicItemsModel>?> comicSearchList({
+  AsyncResult<List<ComicItemModel>?> comicSearchList({
     required String word,
     required int page,
     required int limit,
   });
 
   ///我的漫画收藏列表
-  AsyncResult<List<ComicItemsModel>?> comicFavoriteList({
+  AsyncResult<List<ComicItemModel>?> comicFavoriteList({
     required int page,
     required int limit,
   });
 
   ///我的漫画购买列表
-  AsyncResult<List<ComicItemsModel>?> comicBuyList({
+  AsyncResult<List<ComicItemModel>?> comicBuyList({
     required int page,
     required int limit,
   });

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/domain.dart';
-import '../../../../../domain/model/proxy_profit_model.dart';
+import '../../../../../domain/model/mine/proxy/proxy_profit_model.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_app_bar.dart';
 import '../../../common_widgets/my_list_view.dart';
@@ -22,7 +22,7 @@ class MineAgentProfitScreen extends StatefulWidget {
 class _MineAgentProfitScreenState extends State<MineAgentProfitScreen> {
   late final appDomain = context.read<ProxyDomain>();
 
-  Future<List<ProxyProfit>> getProxyProfitList({
+  Future<List<ProxyProfitModel>> getProxyProfitList({
     required int currentPage,
     required int limit,
   }) async {
@@ -54,7 +54,7 @@ class _MineAgentProfitScreenState extends State<MineAgentProfitScreen> {
 
 class _Tile extends StatelessWidget {
   const _Tile({required this.data});
-  final ProxyProfit data;
+  final ProxyProfitModel data;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -88,10 +88,11 @@ class _Tile extends StatelessWidget {
                 children: [
                   Text(
                     switch (data.source) {
-                      ProxyProfitSource.withdrawal => 'tx'.tr(context: context),
-                      ProxyProfitSource.refundWithdrawal =>
+                      ProxyProfitSourceType.withdrawal =>
+                        'tx'.tr(context: context),
+                      ProxyProfitSourceType.refundWithdrawal =>
                         'txtk'.tr(context: context),
-                      ProxyProfitSource.agentCommission =>
+                      ProxyProfitSourceType.agentCommission =>
                         'dlfc'.tr(context: context),
                       _ => ''
                     },

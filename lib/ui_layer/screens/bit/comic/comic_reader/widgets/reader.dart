@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +15,10 @@ import '../../../../common_widgets/status/network_error.dart';
 import '../../../../theme.dart';
 import '../controller/chapter_reader_controller.dart';
 
-const _animationDuration = Duration(milliseconds: 150);
-
 class ChapterReader extends StatefulWidget {
   const ChapterReader({
     super.key,
-    required this.id,
+    required this.chapter,
     required this.onTogglePanelVisibility,
     required this.animationController,
     required this.chapterController,
@@ -29,7 +26,7 @@ class ChapterReader extends StatefulWidget {
     required this.isLatest,
     required this.isFirst,
   });
-  final int id;
+  final ComicChapterModel chapter;
   final VoidCallback onTogglePanelVisibility;
   final AnimationController animationController;
   final ChapterReaderController chapterController;
@@ -81,26 +78,34 @@ class _ChapterReaderState extends State<ChapterReader> {
       _asyncValue = const AsyncLoading();
     });
 
-    final result = await _domain.comicChapterDetail(id: widget.id);
-    if (!mounted) {
-      return;
+    List<ComicChapterPicModel>? chapterPics;
+
+    if (widget.chapter.pics == null) {
+      final result =
+          await _domain.comicChapterDetail(id: widget.chapter.id ?? 0);
+      chapterPics = result.data?.pics;
+      widget.chapter.pics = chapterPics;
+    } else {
+      chapterPics = widget.chapter.pics;
     }
 
-    if (result.data?.pics case final pics?) {
+    if (chapterPics case final pics?) {
       double maxH = 0;
       List<int> picHeights = [];
 
       for (final pic in pics) {
-        final picH = (1.sw / ((pic.thumbW ?? 0) / (pic.thumbH ?? 0))).toInt();
+        final picH = (1.sw / (pic.thumbW / pic.thumbH)).toInt();
         picHeights.add(picH);
         maxH += picH;
       }
-      chapterController
-          .setPicsHeight(maxH - 1.sh + headerWidgetHeight + footerWidgetHeight);
+      final picsHeight = maxH - 1.sh + headerWidgetHeight + footerWidgetHeight;
+
+      chapterController.setPicsHeight(picsHeight);
+      chapterController.setPicHeight(picsHeight / (pics.length - 1));
       _picHeights = picHeights;
-
-      progressNotifier.value = (1, pics.length);
-
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        progressNotifier.value = (1, pics.length);
+      });
       _asyncValue = AsyncData(pics);
     } else {
       _asyncValue = const AsyncError();
@@ -112,26 +117,6 @@ class _ChapterReaderState extends State<ChapterReader> {
   }
 
   Timer? scrollEndTimer;
-
-  void tapPrev() {
-    final nextOffset = scrollController.offset - 1.sh;
-    scrollController.animateTo(
-      max(nextOffset, 0),
-      duration: _animationDuration,
-      curve: Curves.linear,
-    );
-  }
-
-  void tapNext() {
-    if (chapterController.checkIsEnded()) return;
-    final nextOffset = scrollController.offset + 1.sh;
-
-    scrollController.animateTo(
-      min(nextOffset, chapterController.picsHeight),
-      duration: _animationDuration,
-      curve: Curves.linear,
-    );
-  }
 
   final menuController = MenuController();
 
@@ -205,7 +190,7 @@ class _ChapterReaderState extends State<ChapterReader> {
                 final pic = pics[i];
                 return SizedBox(
                   height: _picHeights[i].toDouble(),
-                  child: MyImage.network(pic.thumb ?? ''),
+                  child: MyImage.network(pic.thumb),
                 );
               },
             ),
@@ -236,7 +221,7 @@ class _ChapterReaderState extends State<ChapterReader> {
           child: GestureDetector(
             onTap: () {
               if (!isScrolling) {
-                tapPrev();
+                chapterController.tapPrev();
               }
             },
           ),
@@ -257,7 +242,7 @@ class _ChapterReaderState extends State<ChapterReader> {
                 if (chapterController.checkIsEnded()) {
                   widget.onNextChapter();
                 } else {
-                  tapNext();
+                  chapterController.tapNext();
                 }
               }
             },

@@ -152,27 +152,21 @@ class _CacheManager implements CacheDomain {
   }
 
   @override
-  Future<void> upsertComicReaderChapterIndex(Map<String, int> data) =>
-      appBox.upsert(_comicChapterKey, data);
+  Future<void> upsertComicReaderChapterIndex(String id, int index) =>
+      appBox.upsert(id, index);
 
   @override
-  Future<Map<String, int>> readComicReaderChapterIndex() async {
-    if (await appBox.read(_comicChapterKey) case final data?) {
-      return Map<String, int>.from(data);
-    }
-    return {};
+  Future<int?> readComicReaderChapterIndex(String id) async {
+    return await appBox.read(id);
   }
 
   @override
-  Future<void> upsertNovelReaderChapterIndex(Map<String, int> data) =>
-      appBox.upsert(_novelChapterKey, data);
+  Future<void> upsertNovelReaderChapterIndex(String id, int index) =>
+      appBox.upsert(id, index);
 
   @override
-  Future<Map<String, int>> readNovelReaderChapterIndex() async {
-    if (await appBox.read(_novelChapterKey) case final data?) {
-      return Map<String, int>.from(data);
-    }
-    return {};
+  Future<int?> readNovelReaderChapterIndex(String id) async {
+    return await appBox.read(id);
   }
 
   @override

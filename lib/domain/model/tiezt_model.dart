@@ -1,4 +1,4 @@
-import 'media_model.dart';
+import 'post/post_media_model.dart';
 import 'topic_model.dart';
 import 'user_model.dart';
 
@@ -45,7 +45,7 @@ class TieztModel {
   final int? xId;
   final UserModel? user;
   final TopicModel? topic;
-  final List<MediaModel>? medias;
+  final List<PostMediaModel>? medias;
 
   TieztModel({
     this.id,
@@ -141,6 +141,7 @@ class TieztModel {
             ? TopicModel.fromJson(json['topic'] as Map<String, dynamic>)
             : null,
         medias = (json['medias'] as List?)
-            ?.map((dynamic e) => MediaModel.fromJson(e as Map<String, dynamic>))
+            ?.map((dynamic e) =>
+                PostMediaModel.fromJson(e as Map<String, dynamic>))
             .toList();
 }

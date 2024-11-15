@@ -3,7 +3,6 @@ class MyImagePaths {
   static const appDlPenal = './assets/images/app_dl_penal.png';
   static const appMineHelp = './assets/images/app_mine_help.png';
   static const appFabuVideo = './assets/images/app_fabu_video.png';
-  static const appComicReaderMenu = './assets/images/app_comic_reader_menu.png';
   static const appCommunCmtN = './assets/images/app_commun_cmt_n.png';
   static const appMineJellyShareQrBg = './assets/images/app_mine_jelly_share_qr_bg.png';
   static const uploadFaceError1 = './assets/images/upload_face_error_1.png';
@@ -68,8 +67,10 @@ class MyImagePaths {
   static const appTabCircleN = './assets/images/app_tab_circle_n.png';
   static const appIssueArrow = './assets/images/app_issue_arrow.png';
   static const appShareUpBg = './assets/images/app_share_up_bg.png';
+  static const appNovelCollectOff = './assets/images/app_novel_collect_off.png';
   static const appGzIcon = './assets/images/app_gz_icon.png';
   static const appNavBackWN = './assets/images/app_nav_back_w_n.png';
+  static const appNovelCollectOn = './assets/images/app_novel_collect_on.png';
   static const appNovelFontsize0 = './assets/images/app_novel_fontsize0.png';
   static const appThumbUpOffIcon = './assets/images/app_thumb_up_off_icon.png';
   static const appMeOriginalN = './assets/images/app_me_original_n.png';
@@ -168,6 +169,7 @@ class MyImagePaths {
   static const uploadFaceRight = './assets/images/upload_face_right.png';
   static const appWdTopbgN = './assets/images/app_wd_topbg_n.png';
   static const appNovelLocation = './assets/images/app_novel_location.png';
+  static const appReaderMenu = './assets/images/app_reader_menu.png';
   static const appNavBottomIndicatorIcon = './assets/images/app_nav_bottom_indicator_icon.png';
   static const appNoNetwork = './assets/images/app_no_network.png';
   static const appMineMessageHighlight = './assets/images/app_mine_message_highlight.png';

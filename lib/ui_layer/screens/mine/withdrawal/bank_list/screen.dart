@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/domain.dart';
-import '../../../../../domain/model/bank_card_model.dart';
+import '../../../../../domain/model/mine/withdrawal/bank_card_model.dart';
 import '../../../../../domain/type_def.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
@@ -30,11 +30,11 @@ class _MineWithdrawalBankListScreenState
     extends State<MineWithdrawalBankListScreen> {
   late final userDomain = context.read<UserDomain>();
   final hasBankCardNotifier = ValueNotifier(true);
-  final selectedCardNotifier = ValueNotifier<BankCard?>(null);
+  final selectedCardNotifier = ValueNotifier<BankCardModel?>(null);
 
   final listViewKey = GlobalKey<MyListViewState>();
 
-  Future<List<BankCard>> getBankCardList({
+  Future<List<BankCardModel>> getBankCardList({
     required int currentPage,
     required int limit,
   }) async {
@@ -172,7 +172,7 @@ class _MineWithdrawalBankListScreenState
     }
   }
 
-  void _showDeleteBankCardDialog({required BankCard bankCard}) {
+  void _showDeleteBankCardDialog({required BankCardModel bankCard}) {
     MyDialog.showDialog(
       context: context,
       child: RegularDialog(
@@ -196,7 +196,7 @@ class _MineWithdrawalBankListScreenState
     );
   }
 
-  Future<void> _sendDeleteBankCard({required BankCard bankcard}) async {
+  Future<void> _sendDeleteBankCard({required BankCardModel bankcard}) async {
     try {
       MyToast.showLoading();
       final result = await userDomain.deleteBankCard(cardId: bankcard.id!);
@@ -318,7 +318,7 @@ class MyBankCard extends StatefulWidget {
     required this.selectedBankCardNotifier,
     required this.onDelete,
   });
-  final BankCard card;
+  final BankCardModel card;
   final ValueNotifier selectedBankCardNotifier;
   final GestureTapCallback onDelete;
   @override

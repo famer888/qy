@@ -7,13 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/api_validator.dart';
 import '../../../domain/domain.dart';
+import '../../../domain/model/post/circle/circle_post_nav_model.dart';
 import '../../notifiers/home_config_notifier.dart';
 import '../../notifiers/user_notifier.dart';
 import '../../router/routes.dart';
 import '../image_paths.dart';
 
 import '../../../domain/async_value.dart';
-import '../../../domain/model/community_nav_model.dart';
 import '../../router/router.dart';
 import '../common_widgets/my_image.dart';
 import '../common_widgets/my_tab_bar.dart';
@@ -154,7 +154,7 @@ class _Body extends StatefulWidget {
 
 class _BodyState extends State<_Body> {
   late final _appDomain = context.read<CommunityDomain>();
-  AsyncValue<List<CircleCommunityNavModel>> _asyncValue = const AsyncInit();
+  AsyncValue<List<CirclePostNavModel>> _asyncValue = const AsyncInit();
 
   @override
   void initState() {

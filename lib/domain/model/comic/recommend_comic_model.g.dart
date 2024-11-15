@@ -50,7 +50,7 @@ _$RecommendComicCardModelImpl _$$RecommendComicCardModelImplFromJson(
       json['title'] as String?,
       json['value'] as String?,
       (json['items'] as List<dynamic>?)
-          ?.map((e) => ComicItemsModel.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => ComicItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       $type: json['__type'] as String?,
     );

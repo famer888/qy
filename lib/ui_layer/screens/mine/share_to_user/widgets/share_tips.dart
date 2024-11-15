@@ -2,13 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../domain/model/proxy_detail_model.dart';
+import '../../../../../domain/model/mine/proxy/proxy_detail_model.dart';
 import '../../../theme.dart';
 
 class MineShareToUserTips extends StatelessWidget {
   const MineShareToUserTips({super.key, required this.proxyDetail});
 
-  final ProxyDetail? proxyDetail;
+  final ProxyDetailModel? proxyDetail;
 
   List textsWithMiddleKey({required String text, required String key}) {
     var results = text.split(key);

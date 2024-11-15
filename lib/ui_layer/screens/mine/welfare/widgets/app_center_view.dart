@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/async_value.dart';
 import '../../../../../domain/domain.dart';
-import '../../../../../domain/model/app_center_model.dart';
+import '../../../../../domain/model/mine/welfare/app_center_model.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/general_banner.dart';

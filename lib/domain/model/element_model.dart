@@ -19,21 +19,21 @@ class ElementModel {
     required this.value,
   });
 
-  int id;
-  int constructId;
-  int type;
-  int contentType;
-  String title;
-  int moreButton;
-  int morePageShowType;
-  int maxNum;
-  String? showField;
-  int changeButton;
-  int? sort;
-  int? status;
-  String? createdAt;
-  String? updatedAt;
-  List<LinkModel> value;
+  final int id;
+  final int constructId;
+  final int type;
+  final int contentType;
+  final String title;
+  final int moreButton;
+  final int morePageShowType;
+  final int maxNum;
+  final String? showField;
+  final int changeButton;
+  final int? sort;
+  final int? status;
+  final String? createdAt;
+  final String? updatedAt;
+  final List<LinkModel> value;
 
   factory ElementModel.fromJson(Map<String, dynamic> json) {
     return ElementModel(

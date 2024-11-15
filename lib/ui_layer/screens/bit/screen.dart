@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-
-import '../../../domain/async_value.dart';
-import '../../../domain/domain.dart';
-import '../../../domain/model/bit_nav_model.dart';
-import '../common_widgets/my_tab_bar.dart';
 import '../common_widgets/screen_background.dart';
-import '../common_widgets/status/loading.dart';
-import '../common_widgets/status/network_error.dart';
 import '../theme.dart';
 import 'comic/screen.dart';
-import 'content.dart';
 import 'live/screen.dart';
 import 'monitor/screen.dart';
+import 'novel/screen.dart';
+import 'seed/screen.dart';
 
 class BitScreen extends StatefulWidget {
   const BitScreen({super.key});
@@ -27,8 +20,8 @@ class _BitScreenState extends State<BitScreen> with TickerProviderStateMixin {
     '直播': const LiveScreen(),
     '监控': const MonitorScreen(),
     '漫画': const ComicScreen(),
-    '小说': const SizedBox(),
-    '种子': const _SeedScreen(),
+    '小说': const NovelScreen(),
+    '种子': const SeedScreen(),
   };
 
   late final tabController = TabController(
@@ -100,56 +93,6 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           }).toList(),
         ),
       ),
-    );
-  }
-}
-
-class _SeedScreen extends StatefulWidget {
-  const _SeedScreen();
-
-  @override
-  State<_SeedScreen> createState() => _SeedScreenState();
-}
-
-class _SeedScreenState extends State<_SeedScreen> {
-  late final _appDomain = context.read<SeedDomain>();
-
-  AsyncValue<List<BitNavModel>> _asyncValue = const AsyncInit();
-
-  @override
-  void initState() {
-    _init();
-    super.initState();
-  }
-
-  Future<void> _init() async {
-    if (_asyncValue.isLoading) return;
-    setState(() {
-      _asyncValue = const AsyncLoading();
-    });
-
-    final result = await _appDomain.reqGetPostBit();
-
-    if (result.data case final data?) {
-      _asyncValue = AsyncData(data);
-    } else {
-      _asyncValue = const AsyncError();
-    }
-
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _asyncValue.maybeWhen(
-      data: (data) => TabBarWithView.line(
-        titles: data.map((e) => e.name).toList(),
-        views: data.map((e) => BitContentView(nav: e)).toList(),
-      ),
-      error: (_, __) => NetworkErrorView(onTap: _init),
-      orElse: () => const LoadingView(),
     );
   }
 }

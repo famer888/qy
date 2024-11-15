@@ -73,18 +73,18 @@ abstract class LiveCacheDomain {
 
 abstract class ComicCacheDomain {
   /// 取得漫画阅读到第几章节
-  Future<Map<String, int>> readComicReaderChapterIndex();
+  Future<int?> readComicReaderChapterIndex(String id);
 
   /// 记录漫画阅读章节
-  Future<void> upsertComicReaderChapterIndex(Map<String, int> data);
+  Future<void> upsertComicReaderChapterIndex(String id, int index);
 }
 
 abstract class NovelCacheDomain {
   /// 取得小说阅读到第几章节
-  Future<Map<String, int>> readNovelReaderChapterIndex();
+  Future<int?> readNovelReaderChapterIndex(String id);
 
   /// 记录小说阅读章节
-  Future<void> upsertNovelReaderChapterIndex(Map<String, int> data);
+  Future<void> upsertNovelReaderChapterIndex(String id, int index);
 
   /// 取得小说字体设置大小
   Future<double> readNovelReaderFontSize();

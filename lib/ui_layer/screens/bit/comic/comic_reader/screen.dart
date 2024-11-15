@@ -43,7 +43,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen>
   );
 
   late final comicPageController = PageController(
-    initialPage: comicChangeNotifier.currentChapterIndex,
+    initialPage: comicChangeNotifier.currentChapterIndex ?? 0,
   );
 
   final chapterController = ChapterReaderController();
@@ -85,7 +85,8 @@ class _ComicReaderScreenState extends State<ComicReaderScreen>
               child: Row(
                 children: [
                   Selector<ComicChangeNotifier, int>(
-                    selector: (_, notifier) => notifier.currentChapterIndex,
+                    selector: (_, notifier) =>
+                        notifier.currentChapterIndex ?? 0,
                     builder: (_, index, __) {
                       return Flexible(
                         child: Text(
@@ -173,7 +174,6 @@ class _ComicReaderScreenState extends State<ComicReaderScreen>
                   onTap: onTogglePanelVisibility,
                   child: PayView(
                     chapter: chapter,
-                    chapterIndex: index,
                     onPaid: () {
                       chapter.isPay = 1;
                       setState(() {});
@@ -186,7 +186,7 @@ class _ComicReaderScreenState extends State<ComicReaderScreen>
               final isLatest = index == chapters.length - 1;
               return ChapterReader(
                 animationController: panelAnimationController,
-                id: chapter.id ?? 0,
+                chapter: chapter,
                 onTogglePanelVisibility: onTogglePanelVisibility,
                 chapterController: chapterController,
                 isFirst: isFirst,
@@ -218,12 +218,10 @@ class PayView extends StatelessWidget {
   const PayView({
     super.key,
     required this.chapter,
-    required this.chapterIndex,
     required this.onPaid,
   });
 
   final ComicChapterModel chapter;
-  final int chapterIndex;
   final VoidCallback onPaid;
 
   @override
@@ -241,7 +239,12 @@ class PayView extends StatelessWidget {
       return Align(
         alignment: const Alignment(0, -0.1),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding * 2),
+          padding: EdgeInsets.only(bottom: MyTheme.pagePadding * 2),
+          margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding * 2),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -259,14 +262,14 @@ class PayView extends StatelessWidget {
                     Text(
                       'dqtjxhfajb'
                           .tr(namedArgs: {'amount': '1'}, context: context),
-                      style: MyTheme.white16medium,
+                      style: MyTheme.black16bold,
                       maxLines: 10,
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 10.w),
                     Text(
                       "${'ktvpzk'.tr(context: context)}：$money",
-                      style: MyTheme.white16medium,
+                      style: MyTheme.black16bold,
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -329,7 +332,12 @@ class PayView extends StatelessWidget {
     return Align(
       alignment: const Alignment(0, -0.1),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding * 2),
+        padding: EdgeInsets.only(bottom: MyTheme.pagePadding * 2),
+        margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding * 2),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -343,7 +351,7 @@ class PayView extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: MyTheme.pagePadding * 2),
               child: Text(
                 payTip.trim().isEmpty ? 'gmvkwz'.tr(context: context) : payTip,
-                style: MyTheme.white16medium,
+                style: MyTheme.black16bold,
                 maxLines: 10,
                 textAlign: TextAlign.center,
               ),

@@ -13,7 +13,7 @@ class ComicItemCard extends StatelessWidget {
 
   static const aspectRatio = 110 / 195;
 
-  final ComicItemsModel data;
+  final ComicItemModel data;
 
   String get imageUrl => CommonUtils.getThumb(data.toJson());
 

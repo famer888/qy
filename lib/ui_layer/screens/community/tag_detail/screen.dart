@@ -7,7 +7,7 @@ import '../../../../domain/api_validator.dart';
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/navigator_model.dart';
-import '../../../../domain/model/post_model.dart';
+import '../../../../domain/model/post/post_model.dart';
 import '../../../../domain/model/topic_model.dart';
 import '../../../../domain/type_def.dart';
 import '../../../notifiers/home_config_notifier.dart';
@@ -120,7 +120,7 @@ class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
                       contentPadding: 15.w,
                       padding:
                           EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
-                      itemBuilder: (context, item, index) => PostCard.community(
+                      itemBuilder: (context, item, index) => PostCard(
                         data: item,
                       ),
                       onFetchingMore: (currentPage, pageSize) => _getData(

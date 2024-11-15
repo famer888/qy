@@ -178,7 +178,7 @@ class _$RecommendComicCardModelImpl implements RecommendComicCardModel {
   @override
   String? value;
   @override
-  List<ComicItemsModel>? items;
+  List<ComicItemModel>? items;
 
   @JsonKey(name: '__type')
   final String $type;
@@ -207,7 +207,7 @@ class _$RecommendComicCardModelImpl implements RecommendComicCardModel {
 
 abstract class RecommendComicCardModel implements RecommendComicModel {
   factory RecommendComicCardModel(
-          String? title, String? value, List<ComicItemsModel>? items) =
+          String? title, String? value, List<ComicItemModel>? items) =
       _$RecommendComicCardModelImpl;
 
   factory RecommendComicCardModel.fromJson(Map<String, dynamic> json) =
@@ -217,6 +217,6 @@ abstract class RecommendComicCardModel implements RecommendComicModel {
   set title(String? value);
   String? get value;
   set value(String? value);
-  List<ComicItemsModel>? get items;
-  set items(List<ComicItemsModel>? value);
+  List<ComicItemModel>? get items;
+  set items(List<ComicItemModel>? value);
 }

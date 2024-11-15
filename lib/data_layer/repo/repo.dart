@@ -17,42 +17,45 @@ import '../../app_config.dart';
 import '../../crypto.dart';
 import '../../domain/enum.dart';
 import '../../domain/model/ai/ai_model.dart';
-import '../../domain/model/app_center_model.dart';
-import '../../domain/model/bank_card_model.dart';
-import '../../domain/model/bit_detail_model.dart';
-import '../../domain/model/bit_nav_model.dart';
-import '../../domain/model/cash_withdraw_rule_model.dart';
-import '../../domain/model/coin_detail_model.dart';
-import '../../domain/model/collection_model.dart';
+import '../../domain/model/mine/following/following_user_list_model.dart';
+import '../../domain/model/mine/post/mine_post_list_model.dart';
+import '../../domain/model/mine/proxy/proxy_detail_model.dart';
+import '../../domain/model/mine/proxy/proxy_invite_record_model.dart';
+import '../../domain/model/mine/proxy/proxy_profit_model.dart';
+import '../../domain/model/mine/video/mine_video_list_model.dart';
+import '../../domain/model/mine/welfare/app_center_model.dart';
+import '../../domain/model/mine/withdrawal/bank_card_list_model.dart';
+import '../../domain/model/novel/novel_item_model.dart';
+import '../../domain/model/post/circle/circle_post_nav_model.dart';
+import '../../domain/model/seed/seed_detail_model.dart';
+import '../../domain/model/seed/seed_nav_model.dart';
+import '../../domain/model/mine/withdrawal/withdraw_rule_model.dart';
+import '../../domain/model/mine/coin_recharge/coin_recharge_detail_model.dart';
 import '../../domain/model/comic/comic_item_model.dart';
 import '../../domain/model/comic/comic_model.dart';
-import '../../domain/model/community_nav_model.dart';
-import '../../domain/model/community_with_banner_model.dart';
-import '../../domain/model/creator_info_model.dart';
+import '../../domain/model/post/community/community_post_nav_model.dart';
+import '../../domain/model/post/posts_with_banners_model.dart';
+import '../../domain/model/post/post_creator_info_model.dart';
 import '../../domain/model/element_model.dart';
-import '../../domain/model/exp_of_vip_model.dart';
+import '../../domain/model/mine/vip/exp_of_vip_model.dart';
+import '../../domain/model/seed/seed_posts_with_banners_model.dart';
 import '../../domain/model/video/recommend_video_with_banners_model.dart';
 import '../../domain/model/video/video_model.dart';
-import '../../domain/model/feedback_data_model.dart';
-import '../../domain/model/follow_user_model.dart';
+import '../../domain/model/mine/feedback_message/feedback_message_model.dart';
 import '../../domain/model/home_data_model.dart';
-import '../../domain/model/income_detail_data_model.dart';
+import '../../domain/model/mine/income/mine_income_detail_list_model.dart';
 import '../../domain/model/live/live_video_detail_data.dart';
 import '../../domain/model/live/live_with_banners_model.dart';
 import '../../domain/model/member_model.dart';
-import '../../domain/model/mine_withdrawal_record_model.dart';
+import '../../domain/model/mine/withdrawal/withdraw_record_model.dart';
 import '../../domain/model/monitor/monitor_video_detail_data.dart';
 import '../../domain/model/monitor/monitor_with_banners_model.dart';
 import '../../domain/model/notice_message.dart';
 import '../../domain/model/novel/novel_model.dart';
-import '../../domain/model/official_group_model.dart';
+import '../../domain/model/mine/official_group/official_group_model.dart';
 import '../../domain/model/order_model.dart';
-import '../../domain/model/post_model.dart';
-import '../../domain/model/posts_with_banners_model.dart';
+import '../../domain/model/post/post_model.dart';
 import '../../domain/model/product_vip_coin_model.dart';
-import '../../domain/model/proxy_detail_model.dart';
-import '../../domain/model/proxy_invite_record_model.dart';
-import '../../domain/model/proxy_profit_model.dart';
 import '../../domain/model/review_data_model.dart';
 import '../../domain/model/search_model.dart';
 import '../../domain/model/system_notice_model.dart';
@@ -62,7 +65,7 @@ import '../../domain/model/topic_model.dart';
 import '../../domain/model/topics_with_banners_model.dart';
 import '../../domain/model/video_comment_model.dart';
 import '../../domain/model/video_detail_model.dart';
-import '../../domain/model/welfare_task_model.dart';
+import '../../domain/model/mine/welfare/welfare_task_list_model.dart';
 
 import '../../domain/remote_domain/domains/ai.dart';
 import '../../domain/remote_domain/domains/comic.dart';
@@ -478,7 +481,27 @@ abstract class _BaseAppRepo implements AppDomain {
           {required String urlPath,
           required String savePath,
           ProgressCallback? onReceiveProgress}) =>
-      _dio.download(urlPath, savePath, onReceiveProgress: onReceiveProgress);
+      _dio.download(
+        urlPath,
+        savePath,
+        onReceiveProgress: onReceiveProgress,
+      );
+
+  @override
+  Future<Uint8List> downloadDataByte(
+      {required String urlPath, ProgressCallback? onReceiveProgress}) async {
+    final result = await _dio.get(
+      urlPath,
+      onReceiveProgress: onReceiveProgress,
+      options: Options(
+        responseType: ResponseType.bytes,
+        validateStatus: (status) {
+          return (status ?? 0) < 500;
+        },
+      ),
+    );
+    return result.data;
+  }
 }
 
 extension _MapHelper on Map {

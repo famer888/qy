@@ -52,10 +52,10 @@ class AppRouterPaths {
   static const bitPostDetail = '/bitPostDetail/:id';
 
   /// 我的 - VIP充值
-  static const mineVipCenter = '/mineVipCenter';
+  static const mineVipCenter = '/vip';
 
   /// 我的 - 金币充值
-  static const mineCoinRecharge = '/mineCoinRecharge';
+  static const mineCoinRecharge = '/coinRecharge';
 
   /// 我的 - 金币明细
   static const mineCoinDetail = '/mineCoinDetail';
@@ -159,26 +159,52 @@ class AppRouterPaths {
   /// 监控视频详情页
   static const monitorVideoDetail = '/monitorVideoDetail';
 
-  /// 更多漫画列表
+  /// 漫画
+  // 更多漫画列表
   static const moreComic = '/moreComic/:title/:sort';
 
-  /// 分类漫画列表
+  // 分类漫画列表
   static const sortComic = '/sortComic';
 
-  /// 最新漫画列表
+  // 最新漫画列表
   static const newComic = '/newComic';
 
-  /// 完结漫画列表
+  // 完结漫画列表
   static const endComic = '/endComic';
 
-  /// 排行榜漫画列表
+  // 排行榜漫画列表
   static const rankComic = '/rankComic';
 
-  /// 漫画详情
+  // 漫画详情
   static const comicDetail = '/comicDetail';
 
-  /// 漫画阅读界面
+  // 漫画阅读界面
   static const comicReader = '/comicReader';
+
+  /// 小说
+  // 小说详情
+  static const novelDetail = '/novelDetail';
+
+  // 小说全部章节
+  static const novelChapters = '/novelChapters';
+
+  // 小说阅读界面
+  static const novelReader = '/novelReader';
+
+  // 更多小说列表
+  static const moreNovel = '/moreNovel/:title/:sort';
+
+  // 小说分类列表
+  static const novelSort = '/novelSort';
+
+  // 小说最新列表
+  static const novelNew = '/novelNew';
+
+  // 小说连载列表
+  static const noveUpdating = '/noveUpdating';
+
+  // 小说完结列表
+  static const novelEnd = '/novelEnd';
 
   /// ai科技
   static const aiService = '/aiService';

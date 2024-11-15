@@ -1,9 +1,9 @@
 import '../../enum.dart';
-import '../../model/bank_card_model.dart';
-import '../../model/coin_detail_model.dart';
-import '../../model/follow_user_model.dart';
-import '../../model/income_detail_data_model.dart';
+import '../../model/mine/coin_recharge/coin_recharge_detail_model.dart';
+import '../../model/mine/income/mine_income_detail_list_model.dart';
 import '../../model/member_model.dart';
+import '../../model/mine/following/following_user_list_model.dart';
+import '../../model/mine/withdrawal/bank_card_list_model.dart';
 import '../../model/tiezt_model.dart';
 import '../../type_def.dart';
 
@@ -25,14 +25,14 @@ abstract class UserDomain {
   AsyncResult sendInvitation({required String affCode});
 
   /// 金币明细
-  AsyncResult<List<CoinDetail>> getMoneyDetailList({
+  AsyncResult<List<CoinRechargeDetailModel>> getMoneyDetailList({
     required int page,
     required MyCoinFilterType type,
     required int limit,
   });
 
   /// 提现  银行卡列表
-  AsyncResult<BankList> getBankCardList({
+  AsyncResult<BankCardListModel> getBankCardList({
     required int page,
     required int limit,
   });
@@ -47,7 +47,7 @@ abstract class UserDomain {
   AsyncJson deleteBankCard({required int cardId});
 
   /// 收益汇总
-  AsyncResult<MineIncomeDetailData> getEarnTotalInfo({
+  AsyncResult<MineIncomeDetailListModel> getEarnTotalInfo({
     String source = '',
     required int page,
     required int limit,
@@ -73,14 +73,14 @@ abstract class UserDomain {
   AsyncResult userFavorites({required int type, required int id});
 
   /// 收藏/取消收藏,
-  AsyncResult toggleUserFavorite({required MyModuleType type, required int id});
+  AsyncResult toggleUserFavorite({required ModuleType type, required int id});
 
   /// 评论点赞/取消点赞
   AsyncResult toggleUserCommentLike(
-      {required MyModuleType type, required int id});
+      {required ModuleType type, required int id});
 
   /// 点赞/取消点赞
-  AsyncResult toggleUserLike({required MyModuleType type, required int id});
+  AsyncResult toggleUserLike({required ModuleType type, required int id});
 
   /// 我购买的
   AsyncResult getPurchasedList({
@@ -90,7 +90,7 @@ abstract class UserDomain {
   });
 
   /// 我的关注
-  AsyncResult<FollowingUser> getFollowList({
+  AsyncResult<FollowingUserListModel> getFollowList({
     required int page,
     required int limit,
     required String lastIx,

@@ -6,36 +6,30 @@ import '../../../../../../domain/model/comic/comic_model.dart';
 import '../../../../utils/debounce.dart';
 
 class ComicChangeNotifier extends ChangeNotifier {
-  ComicChangeNotifier(this._cache, this._userDomain) {
-    _init();
-  }
+  ComicChangeNotifier(this._cache, this._userDomain);
 
   final _debounce = Debounce();
   final UserDomain _userDomain;
   final ComicCacheDomain _cache;
-  final _currentChapterIndexMap = <String, int>{};
+  int? _currentChapterIndex;
 
-  int get currentChapterIndex =>
-      _currentChapterIndexMap['${currentComic.id}'] ?? 0;
+  int? get currentChapterIndex => _currentChapterIndex;
 
   ComicDetailModel get currentComic => _currentComic;
 
   late ComicDetailModel _currentComic;
 
-  void _init() async {
-    _currentChapterIndexMap.addAll(await _cache.readComicReaderChapterIndex());
-    notifyListeners();
-  }
-
   setCurrentChapterIndex(int index) {
-    _currentChapterIndexMap['${_currentComic.id}'] = index;
-    _cache.upsertComicReaderChapterIndex({..._currentChapterIndexMap});
+    _currentChapterIndex = index;
+    _cache.upsertComicReaderChapterIndex('${_currentComic.id}', index);
 
     notifyListeners();
   }
 
-  setCurrentComic(ComicDetailModel data) {
+  setCurrentComic(ComicDetailModel data) async {
     _currentComic = data;
+    _currentChapterIndex =
+        await _cache.readComicReaderChapterIndex('${_currentComic.id}');
     notifyListeners();
   }
 
@@ -44,7 +38,7 @@ class ComicChangeNotifier extends ChangeNotifier {
     final newValue = oldValue == 0 ? 1 : 0;
     _changeFavorite(newValue);
 
-    final id = currentComic.id ?? 0;
+    final id = currentComic.id;
 
     if (_debounce.containsKey('$id')) {
       _debounce.cancelAndRemove('$id');
@@ -53,7 +47,7 @@ class ComicChangeNotifier extends ChangeNotifier {
         id: '$id',
         action: () async {
           final result = await _userDomain.toggleUserFavorite(
-              type: MyModuleType.comic, id: id);
+              type: ModuleType.comic, id: id);
           if (!result.isValid) {
             _changeFavorite(oldValue);
           }

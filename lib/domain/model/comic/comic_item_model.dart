@@ -1,4 +1,4 @@
-class ComicItemsModel {
+class ComicItemModel {
   final int? id;
   final String? themeIds;
   final String? cover;
@@ -10,7 +10,7 @@ class ComicItemsModel {
   final int? viewFct;
   final String? intro;
 
-  ComicItemsModel({
+  ComicItemModel({
     this.id,
     this.themeIds,
     this.title,
@@ -23,8 +23,7 @@ class ComicItemsModel {
     this.intro,
   });
 
-  factory ComicItemsModel.fromJson(Map<String, dynamic> json) =>
-      ComicItemsModel(
+  factory ComicItemModel.fromJson(Map<String, dynamic> json) => ComicItemModel(
         id: json['id'],
         themeIds: json['theme_ids'],
         title: json['title'],

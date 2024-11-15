@@ -14,24 +14,23 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
       _communityService.buyPostTutorials(id: id).deserialize().guard;
 
   @override
-  AsyncResult<List<CircleCommunityNavModel>> reqGetCircleNav(
-          {String type = ''}) =>
+  AsyncResult<List<CirclePostNavModel>> reqGetCircleNav({String type = ''}) =>
       _communityService
           .reqGetCircleNav(type: type)
           .deserializeJsonListBy(
-              (e) => e.map(CircleCommunityNavModel.fromJson).toList())
+              (e) => e.map(CirclePostNavModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<CommunityNavModel>> reqGetPostNav({String type = ''}) =>
+  AsyncResult<List<CommunityPostNavModel>> reqGetPostNav({String type = ''}) =>
       _communityService
           .reqGetPostNav(type: type)
           .deserializeJsonListBy(
-              (e) => e.map(CommunityNavModel.fromJson).toList())
+              (e) => e.map(CommunityPostNavModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<CommunityWithBannerModel> communitySortList({
+  AsyncResult<PostsWithBannersModel> communitySortList({
     required int id,
     required String sort,
     required int page,
@@ -39,11 +38,11 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
   }) =>
       _communityService
           .communitySortList(id: id, sort: sort, page: page, limit: limit)
-          .deserializeJsonBy(CommunityWithBannerModel.fromJson)
+          .deserializeJsonBy(PostsWithBannersModel.fromJson)
           .guard;
 
   @override
-  AsyncResult<CommunityWithBannerModel> circleSortList({
+  AsyncResult<PostsWithBannersModel> circleSortList({
     required int id,
     required String sort,
     required int page,
@@ -51,17 +50,17 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
   }) =>
       _communityService
           .circleSortList(id: id, sort: sort, page: page, limit: limit)
-          .deserializeJsonBy(CommunityWithBannerModel.fromJson)
+          .deserializeJsonBy(PostsWithBannersModel.fromJson)
           .guard;
 
   @override
-  AsyncResult<CommunityWithBannerModel> communityAiList({
+  AsyncResult<PostsWithBannersModel> communityAiList({
     required int page,
     required int limit,
   }) =>
       _communityService
           .communityAiList(page: page, limit: limit)
-          .deserializeJsonBy(CommunityWithBannerModel.fromJson)
+          .deserializeJsonBy(PostsWithBannersModel.fromJson)
           .guard;
 
   @override
@@ -160,10 +159,10 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .guard;
 
   @override
-  AsyncResult<CreatorInfo> peerCenterInfo({required String aff}) =>
+  AsyncResult<PostCreatorInfoModel> peerCenterInfo({required String aff}) =>
       _communityService
           .peerCenterInfo(aff: aff)
-          .deserializeJsonBy(CreatorInfo.fromJson)
+          .deserializeJsonBy(PostCreatorInfoModel.fromJson)
           .guard;
 
   @override

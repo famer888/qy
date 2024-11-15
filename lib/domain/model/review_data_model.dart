@@ -1,4 +1,4 @@
-import 'media_model.dart';
+import 'post/post_media_model.dart';
 import 'user_model.dart';
 
 class ReviewData {
@@ -23,7 +23,7 @@ class ReviewData {
   int? isLike;
   final int? isLandlord;
   final List<ReviewData>? comments;
-  final List<MediaModel>? medias;
+  final List<PostMediaModel>? medias;
   final UserModel? user;
 
   ReviewData({
@@ -78,7 +78,7 @@ class ReviewData {
           ? []
           : List.from(json['comments']!.map((e) => ReviewData.fromJson(e))),
       medias: json['medias'] != null
-          ? List.from(json['medias'].map((e) => MediaModel.fromJson(e)))
+          ? List.from(json['medias'].map((e) => PostMediaModel.fromJson(e)))
           : null,
       user: json['user'] == null ? null : UserModel.fromJson(json['user']),
     );
@@ -106,7 +106,7 @@ class ReviewData {
     int? isLike,
     int? isLandlord,
     List<ReviewData>? comments,
-    List<MediaModel>? medias,
+    List<PostMediaModel>? medias,
     UserModel? user,
   }) {
     return ReviewData(

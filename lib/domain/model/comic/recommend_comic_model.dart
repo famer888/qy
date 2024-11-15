@@ -36,7 +36,7 @@ class RecommendComicModel with _$RecommendComicModel {
   factory RecommendComicModel.comic(
     String? title,
     String? value,
-    List<ComicItemsModel>? items,
+    List<ComicItemModel>? items,
   ) = RecommendComicCardModel;
 
   factory RecommendComicModel.fromJson(Map<String, dynamic> json) {

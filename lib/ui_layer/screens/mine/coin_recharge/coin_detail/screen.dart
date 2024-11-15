@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/domain.dart';
 import '../../../../../domain/enum.dart';
-import '../../../../../domain/model/coin_detail_model.dart';
+import '../../../../../domain/model/mine/coin_recharge/coin_recharge_detail_model.dart';
 import '../../../common_widgets/my_app_bar.dart';
 import '../../../common_widgets/my_list_view.dart';
 import '../../../common_widgets/screen_background.dart';
@@ -30,7 +30,7 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
   MyCoinFilterType filterType = MyCoinFilterType.all;
   ValueNotifier<bool> showFilterNotifier = ValueNotifier(false);
 
-  Future<List<CoinDetail>> _getData({
+  Future<List<CoinRechargeDetailModel>> _getData({
     required int currentPage,
     required int limit,
   }) async {
@@ -72,7 +72,7 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
         body: Stack(
           clipBehavior: Clip.none,
           children: [
-            MyListView<CoinDetail>.list(
+            MyListView<CoinRechargeDetailModel>.list(
               key: ValueKey(filterType),
               padding: EdgeInsets.all(MyTheme.pagePadding),
               contentPadding: 16.w,
@@ -127,7 +127,7 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
 
 class _CoinItem extends StatelessWidget {
   const _CoinItem({required this.item});
-  final CoinDetail item;
+  final CoinRechargeDetailModel item;
 
   @override
   Widget build(BuildContext context) {

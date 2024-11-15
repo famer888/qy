@@ -2,11 +2,12 @@
 import '../banner_model.dart';
 import '../part_nav_model.dart';
 import '../tip_model.dart';
+import '../video_comment_model.dart';
 import 'comic_item_model.dart';
 import 'recommend_comic_model.dart';
 
 class ComicWithBannersModel {
-  final List<ComicItemsModel>? comics;
+  final List<ComicItemModel>? comics;
   final List<BannerModel>? banner;
   final List<TipModel>? tips;
 
@@ -14,8 +15,8 @@ class ComicWithBannersModel {
 
   factory ComicWithBannersModel.fromJson(Map<String, dynamic> json) =>
       ComicWithBannersModel(
-        comics: List<ComicItemsModel>.from(
-            json['comics'].map((e) => ComicItemsModel.fromJson(e))),
+        comics: List<ComicItemModel>.from(
+            json['comics'].map((e) => ComicItemModel.fromJson(e))),
         banner: List<BannerModel>.from(
             json['banner'].map((e) => BannerModel.fromJson(e))),
         tips:
@@ -63,14 +64,14 @@ class ComicDetailWithBannersModel {
     required this.detail,
   });
 
-  final List<ComicItemsModel> recommend;
+  final List<ComicItemModel> recommend;
   final List<BannerModel> banner;
   final ComicDetailModel detail;
 
   factory ComicDetailWithBannersModel.fromJson(Map<String, dynamic> json) =>
       ComicDetailWithBannersModel(
-        recommend: List<ComicItemsModel>.from(
-            json['recommend'].map((e) => ComicItemsModel.fromJson(e)) ?? []),
+        recommend: List<ComicItemModel>.from(
+            json['recommend'].map((e) => ComicItemModel.fromJson(e)) ?? []),
         banner: List<BannerModel>.from(
             json['banner'].map((e) => BannerModel.fromJson(e)) ?? []),
         detail: ComicDetailModel.fromJson(json['detail']),
@@ -78,89 +79,60 @@ class ComicDetailWithBannersModel {
 }
 
 class ComicDetailModel {
-  final int? id;
-  final String? title;
+  final int id;
+  final String title;
   final String? cover;
-  final int? chapterCt; //总章节数
-  final String? themeIds;
-  final String? createdAt;
-  final int? viewFct;
-  final int? viewCt;
+  final int chapterCt; //总章节数
+  final int viewFct;
+  final int viewCt;
   int favoriteFct;
-  final String? renewedAt;
-  final int? commentCt;
-  final String? tag;
-  final int? isEnd;
-  final String? intro;
+  final int commentCt;
+  final String tag;
+  final int isEnd;
+  final String intro;
   int isFavorite;
-  int? isLike;
-  int? likeFct;
+  int isLike;
+  int likeFct;
   final List<ComicChapterModel> chapters;
+  final List<CommentModel> comments = [];
 
   ComicDetailModel({
-    this.id,
-    this.title,
+    required this.id,
+    required this.title,
     this.cover,
-    this.chapterCt,
-    this.themeIds,
-    this.createdAt,
-    this.viewFct,
-    this.viewCt,
+    required this.chapterCt,
+    required this.viewFct,
+    required this.viewCt,
     required this.favoriteFct,
-    this.renewedAt,
-    this.commentCt,
-    this.tag,
-    this.isEnd,
-    this.intro,
+    required this.commentCt,
+    required this.tag,
+    required this.isEnd,
+    required this.intro,
     required this.isFavorite,
-    this.isLike,
-    this.likeFct,
+    required this.isLike,
+    required this.likeFct,
     required this.chapters,
   });
 
   factory ComicDetailModel.fromJson(Map<String, dynamic> json) =>
       ComicDetailModel(
-        id: json['id'],
-        title: json['title'],
+        id: json['id'] ?? 0,
+        title: json['title'] ?? '',
         cover: json['cover'],
-        chapterCt: json['chapter_ct'],
-        themeIds: json['theme_ids'],
-        createdAt: json['created_at'],
-        viewFct: json['view_fct'],
-        viewCt: json['view_ct'],
+        chapterCt: json['chapter_ct'] ?? 0,
+        viewFct: json['view_fct'] ?? 0,
+        viewCt: json['view_ct'] ?? 0,
         favoriteFct: json['favorite_fct'] ?? 0,
-        renewedAt: json['renewed_at'],
-        commentCt: json['comment_ct'],
-        tag: json['tag'],
-        isEnd: json['is_end'],
-        intro: json['intro'],
+        commentCt: json['comment_ct'] ?? 0,
+        tag: json['tag'] ?? '',
+        isEnd: json['is_end'] ?? 0,
+        intro: json['intro'] ?? '',
         isFavorite: json['is_favorite'] ?? 0,
-        isLike: json['is_like'],
-        likeFct: json['like_fct'],
+        isLike: json['is_like'] ?? 0,
+        likeFct: json['like_fct'] ?? 0,
         chapters: List<ComicChapterModel>.from(
-            json['chapters'].map((e) => ComicChapterModel.fromJson(e)) ?? []),
+            json['chapters']?.map((e) => ComicChapterModel.fromJson(e)) ?? []),
       );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'cover': cover,
-        'chapter_ct': chapterCt,
-        'theme_ids': themeIds,
-        'created_at': createdAt,
-        'view_fct': viewFct,
-        'view_ct': viewCt,
-        'favorite_fct': favoriteFct,
-        'renewed_at': renewedAt,
-        'comment_ct': commentCt,
-        'tag': tag,
-        'is_end': isEnd,
-        'intro': intro,
-        'is_favorite': isFavorite,
-        'is_like': isLike,
-        'like_fct': likeFct,
-        'chapters': chapters,
-      };
 }
 
 class ComicChapterModel {
@@ -172,6 +144,8 @@ class ComicChapterModel {
   int isPay;
   final String? payTip;
   final String? cover; //章节封面
+
+  List<ComicChapterPicModel>? pics;
 
   ComicChapterModel({
     this.pId,

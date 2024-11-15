@@ -16,7 +16,7 @@ import '../../../../domain/api_validator.dart';
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/member_model.dart';
-import '../../../../domain/model/proxy_detail_model.dart';
+import '../../../../domain/model/mine/proxy/proxy_detail_model.dart';
 import '../../../notifiers/home_config_notifier.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../router/routes.dart';
@@ -44,7 +44,7 @@ class _MineShareToUserScreenState extends State<MineShareToUserScreen> {
   late final proxyDomain = context.read<ProxyDomain>();
   late final member = context.read<UserNotifier>().member;
 
-  AsyncValue<ProxyDetail?> _asyncValue = const AsyncInit();
+  AsyncValue<ProxyDetailModel?> _asyncValue = const AsyncInit();
 
   /// 是否显示申请页面
   bool showApplyPage = false;
@@ -272,7 +272,7 @@ class _Body extends StatefulWidget {
   const _Body({
     this.proxyDetail,
   });
-  final ProxyDetail? proxyDetail;
+  final ProxyDetailModel? proxyDetail;
   @override
   State<_Body> createState() => _BodyState();
 }
@@ -281,7 +281,7 @@ class _BodyState extends State<_Body> {
   final snapShotViewKey = GlobalKey();
   late final config = context.read<HomeConfigNotifier>().config;
   late final member = context.read<UserNotifier>().member;
-  ProxyDetail? get proxyDetail => widget.proxyDetail;
+  ProxyDetailModel? get proxyDetail => widget.proxyDetail;
   int? get directProxyNum => proxyDetail?.directProxyNum;
 
   /// 复制链接分享

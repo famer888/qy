@@ -1,8 +1,9 @@
 import '../../enum.dart';
-import '../../model/community_nav_model.dart';
-import '../../model/community_with_banner_model.dart';
-import '../../model/creator_info_model.dart';
-import '../../model/post_model.dart';
+import '../../model/post/circle/circle_post_nav_model.dart';
+import '../../model/post/community/community_post_nav_model.dart';
+import '../../model/post/post_creator_info_model.dart';
+import '../../model/post/posts_with_banners_model.dart';
+import '../../model/post/post_model.dart';
 import '../../model/review_data_model.dart';
 import '../../model/tiezt_model.dart';
 import '../../model/topic_detail_model.dart';
@@ -21,14 +22,13 @@ abstract class CommunityDomain {
   AsyncResult buyPostTutorials({required int id});
 
   /// 获取帖子导航
-  AsyncResult<List<CommunityNavModel>> reqGetPostNav({String type = ''});
+  AsyncResult<List<CommunityPostNavModel>> reqGetPostNav({String type = ''});
 
   /// 获取圈子导航
-  AsyncResult<List<CircleCommunityNavModel>> reqGetCircleNav(
-      {String type = ''});
+  AsyncResult<List<CirclePostNavModel>> reqGetCircleNav({String type = ''});
 
   /// 社区排序列表
-  AsyncResult<CommunityWithBannerModel> communitySortList({
+  AsyncResult<PostsWithBannersModel> communitySortList({
     required int id,
     required String sort,
     required int page,
@@ -36,7 +36,7 @@ abstract class CommunityDomain {
   });
 
   /// 圈子排序列表
-  AsyncResult<CommunityWithBannerModel> circleSortList({
+  AsyncResult<PostsWithBannersModel> circleSortList({
     required int id,
     required String sort,
     required int page,
@@ -44,7 +44,7 @@ abstract class CommunityDomain {
   });
 
   /// AI排序列表
-  AsyncResult<CommunityWithBannerModel> communityAiList({
+  AsyncResult<PostsWithBannersModel> communityAiList({
     required int page,
     required int limit,
   });
@@ -111,7 +111,7 @@ abstract class CommunityDomain {
   });
 
   /// 他人中心
-  AsyncResult<CreatorInfo> peerCenterInfo({required String aff});
+  AsyncResult<PostCreatorInfoModel> peerCenterInfo({required String aff});
 
   /// 关注话题
   AsyncResult<List<TopicModel>> focusTops({

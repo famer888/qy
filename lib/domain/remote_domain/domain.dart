@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cross_file/cross_file.dart';
 import 'package:dio/dio.dart';
 
@@ -77,6 +79,11 @@ abstract class RemoteDomain
   Future<Response> downloadApk({
     required String urlPath,
     required String savePath,
+    ProgressCallback? onReceiveProgress,
+  });
+
+  Future<Uint8List> downloadDataByte({
+    required String urlPath,
     ProgressCallback? onReceiveProgress,
   });
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../domain/enum.dart';
-import '../../../../../domain/model/media_model.dart';
+import '../../../../../domain/model/post/post_media_model.dart';
 import '../../../../router/routes.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../image_paths.dart';
@@ -15,7 +15,7 @@ import '../../my_image.dart';
 class PostMediaView extends StatelessWidget {
   const PostMediaView(
       {super.key, required this.medias, required this.unlockCoins});
-  final List<MediaModel> medias;
+  final List<PostMediaModel> medias;
   final int unlockCoins;
 
   @override

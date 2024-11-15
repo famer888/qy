@@ -1,10 +1,12 @@
 import '../banner_model.dart';
 import '../part_nav_model.dart';
 import '../tip_model.dart';
+import 'novel_item_model.dart';
+import 'recommend_novel_model.dart';
 
 //除了推荐以外的分类数据model
 class NovelWithBannersModel {
-  List<NovelItemsModel>? novels;
+  List<NovelItemModel>? novels;
   List<BannerModel>? banner;
   List<TipModel>? tips;
   NovelSubjectListItemModel? theme;
@@ -13,8 +15,8 @@ class NovelWithBannersModel {
 
   factory NovelWithBannersModel.fromJson(Map<String, dynamic> json) =>
       NovelWithBannersModel(
-          novels: List<NovelItemsModel>.from(
-              json['novels'].map((e) => NovelItemsModel.fromJson(e))),
+          novels: List<NovelItemModel>.from(
+              json['novels'].map((e) => NovelItemModel.fromJson(e))),
           banner: json['banner'] != null
               ? List<BannerModel>.from(
                   json['banner'].map((e) => BannerModel.fromJson(e)))
@@ -33,70 +35,12 @@ class NovelWithBannersModel {
       };
 }
 
-class NovelItemsModel {
-  final int? id;
-  final int? themeIds;
-  final String? cover;
-  final String? title;
-  final String? tag;
-  final int? isEnd;
-  final int? chapterCt; //总章节数
-  final int? viewCt;
-  final int? viewFct;
-  final String? intro;
-  final int? fontCt;
-
-  NovelItemsModel({
-    this.id,
-    this.themeIds,
-    this.title,
-    this.cover,
-    this.tag,
-    this.isEnd,
-    this.chapterCt,
-    this.viewCt,
-    this.viewFct,
-    this.intro,
-    this.fontCt,
-  });
-
-  factory NovelItemsModel.fromJson(Map<String, dynamic> json) =>
-      NovelItemsModel(
-        id: json['id'],
-        themeIds: json['theme_ids'],
-        title: json['title'],
-        cover: json['cover'],
-        tag: json['tag'],
-        isEnd: json['is_end'],
-        chapterCt: json['chapter_ct'],
-        viewFct: json['view_fct'],
-        viewCt: json['view_ct'],
-        intro: json['intro'],
-        fontCt: json['font_ct'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'theme_ids': themeIds,
-        'title': title,
-        'cover': cover,
-        'tag': tag,
-        'is_end': isEnd,
-        'chapter_ct': chapterCt,
-        'view_fct': viewFct,
-        'view_ct': viewCt,
-        'intro': intro,
-        'font_ct': fontCt,
-      };
-}
-
 //热门推荐model数据
 class RecommendNovelWithBannersModel {
   List<RecommendNovelModel>? novels;
   List<BannerModel>? banner;
   List<TipModel>? tips;
   List<PartModel>? nav;
-
   RecommendNovelWithBannersModel(
       {this.novels, this.banner, this.nav, this.tips});
 
@@ -126,112 +70,29 @@ class RecommendNovelWithBannersModel {
       };
 }
 
-class RecommendNovelModel {
-  final String? title;
-  final String? value;
-  List<NovelItemsModel>? items;
-
-  //广告数据
-  final String? description;
-  final String? imgUrl;
-  final String? urlConfig;
-  final int? type;
-  final String? router;
-  final String? urlStr;
-  final String? linkUrl;
-  final String? url;
-  final String? resourceUrl;
-  final int? redirectType;
-  final int? reportId;
-  final int? reportType;
-
-  RecommendNovelModel({
-    this.title,
-    this.value,
-    this.items,
-    this.description,
-    this.imgUrl,
-    this.urlConfig,
-    this.type,
-    this.router,
-    this.urlStr,
-    this.linkUrl,
-    this.resourceUrl,
-    this.url,
-    this.redirectType,
-    this.reportId,
-    this.reportType,
-  });
-
-  factory RecommendNovelModel.fromJson(Map<String, dynamic> json) =>
-      RecommendNovelModel(
-        title: json['title'],
-        value: json['value'],
-        items: json['items'] == null
-            ? null
-            : List<NovelItemsModel>.from(
-                (json['items'] ?? []).map((e) => NovelItemsModel.fromJson(e))),
-        description: json['description'],
-        imgUrl: json['img_url'],
-        urlConfig: json['url_config'],
-        type: json['type'],
-        router: json['router'],
-        urlStr: json['url_str'],
-        linkUrl: json['link_url'],
-        url: json['url'],
-        resourceUrl: json['resource_url'],
-        redirectType: json['redirect_type'],
-        reportId: json['report_id'],
-        reportType: json['report_type'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'title': title,
-        'value': value,
-        'items': items?.map((e) => e.toJson()).toList(),
-        'description': description,
-        'img_url': imgUrl,
-        'url_config': urlConfig,
-        'type': type,
-        'router': router,
-        'url_str': urlStr,
-        'link_url': linkUrl,
-        'url': url,
-        'resource_url': resourceUrl,
-        'redirect_type': redirectType,
-        'report_id': reportId,
-        'report_type': reportType,
-      };
-}
-
 class NovelDetailWithBannersModel {
-  List<NovelItemsModel>? recommend;
-  List<BannerModel>? banner;
-  NovelDetailModel? detail;
+  final List<NovelItemModel> recommend;
+  final List<BannerModel> banner;
+  final NovelDetailModel detail;
 
-  NovelDetailWithBannersModel({this.recommend, this.banner, this.detail});
+  NovelDetailWithBannersModel({
+    required this.recommend,
+    required this.banner,
+    required this.detail,
+  });
 
   factory NovelDetailWithBannersModel.fromJson(Map<String, dynamic> json) =>
       NovelDetailWithBannersModel(
-        recommend: json['recommend'] == null
-            ? null
-            : List<NovelItemsModel>.from(
-                json['recommend'].map((e) => NovelItemsModel.fromJson(e))),
-        banner: json['banner'] == null
-            ? null
-            : List<BannerModel>.from(
-                json['banner'].map((e) => BannerModel.fromJson(e))),
-        detail: json['detail'] == null
-            ? null
-            : NovelDetailModel.fromJson(json['detail']),
+        recommend: List<NovelItemModel>.from(
+            json['recommend'].map((e) => NovelItemModel.fromJson(e)) ?? []),
+        banner: List<BannerModel>.from(
+            json['banner'].map((e) => BannerModel.fromJson(e)) ?? []),
+        detail: NovelDetailModel.fromJson(json['detail']),
       );
-
-  Map<String, dynamic> toJson() =>
-      {'recommend': recommend, 'banner': banner, 'detail': detail};
 }
 
 class NovelDetailModel {
-  final int? id;
+  final int id;
   final String? title;
   final String? cover;
   final int? chapterCt; //总章节数
@@ -239,22 +100,22 @@ class NovelDetailModel {
   final String? createdAt;
   final int? viewFct;
   final int? viewCt;
-  int? favoriteFct;
+  int favoriteFct;
   final String? renewedAt;
   final int? commentCt;
   final String? tag;
   final int? isEnd;
   final String? intro;
-  int? isFavorite;
-  int? isLike;
-  int? likeFct;
-  int? likeCt;
+  int isFavorite;
+  int isLike;
+  int likeFct;
+  int likeCt;
   int? fontCt;
   final String? author;
-  final List<NovelChaptersModel>? chapters;
+  final List<NovelChaptersModel> chapters;
 
   NovelDetailModel({
-    this.id,
+    required this.id,
     this.title,
     this.cover,
     this.chapterCt,
@@ -262,24 +123,24 @@ class NovelDetailModel {
     this.createdAt,
     this.viewFct,
     this.viewCt,
-    this.favoriteFct,
+    required this.favoriteFct,
     this.renewedAt,
     this.commentCt,
     this.tag,
     this.isEnd,
     this.intro,
-    this.isFavorite,
-    this.isLike,
-    this.likeFct,
-    this.likeCt,
-    this.chapters,
+    required this.isFavorite,
+    required this.isLike,
+    required this.likeFct,
+    required this.likeCt,
+    required this.chapters,
     this.fontCt,
     this.author,
   });
 
   factory NovelDetailModel.fromJson(Map<String, dynamic> json) =>
       NovelDetailModel(
-        id: json['id'],
+        id: json['id'] ?? 0,
         title: json['title'],
         cover: json['cover'],
         chapterCt: json['chapter_ct'],
@@ -287,20 +148,18 @@ class NovelDetailModel {
         createdAt: json['created_at'],
         viewFct: json['view_fct'],
         viewCt: json['view_ct'],
-        favoriteFct: json['favorite_fct'],
+        favoriteFct: json['favorite_fct'] ?? 0,
         renewedAt: json['renewed_at'],
         commentCt: json['comment_ct'],
         tag: json['tag'],
         isEnd: json['is_end'],
         intro: json['intro'],
-        isFavorite: json['is_favorite'],
-        isLike: json['is_like'],
-        likeFct: json['like_fct'],
-        likeCt: json['like_ct'],
-        chapters: json['chapters'] == null
-            ? null
-            : List<NovelChaptersModel>.from(
-                json['chapters'].map((e) => NovelChaptersModel.fromJson(e))),
+        isFavorite: json['is_favorite'] ?? 0,
+        isLike: json['is_like'] ?? 0,
+        likeFct: json['like_fct'] ?? 0,
+        likeCt: json['like_ct'] ?? 0,
+        chapters: List<NovelChaptersModel>.from(
+            json['chapters']?.map((e) => NovelChaptersModel.fromJson(e)) ?? []),
         fontCt: json['font_ct'],
         author: json['author'],
       );
@@ -334,23 +193,23 @@ class NovelChaptersModel {
   final int? pId;
   final int? id;
   final int? type;
-  final int? coins;
+  final int coins;
   final String? title;
 
   // int? isPay;
   final String? payTip;
-  String? txt; //获取章节文字url链接
+  String txt; //获取章节文字url链接
   String? text; //文字内容，通过txt接口请求获取
 
   NovelChaptersModel({
     this.pId,
     this.id,
     this.type,
-    this.coins,
+    required this.coins,
     this.title,
     // this.isPay,
     this.payTip,
-    this.txt,
+    required this.txt,
     this.text,
   });
 
@@ -359,11 +218,11 @@ class NovelChaptersModel {
         pId: json['p_id'],
         id: json['id'],
         type: json['type'],
-        coins: json['coins'],
+        coins: json['coins'] ?? 0,
         title: json['title'],
         // isPay: json['is_pay'],
         payTip: json['pay_tip'],
-        txt: json['txt'],
+        txt: json['txt'] ?? '',
         text: json['text'],
       );
 
@@ -382,7 +241,7 @@ class NovelChaptersModel {
 
 //关注的专题的小说model
 class NovelSubjectNovelListModel {
-  List<NovelItemsModel>? list;
+  List<NovelItemModel>? list;
 
   NovelSubjectNovelListModel({this.list});
 
@@ -390,8 +249,8 @@ class NovelSubjectNovelListModel {
       NovelSubjectNovelListModel(
         list: json['list'] == null
             ? null
-            : List<NovelItemsModel>.from(
-                json['list'].map((e) => NovelItemsModel.fromJson(e))),
+            : List<NovelItemModel>.from(
+                json['list'].map((e) => NovelItemModel.fromJson(e))),
       );
 
   Map<String, dynamic> toJson() => {'list': list};

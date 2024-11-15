@@ -9,7 +9,7 @@ import '../../../../domain/api_validator.dart';
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
 import '../../../../domain/enum.dart';
-import '../../../../domain/model/exp_of_vip_model.dart';
+import '../../../../domain/model/mine/vip/exp_of_vip_model.dart';
 import '../../../../domain/model/product_vip_coin_model.dart';
 import '../../../../domain/type_def.dart';
 import '../../../notifiers/user_notifier.dart';
@@ -37,7 +37,7 @@ class _VipCenterScreenState extends State<VipCenterScreen> {
   late final _orderDomain = context.read<OrderDomain>();
   late final _signDomain = context.read<SignDomain>();
 
-  AsyncValue<(ProductOfVipOrCoin, ExpOfVIPData)> _asyncValue =
+  AsyncValue<(ProductOfVipOrCoin, ExpOfVIPListModel)> _asyncValue =
       const AsyncInit();
 
   @override
@@ -62,7 +62,7 @@ class _VipCenterScreenState extends State<VipCenterScreen> {
       if (results[0].isValid && results[1].isValid) {
         _asyncValue = AsyncData((
           results[0].data as ProductOfVipOrCoin,
-          results[1].data as ExpOfVIPData,
+          results[1].data as ExpOfVIPListModel,
         ));
       } else {
         _asyncValue = const AsyncError();
@@ -102,7 +102,7 @@ class _Body extends StatefulWidget {
   const _Body({required this.productOfVIP, required this.expOfVIP});
 
   final ProductOfVipOrCoin productOfVIP;
-  final ExpOfVIPData expOfVIP;
+  final ExpOfVIPListModel expOfVIP;
 
   @override
   State<_Body> createState() => _BodyState();
@@ -531,7 +531,7 @@ class _ExpArea extends StatelessWidget {
     required this.expOfVipList,
   });
 
-  final List<ExpOfVIP> expOfVipList;
+  final List<ExpOfVIPModel> expOfVipList;
 
   @override
   Widget build(BuildContext context) {
@@ -550,7 +550,7 @@ class _ExpArea extends StatelessWidget {
 }
 
 class _ExpItem extends StatefulWidget {
-  final ExpOfVIP exp;
+  final ExpOfVIPModel exp;
   const _ExpItem({
     required this.exp,
   });

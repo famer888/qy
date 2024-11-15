@@ -1,10 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
+import '../../../domain/api_validator.dart';
+import '../../../domain/enum.dart';
 import '../../../domain/model/video_comment_model.dart';
+import '../../../domain/remote_domain/domains/user.dart';
 import '../../const.dart';
 import '../../utils/common_utils.dart';
+import '../../utils/my_toast.dart';
 import '../image_paths.dart';
 import '../theme.dart';
 import 'member_vip.dart';
@@ -12,10 +17,9 @@ import 'my_avatar.dart';
 import 'my_image.dart';
 
 class CommentTile extends StatelessWidget {
-  const CommentTile({super.key, required this.data, required this.changeLike});
+  const CommentTile({super.key, required this.data, required this.moduleType});
   final CommentModel data;
-
-  final AsyncValueGetter<bool> changeLike;
+  final ModuleType moduleType;
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +82,16 @@ class CommentTile extends StatelessWidget {
             return GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () async {
-                final result = await changeLike();
-                if (result) {
-                  data.isLike = isLike ? 0 : 1;
-                  isLike ? data.likeCount-- : data.likeCount++;
-                  if (context.mounted) {
+                if (data.id case final id?) {
+                  final domain = context.read<UserDomain>();
+                  final res = await domain.toggleUserCommentLike(
+                      type: moduleType, id: id);
+                  if (res.isValid) {
+                    data.isLike = isLike ? 0 : 1;
+                    isLike ? data.likeCount-- : data.likeCount++;
                     setState(() {});
+                  } else if (res.msg case final msg?) {
+                    MyToast.showText(text: msg);
                   }
                 }
               },

@@ -2,7 +2,7 @@ part of '../repo.dart';
 
 mixin _Comic on _BaseAppRepo implements ComicDomain {
   @override
-  AsyncResult<RecommendComicWithBannersModel> comicReComment({
+  AsyncResult<RecommendComicWithBannersModel> comicRecommend({
     required int id,
     required int page,
     required int limit,
@@ -17,7 +17,7 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
           .guard;
 
   @override
-  AsyncResult<List<ComicItemsModel>?> comicMoreChangeList({
+  AsyncResult<List<ComicItemModel>?> comicMoreChangeList({
     required String sort,
     required int page,
     required int limit,
@@ -28,8 +28,7 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(ComicItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(ComicItemModel.fromJson).toList())
           .guard;
 
   @override
@@ -50,7 +49,7 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
           .guard;
 
   @override
-  AsyncResult<List<ComicItemsModel>?> comicTypeList({
+  AsyncResult<List<ComicItemModel>?> comicTypeList({
     required Map<String, String> sortParams,
     required int page,
     required int limit,
@@ -61,12 +60,11 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(ComicItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(ComicItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<ComicItemsModel>?> comicNewList({
+  AsyncResult<List<ComicItemModel>?> comicNewList({
     required int page,
     required int limit,
   }) =>
@@ -75,12 +73,11 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(ComicItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(ComicItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<ComicItemsModel>?> comicEndList({
+  AsyncResult<List<ComicItemModel>?> comicEndList({
     required int page,
     required int limit,
   }) =>
@@ -89,12 +86,11 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(ComicItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(ComicItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<ComicItemsModel>?> comicRankList({
+  AsyncResult<List<ComicItemModel>?> comicRankList({
     required int page,
     required int limit,
   }) =>
@@ -103,12 +99,11 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(ComicItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(ComicItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<ComicItemsModel>?> comicSearchList({
+  AsyncResult<List<ComicItemModel>?> comicSearchList({
     required String word,
     required int page,
     required int limit,
@@ -119,12 +114,11 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(ComicItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(ComicItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<ComicItemsModel>?> comicFavoriteList({
+  AsyncResult<List<ComicItemModel>?> comicFavoriteList({
     required int page,
     required int limit,
   }) =>
@@ -133,12 +127,11 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(ComicItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(ComicItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<ComicItemsModel>?> comicBuyList({
+  AsyncResult<List<ComicItemModel>?> comicBuyList({
     required int page,
     required int limit,
   }) =>
@@ -147,8 +140,7 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(ComicItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(ComicItemModel.fromJson).toList())
           .guard;
 
   @override

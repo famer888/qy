@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../domain/api_validator.dart';
+import '../../../../../../domain/enum.dart';
 import '../../../../../../domain/model/video_comment_model.dart';
 import '../../../../../../domain/remote_domain/domains/live.dart';
 import '../../../../../utils/my_toast.dart';
@@ -76,17 +77,7 @@ class _LiveVideoCommentViewState extends State<LiveVideoCommentView> {
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
               itemBuilder: (context, item, index) => CommentTile(
                 data: item,
-                changeLike: () async {
-                  if (item.id case final id?) {
-                    final res = await liveDomain.toggleLiveCommentLike(id: id);
-                    if (res.isValid) {
-                      return true;
-                    } else if (res.msg case final msg?) {
-                      MyToast.showText(text: msg);
-                    }
-                  }
-                  return false;
-                },
+                moduleType: ModuleType.live,
               ),
               onFetchingMore: (currentPage, pageSize) =>
                   _getData(currentPage: currentPage, limit: pageSize),

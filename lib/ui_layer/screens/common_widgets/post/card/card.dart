@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'user_view.dart';
 
-import '../../../../../domain/model/post_model.dart';
+import '../../../../../domain/model/post/post_model.dart';
 import '../../../../router/routes.dart';
 import '../../../theme.dart';
 import 'content.dart';
@@ -10,19 +10,20 @@ import 'count_view.dart';
 import 'media.dart';
 
 enum _Type {
-  bit,
-  community,
+  seed,
+  post,
 }
 
 class PostCard extends StatelessWidget {
-  const PostCard.bit({
+  const PostCard({
     super.key,
     required this.data,
-  }) : _type = _Type.bit;
-  const PostCard.community({
+  }) : _type = _Type.post;
+
+  const PostCard.seed({
     super.key,
     required this.data,
-  }) : _type = _Type.community;
+  }) : _type = _Type.seed;
 
   final PostModel data;
   final _Type _type;
@@ -37,16 +38,15 @@ class PostCard extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => switch (_type) {
-          _Type.community =>
-            CommunityPostDetailRoute('${data.id}').push(context),
-          _Type.bit => BitPostDetailRoute('${data.id}').push(context),
+          _Type.post => CommunityPostDetailRoute('${data.id}').push(context),
+          _Type.seed => BitPostDetailRoute('${data.id}').push(context),
         },
         child: Padding(
           padding: EdgeInsets.all(MyTheme.pagePadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (data.user case final user? when _type == _Type.community)
+              if (data.user case final user? when _type == _Type.post)
                 Padding(
                   padding: EdgeInsets.only(bottom: 10.w),
                   child: CardUserView(
@@ -67,7 +67,7 @@ class PostCard extends StatelessWidget {
                 viewCount: data.viewNum,
                 commentCount: data.commentNum,
                 likeCount: data.likeNum,
-                topic: _type == _Type.community ? data.topic : null,
+                topic: _type == _Type.post ? data.topic : null,
               ),
             ],
           ),

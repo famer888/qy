@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/domain.dart';
-import '../../../../../domain/model/mine_withdrawal_record_model.dart';
+import '../../../../../domain/model/mine/withdrawal/withdraw_record_model.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_app_bar.dart';
 import '../../../common_widgets/my_list_view.dart';
@@ -24,7 +24,7 @@ class _MineWithdrawalRecordScreenState
     extends State<MineWithdrawalRecordScreen> {
   late final orderDomain = context.read<OrderDomain>();
 
-  Future<List<MineWithdrawalRecord>> getCashWithdrawList({
+  Future<List<WithdrawalRecordModel>> getCashWithdrawList({
     required int currentPage,
     required int limit,
   }) async {
@@ -99,7 +99,7 @@ class _MineWithdrawalRecordScreenState
 
 class MineAgentCashRecordItem extends StatelessWidget {
   const MineAgentCashRecordItem({super.key, required this.data});
-  final MineWithdrawalRecord data;
+  final WithdrawalRecordModel data;
   @override
   Widget build(BuildContext context) {
     return Container(

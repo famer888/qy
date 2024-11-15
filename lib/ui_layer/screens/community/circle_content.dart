@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../domain/domain.dart';
 import '../../../domain/model/banner_model.dart';
 import '../../../domain/model/navigator_model.dart';
-import '../../../domain/model/post_model.dart';
+import '../../../domain/model/post/post_model.dart';
 import '../../../domain/model/topic_model.dart';
 import '../../notifiers/user_notifier.dart';
 import '../../router/routes.dart';
@@ -102,7 +102,7 @@ class _CircleCommunityContentViewState
             ? MyListView.list(
                 contentPadding: 15.w,
                 padding: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
-                itemBuilder: (context, item, index) => PostCard.community(
+                itemBuilder: (context, item, index) => PostCard(
                   data: item,
                 ),
                 onFetchingMore: (currentPage, pageSize) =>
@@ -120,7 +120,7 @@ class _CircleCommunityContentViewState
                       contentPadding: 15.w,
                       padding:
                           EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
-                      itemBuilder: (context, item, index) => PostCard.community(
+                      itemBuilder: (context, item, index) => PostCard(
                         data: item,
                       ),
                       onFetchingMore: (currentPage, pageSize) => _getData(

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
-import '../../../../domain/model/official_group_model.dart';
+import '../../../../domain/model/mine/official_group/official_group_model.dart';
 import '../../../utils/common_utils.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/my_app_bar.dart';
@@ -26,7 +26,7 @@ class MineOfficialGroupScreen extends StatefulWidget {
 
 class _MineOfficialGroupScreenState extends State<MineOfficialGroupScreen> {
   late final homeDomain = context.read<HomeDomain>();
-  AsyncValue<List<OfficeContact>> _asyncValue = const AsyncInit();
+  AsyncValue<List<OfficeGroupDataModel>> _asyncValue = const AsyncInit();
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _MineOfficialGroupScreenState extends State<MineOfficialGroupScreen> {
     }
   }
 
-  Widget _contactItem({required OfficeContact itemData}) {
+  Widget _contactItem({required OfficeGroupDataModel itemData}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -111,7 +111,7 @@ class _MineOfficialGroupScreenState extends State<MineOfficialGroupScreen> {
 
 class AppInfo extends StatelessWidget {
   const AppInfo({super.key, required this.info});
-  final Contact info;
+  final OfficeGroupContactModel info;
 
   @override
   Widget build(BuildContext context) {

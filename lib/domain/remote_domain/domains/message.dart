@@ -1,11 +1,11 @@
-import '../../model/feedback_data_model.dart';
+import '../../model/mine/feedback_message/feedback_message_model.dart';
 import '../../model/notice_message.dart';
 import '../../model/system_notice_model.dart';
 import '../../type_def.dart';
 
 abstract class MessageDomain {
   /// 工单列表
-  AsyncResult<List<FeedBackData>?> getFeedbackList({required int page});
+  AsyncResult<List<FeedBackMessageModel>?> getFeedbackList({required int page});
 
   /// 工单列表
   AsyncJson sendFeeding(

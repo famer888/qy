@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../domain/async_value.dart';
-import '../../../../../domain/model/proxy_detail_model.dart';
+import '../../../../../domain/model/mine/proxy/proxy_detail_model.dart';
 import '../../../../../domain/remote_domain/domains/proxy.dart';
 import '../../../../router/routes.dart';
 import '../../../../utils/my_toast.dart';
@@ -26,7 +26,7 @@ class MineAgentPromoteDataScreen extends StatefulWidget {
 class _MineAgentPromoteDataScreenState
     extends State<MineAgentPromoteDataScreen> {
   late final proxyDomain = context.read<ProxyDomain>();
-  AsyncValue<ProxyDetail> _asyncValue = const AsyncInit();
+  AsyncValue<ProxyDetailModel> _asyncValue = const AsyncInit();
 
   @override
   void initState() {
@@ -92,7 +92,7 @@ class _MineAgentPromoteDataScreenState
 class _WithdrawalCard extends StatelessWidget {
   const _WithdrawalCard({required this.data});
 
-  final ProxyDetail data;
+  final ProxyDetailModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +166,7 @@ class _WithdrawalCard extends StatelessWidget {
 class _DataArea extends StatelessWidget {
   const _DataArea({required this.data});
 
-  final ProxyDetail data;
+  final ProxyDetailModel data;
 
   Widget _tile(String title, String data) {
     return Column(
@@ -214,7 +214,7 @@ class _DataArea extends StatelessWidget {
 
 class _PromoteDataArea extends StatelessWidget {
   const _PromoteDataArea({required this.data});
-  final ProxyDetail data;
+  final ProxyDetailModel data;
 
   Widget _tile(String title, String data) {
     return Container(

@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
-import '../../../../domain/model/bank_card_model.dart';
-import '../../../../domain/model/cash_withdraw_rule_model.dart';
+import '../../../../domain/model/mine/withdrawal/withdraw_rule_model.dart';
+import '../../../../domain/model/mine/withdrawal/bank_card_model.dart';
 import '../../../../domain/result.dart';
 import '../../../../domain/type_def.dart';
 import '../../../router/routes.dart';
@@ -35,7 +35,7 @@ class MineWithdrawalScreen extends StatefulWidget {
 class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
   final _textController = TextEditingController();
 
-  AsyncValue<CashWithdrawRule> _asyncValue = const AsyncInit();
+  AsyncValue<WithdrawRuleModel> _asyncValue = const AsyncInit();
 
   bool get isAgent => widget.isAgent;
 
@@ -49,7 +49,7 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
   /// 提现到账money
   final _sumResultMoney = ValueNotifier<int>(0);
 
-  final _currentBankCard = ValueNotifier<BankCard?>(null);
+  final _currentBankCard = ValueNotifier<BankCardModel?>(null);
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
 
     final res = (await Future.wait(
             [withdrawDomain.cashWithdrawRule(), _getDefaultBankCard()]))[0]
-        as Result<CashWithdrawRule>;
+        as Result<WithdrawRuleModel>;
     if (res.data case final data?) {
       _asyncValue = AsyncData(data);
     } else {
@@ -85,7 +85,7 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
       final res = await userDomain.getBankCardList(page: 1, limit: 10);
       if (res.isValid) {
         if (res.data?.list case final list? when list.isNotEmpty) {
-          for (BankCard bankCard in res.data!.list) {
+          for (BankCardModel bankCard in res.data!.list) {
             if (bankCard.isDefault == 1) {
               _currentBankCard.value = bankCard;
               break;
@@ -296,7 +296,7 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
                           onTap: () async {
                             if (await const MineWithdrawalBankListRoute()
                                     .push(context)
-                                case final BankCard card) {
+                                case final BankCardModel card) {
                               _currentBankCard.value = card;
                             }
                           },

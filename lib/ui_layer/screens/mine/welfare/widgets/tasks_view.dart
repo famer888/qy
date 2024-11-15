@@ -7,7 +7,8 @@ import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/async_value.dart';
 import '../../../../../domain/domain.dart';
 import '../../../../../domain/model/member_model.dart';
-import '../../../../../domain/model/welfare_task_model.dart';
+import '../../../../../domain/model/mine/welfare/welfare_task_list_model.dart';
+import '../../../../../domain/model/mine/welfare/welfare_task_model.dart';
 import '../../../../notifiers/home_config_notifier.dart';
 import '../../../../notifiers/user_notifier.dart';
 import '../../../../router/routes.dart';
@@ -34,7 +35,7 @@ class _TaskViewState extends State<TaskView> {
   late final config = context.read<HomeConfigNotifier>().config;
   late final userNotifier = context.read<UserNotifier>();
   late final signDomain = context.read<SignDomain>();
-  AsyncValue<WelfareTaskModel> _asyncValue = const AsyncInit();
+  AsyncValue<WelfareTaskListModel> _asyncValue = const AsyncInit();
 
   @override
   void initState() {
@@ -79,7 +80,7 @@ class _TaskViewState extends State<TaskView> {
     }
   }
 
-  Widget _buildDataView(WelfareTaskModel data) {
+  Widget _buildDataView(WelfareTaskListModel data) {
     return CustomScrollView(
       // physics: const BouncingScrollPhysics(
       //   parent: AlwaysScrollableScrollPhysics(),
@@ -138,7 +139,7 @@ class _TaskViewState extends State<TaskView> {
   }
 
   //签到view
-  Widget _signInContent(WelfareTaskModel data) {
+  Widget _signInContent(WelfareTaskListModel data) {
     return data.signRewardList == null
         ? Container()
         : Container(
@@ -210,7 +211,7 @@ class _TaskViewState extends State<TaskView> {
           );
   }
 
-  Widget siginItem(WelfareTaskListModel data, int signNum) {
+  Widget siginItem(WelfareTaskModel data, int signNum) {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -302,7 +303,7 @@ class _TaskViewState extends State<TaskView> {
 class _MemberView extends StatelessWidget {
   const _MemberView({required this.data, required this.signCall});
 
-  final WelfareTaskModel data;
+  final WelfareTaskListModel data;
 
   final Function signCall;
 
@@ -399,7 +400,7 @@ class _MemberView extends StatelessWidget {
 class _Header extends StatelessWidget {
   const _Header({required this.data});
 
-  final WelfareTaskModel data;
+  final WelfareTaskListModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -453,7 +454,7 @@ class _Header extends StatelessWidget {
 class _Tile extends StatelessWidget {
   const _Tile({required this.data, required this.getTaskData});
 
-  final WelfareTaskListModel data;
+  final WelfareTaskModel data;
   final VoidCallback getTaskData;
 
   /// 领取

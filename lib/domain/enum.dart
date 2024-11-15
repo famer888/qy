@@ -52,7 +52,7 @@ enum MyCoinFilterType {
       };
 }
 
-enum MyModuleType {
+enum ModuleType {
   /// 长视频
   video,
 
@@ -63,10 +63,10 @@ enum MyModuleType {
   comic,
 
   /// 帖子
-  article,
+  post,
 
   /// 种子
-  bit,
+  seed,
 
   /// 直播
   live,
@@ -77,14 +77,14 @@ enum MyModuleType {
   /// 小说
   novel;
 
-  int get typeIndex => switch (this) {
-        MyModuleType.video => 1,
-        MyModuleType.shortVideo => 11,
-        MyModuleType.article => 14,
-        MyModuleType.bit => 15,
-        MyModuleType.live => 16,
-        MyModuleType.novel => 18,
-        MyModuleType.comic => 17,
-        MyModuleType.monitor => 19,
+  int get id => switch (this) {
+        ModuleType.video => 1,
+        ModuleType.shortVideo => 11,
+        ModuleType.post => 14,
+        ModuleType.seed => 15,
+        ModuleType.live => 16,
+        ModuleType.novel => 18,
+        ModuleType.comic => 17,
+        ModuleType.monitor => 19,
       };
 }

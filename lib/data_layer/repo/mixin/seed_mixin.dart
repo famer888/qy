@@ -2,76 +2,77 @@ part of '../repo.dart';
 
 mixin _Seed on _BaseAppRepo implements SeedDomain {
   @override
-  AsyncResult<List<BitNavModel>> reqGetPostBit() => _seedService
+  AsyncResult<List<SeedNavModel>> reqGetPostSeed() => _seedService
       .reqGetPostBit()
-      .deserializeJsonListBy((e) => e.map(BitNavModel.fromJson).toList())
+      .deserializeJsonListBy((e) => e.map(SeedNavModel.fromJson).toList())
       .guard;
 
   @override
-  AsyncResult<PostsWithBannersModel> bitSortList({
+  AsyncResult<SeedPostsWithBannersModel> seedSortList({
     required int id,
     required String sort,
     required int page,
     required int limit,
   }) =>
       _seedService
-          .bitSortList(id: id, sort: sort, page: page, limit: limit)
-          .deserializeJsonBy(PostsWithBannersModel.fromJson)
+          .seedSortList(id: id, sort: sort, page: page, limit: limit)
+          .deserializeJsonBy(SeedPostsWithBannersModel.fromJson)
           .guard;
 
   @override
-  AsyncResult<BitDetail> bitTopicDetail({required String id}) => _seedService
-      .bitTopicDetail(id: id)
-      .deserializeJsonBy(BitDetail.fromJson)
+  AsyncResult<SeedDetail> seedTopicDetail({required String id}) => _seedService
+      .seedTopicDetail(id: id)
+      .deserializeJsonBy(SeedDetail.fromJson)
       .guard;
 
   @override
-  AsyncJson buyBit({required int id}) => _seedService.buyBit(id: id);
+  AsyncJson buySeed({required int id}) => _seedService.buySeed(id: id);
 
   @override
-  AsyncResult<List<ReviewData>> bitPostComments(
+  AsyncResult<List<ReviewData>> seedPostComments(
           {required String id, required int page, required int limit}) =>
       _seedService
-          .bitPostComments(id: id, page: page, limit: limit)
+          .seedPostComments(id: id, page: page, limit: limit)
           .deserializeJsonListBy((e) => e.map(ReviewData.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult bitTopicLike({required MyLikeType type, required String id}) =>
-      _seedService.bitTopicLike(id: id, type: type.name).deserialize().guard;
+  AsyncResult seedTopicLike({required MyLikeType type, required String id}) =>
+      _seedService.seedTopicLike(id: id, type: type.name).deserialize().guard;
 
   @override
-  AsyncJson bitPostComment({
+  AsyncJson seedPostComment({
     required String postId,
     required String commentId,
     required String content,
   }) =>
-      _seedService.bitPostComment(
+      _seedService.seedPostComment(
           postId: postId, commentId: commentId, content: content);
 
   @override
-  AsyncResult<List<ReviewData>> bitPostCommentsSecond({
+  AsyncResult<List<ReviewData>> seedPostCommentsSecond({
     required String commentId,
     required int page,
     required int limit,
   }) =>
       _seedService
-          .bitPostCommentsSecond(commentId: commentId, page: page, limit: limit)
+          .seedPostCommentsSecond(
+              commentId: commentId, page: page, limit: limit)
           .deserializeJsonListBy((e) => e.map(ReviewData.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult bitTopicFavorite({required String id}) =>
-      _seedService.bitTopicFavorite(id: id).deserialize().guard;
+  AsyncResult seedTopicFavorite({required String id}) =>
+      _seedService.seedTopicFavorite(id: id).deserialize().guard;
 
   @override
-  AsyncResult<List<PostModel>> searchBit({
+  AsyncResult<List<PostModel>> searchSeed({
     required int page,
     required int limit,
     required String word,
   }) =>
       _seedService
-          .searchBit(page: page, limit: limit, word: word)
+          .searchSeed(page: page, limit: limit, word: word)
           .deserializeJsonListBy((e) => e.map(PostModel.fromJson).toList())
           .guard;
 }

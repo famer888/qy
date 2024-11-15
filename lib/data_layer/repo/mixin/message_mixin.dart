@@ -2,10 +2,12 @@ part of '../repo.dart';
 
 mixin _Message on _BaseAppRepo implements MessageDomain {
   @override
-  AsyncResult<List<FeedBackData>?> getFeedbackList({required int page}) =>
+  AsyncResult<List<FeedBackMessageModel>?> getFeedbackList(
+          {required int page}) =>
       _messageService
           .getFeedbackList(page: page)
-          .deserializeJsonListBy((e) => e.map(FeedBackData.fromJson).toList())
+          .deserializeJsonListBy(
+              (e) => e.map(FeedBackMessageModel.fromJson).toList())
           .guard;
 
   @override

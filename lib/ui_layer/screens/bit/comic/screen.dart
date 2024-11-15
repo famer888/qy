@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../../../../domain/model/comic/comic_nav_model.dart';
 import '../../../notifiers/home_config_notifier.dart';
 import '../../common_widgets/my_tab_bar.dart';
-import 'content/comic_content.dart';
-import 'content/recommend_comic_content.dart';
+import 'content/content.dart';
+import 'content/recommend_content.dart';
 
 class ComicScreen extends StatefulWidget {
   const ComicScreen({super.key});

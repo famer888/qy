@@ -2,8 +2,8 @@ part of '../repo.dart';
 
 mixin _Withdraw on _BaseAppRepo implements WithdrawDomain {
   @override
-  AsyncResult<CashWithdrawRule> cashWithdrawRule() => _withdrawService
+  AsyncResult<WithdrawRuleModel> cashWithdrawRule() => _withdrawService
       .cashWithdrawRule()
-      .deserializeJsonBy(CashWithdrawRule.fromJson)
+      .deserializeJsonBy(WithdrawRuleModel.fromJson)
       .guard;
 }

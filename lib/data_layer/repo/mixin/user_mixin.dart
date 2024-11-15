@@ -27,24 +27,25 @@ mixin _User on _BaseAppRepo implements UserDomain {
           .guard;
 
   @override
-  AsyncResult<List<CoinDetail>> getMoneyDetailList({
+  AsyncResult<List<CoinRechargeDetailModel>> getMoneyDetailList({
     required int page,
     required MyCoinFilterType type,
     required int limit,
   }) =>
       _userService
           .getMoneyDetailList(page: page, type: type.stringType, limit: limit)
-          .deserializeJsonListBy((e) => e.map(CoinDetail.fromJson).toList())
+          .deserializeJsonListBy(
+              (e) => e.map(CoinRechargeDetailModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<BankList> getBankCardList({
+  AsyncResult<BankCardListModel> getBankCardList({
     required int page,
     required int limit,
   }) =>
       _userService
           .getBankCardList(page: page, limit: limit)
-          .deserializeJsonBy(BankList.fromJson)
+          .deserializeJsonBy(BankCardListModel.fromJson)
           .guard;
 
   @override
@@ -59,7 +60,7 @@ mixin _User on _BaseAppRepo implements UserDomain {
       _userService.deleteBankCard(cardId: cardId);
 
   @override
-  AsyncResult<MineIncomeDetailData> getEarnTotalInfo({
+  AsyncResult<MineIncomeDetailListModel> getEarnTotalInfo({
     String source = '',
     required int page,
     required int limit,
@@ -68,7 +69,7 @@ mixin _User on _BaseAppRepo implements UserDomain {
       _userService
           .getEarnTotalInfo(
               page: page, lastIx: lastIx, limit: limit, source: source)
-          .deserializeJsonBy(MineIncomeDetailData.fromJson)
+          .deserializeJsonBy(MineIncomeDetailListModel.fromJson)
           .guard;
 
   @override
@@ -98,7 +99,7 @@ mixin _User on _BaseAppRepo implements UserDomain {
           : _userService
               .getUserFavor(
                   page: page, type: type, lastIx: lastIx, limit: limit)
-              .deserializeJsonBy(MineTieztListModel.fromJson)
+              .deserializeJsonBy(MinePostListModel.fromJson)
               .guard;
 
   @override
@@ -110,19 +111,19 @@ mixin _User on _BaseAppRepo implements UserDomain {
 
   @override
   AsyncResult toggleUserFavorite({
-    required MyModuleType type,
+    required ModuleType type,
     required int id,
   }) =>
       _userService
-          .toggleUserFavorite(type: type.typeIndex, id: id)
+          .toggleUserFavorite(type: type.id, id: id)
           .deserialize()
           .guard;
 
   @override
   AsyncResult toggleUserCommentLike(
-          {required MyModuleType type, required int id}) =>
+          {required ModuleType type, required int id}) =>
       _userService
-          .toggleUserCommentLike(type: type.typeIndex, id: id)
+          .toggleUserCommentLike(type: type.id, id: id)
           .deserialize()
           .guard;
 
@@ -139,19 +140,19 @@ mixin _User on _BaseAppRepo implements UserDomain {
               .guard
           : _userService
               .getPurchasedList(page: page, type: type, limit: limit)
-              .deserializeJsonBy(MineTieztListModel.fromJson)
+              .deserializeJsonBy(MinePostListModel.fromJson)
               .guard;
 
   @override
-  AsyncResult<FollowingUser> getFollowList(
+  AsyncResult<FollowingUserListModel> getFollowList(
           {required int page, required int limit, required String lastIx}) =>
       _userService
           .getFollowList(page: page, lastIx: lastIx, limit: limit)
-          .deserializeJsonBy(FollowingUser.fromJson)
+          .deserializeJsonBy(FollowingUserListModel.fromJson)
           .guard;
 
   @override
-  AsyncResult toggleUserLike({required MyModuleType type, required int id}) =>
+  AsyncResult toggleUserLike({required ModuleType type, required int id}) =>
       _userService.toggleUserLike(type: type.index, id: id).deserialize().guard;
 
   @override

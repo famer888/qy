@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../domain/enum.dart';
-import '../../../../../domain/model/media_model.dart';
+import '../../../../../domain/model/post/post_media_model.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../../my_image.dart';
@@ -12,7 +12,7 @@ import '../../my_image.dart';
 class CardMediaView extends StatelessWidget {
   const CardMediaView({super.key, required this.medias});
 
-  final List<MediaModel>? medias;
+  final List<PostMediaModel>? medias;
 
   @override
   Widget build(BuildContext context) {

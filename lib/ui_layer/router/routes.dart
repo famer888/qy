@@ -2,19 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/model/video_detail_model.dart';
 import '../screens/bit/comic/comic_detail/screen.dart';
-import '../screens/bit/comic/comic_part_content/comic_end_content.dart';
-import '../screens/bit/comic/comic_part_content/comic_more_content.dart';
-import '../screens/bit/comic/comic_part_content/comic_new_content.dart';
-import '../screens/bit/comic/comic_part_content/comic_rank_content.dart';
-import '../screens/bit/comic/comic_part_content/comic_sort_content.dart';
+import '../screens/bit/comic/comic_part/comic_end.dart';
+import '../screens/bit/comic/comic_part/comic_more.dart';
+import '../screens/bit/comic/comic_part/comic_new.dart';
+import '../screens/bit/comic/comic_part/comic_rank.dart';
+import '../screens/bit/comic/comic_part/comic_sort.dart';
 import '../screens/bit/comic/comic_reader/screen.dart';
 import '../screens/bit/comic/di/comic_di_widget.dart';
 import '../screens/bit/live/detail/screen.dart';
 import '../screens/bit/monitor/detail/screen.dart';
+import '../screens/bit/novel/di/novel_di_widget.dart';
+import '../screens/bit/novel/novel_detail/screen.dart';
+import '../screens/bit/novel/novel_part/novel_end.dart';
+import '../screens/bit/novel/novel_part/novel_more.dart';
+import '../screens/bit/novel/novel_part/novel_new.dart';
+import '../screens/bit/novel/novel_part/novel_sort.dart';
+import '../screens/bit/novel/novel_part/novel_updating.dart';
+import '../screens/bit/novel/novel_reader/screen.dart';
+import '../screens/bit/seed/detail/screen.dart';
 import '../screens/community/circle_screen.dart';
 import '../screens/community/module/screen.dart';
 import '../screens/bit/screen.dart';
-import '../screens/bit/detail/screen.dart';
 import '../screens/bottom_navi_bar.dart';
 import '../screens/community/detail/screen.dart';
 import '../screens/community/issue/screen.dart';
@@ -199,9 +207,7 @@ class BitPostDetailRoute extends GoRouteData {
   final String id;
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return BitPostDetailScreen(
-      id: id,
-    );
+    return SeedDetailScreen(id: id);
   }
 }
 
@@ -877,7 +883,7 @@ class MoreComicRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ComicMoreContent(
+    return ComicMoreScreen(
       title: title,
       sort: sort,
     );
@@ -893,7 +899,7 @@ class ComicSortRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ComicSortContent();
+    return const ComicSortScreen();
   }
 }
 
@@ -906,7 +912,7 @@ class ComicNewRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ComicNewContent();
+    return const ComicNewScreen();
   }
 }
 
@@ -919,7 +925,7 @@ class ComicEndRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ComicEndContent();
+    return const ComicEndScreen();
   }
 }
 
@@ -932,7 +938,7 @@ class ComicRankRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ComicRankContent();
+    return const ComicRankScreen();
   }
 }
 
@@ -993,6 +999,133 @@ class ComicReaderRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const ComicReaderScreen();
+  }
+}
+
+@TypedGoRoute<MoreNovelRoute>(path: AppRouterPaths.moreNovel)
+class MoreNovelRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const MoreNovelRoute({required this.title, required this.sort});
+
+  final String title;
+  final String sort;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return NovelMoreScreen(title: title, sort: sort);
+  }
+}
+
+@TypedGoRoute<NovelSortRoute>(path: AppRouterPaths.novelSort)
+class NovelSortRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelSortRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const NovelSortScreen();
+  }
+}
+
+@TypedGoRoute<NovelNewRoute>(path: AppRouterPaths.novelNew)
+class NovelNewRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelNewRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const NovelNewScreen();
+  }
+}
+
+@TypedGoRoute<NovelEndRoute>(path: AppRouterPaths.novelEnd)
+class NovelEndRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelEndRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const NovelEndScreen();
+  }
+}
+
+@TypedGoRoute<NovelUpdatingRoute>(path: AppRouterPaths.noveUpdating)
+class NovelUpdatingRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelUpdatingRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const NovelUpdatingScreen();
+  }
+}
+
+@TypedShellRoute<NovelShellRouteData>(
+  routes: <TypedRoute<RouteData>>[
+    TypedGoRoute<NovelDetailRoute>(path: AppRouterPaths.novelDetail),
+    TypedGoRoute<NovelReaderRoute>(path: AppRouterPaths.novelReader),
+  ],
+)
+class NovelShellRouteData extends ShellRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  @override
+  Widget builder(
+    BuildContext context,
+    GoRouterState state,
+    Widget navigator,
+  ) {
+    return NovelDIWidget(
+      child: navigator,
+    );
+  }
+}
+
+class NovelDetailRoute extends GoRouteData {
+  const NovelDetailRoute(this.$extra);
+  final String $extra;
+
+  // Future<T?> push<T>(BuildContext context) {
+  //   final router = GoRouter.of(context);
+  //
+  //   final routes = router.configuration.routes;
+  //   routes.removeWhere((route) {
+  //     if (route is ShellRouteBase) {
+  //       for (var e in route.routes) {
+  //         if (e is GoRoute && e.path == location) {
+  //           return true;
+  //         }
+  //       }
+  //     }
+  //     return false;
+  //   });
+  //   routes.add($comicShellRouteData);
+  //
+  //   return context.removeDuplicatePush(location, extra: $extra);
+  // }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return NovelDetailScreen(id: $extra);
+  }
+}
+
+class NovelReaderRoute extends GoRouteData {
+  const NovelReaderRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const NovelReaderScreen();
   }
 }
 

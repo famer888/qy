@@ -2,7 +2,7 @@ part of '../repo.dart';
 
 mixin _Novel on _BaseAppRepo implements NovelDomain {
   @override
-  AsyncResult<RecommendNovelWithBannersModel> novelReComment({
+  AsyncResult<RecommendNovelWithBannersModel> novelRecommend({
     required int page,
     required int limit,
   }) =>
@@ -32,7 +32,7 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
           .guard;
 
   @override
-  AsyncResult<List<NovelItemsModel>?> novelMoreList(
+  AsyncResult<List<NovelItemModel>?> novelMoreList(
           {required String sort, required int page, required int limit}) =>
       _novelService
           .novelMoreList(
@@ -40,31 +40,25 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(NovelItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(NovelItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<NovelItemsModel>?> novelTypeList(
-          {required String themeId,
-          required String sort,
-          required String end,
+  AsyncResult<List<NovelItemModel>?> novelTypeList(
+          {required Map<String, String> sortParams,
           required int page,
           required int limit}) =>
       _novelService
           .novelTypeList(
-            themeId: themeId,
-            sort: sort,
-            end: end,
+            sortParams: sortParams,
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(NovelItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(NovelItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<NovelItemsModel>?> novelNewList({
+  AsyncResult<List<NovelItemModel>?> novelNewList({
     required int page,
     required int limit,
   }) =>
@@ -73,12 +67,11 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(NovelItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(NovelItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<NovelItemsModel>?> novelEndList({
+  AsyncResult<List<NovelItemModel>?> novelEndList({
     required int page,
     required int limit,
   }) =>
@@ -87,12 +80,11 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(NovelItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(NovelItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<NovelItemsModel>?> novelUpdatingList({
+  AsyncResult<List<NovelItemModel>?> novelUpdatingList({
     required int page,
     required int limit,
   }) =>
@@ -101,12 +93,11 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(NovelItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(NovelItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<NovelItemsModel>?> novelSearchList({
+  AsyncResult<List<NovelItemModel>?> novelSearchList({
     required String word,
     required int page,
     required int limit,
@@ -117,12 +108,11 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(NovelItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(NovelItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<NovelItemsModel>?> novelFavoriteList({
+  AsyncResult<List<NovelItemModel>?> novelFavoriteList({
     required int page,
     required int limit,
   }) =>
@@ -131,12 +121,11 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(NovelItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(NovelItemModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<NovelItemsModel>?> novelBuyList({
+  AsyncResult<List<NovelItemModel>?> novelBuyList({
     required int page,
     required int limit,
   }) =>
@@ -145,8 +134,7 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(NovelItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(NovelItemModel.fromJson).toList())
           .guard;
 
   @override
@@ -212,7 +200,7 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
           .guard;
 
   @override
-  AsyncResult<List<NovelItemsModel>?> novelSeeList({
+  AsyncResult<List<NovelItemModel>?> novelSeeList({
     required int page,
     required int limit,
   }) =>
@@ -221,7 +209,6 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(NovelItemsModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(NovelItemModel.fromJson).toList())
           .guard;
 }

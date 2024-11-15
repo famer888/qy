@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../domain/async_value.dart';
 import '../../../domain/domain.dart';
-import '../../../domain/model/creator_info_model.dart';
+import '../../../domain/model/post/post_creator_info_model.dart';
 import '../../../domain/model/member_model.dart';
 import '../../notifiers/user_notifier.dart';
 import '../../router/routes.dart';
@@ -29,7 +29,7 @@ class UserCenterScreen extends StatefulWidget {
 class _UserCenterScreenState extends State<UserCenterScreen> {
   late final communityDomain = context.read<CommunityDomain>();
 
-  AsyncValue<CreatorInfo> _asyncValue = const AsyncInit();
+  AsyncValue<PostCreatorInfoModel> _asyncValue = const AsyncInit();
 
   @override
   void initState() {
