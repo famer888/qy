@@ -2,7 +2,7 @@ part of '../repo.dart';
 
 mixin _AI on _BaseAppRepo implements AIDomain {
   @override
-  AsyncResult<AIFaceMaterialsWithBannersModel> faceMaterialList({
+  AsyncResult<AiFaceMaterialsWithBannersModel> faceMaterialList({
     required int id,
     required int page,
     required int limit,
@@ -12,7 +12,7 @@ mixin _AI on _BaseAppRepo implements AIDomain {
       _aiService
           .faceMaterialList(
               id: id, page: page, limit: limit, sort: sort, type: type)
-          .deserializeJsonBy(AIFaceMaterialsWithBannersModel.fromJson)
+          .deserializeJsonBy(AiFaceMaterialsWithBannersModel.fromJson)
           .guard;
 
   @override
@@ -59,35 +59,33 @@ mixin _AI on _BaseAppRepo implements AIDomain {
           .guard;
 
   @override
-  AsyncResult<List<AIFaceMaterials>?> aIMyFace({
-    required int status,
+  AsyncResult<List<AiRecordModel>?> aIMyFace({
+    required AiStatus status,
     required int page,
     required int limit,
   }) =>
       _aiService
           .aIMyFace(
-            status: status,
+            status: status.index,
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(AIFaceMaterials.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(AiRecordModel.fromJson).toList())
           .guard;
 
   @override
-  AsyncResult<List<AIFaceMaterials>?> aIMyStrip({
-    required int status,
+  AsyncResult<List<AiRecordModel>?> aIMyStrip({
+    required AiStatus status,
     required int page,
     required int limit,
   }) =>
       _aiService
           .aIMyStrip(
-            status: status,
+            status: status.index,
             page: page,
             limit: limit,
           )
-          .deserializeJsonListBy(
-              (e) => e.map(AIFaceMaterials.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(AiRecordModel.fromJson).toList())
           .guard;
 
   @override

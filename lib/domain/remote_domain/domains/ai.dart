@@ -1,9 +1,11 @@
-import '../../model/ai/ai_model.dart';
+import '../../enum.dart';
+import '../../model/ai/ai_face_materials_with_banners_model.dart';
+import '../../model/ai/ai_record_model.dart';
 import '../../type_def.dart';
 
 abstract class AIDomain {
   /// 换脸列表排序
-  AsyncResult<AIFaceMaterialsWithBannersModel> faceMaterialList({
+  AsyncResult<AiFaceMaterialsWithBannersModel> faceMaterialList({
     required int id,
     required int page,
     required int limit,
@@ -34,15 +36,15 @@ abstract class AIDomain {
   });
 
   ///我的换脸记录
-  AsyncResult<List<AIFaceMaterials>?> aIMyFace({
-    required int status, // 0-待处理 1-处理中 2-已成功 3-已失败
+  AsyncResult<List<AiRecordModel>?> aIMyFace({
+    required AiStatus status,
     required int page,
     required int limit,
   });
 
   ///我的脱衣记录
-  AsyncResult<List<AIFaceMaterials>?> aIMyStrip({
-    required int status, // 0-待处理 1-处理中 2-已成功 3-已失败
+  AsyncResult<List<AiRecordModel>?> aIMyStrip({
+    required AiStatus status,
     required int page,
     required int limit,
   });

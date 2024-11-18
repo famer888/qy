@@ -5,6 +5,7 @@ import '../../model/member_model.dart';
 import '../../model/mine/following/following_user_list_model.dart';
 import '../../model/mine/withdrawal/bank_card_list_model.dart';
 import '../../model/tiezt_model.dart';
+import '../../model/vip_upgrade_model.dart';
 import '../../type_def.dart';
 
 abstract class UserDomain {
@@ -95,6 +96,12 @@ abstract class UserDomain {
     required int limit,
     required String lastIx,
   });
+
+  ///VIP可升级列表
+  AsyncResult<VipUpgradeModel> userUpgradeGoods();
+
+  ///金币升级VIP
+  AsyncResult userUpgrade({required int id});
 
   /// 清除缓存
   AsyncJson clearCached();

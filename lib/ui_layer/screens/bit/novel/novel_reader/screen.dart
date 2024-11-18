@@ -66,17 +66,11 @@ class _NovelReaderScreenState extends State<NovelReaderScreen>
   }
 
   void nextChapter() {
-    novelPageController.nextPage(
-      duration: _animationDuration,
-      curve: Curves.linear,
-    );
+    novelPageController.jumpToPage((novelPageController.page ?? 0).round() + 1);
   }
 
   void prevChapter() {
-    novelPageController.previousPage(
-      duration: _animationDuration,
-      curve: Curves.linear,
-    );
+    novelPageController.jumpToPage((novelPageController.page ?? 0).round() - 1);
   }
 
   @override

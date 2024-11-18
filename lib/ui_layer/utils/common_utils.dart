@@ -1,21 +1,26 @@
 import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'package:html_unescape/html_unescape.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../app_config.dart';
+import '../../crypto.dart';
 import '../../logger.dart';
 import 'my_toast.dart';
 
 import '../../domain/domain.dart';
 import '../router/routes.dart';
+import 'package:universal_html/html.dart' as html;
 
 class CommonUtils {
   static setStatusBar({bool isLight = false}) {
@@ -339,6 +344,160 @@ class CommonUtils {
       }
     }
     return false;
+  }
+
+  static void localStorageImage(String imgUrl) async {
+    if (kIsWeb) {
+    } else {
+      PermissionStatus storageStatus = await Permission.camera.status;
+      if (storageStatus == PermissionStatus.denied) {
+        storageStatus = await Permission.camera.request();
+        if (storageStatus == PermissionStatus.denied ||
+            storageStatus == PermissionStatus.permanentlyDenied) {
+          MyToast.showText(text: tr('qdkqx'));
+          return;
+        } else {}
+      } else if (storageStatus == PermissionStatus.permanentlyDenied) {
+        MyToast.showText(text: tr('wfbc'));
+        return;
+      }
+    }
+
+    MyToast.showLoading(text: tr('bctpz'));
+    final Uint8List? bytes = await CommonUtils.isolatedImage(imgUrl);
+    if (bytes?.lengthInBytes == 0 || bytes == null) {
+      MyToast.showText(text: tr('tpybc'));
+      return;
+    }
+
+    if (kIsWeb) {
+      dynamic blob = html.Blob([bytes]);
+      String url = html.Url.createObjectUrlFromBlob(blob);
+      html.AnchorElement anchor =
+          html.document.createElement('a') as html.AnchorElement
+            ..href = url
+            ..style.display = 'none'
+            ..download = '${CommonUtils.randomId(16)}.jpg';
+      html.document.body?.children.add(anchor);
+// download
+      anchor.click();
+// cleanup
+      html.document.body?.children.remove(anchor);
+      html.Url.revokeObjectUrl(url);
+    } else {
+      final result = await ImageGallerySaver.saveImage(bytes); //这个是核心的保存图片的插件
+      if (result['isSuccess']) {
+        MyToast.showText(text: tr('tpybc'));
+      } else if (Platform.isAndroid) {
+        if (result.length > 0) {
+          MyToast.showText(text: tr('tpybc'));
+        }
+      }
+    }
+
+    MyToast.closeAllLoading();
+  }
+
+  static Future<Uint8List?> isolatedImage(String url) async {
+    Uint8List? bytes;
+    if (kIsWeb) {
+      html.HttpRequest xhr = await html.HttpRequest.request(
+          method: 'GET', url, responseType: 'arraybuffer');
+      if (xhr.response != null) {
+        ByteBuffer bb = xhr.response;
+        bytes = bb.asUint8List();
+      }
+    } else {
+      final Uri resolved = Uri.base.resolve(url);
+      final HttpClient httpClient = HttpClient()..autoUncompress = false;
+      final HttpClientRequest request = await httpClient.getUrl(resolved);
+      final HttpClientResponse response = await request.close();
+      if (response.statusCode != HttpStatus.ok) {
+        return null;
+      }
+      bytes = await consolidateHttpClientResponseBytes(response);
+    }
+    if (bytes?.lengthInBytes == 0 || bytes == null) {
+      return null;
+    }
+    //解密后的图片
+    Uint8List? bys;
+    bys = await PlatformAwareCrypto.imageDecrypt(bytes);
+    return bys;
+  }
+
+  //随机字符串
+  static String randomId(int range) {
+    String str = '';
+    List<String> arr = [
+      '0',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      'a',
+      'b',
+      'c',
+      'd',
+      'e',
+      'f',
+      'g',
+      'h',
+      'i',
+      'j',
+      'k',
+      'l',
+      'm',
+      'n',
+      'o',
+      'p',
+      'q',
+      'r',
+      's',
+      't',
+      'u',
+      'v',
+      'w',
+      'x',
+      'y',
+      'z',
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      'K',
+      'L',
+      'M',
+      'N',
+      'O',
+      'P',
+      'Q',
+      'R',
+      'S',
+      'T',
+      'U',
+      'V',
+      'W',
+      'X',
+      'Y',
+      'Z'
+    ];
+    for (int i = 0; i < range; i++) {
+      int pos = Random().nextInt(arr.length - 1);
+      str += arr[pos];
+    }
+    return str;
   }
 }
 

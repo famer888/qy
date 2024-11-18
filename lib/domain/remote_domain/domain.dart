@@ -21,6 +21,7 @@ import 'domains/novel.dart';
 import 'domains/order.dart';
 import 'domains/privilege.dart';
 import 'domains/proxy.dart';
+import 'domains/rank.dart';
 import 'domains/search.dart';
 import 'domains/seed.dart';
 import 'domains/sign.dart';
@@ -49,7 +50,8 @@ abstract class RemoteDomain
         MonitorDomain,
         ComicDomain,
         NovelDomain,
-        IndexDomain {
+        IndexDomain,
+        RankDomain {
   Stream<MyTokenStatus?> get tokenStatusStream;
   Future<bool> initLine();
 

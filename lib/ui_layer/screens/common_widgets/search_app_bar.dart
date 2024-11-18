@@ -57,10 +57,10 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(width: 10.w),
             GestureDetector(
               onTap: () {
-                const MineWelfareRoute(index: 0).push(context);
+                const RankRoute().push(context);
               },
               child: Image.asset(
-                MyImagePaths.appSearchLogo,
+                MyImagePaths.appRank,
                 width: 30.w,
                 fit: BoxFit.fitHeight,
               ),

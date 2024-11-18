@@ -1,22 +1,4 @@
-import '../banner_model.dart';
-
-class AIFaceMaterialsWithBannersModel {
-  List<BannerModel>? banners;
-  List<AIFaceMaterials>? materials;
-  AIFaceMaterialsWithBannersModel({this.materials, this.banners});
-
-  factory AIFaceMaterialsWithBannersModel.fromJson(Map<String, dynamic> json) =>
-      AIFaceMaterialsWithBannersModel(
-        materials: List<AIFaceMaterials>.from(
-            json['materials'].map((e) => AIFaceMaterials.fromJson(e))),
-        banners: List<BannerModel>.from(
-            json['banners'].map((e) => BannerModel.fromJson(e))),
-      );
-
-  Map<String, dynamic> toJson() => {'materials': materials, 'banners': banners};
-}
-
-class AIFaceMaterials {
+class AiFaceMaterialModel {
   final int id;
   final int aff;
   final String title;
@@ -27,7 +9,7 @@ class AIFaceMaterials {
   final String? usedFct;
   final int? isHot;
 
-  AIFaceMaterials(
+  AiFaceMaterialModel(
       {required this.id,
       required this.aff,
       required this.thumb,
@@ -38,8 +20,8 @@ class AIFaceMaterials {
       required this.thumbW,
       required this.thumbH});
 
-  factory AIFaceMaterials.fromJson(Map<String, dynamic> json) =>
-      AIFaceMaterials(
+  factory AiFaceMaterialModel.fromJson(Map<String, dynamic> json) =>
+      AiFaceMaterialModel(
           id: json['id'],
           aff: json['aff'],
           thumb: json['thumb'],

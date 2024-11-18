@@ -14,6 +14,7 @@ import 'domain/remote_domain/domains/index.dart';
 import 'domain/remote_domain/domains/live.dart';
 import 'domain/remote_domain/domains/monitor.dart';
 import 'domain/remote_domain/domains/novel.dart';
+import 'domain/remote_domain/domains/rank.dart';
 import 'ui_layer/notifiers/chat_notifier.dart';
 import 'ui_layer/notifiers/home_config_notifier.dart';
 import 'ui_layer/notifiers/user_notifier.dart';
@@ -63,6 +64,7 @@ void main() async {
         Provider<ComicDomain>.value(value: appRepo),
         Provider<NovelDomain>.value(value: appRepo),
         Provider<IndexDomain>.value(value: appRepo),
+        Provider<RankDomain>.value(value: appRepo),
         Provider<DownloadUtil>(
           lazy: false,
           create: (_) => DownloadUtil(cache: appRepo.cache),

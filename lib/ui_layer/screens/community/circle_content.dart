@@ -37,7 +37,7 @@ class _CircleCommunityContentViewState
 
   final ValueNotifier<List<TopicModel>> topicsNotifier = ValueNotifier([]);
 
-  late final List<NavigatorModel> _titles = _homeConfig.config.forumNav ?? [];
+  late final List<NavigatorModel> _titles = _homeConfig.config.circleNav;
 
   bool isInit = false;
 
@@ -112,6 +112,7 @@ class _CircleCommunityContentViewState
                 tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
                 tabBarHeight: 32.w,
                 isScrollable: true,
+                labelPadding: EdgeInsets.only(right: 8.w),
                 titles:
                     isInit ? [for (final title in _titles) title.title] : [],
                 views: [
@@ -120,9 +121,18 @@ class _CircleCommunityContentViewState
                       contentPadding: 15.w,
                       padding:
                           EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
-                      itemBuilder: (context, item, index) => PostCard(
-                        data: item,
-                      ),
+                      itemBuilder: (context, item, index) {
+                        if (nav.type == 'rank' && index < 3) {
+                          return PostCard(
+                            data: item,
+                            rank: index,
+                          );
+                        }
+
+                        return PostCard(
+                          data: item,
+                        );
+                      },
                       onFetchingMore: (currentPage, pageSize) => _getData(
                           page: currentPage,
                           pageSize: pageSize,

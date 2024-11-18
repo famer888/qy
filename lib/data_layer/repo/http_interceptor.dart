@@ -36,7 +36,7 @@ class AutoEncryptAndDecryptInterceptor extends Interceptor {
           await fd.compute(PlatformAwareCrypto.decryptResData, response.data);
       // response.data = await PlatformAwareCrypto.decryptResData(response.data);
     }
-
+    //
     // logger.i({
     //   'path': response.requestOptions.path,
     //   'data': response.data,

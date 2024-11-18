@@ -59,52 +59,53 @@ class _SearchScreenState extends State<SearchScreen> {
             bottom: 50.w,
           ),
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 15.w),
-              child: Row(
-                children: [
-                  Text(
-                    'ssjl'.tr(context: context),
-                    style: MyTheme.white16medium,
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: _homeConfigNotifier.clearSearchHistory,
-                    child: Text(tr('qcjl'), style: MyTheme.jellyCyan_13),
-                  ),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Selector<HomeConfigNotifier, List<String>>(
-                selector: (_, config) => config.searchHistory,
-                builder: (context, searchHistory, child) =>
-                    searchHistory.isNotEmpty
-                        ? Wrap(
-                            spacing: 10.w,
-                            runSpacing: 10.w,
+            Selector<HomeConfigNotifier, List<String>>(
+              selector: (_, config) => config.searchHistory,
+              builder: (context, searchHistory, child) => searchHistory
+                      .isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 15.w),
+                          child: Row(
                             children: [
-                              for (final text in searchHistory)
-                                _KeywordTile(
-                                  text: text,
-                                  onTap: () {
-                                    searchTextEditController.text = text;
-                                    onSubmitted(text);
-                                  },
-                                  onDelete: () {
-                                    final history =
-                                        _homeConfigNotifier.searchHistory;
-                                    _homeConfigNotifier.upsertSearchHistory(
-                                        searchHistory: history..remove(text));
-                                  },
-                                )
+                              Text(
+                                'ssjl'.tr(context: context),
+                                style: MyTheme.white16medium,
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: _homeConfigNotifier.clearSearchHistory,
+                                child: Text(tr('qcjl'),
+                                    style: MyTheme.jellyCyan_13),
+                              ),
                             ],
-                          )
-                        : PageEmptyDataView(
-                            text: 'myss'.tr(context: context),
                           ),
-              ),
+                        ),
+                        Wrap(
+                          spacing: 10.w,
+                          runSpacing: 10.w,
+                          children: [
+                            for (final text in searchHistory)
+                              _KeywordTile(
+                                text: text,
+                                onTap: () {
+                                  searchTextEditController.text = text;
+                                  onSubmitted(text);
+                                },
+                                onDelete: () {
+                                  final history =
+                                      _homeConfigNotifier.searchHistory;
+                                  _homeConfigNotifier.upsertSearchHistory(
+                                      searchHistory: history..remove(text));
+                                },
+                              )
+                          ],
+                        ),
+                      ],
+                    )
+                  : const SizedBox.shrink(),
             ),
             _SearchContentView(
               onSubmitted: (text) {

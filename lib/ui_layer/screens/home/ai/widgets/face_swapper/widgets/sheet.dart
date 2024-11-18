@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../../domain/model/ai/ai_model.dart';
+import '../../../../../../../domain/model/ai/ai_face_material_model.dart';
 import '../../../../../../../domain/model/member_model.dart';
 import '../../../../../../../domain/remote_domain/domains/ai.dart';
 import '../../../../../../notifiers/home_config_notifier.dart';
@@ -22,7 +22,7 @@ import '../../../../../theme.dart';
 class FaceSwapSheetView extends StatefulWidget {
   const FaceSwapSheetView({super.key, required this.data});
 
-  final AIFaceMaterials data;
+  final AiFaceMaterialModel data;
 
   @override
   State<FaceSwapSheetView> createState() => _FaceSwapSheetViewState();

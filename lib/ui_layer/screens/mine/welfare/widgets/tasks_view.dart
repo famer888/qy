@@ -144,7 +144,6 @@ class _TaskViewState extends State<TaskView> {
         ? Container()
         : Container(
             margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-            padding: EdgeInsets.all(MyTheme.pagePadding),
             child: Column(children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -176,7 +175,8 @@ class _TaskViewState extends State<TaskView> {
               SizedBox(height: 10.w),
               LayoutBuilder(builder: (_, c) {
                 final spacing = 10.w;
-                final itemW = (c.maxWidth - spacing * 3) / 4;
+                final itemW =
+                    ((c.maxWidth - spacing * 3) / 4).round().toDouble();
                 final dataList = [...data.signRewardList!];
                 final latestItem = dataList.removeLast();
                 return Wrap(
@@ -189,23 +189,19 @@ class _TaskViewState extends State<TaskView> {
                         child: siginItem(e, data.signNum ?? 0),
                       ),
                     SizedBox(
-                      width: itemW * 2 + spacing,
+                      width: (itemW * 2 + spacing).round().toDouble(),
                       child: siginItem(latestItem, data.signNum ?? 0),
                     ),
                   ],
                 );
               }),
               SizedBox(height: 15.w),
-              GestureDetector(
-                onTap: () {
-                  //兑换VIP
-                  const VipCenterRoute().push(context);
+              MyButton.gradient(
+                onPressed: () async {
+                  const VipCenterRoute(index: 1).push(context);
                 },
-                child: MyButton.gradient(
-                  onPressed: () async {},
-                  minimumSize: Size(260.w, 40.w),
-                  text: 'dhvp'.tr(context: context),
-                ),
+                minimumSize: Size(260.w, 40.w),
+                text: 'dhvp'.tr(context: context),
               ),
             ]),
           );
@@ -385,10 +381,18 @@ class _MemberView extends StatelessWidget {
             ),
             MyButton.gradient(
               minimumSize: Size(260.w, 40.w),
-              onPressed: () async {
-                signCall.call();
-              },
-              text: 'ljqd'.tr(context: context),
+              gradient: const LinearGradient(colors: [
+                Colors.grey,
+                Colors.grey,
+              ]),
+              onPressed: data.signStatus == true
+                  ? null
+                  : () async {
+                      signCall.call();
+                    },
+              text: data.signStatus == true
+                  ? 'yqd'.tr(context: context)
+                  : 'ljqd'.tr(context: context),
             ),
           ],
         ),
@@ -435,7 +439,7 @@ class _Header extends StatelessWidget {
                 selector: (_, notifier) => notifier.member),
             MyButton.gradient(
               onPressed: () async {
-                const VipCenterRoute().push(context);
+                const VipCenterRoute(index: 1).push(context);
               },
               minimumSize: Size(75.w, 32.w),
               child: Text(

@@ -16,7 +16,8 @@ import 'package:utils/utils.dart';
 import '../../app_config.dart';
 import '../../crypto.dart';
 import '../../domain/enum.dart';
-import '../../domain/model/ai/ai_model.dart';
+import '../../domain/model/ai/ai_face_materials_with_banners_model.dart';
+import '../../domain/model/ai/ai_record_model.dart';
 import '../../domain/model/mine/following/following_user_list_model.dart';
 import '../../domain/model/mine/post/mine_post_list_model.dart';
 import '../../domain/model/mine/proxy/proxy_detail_model.dart';
@@ -67,12 +68,14 @@ import '../../domain/model/video_comment_model.dart';
 import '../../domain/model/video_detail_model.dart';
 import '../../domain/model/mine/welfare/welfare_task_list_model.dart';
 
+import '../../domain/model/vip_upgrade_model.dart';
 import '../../domain/remote_domain/domains/ai.dart';
 import '../../domain/remote_domain/domains/comic.dart';
 import '../../domain/remote_domain/domains/index.dart';
 import '../../domain/remote_domain/domains/live.dart';
 import '../../domain/remote_domain/domains/monitor.dart';
 import '../../domain/remote_domain/domains/novel.dart';
+import '../../domain/remote_domain/domains/rank.dart';
 import '../../domain/result.dart';
 import '../../domain/type_def.dart';
 import '../../domain/domain.dart';
@@ -93,6 +96,7 @@ import '../data_source/remote/novel_service.dart';
 import '../data_source/remote/order_service.dart';
 import '../data_source/remote/privilege_service.dart';
 import '../data_source/remote/proxy_service.dart';
+import '../data_source/remote/rank_service.dart';
 import '../data_source/remote/search_service.dart';
 import '../data_source/remote/seed_service.dart';
 import '../data_source/remote/sign_service.dart';
@@ -122,6 +126,7 @@ part 'mixin/monitor_mixin.dart';
 part 'mixin/novel_mixin.dart';
 part 'mixin/comic_mixin.dart';
 part 'mixin/index_mixin.dart';
+part 'mixin/rank_mixin.dart';
 
 class AppRepo extends _BaseAppRepo
     with
@@ -145,7 +150,8 @@ class AppRepo extends _BaseAppRepo
         _Monitor,
         _Novel,
         _Comic,
-        _Index {}
+        _Index,
+        _Rank {}
 
 abstract class _BaseAppRepo implements AppDomain {
   late final _homeService = HomeService(_apiDio);
@@ -169,6 +175,7 @@ abstract class _BaseAppRepo implements AppDomain {
   late final _comicService = ComicService(_apiDio);
   late final _novelService = NovelService(_apiDio);
   late final _indexService = IndexService(_apiDio);
+  late final _rankService = RankService(_apiDio);
 
   final _cacheManager = _CacheManager();
 

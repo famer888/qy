@@ -173,6 +173,15 @@ class UserService extends BaseService {
         'last_ix': lastIx,
       });
 
+  ///VIP可升级列表
+  AsyncJson userUpgradeGoods() => post('/upgrade_goods');
+
+  ///金币升级VIP
+  AsyncJson userUpgrade({
+    required int id,
+  }) =>
+      post('/upgrade', data: {'id': id});
+
   /// 清除缓存
   AsyncJson clearCached() => post('/clear_cached');
 }

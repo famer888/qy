@@ -3,13 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../domain/api_validator.dart';
 import '../../../../domain/enum.dart';
+import '../../../../domain/model/comic/comic_item_model.dart';
+import '../../../../domain/model/live/live_with_banners_model.dart';
 import '../../../../domain/model/mine/post/mine_post_list_model.dart';
 import '../../../../domain/model/mine/video/mine_video_model.dart';
 import '../../../../domain/model/mine/video/mine_video_list_model.dart';
+import '../../../../domain/model/novel/novel_item_model.dart';
 import '../../../../domain/model/post/post_model.dart';
+import '../../../../domain/remote_domain/domains/comic.dart';
+import '../../../../domain/remote_domain/domains/live.dart';
+import '../../../../domain/remote_domain/domains/novel.dart';
 import '../../../../domain/remote_domain/domains/user.dart';
 import '../../../../domain/result.dart';
+import '../../../notifiers/home_config_notifier.dart';
+import '../../bit/comic/card/comic_item_card.dart';
+import '../../bit/live/widgets/live_video_card.dart';
+import '../../bit/novel/card/novel_item_card.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
 import '../../common_widgets/my_app_bar.dart';
 import '../../common_widgets/my_list_view.dart';
@@ -27,14 +38,25 @@ class MineBuyScreen extends StatefulWidget {
 }
 
 class _MineBuyScreenState extends State<MineBuyScreen> {
-  final data = {
-    'shp': const _VideoView(),
-    'tiezt': const _PostView(type: ModuleType.post),
-    'zhoz': const _PostView(type: ModuleType.seed),
-  };
+  late final homeConfigNotifier = context.read<HomeConfigNotifier>();
 
   @override
   Widget build(BuildContext context) {
+    final openLive = homeConfigNotifier.config.openLive == 1 ? true : false;
+
+    final data = {
+      'shp': const _VideoView(),
+      'tiezt': const _PostView(type: ModuleType.post),
+      'zhoz': const _PostView(type: ModuleType.seed),
+    };
+    if (openLive) {
+      data['zhib'] = const _LiveView();
+    }
+    data.addAll({
+      'manh': const _ComicView(),
+      'xs': const _NovelView(),
+    });
+
     return ScreenBackground(
       child: Scaffold(
         appBar: MyAppBar(title: 'wdgm'.tr(context: context)),
@@ -134,6 +156,115 @@ class _PostViewState extends State<_PostView> {
         ModuleType.seed => PostCard.seed(data: item),
         _ => const SizedBox.shrink(),
       },
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _LiveView extends StatefulWidget {
+  const _LiveView();
+
+  @override
+  State<_LiveView> createState() => _LiveViewState();
+}
+
+class _LiveViewState extends State<_LiveView> {
+  late final liveDomain = context.read<LiveDomain>();
+
+  Future<List<LiveModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await liveDomain.getLiveListBuy(
+      page: page,
+      limit: pageSize,
+    );
+    return result.data;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      childAspectRatio: LiveVideoCard.aspectRatio,
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      itemBuilder: (context, item, index) => LiveVideoCard(data: item),
+      onFetchingMore: (currentPage, pageSize) =>
+          _getData(page: currentPage, pageSize: pageSize),
+    );
+  }
+}
+
+class _ComicView extends StatefulWidget {
+  const _ComicView();
+
+  @override
+  State<_ComicView> createState() => _ComicViewState();
+}
+
+class _ComicViewState extends State<_ComicView> {
+  late final _domain = context.read<ComicDomain>();
+
+  Future<List<ComicItemModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await _domain.comicBuyList(page: page, limit: pageSize);
+    if (result.isValid) {
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      childAspectRatio: ComicItemCard.aspectRatio,
+      crossAxisSpacing: 10.w,
+      crossAxisCount: 3,
+      itemBuilder: (_, item, index) => ComicItemCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _NovelView extends StatefulWidget {
+  const _NovelView();
+
+  @override
+  State<_NovelView> createState() => _NovelViewState();
+}
+
+class _NovelViewState extends State<_NovelView> {
+  late final _domain = context.read<NovelDomain>();
+
+  Future<List<NovelItemModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await _domain.novelBuyList(page: page, limit: pageSize);
+    if (result.isValid) {
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      childAspectRatio: NovelItemCard.aspectRatio,
+      crossAxisSpacing: 10.w,
+      crossAxisCount: 3,
+      itemBuilder: (_, item, index) => NovelItemCard(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

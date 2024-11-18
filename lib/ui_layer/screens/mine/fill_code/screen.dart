@@ -150,7 +150,7 @@ class _MineFillCodeScreenState extends State<MineFillCodeScreen> {
                     ),
                     SizedBox(height: 54.w),
                     MyButton.gradient(
-                      minimumSize: Size(140.w, 40.w),
+                      minimumSize: Size.fromHeight(40.w),
                       onPressed: () async {
                         onSubmit();
                       },

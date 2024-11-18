@@ -88,3 +88,17 @@ enum ModuleType {
         ModuleType.monitor => 19,
       };
 }
+
+enum AiStatus {
+  /// 待处理
+  pending,
+
+  /// 处理中
+  processing,
+
+  /// 成功
+  successful,
+
+  /// 失败
+  failure;
+}

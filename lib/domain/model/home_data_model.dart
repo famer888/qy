@@ -2,6 +2,7 @@ import 'ai/ai_nav_model.dart';
 import 'novel/novel_nav_model.dart';
 import 'novel/novel_sort_nav_model.dart';
 import 'novel/novel_type_nav_model.dart';
+import 'rank_nav_model.dart';
 import 'seed/seed_sort_model.dart';
 import 'comic/comic_nav_model.dart';
 import 'comic/comic_sort_nav_model.dart';
@@ -132,7 +133,7 @@ class Config {
     this.proxyJoinNum,
     this.solution,
     this.sortNav,
-    this.forumNav,
+    required this.forumNav,
     required this.seedNav,
     this.showApp,
     required this.potatoGroup,
@@ -157,6 +158,11 @@ class Config {
     required this.novelNav,
     required this.novelTypeNav,
     required this.novelSortNav,
+    required this.rankTopNav,
+    required this.rankCycleNav,
+    required this.circleNav,
+    required this.resourceNav,
+    this.openLive,
     this.navPrepend,
   });
 
@@ -184,13 +190,21 @@ class Config {
   final int? navId;
   final int? awNavid;
 
+  final int? openLive;
+
   ///视频
   final List<NavigatorModel>? sortNav;
   final List<NavigatorModel> mvDiscoverSortNav;
   final List<NavigatorModel> mvSecondSortNav;
+  final List<NavigatorModel> resourceNav;
+  final List<RankNavModel> rankTopNav;
+  final List<RankNavModel> rankCycleNav;
 
   ///社区
-  final List<NavigatorModel>? forumNav;
+  final List<NavigatorModel> forumNav;
+
+  ///圈子
+  final List<NavigatorModel> circleNav;
 
   ///种子
   final List<SeedSortModel> seedNav;
@@ -252,12 +266,16 @@ class Config {
         mvSecondSortNav: List<NavigatorModel>.from(json['mv_second_sort_nav']
                 ?.map((x) => NavigatorModel.fromJson(x)) ??
             []),
+        resourceNav: List<NavigatorModel>.from(
+            json['resource_nav']?.map((x) => NavigatorModel.fromJson(x)) ?? []),
         mvDiscoverSortNav: List<NavigatorModel>.from(
             json['mv_discover_sort_nav']
                     ?.map((x) => NavigatorModel.fromJson(x)) ??
                 []),
         forumNav: List<NavigatorModel>.from(
             json['forum_nav']?.map((x) => NavigatorModel.fromJson(x)) ?? []),
+        circleNav: List<NavigatorModel>.from(
+            json['circle_nav']?.map((x) => NavigatorModel.fromJson(x)) ?? []),
         seedNav: List<SeedSortModel>.from(
             json['seed_nav']?.map((x) => SeedSortModel.fromJson(x)) ?? []),
         payAi: json['pay_ai'] ?? 0,
@@ -301,6 +319,11 @@ class Config {
         novelSortNav: List<NovelSortNavModel>.from(
             json['novel_sort']?.map((x) => NovelSortNavModel.fromJson(x)) ??
                 []),
+        rankTopNav: List<RankNavModel>.from(
+            json['rank_top_nav']?.map((x) => RankNavModel.fromJson(x)) ?? []),
+        rankCycleNav: List<RankNavModel>.from(
+            json['rank_cycle_nav']?.map((x) => RankNavModel.fromJson(x)) ?? []),
+        openLive: json['open_live'],
       );
 }
 

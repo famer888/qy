@@ -156,5 +156,15 @@ mixin _User on _BaseAppRepo implements UserDomain {
       _userService.toggleUserLike(type: type.index, id: id).deserialize().guard;
 
   @override
+  AsyncResult<VipUpgradeModel> userUpgradeGoods() => _userService
+      .userUpgradeGoods()
+      .deserializeJsonBy(VipUpgradeModel.fromJson)
+      .guard;
+
+  @override
+  AsyncResult userUpgrade({required int id}) =>
+      _userService.userUpgrade(id: id).deserialize().guard;
+
+  @override
   AsyncJson clearCached() => _userService.clearCached();
 }

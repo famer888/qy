@@ -94,6 +94,7 @@ class MyImagePaths {
   static const appZfXfbN = './assets/images/app_zf_xfb_n.png';
   static const appUploadImg = './assets/images/app_upload_img.png';
   static const appResouIcon = './assets/images/app_resou_icon.png';
+  static const appRank = './assets/images/app_rank.png';
   static const appFilterUp = './assets/images/app_filter_up.png';
   static const appSearchClear = './assets/images/app_search_clear.png';
   static const appGrayDown = './assets/images/app_gray_down.png';
@@ -132,6 +133,7 @@ class MyImagePaths {
   static const appDaSan = './assets/images/app_da_san.png';
   static const appOffline = './assets/images/app_offline.png';
   static const appMonitorColloctionS = './assets/images/app_monitor_colloction_s.png';
+  static const appVipUpgrade = './assets/images/app_vip_upgrade.png';
   static const appWdServmeN = './assets/images/app_wd_servme_n.png';
   static const appComicPrevious = './assets/images/app_comic_previous.png';
   static const appTabHomeN = './assets/images/app_tab_home_n.png';
@@ -184,4 +186,5 @@ class MyImagePaths {
   static const appTabShequN = './assets/images/app_tab_shequ_n.png';
   static const appVideoCoinN = './assets/images/app_video_coin_n.png';
   static const appAnnouncementUpBg = './assets/images/app_announcement_up_bg.png';
+  static const appMineAi = './assets/images/app_mine_ai.png';
 }

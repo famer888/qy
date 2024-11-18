@@ -54,6 +54,9 @@ class AppRouterPaths {
   /// 我的 - VIP充值
   static const mineVipCenter = '/vip';
 
+  /// 我的 - VIP升级
+  static const vipUpgrade = '/vipUpgrade';
+
   /// 我的 - 金币充值
   static const mineCoinRecharge = '/coinRecharge';
 
@@ -135,6 +138,9 @@ class AppRouterPaths {
   /// 我的 - 关注
   static const mineFollowing = '/mineFollowing';
 
+  /// 我的 - AI
+  static const mineAIRecord = '/minAIRecord';
+
   /// 我的 - 申请入驻
   static const originalEnter = '/originalEnter';
 
@@ -211,4 +217,7 @@ class AppRouterPaths {
 
   /// 精采发现
   static const discovery = '/discovery';
+
+  /// 榜单
+  static const rankList = '/rankList';
 }

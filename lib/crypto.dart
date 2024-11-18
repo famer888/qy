@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:webcrypto/webcrypto.dart';
@@ -69,6 +70,13 @@ class PlatformAwareCrypto {
     } catch (_) {
       return null;
     }
+  }
+
+  static Future<Uint8List> imageDecrypt(Uint8List data) async {
+    Encrypter encrypter = Encrypter(AES(mediaKey, mode: AESMode.cbc));
+    Encrypted encrypted = Encrypted.fromBase64(base64Encode(data));
+    List<int> decrypted = encrypter.decryptBytes(encrypted, iv: mediaIv);
+    return Uint8List.fromList(decrypted);
   }
 
   static dynamic decryptM3U8(data) {

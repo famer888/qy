@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -141,10 +144,8 @@ class _Body extends StatelessWidget {
               const _VIPCenter(),
               SizedBox(height: 15.w),
               const _FirstMenu(),
-              SizedBox(height: 15.w),
+              const _ChangeAppIconView(),
               const _SecondMenu(),
-              SizedBox(height: 15.w),
-              const _ThirdMenu(),
               SizedBox(height: 15.w),
             ],
           ),
@@ -187,6 +188,17 @@ class _HeaderInfo extends StatelessWidget {
                         size: 17.w,
                         color: const Color.fromRGBO(247, 208, 93, 1),
                       ),
+                    if (member.vipUpgrade == 1)
+                      Padding(
+                        padding: EdgeInsets.only(left: 2.w),
+                        child: GestureDetector(
+                          onTap: () {
+                            const VipUpgradeRoute().push(context);
+                          },
+                          child: const MyImage.asset(MyImagePaths.appVipUpgrade,
+                              width: 65, height: 22),
+                        ),
+                      )
                   ],
                 ),
                 SizedBox(height: 9.5.w),
@@ -395,7 +407,7 @@ class _FirstMenu extends StatelessWidget {
           backgroundImg: MyImagePaths.appMineWelfareBackground,
           title: 'jbgm'.tr(context: context),
           subTitle: 'ye'.tr(context: context),
-          onTap: () => const MineAgentRoute().push(context),
+          onTap: () => const MineWelfareRoute().push(context),
         ),
       ],
     );
@@ -484,56 +496,15 @@ class _SecondMenu extends StatelessWidget {
         iconName: MyImagePaths.appMineOriginalEnter,
         onTap: () => const OriginalEnterRoute().push(context),
       ),
-    ];
-
-    return Container(
-        height: 72,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(255, 255, 255, 0.03),
-          borderRadius: BorderRadius.all(Radius.circular(8.w)),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            for (final data in menu)
-              GestureDetector(
-                onTap: data.onTap,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    MyImage.asset(
-                      data.iconName,
-                      width: 30.w,
-                      height: 26.w,
-                    ),
-                    SizedBox(height: 5.w),
-                    Text(
-                      data.title,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: const Color.fromRGBO(255, 255, 255, 1.0),
-                      ),
-                    )
-                  ],
-                ),
-              )
-          ],
-        ));
-  }
-}
-
-class _ThirdMenu extends StatelessWidget {
-  const _ThirdMenu();
-
-  @override
-  Widget build(BuildContext context) {
-    final menu = [
       (
         title: 'wdgm'.tr(context: context),
         iconName: MyImagePaths.appMineBuy,
         onTap: () => const MineBuyRoute().push(context),
+      ),
+      (
+        title: 'wdqy'.tr(context: context),
+        iconName: MyImagePaths.appMineAi,
+        onTap: () => const MineAIRecordRoute().push(context),
       ),
       (
         title: 'zxhc'.tr(context: context),
@@ -563,61 +534,69 @@ class _ThirdMenu extends StatelessWidget {
         onTap: () => const MineOfficialGroupRoute().push(context),
       ),
     ];
+
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 27.5.w, vertical: 10.w),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              Color.fromRGBO(21, 21, 42, 1),
-              Color.fromRGBO(11, 11, 33, 1),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          borderRadius: BorderRadius.circular(5.w),
+        decoration: const BoxDecoration(
+          color: MyTheme.white008Color,
+          borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
-        child: ListView(
-          shrinkWrap: true,
+        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 13 / 2),
+        child: GridView.count(
           physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          crossAxisCount: 4,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
           addAutomaticKeepAlives: false,
           addRepaintBoundaries: false,
+          childAspectRatio: 1,
           children: [
             for (final data in menu)
               GestureDetector(
-                behavior: HitTestBehavior.translucent,
                 onTap: data.onTap,
-                child: SizedBox(
-                  height: 44.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          MyImage.asset(
-                            data.iconName,
-                            width: 20.w,
-                            height: 20.w,
-                          ),
-                          SizedBox(width: 9.5.w),
-                          Text(
-                            data.title,
-                            overflow: TextOverflow.ellipsis,
-                            style: MyTheme.white14w400,
-                          ),
-                        ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    MyImage.asset(
+                      data.iconName,
+                      width: 28,
+                      height: 28,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      data.title,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: MyTheme.white07Color,
                       ),
-                      MyImage.asset(
-                        MyImagePaths.appMineRightArrow,
-                        width: 10.w,
-                        height: 10.w,
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               )
           ],
         ));
+  }
+}
+
+class _ChangeAppIconView extends StatefulWidget {
+  const _ChangeAppIconView({super.key});
+
+  @override
+  State<_ChangeAppIconView> createState() => _ChangeAppIconViewState();
+}
+
+class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
+  @override
+  Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return SizedBox(
+        height: 15.w,
+      );
+    }
+
+    return SizedBox(
+      height: 15.w,
+    );
   }
 }

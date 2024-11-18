@@ -22,6 +22,9 @@ class TabBarWithView extends StatefulWidget {
     this.labelStyle,
     this.unselectedLabelStyle,
     this.tabController,
+    this.isCenter = false,
+    this.initialIndex = 0,
+    this.labelPadding,
   })  : type = TabBarType.line,
         tabPadding = null,
         tabBarRightWidget = null;
@@ -38,6 +41,9 @@ class TabBarWithView extends StatefulWidget {
     this.labelStyle,
     this.unselectedLabelStyle,
     this.tabController,
+    this.isCenter = false,
+    this.initialIndex = 0,
+    this.labelPadding,
   }) : type = TabBarType.fillColor;
 
   final TabBarType type;
@@ -47,12 +53,15 @@ class TabBarWithView extends StatefulWidget {
   final bool isScrollable;
   final EdgeInsetsGeometry? tabBarPadding;
   final EdgeInsetsGeometry? tabPadding;
+  final EdgeInsetsGeometry? labelPadding;
 
   final double? tabBarHeight;
   final Widget? tabBarRightWidget;
   final TextStyle? labelStyle;
   final TextStyle? unselectedLabelStyle;
   final TabController? tabController;
+  final bool isCenter;
+  final int initialIndex;
 
   @override
   State<TabBarWithView> createState() => _TabBarWithViewState();
@@ -61,7 +70,11 @@ class TabBarWithView extends StatefulWidget {
 class _TabBarWithViewState extends State<TabBarWithView>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController = widget.tabController ??
-      TabController(length: widget.views.length, vsync: this);
+      TabController(
+        length: widget.views.length,
+        vsync: this,
+        initialIndex: widget.initialIndex,
+      );
 
   List<Widget> get tabs => widget.titles
       .map((title) => switch (widget.type) {
@@ -92,13 +105,34 @@ class _TabBarWithViewState extends State<TabBarWithView>
         tabAlignment: widget.isScrollable ? TabAlignment.start : null,
         labelStyle: widget.labelStyle,
         unselectedLabelStyle: widget.unselectedLabelStyle,
+        labelPadding: widget.labelPadding,
       ),
   };
 
   @override
   Widget build(BuildContext context) {
+    final bar = Theme(
+      data: Theme.of(context).copyWith(tabBarTheme: tabBarTheme),
+      child: RepaintBoundary(
+        child: ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(
+            scrollbars: false,
+          ),
+          child: TabBar(
+            physics: const BouncingScrollPhysics(),
+            isScrollable: widget.isScrollable,
+            padding: EdgeInsets.symmetric(vertical: 2.w),
+            controller: _tabController,
+            tabs: tabs,
+          ),
+        ),
+      ),
+    );
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: widget.isCenter
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       children: [
         if (widget.titles.isNotEmpty)
           Padding(
@@ -106,27 +140,14 @@ class _TabBarWithViewState extends State<TabBarWithView>
             child: SizedBox(
               height: widget.tabBarHeight ?? MyTheme.navbarHegiht,
               child: Row(
+                mainAxisSize:
+                    widget.isCenter ? MainAxisSize.min : MainAxisSize.max,
                 children: [
-                  Expanded(
-                    child: Theme(
-                      data:
-                          Theme.of(context).copyWith(tabBarTheme: tabBarTheme),
-                      child: RepaintBoundary(
-                        child: ScrollConfiguration(
-                          behavior: ScrollConfiguration.of(context).copyWith(
-                            scrollbars: false,
-                          ),
-                          child: TabBar(
-                            physics: const BouncingScrollPhysics(),
-                            isScrollable: widget.isScrollable,
-                            padding: EdgeInsets.symmetric(vertical: 2.w),
-                            controller: _tabController,
-                            tabs: tabs,
-                          ),
+                  widget.isCenter
+                      ? Flexible(child: bar)
+                      : Expanded(
+                          child: bar,
                         ),
-                      ),
-                    ),
-                  ),
                   if (widget.tabBarRightWidget case final view?) view,
                 ],
               ),
@@ -168,13 +189,7 @@ class MyTabBarTheme extends TabBarTheme {
       MyTabBarTheme(
         labelStyle: labelStyle ?? MyTheme.jellyCyan_18,
         labelPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-        unselectedLabelStyle: unselectedLabelStyle ??
-            TextStyle(
-              color: const Color.fromRGBO(255, 255, 255, 1),
-              fontSize: 18.sp,
-              overflow: TextOverflow.visible,
-              decoration: TextDecoration.none,
-            ),
+        unselectedLabelStyle: unselectedLabelStyle ?? MyTheme.white18,
         indicatorSize: TabBarIndicatorSize.label,
         indicator: const LineIndicator(),
         indicatorColor: Colors.transparent,
@@ -189,22 +204,26 @@ class MyTabBarTheme extends TabBarTheme {
     TabAlignment? tabAlignment,
     TextStyle? labelStyle,
     TextStyle? unselectedLabelStyle,
+    Decoration? indicator,
+    EdgeInsetsGeometry? labelPadding,
   }) =>
       MyTabBarTheme(
         labelStyle: labelStyle ?? MyTheme.green85_15,
-        labelPadding: tabAlignment == null
-            ? EdgeInsets.zero
-            : EdgeInsets.only(right: 16.w),
+        labelPadding: labelPadding ??
+            (tabAlignment == null
+                ? EdgeInsets.zero
+                : EdgeInsets.only(right: 16.w)),
         unselectedLabelStyle: unselectedLabelStyle ?? MyTheme.gray232_15,
         overlayColor: WidgetStateProperty.resolveWith<Color>(
           (_) => Colors.transparent,
         ),
         // indicatorSize: TabBarIndicatorSize.label,
         indicatorColor: Colors.transparent,
-        indicator: BoxDecoration(
-          color: const Color.fromRGBO(35, 35, 55, 1),
-          borderRadius: BorderRadius.circular(30.w),
-        ),
+        indicator: indicator ??
+            BoxDecoration(
+              color: const Color.fromRGBO(35, 35, 55, 1),
+              borderRadius: BorderRadius.circular(30.w),
+            ),
         tabAlignment: tabAlignment,
         dividerColor: Colors.transparent,
       );

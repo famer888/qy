@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../../notifiers/home_config_notifier.dart';
 import '../common_widgets/screen_background.dart';
 import '../theme.dart';
 import 'comic/screen.dart';
@@ -16,16 +18,18 @@ class BitScreen extends StatefulWidget {
 }
 
 class _BitScreenState extends State<BitScreen> with TickerProviderStateMixin {
+  late final navs = context.read<HomeConfigNotifier>().config.resourceNav;
+
   late final data = {
-    '直播': const LiveScreen(),
-    '监控': const MonitorScreen(),
-    '漫画': const ComicScreen(),
-    '小说': const NovelScreen(),
-    '种子': const SeedScreen(),
+    '1': const LiveScreen(),
+    '2': const MonitorScreen(),
+    '3': const ComicScreen(),
+    '4': const NovelScreen(),
+    '5': const SeedScreen(),
   };
 
   late final tabController = TabController(
-    length: data.length,
+    length: navs.length,
     vsync: this,
   );
 
@@ -33,14 +37,12 @@ class _BitScreenState extends State<BitScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return ScreenBackground(
       child: Scaffold(
-        appBar: _AppBar(
-          tabController: tabController,
-          titles: data.keys.toList(),
-        ),
-        body: TabBarView(
-          controller: tabController,
-          children: data.values.toList(),
-        ),
+        appBar: _AppBar(tabController: tabController, titles: [
+          for (final nav in navs) nav.title,
+        ]),
+        body: TabBarView(controller: tabController, children: [
+          for (final nav in navs) data[nav.type] ?? const SizedBox.shrink()
+        ]),
       ),
     );
   }

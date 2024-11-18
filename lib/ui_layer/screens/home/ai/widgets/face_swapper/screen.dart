@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../domain/model/ai/ai_model.dart';
+import '../../../../../../domain/model/ai/ai_face_material_model.dart';
+import '../../../../../../domain/model/ai/ai_face_materials_with_banners_model.dart';
 import '../../../../../../domain/model/ai/ai_nav_model.dart';
 import '../../../../../../domain/model/banner_model.dart';
 import '../../../../../../domain/remote_domain/domains/ai.dart';
@@ -155,7 +156,7 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
   late final tabController = TabController(length: sorts.length, vsync: this);
   late final _aiDomain = context.read<AIDomain>();
 
-  Future<List<AIFaceMaterials>?> _getData({
+  Future<List<AiFaceMaterialModel>?> _getData({
     required int page,
     required int pageSize,
     required int id,

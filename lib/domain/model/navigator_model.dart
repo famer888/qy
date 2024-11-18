@@ -9,7 +9,7 @@ class NavigatorModel {
 
   factory NavigatorModel.fromJson(Map<String, dynamic> json) => NavigatorModel(
         title: json['title'],
-        type: json['type'],
+        type: '${json['type']}',
       );
 
   Map<String, dynamic> toJson() => {

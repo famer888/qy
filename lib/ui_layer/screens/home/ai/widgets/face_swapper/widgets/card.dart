@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../../domain/model/ai/ai_model.dart';
+import '../../../../../../../domain/model/ai/ai_face_material_model.dart';
 import '../../../../../../utils/common_utils.dart';
 import '../../../../../common_widgets/my_image.dart';
 import '../../../../../theme.dart';
@@ -13,7 +13,7 @@ class FaceSwapperCard extends StatelessWidget {
 
   const FaceSwapperCard({super.key, required this.data});
 
-  final AIFaceMaterials data;
+  final AiFaceMaterialModel data;
 
   String get imageUrl {
     return CommonUtils.getThumb(data.toJson());
@@ -104,7 +104,7 @@ class FaceSwapperCard extends StatelessWidget {
     );
   }
 
-  Future<void> _showSheetView(BuildContext context, AIFaceMaterials data) {
+  Future<void> _showSheetView(BuildContext context, AiFaceMaterialModel data) {
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true,

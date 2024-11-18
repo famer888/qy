@@ -12,6 +12,7 @@ List<RouteBase> get $appRoutes => [
       $webViewRoute,
       $bitPostDetailRoute,
       $vipCenterRoute,
+      $vipUpgradeRoute,
       $coinRechargeRoute,
       $coinDetailRoute,
       $rechargeRecordRoute,
@@ -33,6 +34,7 @@ List<RouteBase> get $appRoutes => [
       $minePostRoute,
       $mineIncomeDetailRoute,
       $mineCollectionRoute,
+      $mineAIRecordRoute,
       $userCenterRoute,
       $chatMessageRoute,
       $mineFollowingRoute,
@@ -68,6 +70,7 @@ List<RouteBase> get $appRoutes => [
       $novelEndRoute,
       $novelUpdatingRoute,
       $novelShellRouteData,
+      $rankRoute,
     ];
 
 RouteBase get $welcomeRoute => GoRouteData.$route(
@@ -312,11 +315,50 @@ RouteBase get $vipCenterRoute => GoRouteData.$route(
     );
 
 extension $VipCenterRouteExtension on VipCenterRoute {
-  static VipCenterRoute _fromState(GoRouterState state) =>
-      const VipCenterRoute();
+  static VipCenterRoute _fromState(GoRouterState state) => VipCenterRoute(
+        index:
+            _$convertMapValue('index', state.uri.queryParameters, int.parse) ??
+                0,
+      );
 
   String get location => GoRouteData.$location(
         '/vip',
+        queryParams: {
+          if (index != 0) 'index': index.toString(),
+        },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+T? _$convertMapValue<T>(
+  String key,
+  Map<String, String> map,
+  T Function(String) converter,
+) {
+  final value = map[key];
+  return value == null ? null : converter(value);
+}
+
+RouteBase get $vipUpgradeRoute => GoRouteData.$route(
+      path: '/vipUpgrade',
+      parentNavigatorKey: VipUpgradeRoute.$parentNavigatorKey,
+      factory: $VipUpgradeRouteExtension._fromState,
+    );
+
+extension $VipUpgradeRouteExtension on VipUpgradeRoute {
+  static VipUpgradeRoute _fromState(GoRouterState state) =>
+      const VipUpgradeRoute();
+
+  String get location => GoRouteData.$location(
+        '/vipUpgrade',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -859,6 +901,30 @@ extension $MineCollectionRouteExtension on MineCollectionRoute {
 
   String get location => GoRouteData.$location(
         '/mineCollection',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $mineAIRecordRoute => GoRouteData.$route(
+      path: '/minAIRecord',
+      parentNavigatorKey: MineAIRecordRoute.$parentNavigatorKey,
+      factory: $MineAIRecordRouteExtension._fromState,
+    );
+
+extension $MineAIRecordRouteExtension on MineAIRecordRoute {
+  static MineAIRecordRoute _fromState(GoRouterState state) =>
+      const MineAIRecordRoute();
+
+  String get location => GoRouteData.$location(
+        '/minAIRecord',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -1798,6 +1864,29 @@ extension $NovelReaderRouteExtension on NovelReaderRoute {
 
   String get location => GoRouteData.$location(
         '/novelReader',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $rankRoute => GoRouteData.$route(
+      path: '/rankList',
+      parentNavigatorKey: RankRoute.$parentNavigatorKey,
+      factory: $RankRouteExtension._fromState,
+    );
+
+extension $RankRouteExtension on RankRoute {
+  static RankRoute _fromState(GoRouterState state) => const RankRoute();
+
+  String get location => GoRouteData.$location(
+        '/rankList',
       );
 
   void go(BuildContext context) => context.go(location);

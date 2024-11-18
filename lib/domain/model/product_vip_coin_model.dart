@@ -36,6 +36,7 @@ class Product {
   final List<Right> rights;
   final List<Pay> pays;
   final String description;
+  final int? payCoins;
 
   Product({
     required this.id,
@@ -46,6 +47,7 @@ class Product {
     required this.priceYuan,
     required this.rights,
     required this.description,
+    required this.payCoins,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -57,6 +59,7 @@ class Product {
       promoPriceYuan: json['promo_price_yuan'] ?? '',
       priceYuan: json['price_yuan'] ?? '',
       description: json['description'] ?? '',
+      payCoins: json['pay_coins'],
       rights: List.from(
           json['right'].map((rightJson) => Right.fromJson(rightJson))),
     );

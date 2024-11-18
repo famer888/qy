@@ -37,6 +37,7 @@ import '../screens/media_viewer/screen.dart';
 import '../screens/mine/agent/profit/screen.dart';
 import '../screens/mine/agent/promote_data/screen.dart';
 import '../screens/mine/agent/screen.dart';
+import '../screens/mine/ai_record/screen.dart';
 import '../screens/mine/buy/screen.dart';
 import '../screens/mine/coin_recharge/coin_detail/screen.dart';
 import '../screens/mine/coin_recharge/screen.dart';
@@ -65,6 +66,7 @@ import '../screens/mine/withdrawal/record/screen.dart';
 import '../screens/mine/withdrawal/screen.dart';
 import '../screens/more_video/recommend/screen.dart';
 import '../screens/more_video/screen.dart';
+import '../screens/rank/screen.dart';
 import '../screens/restricted/screen.dart';
 import '../screens/search/result/screen.dart';
 import '../screens/search/screen.dart';
@@ -216,11 +218,26 @@ class VipCenterRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =
       AppRouter.rootNavigatorKey;
 
-  const VipCenterRoute();
+  const VipCenterRoute({this.index = 0});
+
+  final int index;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const VipCenterScreen();
+    return VipCenterScreen(index: index);
+  }
+}
+
+@TypedGoRoute<VipUpgradeRoute>(path: AppRouterPaths.vipUpgrade)
+class VipUpgradeRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const VipUpgradeRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const VipCenterScreen(isUpgrade: true);
   }
 }
 
@@ -518,6 +535,19 @@ class MineCollectionRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const MineCollectionScreen();
+  }
+}
+
+@TypedGoRoute<MineAIRecordRoute>(path: AppRouterPaths.mineAIRecord)
+class MineAIRecordRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const MineAIRecordRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const MineAIRecordScreen();
   }
 }
 
@@ -968,24 +998,8 @@ class ComicDetailRoute extends GoRouteData {
   const ComicDetailRoute(this.$extra);
   final String $extra;
 
-  Future<T?> push<T>(BuildContext context) {
-    final router = GoRouter.of(context);
-
-    final routes = router.configuration.routes;
-    routes.removeWhere((route) {
-      if (route is ShellRouteBase) {
-        for (var e in route.routes) {
-          if (e is GoRoute && e.path == location) {
-            return true;
-          }
-        }
-      }
-      return false;
-    });
-    routes.add($comicShellRouteData);
-
-    return context.removeDuplicatePush(location, extra: $extra);
-  }
+  Future<T?> push<T>(BuildContext context) =>
+      context.removeDuplicatePush(location, extra: $extra);
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -1095,24 +1109,8 @@ class NovelDetailRoute extends GoRouteData {
   const NovelDetailRoute(this.$extra);
   final String $extra;
 
-  // Future<T?> push<T>(BuildContext context) {
-  //   final router = GoRouter.of(context);
-  //
-  //   final routes = router.configuration.routes;
-  //   routes.removeWhere((route) {
-  //     if (route is ShellRouteBase) {
-  //       for (var e in route.routes) {
-  //         if (e is GoRoute && e.path == location) {
-  //           return true;
-  //         }
-  //       }
-  //     }
-  //     return false;
-  //   });
-  //   routes.add($comicShellRouteData);
-  //
-  //   return context.removeDuplicatePush(location, extra: $extra);
-  // }
+  Future<T?> push<T>(BuildContext context) =>
+      context.removeDuplicatePush(location, extra: $extra);
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -1126,6 +1124,19 @@ class NovelReaderRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const NovelReaderScreen();
+  }
+}
+
+@TypedGoRoute<RankRoute>(path: AppRouterPaths.rankList)
+class RankRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const RankRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const RankScreen();
   }
 }
 

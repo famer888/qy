@@ -72,6 +72,13 @@ class MyTheme {
     end: Alignment.centerRight,
   );
 
+  static const gradient_vip_colors = [Color(0xfff8d7c4), Color(0xffffc3a7)];
+  static const gradient_vip = LinearGradient(
+    colors: gradient_vip_colors,
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
   static const gradient_90_114_colors = [
     jellyCyanColor103224185,
     jellyCyanColor108235220
@@ -107,14 +114,8 @@ class MyTheme {
     end: Alignment.centerRight,
   );
 
-  static const btnGradient_e4b191_f6dec7 = LinearGradient(
-    // colors: [Color(0xff00edfd), Color(0xffbbe954)],
-    colors: [Color(0xffe4b191), Color(0xfff6dec7)],
-    begin: Alignment.centerLeft,
-    end: Alignment.centerRight,
-  );
-
   static const bgColor = Color.fromRGBO(11, 11, 33, 1);
+
   static const naviColor = Color.fromRGBO(11, 11, 33, 1);
 
   static const white008Color = Color.fromRGBO(255, 255, 255, 0.08);
@@ -176,6 +177,12 @@ class MyTheme {
   static final yellow_16 = TextStyle(
       color: yellow255240,
       fontSize: 16.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static final TextStyle white04_10 = TextStyle(
+      color: white04Color,
+      fontSize: 10.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
@@ -262,13 +269,19 @@ class MyTheme {
       decoration: TextDecoration.none);
 
   static final white09_10 = TextStyle(
-      color: const Color.fromRGBO(255, 255, 255, 0.9),
+      color: white09Color,
       fontSize: 10.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
+  static final white09_12 = TextStyle(
+      color: white09Color,
+      fontSize: 12.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
   static final white09_15_M = TextStyle(
-      color: const Color.fromRGBO(255, 255, 255, 0.9),
+      color: white09Color,
       fontSize: 15.sp,
       fontWeight: FontWeight.w500,
       overflow: TextOverflow.ellipsis,
