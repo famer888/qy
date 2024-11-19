@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:android_dynamic_icon/android_dynamic_icon.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import '../../../domain/model/member_model.dart';
 import '../../notifiers/home_config_notifier.dart';
 import '../../notifiers/user_notifier.dart';
 import '../../router/routes.dart';
+import '../../utils/my_toast.dart';
+import '../common_widgets/localization_text.dart';
 import '../common_widgets/member_vip.dart';
 import '../common_widgets/my_avatar.dart';
 import '../common_widgets/my_image.dart';
@@ -560,8 +563,8 @@ class _SecondMenu extends StatelessWidget {
                   children: [
                     MyImage.asset(
                       data.iconName,
-                      width: 28,
-                      height: 28,
+                      width: 25.w,
+                      height: 25.w,
                     ),
                     const SizedBox(height: 5),
                     Text(
@@ -587,6 +590,26 @@ class _ChangeAppIconView extends StatefulWidget {
 }
 
 class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
+  final icons = [
+    'wesee',
+    'tiktok',
+    'tieba',
+    'taobao',
+    'rednote',
+    'meituan',
+    'iqiyi'
+  ];
+  final _androidDynamicIconPlugin = AndroidDynamicIcon();
+
+  @override
+  void initState() {
+    AndroidDynamicIcon.initialize(classNames: [
+      'MainActivity',
+      ...icons,
+    ]);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
@@ -595,8 +618,65 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
       );
     }
 
-    return SizedBox(
-      height: 15.w,
+    return Container(
+      decoration: const BoxDecoration(
+        color: MyTheme.white008Color,
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+      margin: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+              child: Text(
+                '设置桌面图标',
+                style: MyTheme.white15,
+              ),
+            ),
+            SizedBox(
+              height: 8.w,
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (final name in icons)
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () async {
+                        MyToast.showLoading();
+                        await _androidDynamicIconPlugin
+                            .changeIcon(classNames: [name, '']);
+                        MyToast.closeAllLoading();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: MyTheme.pagePadding),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/images/$name.png',
+                              width: 45.w,
+                              height: 45.w,
+                            ),
+                            SizedBox(height: 5.w),
+                            LocalizationText(
+                              name,
+                              style: MyTheme.white14,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

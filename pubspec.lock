@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.4.1"
+  android_dynamic_icon:
+    dependency: "direct main"
+    description:
+      name: android_dynamic_icon
+      sha256: cefb257ff2ed6228db6c82b68e1185a986677fa985e40fe6a463f26f3422631f
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   android_id:
     dependency: "direct main"
     description:
