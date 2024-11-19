@@ -223,10 +223,12 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
                               value = value.isEmpty ? '0' : value;
                               setState(() {
                                 _sumResultMoney.value = int.parse(value);
+                                final rate = (isAgent
+                                        ? data.proxyRate
+                                        : data.incomeRate) ??
+                                    0;
                                 _sumAllResultMoney.value =
-                                    (_sumResultMoney.value /
-                                            (1 - (data.proxyRate ?? 0)))
-                                        .ceil();
+                                    (_sumResultMoney.value / (1 - rate)).ceil();
                               });
                             },
                             keyboardType: TextInputType.number,
@@ -263,10 +265,20 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
                                   'kc'.tr(context: context),
                               style: MyTheme.gray143_13,
                             ),
+                            if (!isAgent)
+                              ValueListenableBuilder(
+                                builder: (_, value, __) {
+                                  return Text(
+                                    '${value * 10}${'jb'.tr(context: context)}≈',
+                                    style: MyTheme.jellyCyan_13,
+                                  );
+                                },
+                                valueListenable: _sumAllResultMoney,
+                              ),
                             ValueListenableBuilder(
                               builder: (_, value, __) {
                                 return Text(
-                                  '$value',
+                                  '$value${'y'.tr(context: context)}',
                                   style: MyTheme.jellyCyan_13,
                                 );
                               },
@@ -278,17 +290,14 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
                               style: MyTheme.gray143_13,
                             ),
                             ValueListenableBuilder(
-                                valueListenable: _sumResultMoney,
-                                builder: (_, value, __) {
-                                  return Text(
-                                    '$value',
-                                    style: MyTheme.jellyCyan_13,
-                                  );
-                                }),
-                            Text(
-                              'y'.tr(context: context),
-                              style: MyTheme.jellyCyan_13,
-                            )
+                              valueListenable: _sumResultMoney,
+                              builder: (_, value, __) {
+                                return Text(
+                                  '$value${'y'.tr(context: context)}',
+                                  style: MyTheme.jellyCyan_13,
+                                );
+                              },
+                            ),
                           ],
                         ),
                         SizedBox(height: 25.w),
