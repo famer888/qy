@@ -93,7 +93,6 @@ public class AndroidDynamicIconPlugin implements FlutterPlugin, MethodCallHandle
                 else {
                     continue;
                 }
-                Log.e(TAG,"processing "+ classNames.get(i) +" status" + status);
                 pm.setComponentEnabledSetting(cn, componentState, PackageManager.DONT_KILL_APP);
             }
 
