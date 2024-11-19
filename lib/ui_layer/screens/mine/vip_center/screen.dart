@@ -289,14 +289,32 @@ class _VipUpgradeContentState extends State<VipUpgradeContent> {
   Widget build(BuildContext context) {
     final products = widget.data.goods;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _TitleHintText(
-                  title: 'ktvpxs'.tr(context: context),
-                  subTitle: 'zmzxs'.tr(context: context),
+                SizedBox(height: 10.w),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                  child: Text(
+                    '${'dqhy'.tr(context: context)}:${widget.data.payed?.pName}',
+                    style: MyTheme.white16medium,
+                  ),
+                ),
+                SizedBox(
+                  height: 10.w,
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                  child: Text(
+                    'ksjz'.tr(context: context),
+                    style: MyTheme.white16medium,
+                  ),
                 ),
                 SizedBox(height: 13.w),
                 _ProductCardArea(
@@ -308,9 +326,11 @@ class _VipUpgradeContentState extends State<VipUpgradeContent> {
                   notifier: productSelectedNotifier,
                   products: products,
                 ),
-                LocalizationText(
-                  'hytq',
-                  style: MyTheme.white16medium,
+                Center(
+                  child: LocalizationText(
+                    'hytq',
+                    style: MyTheme.white16medium,
+                  ),
                 ),
                 SizedBox(height: 10.w),
                 _RightArea(
