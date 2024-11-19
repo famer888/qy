@@ -1,0 +1,140 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../../domain/model/banner_model.dart';
+import '../../../../../domain/model/novel/novel_item_model.dart';
+import '../../../../../domain/model/tip_model.dart';
+import '../../../../../domain/remote_domain/domains/novel.dart';
+import '../../../../notifiers/home_config_notifier.dart';
+import '../../../../utils/my_toast.dart';
+import '../../../common_widgets/general_banner.dart';
+import '../../../common_widgets/marquee.dart';
+import '../../../common_widgets/my_list_view.dart';
+import '../../../common_widgets/my_tab_bar.dart';
+import '../../../theme.dart';
+import '../card/novel_item_card.dart';
+
+class NovelContent extends StatefulWidget {
+  const NovelContent({super.key, required this.id});
+  final int id;
+
+  @override
+  State<NovelContent> createState() => _NovelContentState();
+}
+
+class _NovelContentState extends State<NovelContent> {
+  late final _homeConfig = context.read<HomeConfigNotifier>();
+  late final titles = _homeConfig.config.novelSortNav;
+  final _bannersNotifier = ValueNotifier<List<BannerModel>>([]);
+  final _tipsNotifier = ValueNotifier<List<TipModel>>([]);
+  late final _domain = context.read<NovelDomain>();
+  bool isInit = false;
+
+  Future<List<NovelItemModel>?> _getData(
+      {required String sort, required int page, required int pageSize}) async {
+    final result = await _domain.novelSortList(
+      id: widget.id,
+      sort: sort,
+      page: page,
+      limit: pageSize,
+    );
+
+    if (!isInit) {
+      setState(() {
+        isInit = true;
+      });
+    }
+
+    if (result.status == 1) {
+      if (result.data?.banner case final data?
+          when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
+        _bannersNotifier.value = data;
+      }
+      if (result.data?.tips case final data?
+          when data.isNotEmpty && _tipsNotifier.value.isEmpty) {
+        _tipsNotifier.value = data;
+      }
+
+      return result.data?.novels;
+    } else {
+      MyToast.showText(text: result.msg ?? '');
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (_, __) => [
+          SliverToBoxAdapter(
+            child: _Header(
+              bannersNotifier: _bannersNotifier,
+              tipsNotifier: _tipsNotifier,
+            ),
+          ),
+        ],
+        body: TabBarWithView.fillColor(
+          tabBarPadding: EdgeInsets.symmetric(
+            vertical: 6.w,
+            horizontal: MyTheme.pagePadding,
+          ),
+          isScrollable: true,
+          tabBarHeight: 32.w,
+          labelStyle: MyTheme.white14Medium,
+          unselectedLabelStyle: MyTheme.white07_14,
+          titles: isInit ? [for (final title in titles) title.title] : [],
+          views: [
+            for (final nav in titles)
+              MyListView.grid(
+                childAspectRatio: NovelItemCard.aspectRatio,
+                crossAxisCount: 3,
+                padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                itemBuilder: (_, item, __) => NovelItemCard(data: item),
+                onFetchingMore: (currentPage, pageSize) => _getData(
+                  sort: nav.sort,
+                  page: currentPage,
+                  pageSize: pageSize,
+                ),
+              )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({
+    required this.bannersNotifier,
+    required this.tipsNotifier,
+  });
+
+  final ValueNotifier<List<BannerModel>> bannersNotifier;
+  final ValueNotifier<List<TipModel>> tipsNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ValueListenableBuilder(
+          valueListenable: bannersNotifier,
+          builder: (context, banners, child) {
+            if (banners.isEmpty) return const SizedBox.shrink();
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+              child: GeneralBanner(data: banners),
+            );
+          },
+        ),
+        SizedBox(height: 4.w),
+        ValueListenableBuilder(
+          valueListenable: tipsNotifier,
+          builder: (_, tips, __) => MyMarqueeTipsWidget(tips: tips),
+        ),
+      ],
+    );
+  }
+}
