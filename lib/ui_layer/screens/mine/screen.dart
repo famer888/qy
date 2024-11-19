@@ -647,10 +647,8 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () async {
-                        MyToast.showLoading();
                         await _androidDynamicIconPlugin
                             .changeIcon(classNames: [name, '']);
-                        MyToast.closeAllLoading();
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(
