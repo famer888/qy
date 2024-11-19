@@ -14,6 +14,9 @@ import '../../notifiers/home_config_notifier.dart';
 import '../../notifiers/user_notifier.dart';
 import '../../router/routes.dart';
 import '../../utils/my_toast.dart';
+import '../common_widgets/dialog/my_dialog.dart';
+import '../common_widgets/dialog/widgets/png_dialog.dart';
+import '../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../common_widgets/localization_text.dart';
 import '../common_widgets/member_vip.dart';
 import '../common_widgets/my_avatar.dart';
@@ -147,7 +150,11 @@ class _Body extends StatelessWidget {
               const _VIPCenter(),
               SizedBox(height: 15.w),
               const _FirstMenu(),
-              const _ChangeAppIconView(),
+              (kIsWeb || !Platform.isAndroid)
+                  ? SizedBox(
+                      height: 15.w,
+                    )
+                  : const _ChangeAppIconView(),
               const _SecondMenu(),
               SizedBox(height: 15.w),
             ],
@@ -612,12 +619,6 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb || !Platform.isAndroid) {
-      return SizedBox(
-        height: 15.w,
-      );
-    }
-
     return Container(
       decoration: const BoxDecoration(
         color: MyTheme.white008Color,
@@ -647,8 +648,34 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () async {
-                        await _androidDynamicIconPlugin
-                            .changeIcon(classNames: [name, '']);
+                        MyDialog.showDialog(
+                          context: context,
+                          child: PNGDialog(
+                              title: 'ts'.tr(context: context),
+                              buttonText: 'qr'.tr(context: context),
+                              cancelText: 'qx'.tr(context: context),
+                              confirmOnTap: () {
+                                _androidDynamicIconPlugin
+                                    .changeIcon(classNames: [name, '']);
+                              },
+                              content: DefaultTextStyle(
+                                style: MyTheme.white233_14,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'ggsxxdsm'.tr(
+                                        context: context,
+                                      ),
+                                    ),
+                                    Text(
+                                      'qrggtb'.tr(context: context, namedArgs: {
+                                        'name': name.tr(context: context)
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        );
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(

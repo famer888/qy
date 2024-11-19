@@ -1060,5 +1060,8 @@
   "taobao": "淘宝",
   "rednote": "小红书",
   "meituan": "美团",
-  "iqiyi": "爱奇艺"
+  "iqiyi": "爱奇艺",
+  "qrggtb": "确认更改应用图标为【{name}】？",
+  "ggsxxdsm": "更改生效需等数秒"
+
 }
