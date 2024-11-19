@@ -41,8 +41,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        versionCode = versiondata["versionCode"]
+        versionName = versiondata["versionName"]
         multiDexEnabled true
     }
 
@@ -64,8 +64,26 @@ android {
             }
         }
     }
+
+    applicationVariants.all {
+        variant ->
+            variant.outputs.each { output ->
+                if (output.name == 'release') {
+                    variant.packageApplicationProvider.get().outputDirectory = new File("../apk/output/")
+                    def fileName
+                    fileName = "output.apk"
+                    output.outputFileName = fileName
+                }
+            }
+    }
 }
 
 flutter {
     source = "../.."
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name.contains("ReleaseApkListingFileRedirect")){
+        task.enabled = false
+    }
 }
