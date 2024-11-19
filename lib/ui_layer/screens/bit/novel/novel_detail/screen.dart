@@ -229,6 +229,7 @@ class _Header extends StatelessWidget {
                               ),
                               child: Text(
                                 'wj'.tr(context: context),
+                                style: MyTheme.white11,
                               ),
                             )
                           : Container(

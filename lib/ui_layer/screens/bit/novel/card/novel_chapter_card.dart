@@ -13,12 +13,12 @@ class NovelChapterCard extends StatelessWidget with RouteToReaderMixin {
   const NovelChapterCard({
     super.key,
     required this.data,
-    this.isLocation,
+    this.isLocation = false,
     required this.onTap,
   });
 
   final NovelChaptersModel data;
-  final bool? isLocation;
+  final bool isLocation;
   final VoidCallback onTap;
 
   @override
@@ -36,11 +36,12 @@ class NovelChapterCard extends StatelessWidget with RouteToReaderMixin {
                   Flexible(
                     child: Text(
                       data.title ?? '',
-                      style: MyTheme.white14,
+                      style:
+                          isLocation ? MyTheme.jellyCyan_14 : MyTheme.white14,
                       maxLines: 1,
                     ),
                   ),
-                  if (isLocation ?? false) ...[
+                  if (isLocation) ...[
                     SizedBox(width: 6.w),
                     MyImage.asset(MyImagePaths.appNovelLocation,
                         width: 15.w, height: 15.w)

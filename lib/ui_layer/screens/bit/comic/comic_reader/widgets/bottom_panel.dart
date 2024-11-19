@@ -50,7 +50,6 @@ class _BottomPanelState extends State<BottomPanel>
       backgroundColor: Colors.transparent,
       builder: (context) {
         return ComicChaptersSheetView(
-          chapters: context.read<ComicChangeNotifier>().currentComic.chapters,
           onTapChapterIndex: widget.onTapChapterIndex,
         );
       },

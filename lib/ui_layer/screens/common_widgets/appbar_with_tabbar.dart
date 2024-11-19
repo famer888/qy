@@ -25,6 +25,7 @@ class AppBarWithTabBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: true,
       leadingWidth: 40.w,
       leading: GestureDetector(
         onTap: () {

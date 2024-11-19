@@ -116,6 +116,7 @@ class _NovelChaptersSheetViewState extends State<NovelChaptersSheetView>
                               final chapter = chapters[targetIndex];
                               return NovelChapterCard(
                                 data: chapter,
+                                isLocation: currentIndex == targetIndex,
                                 onTap: () {
                                   context.pop();
                                   if (widget.onTapChapterIndex

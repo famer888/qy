@@ -10,36 +10,48 @@ import '../../../image_paths.dart';
 import '../../../theme.dart';
 
 class ComicChaptersSheetCard extends StatelessWidget {
-  const ComicChaptersSheetCard({super.key, required this.data});
+  const ComicChaptersSheetCard({
+    super.key,
+    required this.data,
+    this.isLocation = false,
+    required this.onTap,
+  });
   final ComicChapterModel data;
+  final bool isLocation;
+  final VoidCallback onTap;
+
   String get imgUrl => data.cover ?? '';
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 5.w),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 172.w,
-            height: 82.w,
-            child: MyImage.network(
-              imgUrl,
-              borderRadius: 5.w,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 5.w),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 172.w,
+              height: 82.w,
+              child: MyImage.network(
+                imgUrl,
+                borderRadius: 5.w,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          SizedBox(width: 10.w),
-          Expanded(
-            child: Text(
-              data.title ?? '',
-              style: MyTheme.white14,
-              maxLines: 1,
+            SizedBox(width: 10.w),
+            Expanded(
+              child: Text(
+                data.title ?? '',
+                style: isLocation ? MyTheme.jellyCyan_14 : MyTheme.white14,
+                maxLines: 1,
+              ),
             ),
-          ),
-          SizedBox(width: 10.w),
-          isFreeBadge(data)
-        ],
+            SizedBox(width: 10.w),
+            isFreeBadge(data)
+          ],
+        ),
       ),
     );
   }

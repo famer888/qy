@@ -126,7 +126,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                 cover: detail.cover,
                 commentCt: detail.commentCt,
                 favoriteCt: detail.favoriteFct,
-                viewCt: detail.viewCt,
+                viewCt: detail.viewFct,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
@@ -280,7 +280,7 @@ class _ChaptersView extends StatelessWidget with RouteToReaderMixin {
       barrierColor: Colors.transparent,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return ComicChaptersSheetView(chapters: chapters);
+        return const ComicChaptersSheetView();
       },
     );
   }
@@ -422,12 +422,15 @@ class _CommentView extends StatelessWidget {
             data: comment,
             moduleType: ModuleType.comic,
           ),
+        SizedBox(height: 5.w),
         MyButton.highEmphasis(
           color: MyTheme.white008Color,
           borderRadius: 15.w,
           minimumSize: Size.fromHeight(30.w),
           child: Text(
-              '${'ckgd'.tr(context: context)}$totalCt${'tpl'.tr(context: context)}',
+              comments.isEmpty
+                  ? 'djpl'.tr(context: context)
+                  : '${'ckgd'.tr(context: context)}$totalCt${'tpl'.tr(context: context)}',
               style: MyTheme.white12),
           onPressed: () {
             showChaptersBottomSheet(context);

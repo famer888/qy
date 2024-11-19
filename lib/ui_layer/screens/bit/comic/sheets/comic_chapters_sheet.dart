@@ -2,20 +2,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../domain/model/comic/comic_model.dart';
 import '../../../common_widgets/localization_text.dart';
 import '../../../common_widgets/my_image.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
+import '../di/notifier.dart';
 import 'comic_chapters_sheet_card.dart';
 import '../mixin/route_to_reader.dart';
 
 class ComicChaptersSheetView extends StatefulWidget {
-  const ComicChaptersSheetView(
-      {super.key, required this.chapters, this.onTapChapterIndex});
-
-  final List<ComicChapterModel> chapters;
+  const ComicChaptersSheetView({super.key, this.onTapChapterIndex});
 
   final ValueChanged<int>? onTapChapterIndex;
 
@@ -26,12 +25,15 @@ class ComicChaptersSheetView extends StatefulWidget {
 class _ComicChaptersSheetViewState extends State<ComicChaptersSheetView>
     with RouteToReaderMixin {
   late final height = 1.sh - 1.sw * 193 / 375;
+  late final comicChangeNotifier = context.read<ComicChangeNotifier>();
 
   bool isDes = true; //默认正序
 
   @override
   Widget build(BuildContext context) {
-    final chapters = widget.chapters;
+    final chapters = comicChangeNotifier.currentComic.chapters;
+    final currentIndex = comicChangeNotifier.currentChapterIndex;
+
     return Container(
       color: const Color(0xff272727),
       height: height,
@@ -115,8 +117,8 @@ class _ComicChaptersSheetViewState extends State<ComicChaptersSheetView>
                               final targetIndex =
                                   isDes ? index : chapters.length - 1 - index;
                               final chapter = chapters[targetIndex];
-                              return GestureDetector(
-                                behavior: HitTestBehavior.opaque,
+                              return ComicChaptersSheetCard(
+                                data: chapter,
                                 onTap: () {
                                   context.pop();
                                   if (widget.onTapChapterIndex
@@ -126,7 +128,6 @@ class _ComicChaptersSheetViewState extends State<ComicChaptersSheetView>
                                     routeToReader(context, targetIndex);
                                   }
                                 },
-                                child: ComicChaptersSheetCard(data: chapter),
                               );
                             },
                           ),

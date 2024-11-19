@@ -89,60 +89,67 @@ class _NovelSortScreenState extends State<NovelSortScreen> {
                 ),
                 Positioned(
                   top: 0,
-                  right: MyTheme.pagePadding,
-                  left: MyTheme.pagePadding,
+                  right: 0,
+                  left: 0,
                   child: ValueListenableBuilder(
                     valueListenable: expendedNavIndex,
                     builder: (_, value, __) {
                       return ColoredBox(
                         color: MyTheme.bgColor,
-                        child: AnimatedSize(
-                          duration: const Duration(milliseconds: 250),
-                          alignment: Alignment.topCenter,
-                          curve: Curves.ease,
-                          child: value == null
-                              ? const SizedBox.shrink()
-                              : GridView.builder(
-                                  padding:
-                                      EdgeInsets.only(top: 10.w, bottom: 10.w),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4,
-                                    crossAxisSpacing: 8.w,
-                                    mainAxisSpacing: 8.w,
-                                    childAspectRatio: 80 / 35,
-                                  ),
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      navs[value].items.length, // 网格项目的数量
-                                  itemBuilder: (_, index) {
-                                    final type = navs[value].items[index];
-                                    final isSelected =
-                                        navTypeIndexList[value] == index;
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: MyTheme.pagePadding,
+                          ),
+                          child: AnimatedSize(
+                            duration: const Duration(milliseconds: 250),
+                            alignment: Alignment.topCenter,
+                            curve: Curves.ease,
+                            child: value == null
+                                ? const SizedBox.shrink()
+                                : GridView.builder(
+                                    padding: EdgeInsets.only(
+                                        top: 10.w, bottom: 10.w),
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      crossAxisSpacing: 8.w,
+                                      mainAxisSpacing: 8.w,
+                                      childAspectRatio: 80 / 35,
+                                    ),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        navs[value].items.length, // 网格项目的数量
+                                    itemBuilder: (_, index) {
+                                      final type = navs[value].items[index];
+                                      final isSelected =
+                                          navTypeIndexList[value] == index;
 
-                                    return GestureDetector(
-                                      onTap: isSelected
-                                          ? null
-                                          : () {
-                                              setState(() {
-                                                navTypeIndexList[value] = index;
-                                                expendedNavIndex.value = null;
-                                              });
-                                            },
-                                      child: Container(
-                                        color: Colors.white.withOpacity(0.08),
-                                        child: Center(
-                                          child: Text(
-                                            type.title,
-                                            style: isSelected
-                                                ? MyTheme.jellyCyan_14
-                                                : MyTheme.white14,
+                                      return GestureDetector(
+                                        onTap: isSelected
+                                            ? null
+                                            : () {
+                                                setState(() {
+                                                  navTypeIndexList[value] =
+                                                      index;
+                                                  expendedNavIndex.value = null;
+                                                });
+                                              },
+                                        child: Container(
+                                          color: Colors.white.withOpacity(0.08),
+                                          child: Center(
+                                            child: Text(
+                                              type.title,
+                                              style: isSelected
+                                                  ? MyTheme.jellyCyan_14
+                                                  : MyTheme.white14,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  }),
+                                      );
+                                    }),
+                          ),
                         ),
                       );
                     },

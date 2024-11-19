@@ -563,6 +563,7 @@ class _SecondMenu extends StatelessWidget {
           children: [
             for (final data in menu)
               GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: data.onTap,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

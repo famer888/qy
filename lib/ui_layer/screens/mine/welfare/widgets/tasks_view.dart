@@ -176,7 +176,7 @@ class _TaskViewState extends State<TaskView> {
               LayoutBuilder(builder: (_, c) {
                 final spacing = 10.w;
                 final itemW =
-                    ((c.maxWidth - spacing * 3) / 4).round().toDouble();
+                    ((c.maxWidth - spacing * 3) / 4 - 1).round().toDouble();
                 final dataList = [...data.signRewardList!];
                 final latestItem = dataList.removeLast();
                 return Wrap(
