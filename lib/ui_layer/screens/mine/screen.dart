@@ -604,7 +604,7 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
   @override
   void initState() {
     AndroidDynamicIcon.initialize(classNames: [
-      'MainActivity',
+      'default',
       ...icons,
     ]);
     super.initState();
@@ -612,7 +612,7 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb) {
+    if (kIsWeb || !Platform.isAndroid) {
       return SizedBox(
         height: 15.w,
       );

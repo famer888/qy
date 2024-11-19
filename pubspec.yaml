@@ -2,7 +2,7 @@ name: qypj
 description: ""
 publish_to: "none"
 
-version: 2.8.0
+version: 2.9.0
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -61,7 +61,8 @@ dependencies:
   dotted_decoration: ^2.0.0
   safe_area_insets: ^0.1.3
   webcrypto: 0.5.3
-  android_dynamic_icon: ^2.0.0
+  android_dynamic_icon:
+    path: plugins/android_dynamic_icon
 
 dependency_overrides:
   win32: 5.5.4
