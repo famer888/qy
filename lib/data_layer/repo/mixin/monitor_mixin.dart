@@ -50,10 +50,6 @@ mixin _Monitor on _BaseAppRepo implements MonitorDomain {
           .guard;
 
   @override
-  AsyncResult getMonitorFavorite({required int id}) =>
-      _monitorService.getMonitorFavorite(id: id).deserialize().guard;
-
-  @override
   AsyncResult getMonitorBuy({required int id}) =>
       _monitorService.getMonitorBuy(id: id).deserialize().guard;
 
@@ -101,12 +97,4 @@ mixin _Monitor on _BaseAppRepo implements MonitorDomain {
           )
           .deserializeJsonListBy((e) => e.map(CommentModel.fromJson).toList())
           .guard;
-
-  @override
-  AsyncResult toggleMonitorCommentLike({required int id}) =>
-      _monitorService.getMonitorLikeComment(id: id).deserialize().guard;
-
-  @override
-  AsyncResult toggleMonitorLike({required int id}) =>
-      _monitorService.monitorLike(id: id).deserialize().guard;
 }

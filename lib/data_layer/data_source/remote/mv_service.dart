@@ -77,10 +77,6 @@ class MvService extends BaseService {
         'id': id,
       });
 
-  /// 对视频的评论点赞
-  AsyncJson toggleVideoCommentLike({required int id}) =>
-      post('/toggle_comment_like', data: {'id': id});
-
   /// 对视频发布评论
   AsyncJson sendVideoComment({
     required String id,

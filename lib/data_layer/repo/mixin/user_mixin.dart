@@ -103,13 +103,6 @@ mixin _User on _BaseAppRepo implements UserDomain {
               .guard;
 
   @override
-  AsyncResult userFavorites({
-    required int type,
-    required int id,
-  }) =>
-      _userService.userFavorites(type: type, id: id).deserialize().guard;
-
-  @override
   AsyncResult<ToggleFavoriteModel> toggleUserFavorite({
     required ModuleType type,
     required int id,
@@ -152,8 +145,12 @@ mixin _User on _BaseAppRepo implements UserDomain {
           .guard;
 
   @override
-  AsyncResult toggleUserLike({required ModuleType type, required int id}) =>
-      _userService.toggleUserLike(type: type.index, id: id).deserialize().guard;
+  AsyncResult<ToggleLikeModel> toggleUserLike(
+          {required ModuleType type, required int id}) =>
+      _userService
+          .toggleUserLike(type: type.index, id: id)
+          .deserializeJsonBy(ToggleLikeModel.fromJson)
+          .guard;
 
   @override
   AsyncResult<VipUpgradeModel> userUpgradeGoods() => _userService

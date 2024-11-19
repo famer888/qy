@@ -67,10 +67,6 @@ mixin _Mv on _BaseAppRepo implements MvDomain {
           .guard;
 
   @override
-  AsyncResult toggleCommentLike({required int id}) =>
-      _mvService.toggleVideoCommentLike(id: id).deserialize().guard;
-
-  @override
   AsyncResult sendVideoComment({
     required String id,
     required String content,

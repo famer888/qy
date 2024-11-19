@@ -6,6 +6,7 @@ import '../../model/mine/following/following_user_list_model.dart';
 import '../../model/mine/withdrawal/bank_card_list_model.dart';
 import '../../model/tiezt_model.dart';
 import '../../model/toggle_favorite_model.dart';
+import '../../model/toggle_like_model.dart';
 import '../../model/vip_upgrade_model.dart';
 import '../../type_def.dart';
 
@@ -71,9 +72,6 @@ abstract class UserDomain {
     required String lastIx,
   });
 
-  /// 用户收藏   type: 1 mv  2 book 3 story 4 link 5 soundBook 6pic
-  AsyncResult userFavorites({required int type, required int id});
-
   /// 收藏/取消收藏,
   AsyncResult<ToggleFavoriteModel> toggleUserFavorite(
       {required ModuleType type, required int id});
@@ -83,7 +81,8 @@ abstract class UserDomain {
       {required ModuleType type, required int id});
 
   /// 点赞/取消点赞
-  AsyncResult toggleUserLike({required ModuleType type, required int id});
+  AsyncResult<ToggleLikeModel> toggleUserLike(
+      {required ModuleType type, required int id});
 
   /// 我购买的
   AsyncResult getPurchasedList({

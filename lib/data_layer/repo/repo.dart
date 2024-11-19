@@ -41,6 +41,7 @@ import '../../domain/model/element_model.dart';
 import '../../domain/model/mine/vip/exp_of_vip_model.dart';
 import '../../domain/model/seed/seed_posts_with_banners_model.dart';
 import '../../domain/model/toggle_favorite_model.dart';
+import '../../domain/model/toggle_like_model.dart';
 import '../../domain/model/video/recommend_video_with_banners_model.dart';
 import '../../domain/model/video/video_model.dart';
 import '../../domain/model/mine/feedback_message/feedback_message_model.dart';

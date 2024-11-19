@@ -26,10 +26,6 @@ class MonitorService extends BaseService {
           {required int id, required int page, required int limit}) =>
       post('/recommend', data: {'id': id, 'page': page, 'limit': limit});
 
-  /// 监控收藏
-  AsyncJson getMonitorFavorite({required int id}) =>
-      post('/favorite', data: {'id': id});
-
   /// 监控购买
   AsyncJson getMonitorBuy({required int id}) => post('/buy', data: {'id': id});
 
@@ -49,10 +45,4 @@ class MonitorService extends BaseService {
   AsyncJson getMonitorListComment(
           {required int id, required int page, required int limit}) =>
       post('/list_comment', data: {'id': id, 'page': page, 'limit': limit});
-
-  /// 监控点赞
-  AsyncJson getMonitorLikeComment({required int id}) =>
-      post('/like_comment', data: {'id': id});
-
-  AsyncJson monitorLike({required int id}) => post('/like', data: {'id': id});
 }

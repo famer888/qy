@@ -103,10 +103,6 @@ mixin _Live on _BaseAppRepo implements LiveDomain {
           .guard;
 
   @override
-  AsyncResult toggleLiveCommentLike({required int id}) =>
-      _liveService.getLiveLikeComment(id: id).deserialize().guard;
-
-  @override
   AsyncResult getLiveReward({required int id, required int coins}) =>
       _liveService.getLiveReward(id: id, coins: coins).deserialize().guard;
 

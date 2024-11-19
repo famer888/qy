@@ -25,9 +25,6 @@ abstract class MonitorDomain {
   AsyncResult<List<MonitorModel>?> getMonitorRecommend(
       {required int id, required int page, required int limit});
 
-  /// 监控收藏
-  AsyncResult getMonitorFavorite({required int id});
-
   /// 监控购买
   AsyncResult getMonitorBuy({required int id});
 
@@ -45,10 +42,4 @@ abstract class MonitorDomain {
   /// 监控评论列表
   AsyncResult<List<CommentModel>?> getMonitorListComment(
       {required int id, required int page, required int limit});
-
-  /// 监控评论点赞
-  AsyncResult toggleMonitorCommentLike({required int id});
-
-  /// 监控点赞
-  AsyncResult toggleMonitorLike({required int id});
 }

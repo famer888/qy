@@ -42,9 +42,6 @@ abstract class MvDomain {
     required int limit,
   });
 
-  /// 对视频的评论点赞
-  AsyncResult toggleCommentLike({required int id});
-
   /// 对视频发布评论
   AsyncResult sendVideoComment({
     required String id,

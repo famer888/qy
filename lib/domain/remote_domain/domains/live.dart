@@ -43,9 +43,6 @@ abstract class LiveDomain {
   AsyncResult<List<CommentModel>?> getLiveListComment(
       {required int id, required int page, required int limit});
 
-  /// 直播点赞
-  AsyncResult toggleLiveCommentLike({required int id});
-
   /// 直播打赏
   AsyncResult getLiveReward({required int id, required int coins});
 

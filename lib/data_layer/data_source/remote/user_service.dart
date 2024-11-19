@@ -109,17 +109,6 @@ class UserService extends BaseService {
         'last_ix': lastIx,
       });
 
-  /// 用户收藏   type: 1 mv  2 book 3 story 4 link 5 soundBook 6pic
-  AsyncJson userFavorites({
-    required int type,
-    required int id,
-  }) =>
-      post('/favorites', data: {
-        'relatedId': id,
-        'type': type,
-      });
-
-  /// 收藏/取消收藏,type 1 - 长视频 2 - 短视频 3 - 漫画 4 - 帖子 5 - 种子 6 - 语音 7 - 直播 8 - '动漫   9-黄游
   AsyncJson toggleUserFavorite({
     required int type,
     required int id,
@@ -129,7 +118,6 @@ class UserService extends BaseService {
         'type': type,
       });
 
-  ///评论点赞/取消点赞,type 1 - 长视频 2 - 短视频 3 - 漫画 4 - 帖子 5 - 种子 6 - 语音 7 - 直播 8 - '动漫   9-黄游
   AsyncJson toggleUserCommentLike({
     required int type,
     required int id,
@@ -139,7 +127,6 @@ class UserService extends BaseService {
         'id': id,
       });
 
-  ///点赞/取消点赞,type 1 - 长视频 2 - 短视频 3 - 漫画 4 - 帖子 5 - 种子 6 - 语音 7 - 直播 8 - '动漫   9-黄游
   AsyncJson toggleUserLike({
     required int type,
     required int id,

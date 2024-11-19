@@ -237,17 +237,15 @@ class _MonitorMvPlayerState extends State<MonitorMvPlayer>
 
   //点赞监控
   void likeMonitor() async {
-    final monitorDomain = context.read<MonitorDomain>();
-    final res = await monitorDomain.toggleMonitorLike(id: widget.info.id ?? 0);
-    if (res.isValid) {
-      if (res.data['is_like'] == 0) {
-        widget.info.isLike = 0;
-      } else {
-        widget.info.isLike = 1;
+    if (widget.info.id case final id?) {
+      final domain = context.read<UserDomain>();
+      final res = await domain.toggleUserLike(type: ModuleType.monitor, id: id);
+      if (res.data?.isLike case final isLike?) {
+        widget.info.isLike = isLike;
+        setState(() {});
+      } else if (res.msg case final msg?) {
+        MyToast.showText(text: msg);
       }
-      setState(() {});
-    } else if (res.msg case final msg?) {
-      MyToast.showText(text: msg);
     }
   }
 
@@ -793,34 +791,30 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
 
   //收藏监控
   void colloctionMonitor() async {
-    final monitorDomain = context.read<MonitorDomain>();
-    final res =
-        await monitorDomain.getMonitorFavorite(id: widget.info?.id ?? 0);
-    if (res.isValid) {
-      if (res.data['is_favorite'] == 0) {
-        widget.info?.isFavorite = 0;
-      } else {
-        widget.info?.isFavorite = 1;
+    if (widget.info?.id case final id?) {
+      final domain = context.read<UserDomain>();
+      final res =
+          await domain.toggleUserFavorite(type: ModuleType.monitor, id: id);
+      if (res.data?.isFavorite case final isFavorite?) {
+        widget.info?.isFavorite = isFavorite;
+        setState(() {});
+      } else if (res.msg case final msg?) {
+        MyToast.showText(text: msg);
       }
-      setState(() {});
-    } else if (res.msg case final msg?) {
-      MyToast.showText(text: msg);
     }
   }
 
   //点赞监控
   void likeMonitor() async {
-    final monitorDomain = context.read<MonitorDomain>();
-    final res = await monitorDomain.toggleMonitorLike(id: widget.info?.id ?? 0);
-    if (res.isValid) {
-      if (res.data['is_like'] == 0) {
-        widget.info?.isLike = 0;
-      } else {
-        widget.info?.isLike = 1;
+    if (widget.info?.id case final id?) {
+      final domain = context.read<UserDomain>();
+      final res = await domain.toggleUserLike(type: ModuleType.monitor, id: id);
+      if (res.data?.isLike case final isLike?) {
+        widget.info?.isLike = isLike;
+        setState(() {});
+      } else if (res.msg case final msg?) {
+        MyToast.showText(text: msg);
       }
-      setState(() {});
-    } else if (res.msg case final msg?) {
-      MyToast.showText(text: msg);
     }
   }
 
