@@ -54,10 +54,6 @@ mixin _Live on _BaseAppRepo implements LiveDomain {
           .guard;
 
   @override
-  AsyncResult getLiveFavorite({required int id}) =>
-      _liveService.getLiveFavorite(id: id).deserialize().guard;
-
-  @override
   AsyncResult getLiveBuy({required int id}) =>
       _liveService.getLiveBuy(id: id).deserialize().guard;
 

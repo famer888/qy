@@ -28,7 +28,7 @@ class LiveModel {
   final String? username;
   final int? viewFct;
   final int? commentCt;
-  int? favoriteFct;
+  int favoriteFct;
   List<LiveHlsModel>? hls;
   String? show;
   int? type;
@@ -43,7 +43,7 @@ class LiveModel {
     this.cover,
     this.username,
     this.viewFct,
-    this.favoriteFct,
+    required this.favoriteFct,
     this.commentCt,
     this.hls,
     this.show,

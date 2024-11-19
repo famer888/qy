@@ -10,16 +10,19 @@ import '../../../../domain/model/live/live_with_banners_model.dart';
 import '../../../../domain/model/mine/post/mine_post_list_model.dart';
 import '../../../../domain/model/mine/video/mine_video_model.dart';
 import '../../../../domain/model/mine/video/mine_video_list_model.dart';
+import '../../../../domain/model/monitor/monitor_with_banners_model.dart';
 import '../../../../domain/model/novel/novel_item_model.dart';
 import '../../../../domain/model/post/post_model.dart';
 import '../../../../domain/remote_domain/domains/comic.dart';
 import '../../../../domain/remote_domain/domains/live.dart';
+import '../../../../domain/remote_domain/domains/monitor.dart';
 import '../../../../domain/remote_domain/domains/novel.dart';
 import '../../../../domain/remote_domain/domains/user.dart';
 import '../../../../domain/result.dart';
 import '../../../notifiers/home_config_notifier.dart';
 import '../../bit/comic/card/comic_item_card.dart';
 import '../../bit/live/widgets/live_video_card.dart';
+import '../../bit/monitor/widgets/monitor_video_card.dart';
 import '../../bit/novel/card/novel_item_card.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
 import '../../common_widgets/my_app_bar.dart';
@@ -53,6 +56,7 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
       data['zhib'] = const _LiveView();
     }
     data.addAll({
+      'jiankong': const _MonitorView(),
       'manh': const _ComicView(),
       'xs': const _NovelView(),
     });
@@ -269,6 +273,42 @@ class _NovelViewState extends State<_NovelView> {
         page: currentPage,
         pageSize: pageSize,
       ),
+    );
+  }
+}
+
+class _MonitorView extends StatefulWidget {
+  const _MonitorView();
+
+  @override
+  State<_MonitorView> createState() => _MonitorViewState();
+}
+
+class _MonitorViewState extends State<_MonitorView> {
+  late final monitorDomain = context.read<MonitorDomain>();
+
+  Future<List<MonitorModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await monitorDomain.getMonitorListBuy(
+      page: page,
+      limit: pageSize,
+    );
+    return result.data;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      childAspectRatio: MonitorVideoCard.aspectRatio,
+      padding: EdgeInsets.symmetric(
+          vertical: MyTheme.pagePadding, horizontal: MyTheme.pagePadding),
+      itemBuilder: (context, item, index) {
+        return MonitorVideoCard(data: item);
+      },
+      onFetchingMore: (currentPage, pageSize) =>
+          _getData(page: currentPage, pageSize: pageSize),
     );
   }
 }

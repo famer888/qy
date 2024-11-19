@@ -10,9 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:video_player/video_player.dart';
 import '../../../../domain/api_validator.dart';
+import '../../../../domain/enum.dart';
 import '../../../../domain/model/member_model.dart';
 import '../../../../domain/model/monitor/monitor_with_banners_model.dart';
 import '../../../../domain/remote_domain/domains/monitor.dart';
+import '../../../../domain/remote_domain/domains/user.dart';
 import '../../../notifiers/home_config_notifier.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../router/routes.dart';
@@ -220,17 +222,16 @@ class _MonitorMvPlayerState extends State<MonitorMvPlayer>
 
   //收藏监控
   void colloctionMonitor() async {
-    final monitorDomain = context.read<MonitorDomain>();
-    final res = await monitorDomain.getMonitorFavorite(id: widget.info.id ?? 0);
-    if (res.isValid) {
-      if (res.data['is_favorite'] == 0) {
-        widget.info.isFavorite = 0;
-      } else {
-        widget.info.isFavorite = 1;
+    if (widget.info.id case final id?) {
+      final domain = context.read<UserDomain>();
+      final res =
+          await domain.toggleUserFavorite(type: ModuleType.monitor, id: id);
+      if (res.data?.isFavorite case final isFavorite?) {
+        widget.info.isFavorite = isFavorite;
+        setState(() {});
+      } else if (res.msg case final msg?) {
+        MyToast.showText(text: msg);
       }
-      setState(() {});
-    } else if (res.msg case final msg?) {
-      MyToast.showText(text: msg);
     }
   }
 

@@ -110,13 +110,13 @@ mixin _User on _BaseAppRepo implements UserDomain {
       _userService.userFavorites(type: type, id: id).deserialize().guard;
 
   @override
-  AsyncResult toggleUserFavorite({
+  AsyncResult<ToggleFavoriteModel> toggleUserFavorite({
     required ModuleType type,
     required int id,
   }) =>
       _userService
           .toggleUserFavorite(type: type.id, id: id)
-          .deserialize()
+          .deserializeJsonBy(ToggleFavoriteModel.fromJson)
           .guard;
 
   @override

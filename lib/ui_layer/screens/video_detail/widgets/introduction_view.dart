@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
+import '../../../../domain/enum.dart';
 import '../../../../domain/model/video/video_model.dart';
 import '../../../../domain/model/video_detail_model.dart';
 import '../../../notifiers/user_notifier.dart';
@@ -121,18 +122,15 @@ class _IntroductionViewState extends State<IntroductionView> {
                       setState,
                     ) {
                       final isFavorites = videoInfo.userFavorites == 1;
-
                       return GestureDetector(
                         onTap: () async {
                           if (videoInfo.id case final id?) {
-                            final userDomain = context.read<UserDomain>();
-                            final res =
-                                await userDomain.userFavorites(type: 1, id: id);
-                            if (res.isValid) {
-                              videoInfo.userFavorites = isFavorites ? 0 : 1;
-                              isFavorites
-                                  ? videoInfo.favorites--
-                                  : videoInfo.favorites++;
+                            final domain = context.read<UserDomain>();
+                            final res = await domain.toggleUserFavorite(
+                                type: ModuleType.video, id: id);
+                            if (res.data?.isFavorite case final isFavorite?) {
+                              videoInfo.userFavorites = isFavorite;
+                              videoInfo.favorites += isFavorite == 1 ? 1 : -1;
                               setState(() {});
                             } else if (res.msg case final msg?) {
                               MyToast.showText(text: msg);

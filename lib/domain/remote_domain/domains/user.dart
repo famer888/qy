@@ -5,6 +5,7 @@ import '../../model/member_model.dart';
 import '../../model/mine/following/following_user_list_model.dart';
 import '../../model/mine/withdrawal/bank_card_list_model.dart';
 import '../../model/tiezt_model.dart';
+import '../../model/toggle_favorite_model.dart';
 import '../../model/vip_upgrade_model.dart';
 import '../../type_def.dart';
 
@@ -74,7 +75,8 @@ abstract class UserDomain {
   AsyncResult userFavorites({required int type, required int id});
 
   /// 收藏/取消收藏,
-  AsyncResult toggleUserFavorite({required ModuleType type, required int id});
+  AsyncResult<ToggleFavoriteModel> toggleUserFavorite(
+      {required ModuleType type, required int id});
 
   /// 评论点赞/取消点赞
   AsyncResult toggleUserCommentLike(

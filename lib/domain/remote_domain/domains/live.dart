@@ -25,9 +25,6 @@ abstract class LiveDomain {
   AsyncResult<List<LiveModel>?> getLiveRecommend(
       {required int id, required int page, required int limit});
 
-  /// 直播收藏
-  AsyncResult getLiveFavorite({required int id});
-
   /// 直播购买
   AsyncResult getLiveBuy({required int id});
 

@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../domain/api_validator.dart';
+import '../../../../../../domain/domain.dart';
+import '../../../../../../domain/enum.dart';
 import '../../../../../../domain/model/live/live_video_detail_data.dart';
 import '../../../../../../domain/model/live/live_with_banners_model.dart';
 import '../../../../../../domain/remote_domain/domains/live.dart';
@@ -124,25 +126,15 @@ class _HeaderViewState extends State<_HeaderView> {
                 children: [
                   StatefulBuilder(builder: (_, setState) {
                     final isFavorite = videoInfo.isFavorite == 1;
-
                     return GestureDetector(
                       onTap: () async {
                         if (videoInfo.id case final id?) {
-                          final liveDomain = context.read<LiveDomain>();
-                          final res = await liveDomain.getLiveFavorite(id: id);
-                          if (res.isValid) {
-                            if (res.data['is_favorite'] == 0) {
-                              videoInfo.isFavorite = 0;
-                              videoInfo.favoriteFct =
-                                  (videoInfo.favoriteFct ?? 0) - 1;
-                              videoInfo.favoriteFct! <= 0
-                                  ? 0
-                                  : videoInfo.favoriteFct;
-                            } else {
-                              videoInfo.isFavorite = 1;
-                              videoInfo.favoriteFct =
-                                  (videoInfo.favoriteFct ?? 0) + 1;
-                            }
+                          final domain = context.read<UserDomain>();
+                          final res = await domain.toggleUserFavorite(
+                              type: ModuleType.live, id: id);
+                          if (res.data?.isFavorite case final isFavorite?) {
+                            videoInfo.isFavorite = isFavorite;
+                            videoInfo.favoriteFct += isFavorite == 1 ? 1 : -1;
                             setState(() {});
                           } else if (res.msg case final msg?) {
                             MyToast.showText(text: msg);

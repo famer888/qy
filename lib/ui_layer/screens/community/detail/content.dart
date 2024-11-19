@@ -219,20 +219,18 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
     if (_isChangeCollectLoading) return;
     _isChangeCollectLoading = true;
 
-    try {
-      final result =
-          await _domain.communityTopicFavorite(id: '${widget.data.id}');
-      if (result.status == 1) {
-        final oldValue = widget.data.isFavorite ?? 0;
-        final newValue = oldValue == 0 ? 1 : 0;
-        widget.data.isFavorite = newValue;
-        if (mounted) {
-          setState(() {});
-        }
-      } else {
-        MyToast.showText(text: result.msg ?? '');
+    if (widget.data.id case final id?) {
+      final domain = context.read<UserDomain>();
+      final res =
+          await domain.toggleUserFavorite(type: ModuleType.post, id: id);
+      if (res.data?.isFavorite case final isFavorite?) {
+        widget.data.isFavorite = isFavorite;
+
+        setState(() {});
+      } else if (res.msg case final msg?) {
+        MyToast.showText(text: msg);
       }
-    } catch (_) {}
+    }
 
     _isChangeCollectLoading = false;
   }

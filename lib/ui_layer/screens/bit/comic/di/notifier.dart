@@ -48,7 +48,8 @@ class ComicChangeNotifier extends ChangeNotifier {
         action: () async {
           final result = await _userDomain.toggleUserFavorite(
               type: ModuleType.comic, id: id);
-          if (!result.isValid) {
+          if (result.data?.isFavorite case final isFavorite
+              when isFavorite != newValue) {
             _changeFavorite(oldValue);
           }
         },
