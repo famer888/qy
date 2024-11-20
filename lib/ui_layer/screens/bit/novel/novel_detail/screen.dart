@@ -288,38 +288,64 @@ class _Header extends StatelessWidget {
                       maxLines: 1,
                     )
                   ]),
-                  GestureDetector(
-                    child: Row(children: [
-                      MyImage.asset(
-                          detail.isLike == 1
-                              ? MyImagePaths.appCommReviewH
-                              : MyImagePaths.appCommReviewN,
-                          width: 21.w,
-                          height: 21.w),
-                      SizedBox(width: 3.w),
-                      Text(
-                        '${CommonUtils.renderNumber(detail.likeFct ?? 0)}',
-                        style: MyTheme.white04_12,
-                        maxLines: 1,
-                      )
-                    ]),
-                  ),
-                  GestureDetector(
-                    child: Row(children: [
-                      MyImage.asset(
-                          detail.isFavorite == 1
-                              ? MyImagePaths.appCollectOn
-                              : MyImagePaths.appCollectOff,
-                          width: 18.w,
-                          height: 18.w),
-                      SizedBox(width: 3.w),
-                      Text(
-                        '${CommonUtils.renderNumber(detail.favoriteFct ?? 0)}',
-                        style: MyTheme.white04_12,
-                        maxLines: 1,
-                      )
-                    ]),
-                  ),
+                  StatefulBuilder(builder: (_, setState) {
+                    return GestureDetector(
+                      onTap: () async {
+                        if (detail.id case final id) {
+                          final domain = context.read<UserDomain>();
+                          final res = await domain.toggleUserLike(
+                              type: ModuleType.novel, id: id);
+                          if (res.data?.isLike case final isLike?) {
+                            detail.isLike = isLike;
+                            detail.likeFct += isLike == 1 ? 1 : -1;
+                            setState(() {});
+                          } else if (res.msg case final msg?) {
+                            MyToast.showText(text: msg);
+                          }
+                        }
+                      },
+                      child: Row(children: [
+                        MyImage.asset(
+                            detail.isLike == 1
+                                ? MyImagePaths.appCommReviewH
+                                : MyImagePaths.appCommReviewN,
+                            width: 21.w,
+                            height: 21.w),
+                        SizedBox(width: 3.w),
+                        Text(
+                          '${CommonUtils.renderNumber(detail.likeFct ?? 0)}',
+                          style: MyTheme.white04_12,
+                          maxLines: 1,
+                        )
+                      ]),
+                    );
+                  }),
+                  Selector<NovelChangeNotifier, bool>(
+                      selector: (_, notifier) =>
+                          notifier.currentNovel.isFavorite == 1,
+                      builder: (_, isFavorite, __) {
+                        final novelChangeNotifier =
+                            context.read<NovelChangeNotifier>();
+                        return GestureDetector(
+                          onTap: () {
+                            novelChangeNotifier.toggleFavorite();
+                          },
+                          child: Row(children: [
+                            MyImage.asset(
+                                isFavorite
+                                    ? MyImagePaths.appCollectOn
+                                    : MyImagePaths.appCollectOff,
+                                width: 18.w,
+                                height: 18.w),
+                            SizedBox(width: 3.w),
+                            Text(
+                              '${CommonUtils.renderNumber(novelChangeNotifier.currentNovel.favoriteFct)}',
+                              style: MyTheme.white04_12,
+                              maxLines: 1,
+                            )
+                          ]),
+                        );
+                      }),
                 ]),
           ),
           if (banner.isNotEmpty)

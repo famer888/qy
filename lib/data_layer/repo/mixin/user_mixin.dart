@@ -148,7 +148,7 @@ mixin _User on _BaseAppRepo implements UserDomain {
   AsyncResult<ToggleLikeModel> toggleUserLike(
           {required ModuleType type, required int id}) =>
       _userService
-          .toggleUserLike(type: type.index, id: id)
+          .toggleUserLike(type: type.id, id: id)
           .deserializeJsonBy(ToggleLikeModel.fromJson)
           .guard;
 
