@@ -1,9 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../domain/api_validator.dart';
+import '../../../../domain/remote_domain/domains/proxy.dart';
 import '../../../notifiers/home_config_notifier.dart';
+import '../../../notifiers/user_notifier.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/dialog/my_dialog.dart';
 import '../../common_widgets/dialog/widgets/regular_dialog.dart';
@@ -22,6 +26,35 @@ class MineAgentApplyView extends StatefulWidget {
 class _MineAgentApplyViewState extends State<MineAgentApplyView> {
   final _controller = TextEditingController();
   late final config = context.read<HomeConfigNotifier>();
+  late final domain = context.read<ProxyDomain>();
+
+  _applyAgent() async {
+    String contact = _controller.text;
+    if (contact.isEmpty) {
+      MyToast.showText(text: 'srnr'.tr(context: context));
+      return;
+    }
+
+    MyToast.showLoading();
+
+    ///代理 申请代理
+    final res = await domain.proxyApply(contact: contact);
+    MyToast.closeAllLoading();
+    if (res.isValid) {
+      MyToast.showText(text: res.msg ?? '');
+      await context.read<UserNotifier>().init();
+      widget.applySuccess?.call();
+      context.pop();
+    } else {
+      MyToast.showText(
+          text: res.msg ?? '',
+          onClose: () {
+            Future.delayed(const Duration(milliseconds: 100), () {
+              context.pop();
+            });
+          });
+    }
+  }
 
   _askApplyAgent() {
     final text = _controller.text;
@@ -35,7 +68,7 @@ class _MineAgentApplyViewState extends State<MineAgentApplyView> {
         child: RegularDialog(
           title: 'ts'.tr(context: context),
           buttonText: 'qd'.tr(context: context),
-          confirmOnTap: () {},
+          confirmOnTap: _applyAgent,
           cancelText: 'qx'.tr(context: context),
           content: Text(
             'sqdlm'.tr(context: context),
