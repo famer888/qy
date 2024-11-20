@@ -666,7 +666,9 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
                                     ),
                                     Text(
                                       'qrggtb'.tr(context: context, namedArgs: {
-                                        'name': name.tr(context: context)
+                                        'name':
+                                            (name == 'default' ? 'yybt' : name)
+                                                .tr(context: context)
                                       }),
                                     ),
                                   ],
