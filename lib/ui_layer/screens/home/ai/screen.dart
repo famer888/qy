@@ -1,3 +1,5 @@
+import 'package:qypj/ui_layer/screens/home/ai/widgets/face_swapper/widgets/sheet.dart';
+
 import '../../common_widgets/appbar_with_tabbar.dart';
 import '../../common_widgets/screen_background.dart';
 
@@ -17,8 +19,9 @@ class HomeAiScreen extends StatefulWidget {
 
 class _HomeAiScreenState extends State<HomeAiScreen>
     with TickerProviderStateMixin {
-  late final navList = ['aihl'.tr(), 'aiqy'.tr()];
+  late final navList = ['aihl', 'aiqy'];
   late final tabController = TabController(length: navList.length, vsync: this);
+
   @override
   Widget build(BuildContext context) {
     return ScreenBackground(

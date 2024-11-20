@@ -96,6 +96,7 @@ class MyImagePaths {
   static const appUploadImg = './assets/images/app_upload_img.png';
   static const appResouIcon = './assets/images/app_resou_icon.png';
   static const appRank = './assets/images/app_rank.png';
+  static const appCustomModel = './assets/images/app_custom_model.png';
   static const appFilterUp = './assets/images/app_filter_up.png';
   static const taobao = './assets/images/taobao.png';
   static const appSearchClear = './assets/images/app_search_clear.png';
