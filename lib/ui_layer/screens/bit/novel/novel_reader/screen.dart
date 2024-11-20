@@ -264,8 +264,8 @@ class PayView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'dqtjxhfajb'
-                          .tr(namedArgs: {'amount': '1'}, context: context),
+                      'dqtjxhfajb'.tr(
+                          namedArgs: {'amount': '$coins'}, context: context),
                       style: MyTheme.black16bold,
                       maxLines: 10,
                       textAlign: TextAlign.center,
