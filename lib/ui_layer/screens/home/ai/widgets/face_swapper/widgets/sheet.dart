@@ -142,11 +142,13 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
                         child: uploadGroudObject.isNotEmpty
                             ? Stack(
                                 children: [
-                                  MyImage.network(
-                                    uploadGroudObject['url'],
-                                    fit: BoxFit.fitHeight,
-                                    borderRadius: 6.w,
-                                    backgroundColor: MyTheme.imageBgColor,
+                                  Center(
+                                    child: MyImage.network(
+                                      uploadGroudObject['url'],
+                                      fit: BoxFit.fitHeight,
+                                      borderRadius: 6.w,
+                                      backgroundColor: MyTheme.imageBgColor,
+                                    ),
                                   ),
                                   Positioned(
                                       top: 0,
@@ -191,11 +193,13 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
                     )
                   : SizedBox(
                       height: 140.w,
-                      child: MyImage.network(
-                        item.thumb,
-                        fit: BoxFit.fitHeight,
-                        borderRadius: 6.w,
-                        backgroundColor: Colors.white.withOpacity(0.08),
+                      child: Center(
+                        child: MyImage.network(
+                          item.thumb,
+                          fit: BoxFit.fitHeight,
+                          borderRadius: 6.w,
+                          backgroundColor: Colors.white.withOpacity(0.08),
+                        ),
                       ),
                     ),
               SizedBox(height: 10.w),
@@ -242,11 +246,13 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
                         )
                       : Stack(
                           children: [
-                            MyImage.network(
-                              uploadObject['url'],
-                              fit: BoxFit.fitHeight,
-                              borderRadius: 6.w,
-                              backgroundColor: MyTheme.imageBgColor,
+                            Center(
+                              child: MyImage.network(
+                                uploadObject['url'],
+                                fit: BoxFit.fitHeight,
+                                borderRadius: 6.w,
+                                backgroundColor: MyTheme.imageBgColor,
+                              ),
                             ),
                             Positioned(
                                 top: 0,
