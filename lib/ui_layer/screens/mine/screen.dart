@@ -597,6 +597,7 @@ class _ChangeAppIconView extends StatefulWidget {
 
 class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
   final icons = [
+    'default',
     'wesee',
     'tiktok',
     'tieba',
@@ -609,10 +610,7 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
 
   @override
   void initState() {
-    AndroidDynamicIcon.initialize(classNames: [
-      'default',
-      ...icons,
-    ]);
+    AndroidDynamicIcon.initialize(classNames: icons);
     super.initState();
   }
 
@@ -682,13 +680,13 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
                         child: Column(
                           children: [
                             Image.asset(
-                              'assets/images/$name.png',
+                              'assets/app_icons/$name.png',
                               width: 45.w,
                               height: 45.w,
                             ),
                             SizedBox(height: 5.w),
                             LocalizationText(
-                              name,
+                              name == 'default' ? 'yybt' : name,
                               style: MyTheme.white14,
                             ),
                           ],

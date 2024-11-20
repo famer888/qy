@@ -85,7 +85,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/images/
-
+    - assets/app_icons/
 
 flutter_native_splash:
   android: true
