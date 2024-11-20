@@ -53,7 +53,8 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json['id'],
-      pays: List.from(json['pay'].map((payJson) => Pay.fromJson(payJson))),
+      pays:
+          List.from(json['pay']?.map((payJson) => Pay.fromJson(payJson)) ?? []),
       pName: json['pname'] as String,
       giveTip: json['give_tip'] ?? '未知',
       promoPriceYuan: json['promo_price_yuan'] ?? '',
@@ -61,7 +62,7 @@ class Product {
       description: json['description'] ?? '',
       payCoins: json['pay_coins'],
       rights: List.from(
-          json['right'].map((rightJson) => Right.fromJson(rightJson))),
+          json['right']?.map((rightJson) => Right.fromJson(rightJson)) ?? []),
     );
   }
 
