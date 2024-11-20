@@ -87,7 +87,7 @@ class _RecommendNovelItemCardState extends State<RecommendNovelItemCard> {
                 minimumSize: Size(150.w, 30.w),
                 child: LocalizationText('ckgd', style: MyTheme.white12),
                 onPressed: () {
-                  MoreComicRoute(
+                  MoreNovelRoute(
                     title: widget.data.title ?? '',
                     sort: widget.data.value ?? '',
                   ).push(context);
