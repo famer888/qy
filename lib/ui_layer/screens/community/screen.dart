@@ -172,9 +172,6 @@ class _BodyState extends State<_Body> {
 
     setState(() {
       if (result.data case final data? when result.isValid) {
-        if (_config.wdaiStr.isNotEmpty) {
-          data.add(CommunityPostNavModel(id: 100, title: _config.wdaiStr));
-        }
         _asyncValue = AsyncData(data);
       } else {
         _asyncValue = const AsyncError();
