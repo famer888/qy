@@ -114,8 +114,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
           Expanded(
             child: TabBarView(controller: tabController, children: [
               NovelIntroContent(data: data),
-              KeepAliveWrapper(
-                  child: NovelCommentContent(id: data.detail.id ?? 0))
+              KeepAliveWrapper(child: NovelCommentContent(id: data.detail.id))
             ]),
           )
         ],
@@ -313,7 +312,7 @@ class _Header extends StatelessWidget {
                             height: 21.w),
                         SizedBox(width: 3.w),
                         Text(
-                          '${CommonUtils.renderNumber(detail.likeFct ?? 0)}',
+                          '${CommonUtils.renderNumber(detail.likeFct)}',
                           style: MyTheme.white04_12,
                           maxLines: 1,
                         )

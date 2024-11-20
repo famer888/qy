@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../domain/domain.dart';
-import '../../../../../domain/model/novel/novel_item_model.dart';
 import '../../../../../domain/model/novel/novel_model.dart';
-import '../../../../../domain/remote_domain/domains/novel.dart';
-import '../../../../router/routes.dart';
 import '../../../common_widgets/localization_text.dart';
 import '../../../common_widgets/my_button.dart';
 import '../../../common_widgets/my_image.dart';

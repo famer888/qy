@@ -14,7 +14,6 @@ import '../../utils/my_toast.dart';
 import '../common_widgets/general_banner.dart';
 import '../common_widgets/my_image.dart';
 import '../common_widgets/screen_background.dart';
-import '../common_widgets/status/empty_data.dart';
 import '../image_paths.dart';
 import '../theme.dart';
 

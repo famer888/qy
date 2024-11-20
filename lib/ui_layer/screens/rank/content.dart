@@ -23,7 +23,7 @@ class RankContentScreen extends StatefulWidget {
 
 class _RankContentScreenState extends State<RankContentScreen> {
   late final _homeConfig = context.read<HomeConfigNotifier>();
-  late final List<RankNavModel> _titles = _homeConfig.config.rankCycleNav ?? [];
+  late final List<RankNavModel> _titles = _homeConfig.config.rankCycleNav;
   late final _domain = context.read<RankDomain>();
   int _page = 1;
 

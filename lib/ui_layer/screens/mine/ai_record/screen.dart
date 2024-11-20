@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../common_widgets/keep_alive_wrapper.dart';
-import '../../common_widgets/my_image.dart';
 import '../../common_widgets/my_tab_bar.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../image_paths.dart';

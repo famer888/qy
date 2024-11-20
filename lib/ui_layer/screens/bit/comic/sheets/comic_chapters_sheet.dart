@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../domain/model/comic/comic_model.dart';
 import '../../../common_widgets/localization_text.dart';
 import '../../../common_widgets/my_image.dart';
 import '../../../image_paths.dart';
@@ -119,6 +118,7 @@ class _ComicChaptersSheetViewState extends State<ComicChaptersSheetView>
                               final chapter = chapters[targetIndex];
                               return ComicChaptersSheetCard(
                                 data: chapter,
+                                isLocation: targetIndex == currentIndex,
                                 onTap: () {
                                   context.pop();
                                   if (widget.onTapChapterIndex

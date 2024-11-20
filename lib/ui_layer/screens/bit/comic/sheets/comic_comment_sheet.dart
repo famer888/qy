@@ -4,11 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../domain/api_validator.dart';
 import '../../../../../../domain/enum.dart';
 import '../../../../../../domain/model/video_comment_model.dart';
 import '../../../../../../domain/remote_domain/domains/comic.dart';
-import '../../../../../../domain/remote_domain/domains/user.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/comment_tile.dart';
 import '../../../common_widgets/my_image.dart';

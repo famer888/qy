@@ -36,7 +36,7 @@ class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
   late final _homeConfig = context.read<HomeConfigNotifier>();
   late final _communityDomain = context.read<CommunityDomain>();
 
-  late final List<NavigatorModel> _titles = _homeConfig.config.forumNav ?? [];
+  late final List<NavigatorModel> _titles = _homeConfig.config.forumNav;
 
   AsyncValue<TopicModel> _asyncValue = const AsyncInit();
 

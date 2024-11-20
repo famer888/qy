@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../../../domain/domain.dart';
-import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/enum.dart';
 import '../../../../../domain/model/novel/novel_model.dart';
 import '../../../../utils/debounce.dart';
-import '../../../theme.dart';
 
 class NovelChangeNotifier extends ChangeNotifier {
   NovelChangeNotifier(this._cache, this._userDomain) {

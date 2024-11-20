@@ -18,8 +18,6 @@ class _CacheManager implements CacheDomain {
   final _downloadVideoTasksKey = 'download_video_tasks';
   final _chatsKey = 'imchats';
   final _isBarrageKey = 'is_barrage';
-  final _comicChapterKey = 'comic_chapter';
-  final _novelChapterKey = 'novel_chapter';
   final _novelFontSizeKey = 'novel_font_size';
   final _novelBgColorKey = 'novel_bg_color';
 

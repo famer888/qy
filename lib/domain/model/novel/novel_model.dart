@@ -183,7 +183,7 @@ class NovelDetailModel {
         'is_like': isLike,
         'like_fct': likeFct,
         'like_ct': likeCt,
-        'chapters': chapters?.map((e) => e.toJson()),
+        'chapters': chapters.map((e) => e.toJson()),
         'font_ct': fontCt,
         'author': author,
       };

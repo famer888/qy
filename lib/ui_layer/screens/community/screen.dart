@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/api_validator.dart';
 import '../../../domain/domain.dart';
-import '../../notifiers/home_config_notifier.dart';
 import '../../router/routes.dart';
 import '../image_paths.dart';
 
@@ -153,7 +152,6 @@ class _Body extends StatefulWidget {
 
 class _BodyState extends State<_Body> {
   late final _appDomain = context.read<CommunityDomain>();
-  late final _config = context.read<HomeConfigNotifier>().config;
   AsyncValue<List<CommunityPostNavModel>> _asyncValue = const AsyncInit();
 
   @override
