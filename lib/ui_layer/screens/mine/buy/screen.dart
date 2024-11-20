@@ -50,11 +50,11 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
     final data = {
       'shp': const _VideoView(),
       'tiezt': const _PostView(type: ModuleType.post),
-      'zhoz': const _PostView(type: ModuleType.seed),
+      // 'zhoz': const _PostView(type: ModuleType.seed),
     };
-    if (openLive) {
-      data['zhib'] = const _LiveView();
-    }
+    // if (openLive) {
+    //   data['zhib'] = const _LiveView();
+    // }
     data.addAll({
       'jiankong': const _MonitorView(),
       'manh': const _ComicView(),
