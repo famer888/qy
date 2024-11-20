@@ -204,22 +204,22 @@ class _TaskViewState extends State<TaskView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  MyButton.gradient(
-                    minimumSize: Size(120.w, 40.w),
-                    gradient: const LinearGradient(colors: [
-                      Colors.grey,
-                      Colors.grey,
-                    ]),
-                    onPressed: data.signStatus == true
-                        ? null
-                        : () async {
+                  data.signStatus == true
+                      ? MyButton.gradient(
+                          minimumSize: Size(120.w, 40.w),
+                          gradient: const LinearGradient(colors: [
+                            Colors.grey,
+                            Colors.grey,
+                          ]),
+                          text: 'yqd'.tr(context: context),
+                        )
+                      : MyButton.gradient(
+                          minimumSize: Size(120.w, 40.w),
+                          onPressed: () async {
                             _signUp();
-                            // signCall.call();
                           },
-                    text: data.signStatus == true
-                        ? 'yqd'.tr(context: context)
-                        : 'ljqd'.tr(context: context),
-                  ),
+                          text: 'ljqd'.tr(context: context),
+                        ),
                   MyButton.gradient(
                     onPressed: () async {
                       const VipCenterRoute(index: 1).push(context);
