@@ -238,6 +238,7 @@ class _VipContentState extends State<_VipContent> {
                 _ProductCardArea(
                   products: widget.productOfVIP.products,
                   selectedNotifier: productSelectedNotifier,
+                  isUpgrade: false,
                 ),
                 SizedBox(height: 20.w),
                 _DescriptionArea(
@@ -320,6 +321,7 @@ class _VipUpgradeContentState extends State<VipUpgradeContent> {
                 _ProductCardArea(
                   products: products,
                   selectedNotifier: productSelectedNotifier,
+                  isUpgrade: true,
                 ),
                 SizedBox(height: 20.w),
                 _DescriptionArea(
@@ -480,10 +482,12 @@ class _ProductCardArea extends StatelessWidget {
   const _ProductCardArea({
     required this.products,
     required this.selectedNotifier,
+    required this.isUpgrade,
   });
 
   final List<Product> products;
   final ValueNotifier selectedNotifier;
+  final bool isUpgrade;
 
   @override
   Widget build(BuildContext context) {
@@ -504,6 +508,7 @@ class _ProductCardArea extends StatelessWidget {
               return _ProductItem(
                 product: products[index],
                 isSelected: isSelected == index,
+                isUpgrade: isUpgrade,
               );
             },
           ),
@@ -514,12 +519,15 @@ class _ProductCardArea extends StatelessWidget {
 }
 
 class _ProductItem extends StatelessWidget {
-  final Product product;
-  final bool isSelected;
   const _ProductItem({
     required this.product,
     required this.isSelected,
+    required this.isUpgrade,
   });
+
+  final Product product;
+  final bool isSelected;
+  final bool isUpgrade;
 
   @override
   Widget build(BuildContext context) {
@@ -561,28 +569,37 @@ class _ProductItem extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    textBaseline: TextBaseline.alphabetic,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    children: [
-                      Text(
-                        '¥',
-                        style: TextStyle(
+                  isUpgrade
+                      ? Text(
+                          '${product.payCoins}${'jb'.tr(context: context)}',
+                          style: TextStyle(
                             fontSize: 18.sp,
                             color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        promoPrice,
-                        style: TextStyle(
-                          fontSize: 30.sp,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          textBaseline: TextBaseline.alphabetic,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          children: [
+                            Text(
+                              '¥',
+                              style: TextStyle(
+                                  fontSize: 18.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              promoPrice,
+                              style: TextStyle(
+                                fontSize: 30.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
                   Text(
                     price,
                     style: TextStyle(
