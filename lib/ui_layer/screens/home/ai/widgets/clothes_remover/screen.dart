@@ -258,7 +258,7 @@ class _ClothesRemoverViewState extends State<ClothesRemoverView> {
               Text('zyss'.tr(context: context), style: MyTheme.white15_M),
               SizedBox(height: 5.w),
               ...List.generate(
-                5,
+                6,
                 (i) => Text('zyss${i + 1}'.tr(context: context),
                     style: MyTheme.white07_11),
               ),

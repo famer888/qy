@@ -93,7 +93,7 @@ class _TaskViewState extends State<TaskView> {
             data: data,
             signCall: () {
               ///立即签到
-              _signUp();
+              // _signUp();
             },
           ),
           _signInContent(data),
@@ -146,16 +146,21 @@ class _TaskViewState extends State<TaskView> {
             margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
             child: Column(children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    'zmrrw'.tr(context: context),
-                    style: MyTheme.white18bold,
-                  ),
-                  SizedBox(width: 10.w),
-                  Text(
-                    'ljl'.tr(context: context),
-                    style: MyTheme.white04_12,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'zmrrw'.tr(context: context),
+                        style: MyTheme.white15bold,
+                      ),
+                      SizedBox(width: 1.w),
+                      Text(
+                        'ljl'.tr(context: context),
+                        style: MyTheme.white04_12,
+                      ),
+                    ],
                   ),
                   const Spacer(),
                   Text(
@@ -196,12 +201,33 @@ class _TaskViewState extends State<TaskView> {
                 );
               }),
               SizedBox(height: 15.w),
-              MyButton.gradient(
-                onPressed: () async {
-                  const VipCenterRoute(index: 1).push(context);
-                },
-                minimumSize: Size(260.w, 40.w),
-                text: 'dhvp'.tr(context: context),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MyButton.gradient(
+                    minimumSize: Size(120.w, 40.w),
+                    gradient: const LinearGradient(colors: [
+                      Colors.grey,
+                      Colors.grey,
+                    ]),
+                    onPressed: data.signStatus == true
+                        ? null
+                        : () async {
+                            _signUp();
+                            // signCall.call();
+                          },
+                    text: data.signStatus == true
+                        ? 'yqd'.tr(context: context)
+                        : 'ljqd'.tr(context: context),
+                  ),
+                  MyButton.gradient(
+                    onPressed: () async {
+                      const VipCenterRoute(index: 1).push(context);
+                    },
+                    minimumSize: Size(120.w, 40.w),
+                    text: 'dhvp'.tr(context: context),
+                  ),
+                ],
               ),
             ]),
           );
@@ -269,13 +295,15 @@ class _TaskViewState extends State<TaskView> {
                       width: 30.w, height: 30.w))
               : Container(),
           (data.sort ?? 0) <= signNum
-              ? Container(
-                  color: Colors.black45,
-                  child: Center(
-                      child: Text(
-                    'yqiandao'.tr(context: context),
-                    style: MyTheme.white14,
-                  )))
+              ? Positioned.fill(
+                  child: Container(
+                      color: Colors.black45.withOpacity(0.6),
+                      child: Center(
+                          child: Text(
+                        'yqiandao'.tr(context: context),
+                        style: MyTheme.white14,
+                      ))),
+                )
               : Container(),
         ],
       ),
@@ -306,10 +334,10 @@ class _MemberView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 120.w,
+      // height: 80.w,
       child: Padding(
-        padding: EdgeInsets.only(
-            left: MyTheme.pagePadding, right: 6.w, bottom: MyTheme.pagePadding),
+        padding:
+            EdgeInsets.only(left: MyTheme.pagePadding, right: 6.w, bottom: 8.w),
         child: Column(
           children: [
             Selector<UserNotifier, Member?>(
@@ -379,21 +407,21 @@ class _MemberView extends StatelessWidget {
                       );
               },
             ),
-            MyButton.gradient(
-              minimumSize: Size(260.w, 40.w),
-              gradient: const LinearGradient(colors: [
-                Colors.grey,
-                Colors.grey,
-              ]),
-              onPressed: data.signStatus == true
-                  ? null
-                  : () async {
-                      signCall.call();
-                    },
-              text: data.signStatus == true
-                  ? 'yqd'.tr(context: context)
-                  : 'ljqd'.tr(context: context),
-            ),
+            // MyButton.gradient(
+            //   minimumSize: Size(260.w, 40.w),
+            //   gradient: const LinearGradient(colors: [
+            //     Colors.grey,
+            //     Colors.grey,
+            //   ]),
+            //   onPressed: data.signStatus == true
+            //       ? null
+            //       : () async {
+            //           signCall.call();
+            //         },
+            //   text: data.signStatus == true
+            //       ? 'yqd'.tr(context: context)
+            //       : 'ljqd'.tr(context: context),
+            // ),
           ],
         ),
       ),

@@ -6,7 +6,7 @@ import 'widgets/video_view.dart';
 
 class VideoCard extends StatelessWidget {
   const VideoCard({super.key, required this.data});
-  static const aspectRatio = 163 / 158;
+  static const aspectRatio = 163 / 128;
   final VideoCardModel data;
   @override
   Widget build(BuildContext context) {

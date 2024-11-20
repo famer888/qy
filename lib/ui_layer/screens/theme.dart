@@ -2092,6 +2092,13 @@ class MyTheme {
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
+  static final white255_09_11 = TextStyle(
+      fontFamily: hanyi,
+      color: const Color.fromRGBO(255, 255, 255, 0.9),
+      fontSize: 11.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
   static final hex003dfd_25_M = TextStyle(
       fontFamily: hanyi,
       color: const Color(0xff00edfd),

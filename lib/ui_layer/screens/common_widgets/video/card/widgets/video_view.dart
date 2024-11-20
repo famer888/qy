@@ -45,11 +45,11 @@ class VideoCardView extends StatelessWidget {
                           children: [
                             Text(
                               '${CommonUtils.renderFixedNumber(data.playCt)}${'bf'.tr()}',
-                              style: MyTheme.white12medium,
+                              style: MyTheme.white10medium,
                             ),
                             Text(
                               RelativeDateFormat.getHMTime(time: data.duration),
-                              style: MyTheme.white12medium,
+                              style: MyTheme.white10medium,
                             ),
                           ],
                         ),
@@ -61,24 +61,24 @@ class VideoCardView extends StatelessWidget {
               SizedBox(height: 4.w),
               Text(
                 data.title,
-                style: MyTheme.white244_14,
+                style: MyTheme.white255_09_11,
                 maxLines: 2,
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                RelativeDateFormat.format(date: DateTime.parse(data.createdAt)),
-                style: MyTheme.graya3a2a2_11,
-              ),
-              Text(
-                '${'pl'.tr()} ${data.countComment}',
-                style: MyTheme.graya3a2a2_11,
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       RelativeDateFormat.format(date: DateTime.parse(data.createdAt)),
+          //       style: MyTheme.graya3a2a2_11,
+          //     ),
+          //     Text(
+          //       '${'pl'.tr()} ${data.countComment}',
+          //       style: MyTheme.graya3a2a2_11,
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
