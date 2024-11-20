@@ -114,7 +114,7 @@ class _FixedBuyButtonState extends State<FixedBuyButton> {
                           children: [
                             Text(
                               widget.isUpgrade
-                                  ? '${'bcj'.tr(context: context)}: '
+                                  ? '${'bjb'.tr(context: context)}: '
                                   : '${'xhj'.tr(context: context)}: ',
                               style: TextStyle(
                                 color: Colors.white,
@@ -123,15 +123,16 @@ class _FixedBuyButtonState extends State<FixedBuyButton> {
                                 height: 1.0,
                               ),
                             ),
-                            Text(
-                              '¥',
-                              strutStyle: const StrutStyle(height: 1.0),
-                              style: TextStyle(
-                                color: const Color(0xfff7c2a8),
-                                fontSize: 15.sp,
-                                height: 1.0,
+                            if (!widget.isUpgrade)
+                              Text(
+                                '¥',
+                                strutStyle: const StrutStyle(height: 1.0),
+                                style: TextStyle(
+                                  color: const Color(0xfff7c2a8),
+                                  fontSize: 15.sp,
+                                  height: 1.0,
+                                ),
                               ),
-                            ),
                             Text(
                               widget.isUpgrade
                                   ? '${widget.products[selectedIndex].payCoins ?? 0}'
