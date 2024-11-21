@@ -43,7 +43,7 @@ class ShortvMvPlayer extends StatefulWidget {
 
   /// 显示全屏按钮是否判断视频长宽比
   final bool needCheckAspectRatio;
-  final bool needSlide;//是否需要滑动快进，默认需要
+  final bool needSlide; //是否需要滑动快进，默认需要
 
   @override
   State<ShortvMvPlayer> createState() => _ShortvMvPlayerState();
@@ -230,7 +230,12 @@ class _ShortvMvPlayerState extends State<ShortvMvPlayer> with NVideoURLMinxin {
               style: MyTheme.gray203_13,
               child: Column(
                 children: [
-                  Text(tr('gmvkwz'), style: MyTheme.gray203_13),
+                  Text(
+                    tr('gmvkwz'),
+                    style: MyTheme.gray203_13,
+                    maxLines: 3,
+                    textAlign: TextAlign.center,
+                  ),
                   SizedBox(height: 15.w),
                   Text(
                     context.read<HomeConfigNotifier>().config.tipsShareText ??
@@ -296,7 +301,7 @@ class SinkPortraitLandWidget extends StatefulWidget {
 
   /// 显示全屏按钮是否判断视频长宽比
   final bool needCheckAspectRatio;
-  final bool needSlide;//是否需要滑动快进，默认需要
+  final bool needSlide; //是否需要滑动快进，默认需要
 
   @override
   State<SinkPortraitLandWidget> createState() => _SinkPortraitLandWidgetState();
@@ -379,75 +384,77 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
       children: [
         Positioned.fill(
           child: FlickShowControlsAction(
-            child: widget.needSlide ? FlickSlideVideoAction(
-              fontSize: 16,
-              child: Center(
-                child: flag
-                    ? Center(
-                  child: SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.grey[400],
-                      strokeWidth: 1.5,
+            child: widget.needSlide
+                ? FlickSlideVideoAction(
+                    fontSize: 16,
+                    child: Center(
+                      child: flag
+                          ? Center(
+                              child: SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: CircularProgressIndicator(
+                                  backgroundColor: Colors.grey[400],
+                                  strokeWidth: 1.5,
+                                ),
+                              ),
+                            )
+                          : const FlickAutoHideChild(
+                              showIfVideoNotInitialized: false,
+                              child: FlickPlayToggle(
+                                replayChild: MyImage.asset(
+                                  MyImagePaths.appVReplayN,
+                                  width: 40,
+                                  height: 40,
+                                ),
+                                playChild: MyImage.asset(
+                                  MyImagePaths.appVPlayN,
+                                  width: 40,
+                                  height: 40,
+                                ),
+                                pauseChild: MyImage.asset(
+                                  MyImagePaths.appVPauseN,
+                                  width: 40,
+                                  height: 40,
+                                ),
+                              ),
+                            ),
                     ),
-                  ),
-                )
-                    : const FlickAutoHideChild(
-                  showIfVideoNotInitialized: false,
-                  child: FlickPlayToggle(
-                    replayChild: MyImage.asset(
-                      MyImagePaths.appVReplayN,
-                      width: 40,
-                      height: 40,
-                    ),
-                    playChild: MyImage.asset(
-                      MyImagePaths.appVPlayN,
-                      width: 40,
-                      height: 40,
-                    ),
-                    pauseChild: MyImage.asset(
-                      MyImagePaths.appVPauseN,
-                      width: 40,
-                      height: 40,
-                    ),
-                  ),
-                ),
-              ),
-            ) :
-            FlickSeekVideoAction(child: Center(
-              child: flag
-                  ? Center(
-                child: SizedBox(
-                  height: 40,
-                  width: 40,
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.grey[400],
-                    strokeWidth: 1.5,
-                  ),
-                ),
-              )
-                  : const FlickAutoHideChild(
-                showIfVideoNotInitialized: false,
-                child: FlickPlayToggle(
-                  replayChild: MyImage.asset(
-                    MyImagePaths.appVReplayN,
-                    width: 40,
-                    height: 40,
-                  ),
-                  playChild: MyImage.asset(
-                    MyImagePaths.appVPlayN,
-                    width: 40,
-                    height: 40,
-                  ),
-                  pauseChild: MyImage.asset(
-                    MyImagePaths.appVPauseN,
-                    width: 40,
-                    height: 40,
-                  ),
-                ),
-              ),
-            )),
+                  )
+                : FlickSeekVideoAction(
+                    child: Center(
+                    child: flag
+                        ? Center(
+                            child: SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.grey[400],
+                                strokeWidth: 1.5,
+                              ),
+                            ),
+                          )
+                        : const FlickAutoHideChild(
+                            showIfVideoNotInitialized: false,
+                            child: FlickPlayToggle(
+                              replayChild: MyImage.asset(
+                                MyImagePaths.appVReplayN,
+                                width: 40,
+                                height: 40,
+                              ),
+                              playChild: MyImage.asset(
+                                MyImagePaths.appVPlayN,
+                                width: 40,
+                                height: 40,
+                              ),
+                              pauseChild: MyImage.asset(
+                                MyImagePaths.appVPauseN,
+                                width: 40,
+                                height: 40,
+                              ),
+                            ),
+                          ),
+                  )),
           ),
         ),
         FlickAutoHideChild(
@@ -521,7 +528,8 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                                       ),
                                     )
                                   : Container(),
-                              (rate > 1 || !widget.needCheckAspectRatio) && !widget.isPreview ||
+                              (rate > 1 || !widget.needCheckAspectRatio) &&
+                                          !widget.isPreview ||
                                       kIsWeb && !widget.isPreview
                                   ? Padding(
                                       padding: const EdgeInsets.only(left: 10),
@@ -537,10 +545,12 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                                         toggleFullscreen: () {
                                           if (kIsWeb) {
                                             List<html.VideoElement> elements =
-                                            html.document.querySelectorAll('video');
+                                                html.document
+                                                    .querySelectorAll('video');
                                             if (elements.isEmpty) return;
 
-                                            html.VideoElement video = elements.last;
+                                            html.VideoElement video =
+                                                elements.last;
 
                                             video.muted = false;
                                             video.volume = 1;
@@ -576,12 +586,9 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                                 handleRadius: 6,
                                 curveRadius: 4,
                                 backgroundColor: Colors.white24,
-                                bufferedColor:
-                                    const Color.fromRGBO(90, 75, 235, 0.38),
-                                playedColor:
-                                    const Color.fromRGBO(90, 75, 235, 1),
-                                handleColor:
-                                    const Color.fromRGBO(90, 75, 235, 1),
+                                bufferedColor: Colors.white38,
+                                playedColor: MyTheme.jellyCyanColor103224185,
+                                handleColor: Colors.transparent,
                               ),
                             )
                           : Container(),
@@ -603,9 +610,9 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                const Color.fromRGBO(90, 75, 235, 1)
+                                MyTheme.jellyCyanColor103224185
                                     .withAlpha((0.6 * 255).toInt()),
-                                const Color.fromRGBO(90, 75, 235, 1)
+                                MyTheme.jellyCyanColor103224185
                                     .withAlpha((0.6 * 255).toInt()),
                               ],
                               begin: Alignment.centerLeft,
