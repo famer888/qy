@@ -190,11 +190,12 @@ class VideoPlayer {
   void dispose() {
     _onCanPlayListener?.cancel();
     _onCanPlayListener = null;
-    _hls?.stopLoad();
-    _hls?.destroy();
     _videoElement.currentTime = 0;
     _videoElement.removeAttribute('src');
     _videoElement.load();
+    _videoElement.remove();
+    _hls?.stopLoad();
+    _hls?.destroy();
   }
 
   // Sends an [VideoEventType.initialized] [VideoEvent] with info about the wrapped video.
@@ -264,11 +265,7 @@ class VideoPlayer {
 
   StreamSubscription? _onCanPlayListener;
   FutureOr<void> changeVideo(String src) async {
-    _onCanPlayListener?.cancel();
-    _onCanPlayListener = null;
-    _hls?.stopLoad();
-    _hls?.destroy();
-    _videoElement.currentTime = 0;
+    dispose();
     if (await _HlsHelper.shouldUseHlsLibrary(src)) {
       _hls = Hls(
         HlsConfig(
@@ -292,8 +289,6 @@ class VideoPlayer {
         }
       }));
     } else {
-      _videoElement.removeAttribute('src');
-      _videoElement.load();
       _videoElement.src = src;
       _videoElement.load();
     }
@@ -301,6 +296,7 @@ class VideoPlayer {
     _onCanPlayListener = _videoElement.onCanPlay.listen((dynamic _) {
       if (_onCanPlayListener == null) return;
       _sendInitialized();
+
       _onCanPlayListener?.cancel();
       _onCanPlayListener = null;
     });
@@ -308,17 +304,24 @@ class VideoPlayer {
 }
 
 class _HlsHelper {
-  static Future<bool> shouldUseHlsLibrary(String src) async {
+  static FutureOr<bool> shouldUseHlsLibrary(String src) async {
     if (_completer == null) {
       _canPlayHlsNatively();
     }
+    if (shouldUse != null) {
+      return shouldUse!;
+    }
 
-    return !(await _completer!.future) &&
+    shouldUse = !(await _completer!.future) &&
         isSupported() &&
         src.toString().contains('m3u8');
+
+    return shouldUse!;
   }
 
   static Completer<bool>? _completer;
+
+  static bool? shouldUse;
 
   static _canPlayHlsNatively() async {
     _completer = Completer<bool>();

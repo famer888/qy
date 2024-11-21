@@ -46,7 +46,7 @@ class VideoPlayerPlugin extends VideoPlayerPlatform {
   void _initPool() {
     for (var i = 1; i <= 6; i++) {
       final int textureId = _textureCounter++;
-      _createPlayer(textureId)..muted = true;
+      _createPlayer(textureId).muted = true;
       _available.add(textureId);
     }
     _isBlessed = false;
@@ -55,9 +55,9 @@ class VideoPlayerPlugin extends VideoPlayerPlatform {
   void _blessing() {
     if (_isBlessed) return;
     _isBlessed = true;
-    [..._available, ..._unavailable].forEach((element) {
+    for (var element in [..._available, ..._unavailable]) {
       _player(element).muted(false);
-    });
+    }
   }
 
   @override
