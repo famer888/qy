@@ -351,7 +351,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
             ),
           );
         }
-        return kIsWeb ? WebSafeAreaInsets(child: child!) : child!;
+        return child!;
       },
       child: PopScopeWrapper(
         child: Scaffold(
