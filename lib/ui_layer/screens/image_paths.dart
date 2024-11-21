@@ -23,7 +23,6 @@ class MyImagePaths {
   static const uploadFaceError2 = './assets/images/upload_face_error_2.png';
   static const appCommReviewN = './assets/images/app_comm_review_n.png';
   static const appMonitorOffVoice = './assets/images/app_monitor_off_voice.png';
-  static const tieba = './assets/images/tieba.png';
   static const appNovelAllCatelog = './assets/images/app_novel_all_catelog.png';
   static const appMineWelfareBackground = './assets/images/app_mine_welfare_background.png';
   static const appMineShareQrcodeBg = './assets/images/app_mine_share_qrcode_bg.png';
@@ -65,6 +64,7 @@ class MyImagePaths {
   static const appSiginCz = './assets/images/app_sigin_cz.png';
   static const appWdFxbotmbgN = './assets/images/app_wd_fxbotmbg_n.png';
   static const app2024ComXiazai = './assets/images/app_2024_com_xiazai.png';
+  static const appNextIconGrey = './assets/images/app_next_icon_grey.png';
   static const appTabCircleN = './assets/images/app_tab_circle_n.png';
   static const appIssueArrow = './assets/images/app_issue_arrow.png';
   static const appShareUpBg = './assets/images/app_share_up_bg.png';
@@ -98,9 +98,7 @@ class MyImagePaths {
   static const appRank = './assets/images/app_rank.png';
   static const appCustomModel = './assets/images/app_custom_model.png';
   static const appFilterUp = './assets/images/app_filter_up.png';
-  static const taobao = './assets/images/taobao.png';
   static const appSearchClear = './assets/images/app_search_clear.png';
-  static const tiktok = './assets/images/tiktok.png';
   static const appGrayDown = './assets/images/app_gray_down.png';
   static const appComicComment = './assets/images/app_comic_comment.png';
   static const appTabCircleS = './assets/images/app_tab_circle_s.png';
@@ -123,17 +121,14 @@ class MyImagePaths {
   static const appMinePost = './assets/images/app_mine_post.png';
   static const appCollectOn = './assets/images/app_collect_on.png';
   static const appChangeLine = './assets/images/app_change_line.png';
-  static const meituan = './assets/images/meituan.png';
   static const appThumbUpOnIcon = './assets/images/app_thumb_up_on_icon.png';
   static const appOnline = './assets/images/app_online.png';
   static const appShch = './assets/images/app_shch.png';
   static const appStritpAfter = './assets/images/app_stritp_after.png';
-  static const wesee = './assets/images/wesee.png';
   static const app2024ComBofangliangBig1 = './assets/images/app_2024_com_bofangliang_big_1.png';
   static const appWdLxpotao = './assets/images/app_wd_lxpotao.png';
   static const appComicClose = './assets/images/app_comic_close.png';
   static const appDialogClose = './assets/images/app_dialog_close.png';
-  static const rednote = './assets/images/rednote.png';
   static const appMonitorZanN = './assets/images/app_monitor_zan_n.png';
   static const appZfUsN = './assets/images/app_zf_us_n.png';
   static const appTabAreaS = './assets/images/app_tab_area_s.png';
@@ -154,10 +149,10 @@ class MyImagePaths {
   static const appNovelVoiceCloseWhite = './assets/images/app_novel_voice_close_white.png';
   static const appReplyIcon = './assets/images/app_reply_icon.png';
   static const appFullScreen = './assets/images/app_full_screen.png';
-  static const iqiyi = './assets/images/iqiyi.png';
   static const appCircleClose = './assets/images/app_circle_close.png';
   static const appLiveColloctionN = './assets/images/app_live_colloction_n.png';
   static const appCopy = './assets/images/app_copy.png';
+  static const appPrevIconGrey = './assets/images/app_prev_icon_grey.png';
   static const appSingInJb = './assets/images/app_singIn_jb.png';
   static const appFxxbbT = './assets/images/app_fxxbb_t.png';
   static const appNovelVoiceIcon = './assets/images/app_novel_voice_icon.png';

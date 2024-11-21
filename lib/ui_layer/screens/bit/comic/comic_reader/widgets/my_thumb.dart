@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyThumb extends SliderComponentShape {
   MyThumb({required this.progressNotifier});
@@ -40,18 +41,18 @@ class MyThumb extends SliderComponentShape {
     paint.color = color;
     paint.isAntiAlias = true;
 
-    canvas.drawCircle(center, 4, paint);
+    canvas.drawCircle(center, 5.w, paint);
 
     final value = progressNotifier.value;
     labelTextPainter.text = TextSpan(
       text: '${value.$1}/${value.$2}',
       style: TextStyle(
-        fontSize: 10,
+        fontSize: 12.sp,
         color: Colors.white.withOpacity(0.7),
       ),
     );
     labelTextPainter.layout();
     labelTextPainter.paint(
-        canvas, center.translate(-labelTextPainter.width / 2, 6));
+        canvas, center.translate(-labelTextPainter.width / 2, 9));
   }
 }

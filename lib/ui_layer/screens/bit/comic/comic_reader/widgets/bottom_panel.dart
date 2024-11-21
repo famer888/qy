@@ -104,21 +104,20 @@ class _BottomPanelState extends State<BottomPanel>
                                     if (canPrev) {
                                       return GestureDetector(
                                         onTap: widget.onPrevChapter,
-                                        child: MyImage.asset(
-                                          MyImagePaths.appPrevIcon,
-                                          width: 25.w,
+                                        child: SizedBox(
                                           height: 25.w,
+                                          width: 25.w,
+                                          child: const MyImage.asset(
+                                            MyImagePaths.appPrevIcon,
+                                          ),
                                         ),
                                       );
                                     }
-                                    return ColorFiltered(
-                                      colorFilter: ColorFilter.mode(
-                                          Colors.white.withOpacity(0.2),
-                                          BlendMode.srcIn),
-                                      child: MyImage.asset(
-                                        MyImagePaths.appPrevIcon,
-                                        width: 25.w,
-                                        height: 25.w,
+                                    return SizedBox(
+                                      height: 25.w,
+                                      width: 25.w,
+                                      child: const MyImage.asset(
+                                        MyImagePaths.appPrevIconGrey,
                                       ),
                                     );
                                   },
@@ -130,7 +129,7 @@ class _BottomPanelState extends State<BottomPanel>
                                       ? SliderTheme(
                                           data: SliderThemeData(
                                             thumbColor: Colors.white,
-                                            trackHeight: 2.w,
+                                            trackHeight: 4.w,
                                             showValueIndicator:
                                                 ShowValueIndicator.never,
                                             activeTrackColor: Colors.white,
@@ -166,21 +165,20 @@ class _BottomPanelState extends State<BottomPanel>
                                     if (canPrev) {
                                       return GestureDetector(
                                         onTap: widget.onNextChapter,
-                                        child: MyImage.asset(
-                                          MyImagePaths.appNextIcon,
+                                        child: SizedBox(
                                           width: 25.w,
                                           height: 25.w,
+                                          child: const MyImage.asset(
+                                            MyImagePaths.appNextIcon,
+                                          ),
                                         ),
                                       );
                                     }
-                                    return ColorFiltered(
-                                      colorFilter: ColorFilter.mode(
-                                          Colors.white.withOpacity(0.2),
-                                          BlendMode.srcIn),
-                                      child: MyImage.asset(
-                                        MyImagePaths.appNextIcon,
-                                        width: 25.w,
-                                        height: 25.w,
+                                    return SizedBox(
+                                      width: 25.w,
+                                      height: 25.w,
+                                      child: const MyImage.asset(
+                                        MyImagePaths.appNextIconGrey,
                                       ),
                                     );
                                   },
