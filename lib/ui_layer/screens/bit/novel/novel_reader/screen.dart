@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +19,7 @@ import '../../../../router/routes.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_button.dart';
 import '../../../common_widgets/my_image.dart';
+import '../../../common_widgets/post/content/content.dart';
 import '../../../common_widgets/status/loading.dart';
 import '../../../common_widgets/status/network_error.dart';
 import '../../../image_paths.dart';
@@ -199,6 +202,12 @@ class _NovelReaderState extends State<NovelReader> {
               ),
               child: Selector<NovelChangeNotifier, double>(
                 builder: (_, fontSize, __) {
+                  if (kIsWeb) {
+                    return WebText(
+                      content: text,
+                      style: TextStyle(color: Colors.white, fontSize: fontSize),
+                    );
+                  }
                   return Text(
                     text,
                     style: TextStyle(color: Colors.white, fontSize: fontSize),
