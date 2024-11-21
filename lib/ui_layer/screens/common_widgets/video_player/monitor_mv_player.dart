@@ -149,9 +149,7 @@ class _MonitorMvPlayerState extends State<MonitorMvPlayer>
   Widget _optinalContent() {
     FlickControlManager? controlManager = flickManager?.flickControlManager;
     bool isMute = controlManager?.isMute ?? false;
-    if (kIsWeb && !_isWebListen) {
-      isMute = true;
-    }
+
     return Container(
       height: 40.w,
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
