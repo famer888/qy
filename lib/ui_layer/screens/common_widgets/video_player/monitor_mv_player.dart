@@ -70,6 +70,10 @@ class _MonitorMvPlayerState extends State<MonitorMvPlayer>
   initURL() async {
     VideoPlayerController? cr = await initController(
         source240: widget.info.hls ?? '', isLocal: widget.isLocal);
+    if (!mounted) {
+      cr?.dispose();
+      return;
+    }
     flickManager = FlickManager(
         videoPlayerController: cr!,
         autoPlay: true,
