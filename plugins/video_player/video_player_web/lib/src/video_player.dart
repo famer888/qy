@@ -49,7 +49,6 @@ class VideoPlayer {
   final StreamController<VideoEvent> _eventController;
   final html.VideoElement _videoElement;
 
-  bool _isInitialized = false;
   bool _isBuffering = false;
   Hls? _hls;
 
@@ -189,14 +188,13 @@ class VideoPlayer {
 
   /// Disposes of the current [html.VideoElement].
   void dispose() {
-    if (_isInitialized) {
-      _hls?.stopLoad();
-      _hls?.destroy();
-      _videoElement.currentTime = 0;
-      _videoElement.removeAttribute('src');
-      _videoElement.load();
-      _isInitialized = false;
-    }
+    _onCanPlayListener?.cancel();
+    _onCanPlayListener = null;
+    _hls?.stopLoad();
+    _hls?.destroy();
+    _videoElement.currentTime = 0;
+    _videoElement.removeAttribute('src');
+    _videoElement.load();
   }
 
   // Sends an [VideoEventType.initialized] [VideoEvent] with info about the wrapped video.
@@ -282,6 +280,16 @@ class VideoPlayer {
       _hls!.attachMedia(_videoElement);
       _hls!.on('hlsMediaAttached', allowInterop((_, __) {
         _hls!.loadSource(src.toString());
+      }));
+      _hls!.on('hlsError', allowInterop((dynamic _, dynamic data) {
+        final ErrorData errorData = ErrorData(data);
+        if (errorData.fatal) {
+          _eventController.addError(PlatformException(
+            code: _kErrorValueToErrorName[2]!,
+            message: errorData.type,
+            details: errorData.details,
+          ));
+        }
       }));
     } else {
       _videoElement.removeAttribute('src');
