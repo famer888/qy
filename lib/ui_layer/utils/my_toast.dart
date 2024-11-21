@@ -10,20 +10,28 @@ import '../notifiers/home_config_notifier.dart';
 import '../screens/theme.dart';
 
 class MyToast {
-  static showText({required String text, int? time, VoidCallback? onClose}) {
+  static showText({
+    required String text,
+    int? time,
+    VoidCallback? onClose,
+    TextStyle? textStyle,
+    EdgeInsetsGeometry? contentPadding,
+  }) {
     return BotToast.showText(
       text: text,
       contentColor: const Color(0xFF1C1C1C),
-      textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 13.sp,
-          decoration: TextDecoration.none),
+      textStyle: textStyle ??
+          TextStyle(
+              color: Colors.white,
+              fontSize: 13.sp,
+              decoration: TextDecoration.none),
       align: const Alignment(0, 0),
       duration: Duration(seconds: time ?? 2),
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: 45.w,
-        vertical: 23.w,
-      ),
+      contentPadding: contentPadding ??
+          EdgeInsets.symmetric(
+            horizontal: 45.w,
+            vertical: 23.w,
+          ),
       onClose: onClose,
     );
   }

@@ -1088,7 +1088,18 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
                       onTap: () {
                         //立即打赏
                         if (_dsTextFieldController.text.isEmpty) {
-                          MyToast.showText(text: tr('srdsje'));
+                          MyToast.showText(
+                            text: tr('srdsje'),
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              decoration: TextDecoration.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 45,
+                              vertical: 23,
+                            ),
+                          );
                           return;
                         }
                         var payMoney = int.parse(_dsTextFieldController.text);
@@ -1097,7 +1108,18 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
                           //足够余额打赏
                           dasanOptional(payMoney);
                         } else {
-                          MyToast.showText(text: tr('ybzcz'));
+                          MyToast.showText(
+                            text: tr('ybzcz'),
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              decoration: TextDecoration.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 45,
+                              vertical: 23,
+                            ),
+                          );
                         }
                       },
                       child: Container(
