@@ -162,13 +162,15 @@ class _ComicReaderScreenState extends State<ComicReaderScreen>
             controller: comicPageController,
             itemCount: chapters.length,
             onPageChanged: (index) {
-              chapterController.progressNotifier.value = (0, 0);
               comicChangeNotifier.setCurrentChapterIndex(index);
             },
             itemBuilder: (context, index) {
               final chapter = chapters[index];
               final isPay = chapter.isPay == 1;
               if (!isPay) {
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  chapterController.progressNotifier.value = (0, 0);
+                });
                 return GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: onTogglePanelVisibility,

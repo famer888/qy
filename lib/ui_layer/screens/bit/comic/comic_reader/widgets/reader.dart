@@ -72,6 +72,10 @@ class _ChapterReaderState extends State<ChapterReader> {
   }
 
   _getData() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      chapterController.progressNotifier.value = (0, 0);
+    });
+
     if (_asyncValue.isLoading) return;
 
     setState(() {
