@@ -469,11 +469,17 @@ abstract class _BaseAppRepo implements AppDomain {
       'timestamp': timeStamp,
       'uuid': '9544f11ed4381ebcef5429b6f20e69c1',
       'sign': sign,
-      'video': await MultipartFile.fromFile(
-        xFile.path,
-        filename: xFile.name,
-        contentType: MediaType.parse('video/mp4'),
-      ),
+      'video': kIsWeb
+          ? MultipartFile.fromBytes(
+              await xFile.readAsBytes(),
+              filename: xFile.name,
+              contentType: MediaType.parse('video/mp4'),
+            )
+          : await MultipartFile.fromFile(
+              xFile.path,
+              filename: xFile.name,
+              contentType: MediaType.parse('video/mp4'),
+            ),
     });
     final response = await _dio.post(
       baseUrl,
