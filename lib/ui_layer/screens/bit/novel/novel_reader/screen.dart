@@ -25,7 +25,8 @@ import '../../../theme.dart';
 import '../di/notifier.dart';
 import 'widgets/app_bar.dart';
 import 'widgets/bottom_panel.dart';
-import 'widgets/web_text.dart';
+import 'widgets/web_text_empty.dart'
+    if (dart.library.html) 'widgets/web_text.dart';
 
 const _animationDuration = Duration(milliseconds: 150);
 
