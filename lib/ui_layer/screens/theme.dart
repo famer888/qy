@@ -150,6 +150,10 @@ class MyTheme {
 
   static const goldColor234_202_147 = Color.fromRGBO(234, 202, 147, 1);
 
+  static const red220Color = Color.fromRGBO(255, 43, 92, 1);
+  static const red22005Color = Color.fromRGBO(255, 43, 92, 0.5);
+  static const red220065Color = Color.fromRGBO(255, 43, 92, 0.65);
+
   static const redColor255_57_13 = Color.fromRGBO(255, 57, 13, 1);
 
   static const cyanColor00edfd = Color(0xff67e0b9);
@@ -1576,6 +1580,14 @@ class MyTheme {
       fontSize: 12.sp,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w500,
+      decoration: TextDecoration.none);
+
+  static TextStyle font_red_220_14 = TextStyle(
+      fontFamily: hanyi,
+      color: red220Color,
+      fontSize: 14.sp,
+      overflow: TextOverflow.ellipsis,
+      fontWeight: FontWeight.normal,
       decoration: TextDecoration.none);
 
   static final black84_14 = TextStyle(

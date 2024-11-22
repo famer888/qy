@@ -15,6 +15,7 @@ import 'domain/remote_domain/domains/live.dart';
 import 'domain/remote_domain/domains/monitor.dart';
 import 'domain/remote_domain/domains/novel.dart';
 import 'domain/remote_domain/domains/rank.dart';
+import 'logger.dart';
 import 'ui_layer/notifiers/chat_notifier.dart';
 import 'ui_layer/notifiers/home_config_notifier.dart';
 import 'ui_layer/notifiers/user_notifier.dart';
@@ -48,6 +49,8 @@ void main() async {
         Provider<ElementDomain>.value(value: appRepo),
         Provider<DynamicDomain>.value(value: appRepo),
         Provider<CommunityDomain>.value(value: appRepo),
+        Provider<GirlDomain>.value(value: appRepo),
+        Provider<ChatDomain>.value(value: appRepo),
         Provider<SeedDomain>.value(value: appRepo),
         Provider<OrderDomain>.value(value: appRepo),
         Provider<SignDomain>.value(value: appRepo),
@@ -116,6 +119,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final botToastBuilder = BotToastInit();
 
+    logger.e('123');
     return MaterialApp.router(
       routerConfig: AppRouter.router,
       localizationsDelegates: context.localizationDelegates,

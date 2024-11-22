@@ -194,4 +194,6 @@ class MyImagePaths {
   static const appVideoCoinN = './assets/images/app_video_coin_n.png';
   static const appAnnouncementUpBg = './assets/images/app_announcement_up_bg.png';
   static const appMineAi = './assets/images/app_mine_ai.png';
+  static const appGirlFilter= './assets/images/app_girl_filter.png';
+  static const appGirlPublish = './assets/images/app_girl_publish.png';
 }

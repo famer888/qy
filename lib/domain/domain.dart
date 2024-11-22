@@ -2,6 +2,8 @@ import 'remote_domain/domain.dart';
 import 'model/home_data_model.dart';
 export 'remote_domain/domains/account.dart';
 export 'remote_domain/domains/community.dart';
+export 'remote_domain/domains/girl.dart';
+export 'remote_domain/domains/chat.dart';
 export 'remote_domain/domains/dynamic.dart';
 export 'remote_domain/domains/element.dart';
 export 'remote_domain/domains/home.dart';
@@ -29,7 +31,8 @@ abstract class CacheDomain
         ChatCacheDomain,
         LiveCacheDomain,
         ComicCacheDomain,
-        NovelCacheDomain {
+        NovelCacheDomain,
+        GirlCacheDomain {
   /// 大于500M清理磁盘
   Future<void> clearImageCacheIfNeed({bool force = false});
 
@@ -97,4 +100,12 @@ abstract class NovelCacheDomain {
 
   /// 记录小说背景颜色设置值
   Future<void> upsertNovelBgColorIndex({required int index});
+}
+
+abstract class GirlCacheDomain {
+  /// 取得 Girl Classes
+  Future<List> readGirlClasses();
+
+  /// 记录Girl Classes
+  Future<void> upsertGirlClasses({required List list});
 }

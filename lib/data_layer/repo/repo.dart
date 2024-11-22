@@ -18,6 +18,13 @@ import '../../crypto.dart';
 import '../../domain/enum.dart';
 import '../../domain/model/ai/ai_face_materials_with_banners_model.dart';
 import '../../domain/model/ai/ai_record_model.dart';
+import '../../domain/model/chat/chat_detail_model.dart';
+import '../../domain/model/chat/chat_index_model.dart';
+import '../../domain/model/chat/chat_list_model.dart';
+import '../../domain/model/girl/girl_detail_model.dart';
+import '../../domain/model/girl/girl_index_model.dart';
+import '../../domain/model/girl/girl_list_model.dart';
+import '../../domain/model/girl/girl_option_model.dart';
 import '../../domain/model/mine/following/following_user_list_model.dart';
 import '../../domain/model/mine/post/mine_post_list_model.dart';
 import '../../domain/model/mine/proxy/proxy_detail_model.dart';
@@ -86,6 +93,8 @@ import '../data_source/remote/account_service.dart';
 import '../data_source/remote/ai_service.dart';
 import '../data_source/remote/comic_service.dart';
 import '../data_source/remote/community_service.dart';
+import '../data_source/remote/girl_service.dart';
+import '../data_source/remote/chat_service.dart';
 import '../data_source/remote/dynamic_service.dart';
 import '../data_source/remote/element_service.dart';
 import '../data_source/remote/home_service.dart';
@@ -112,6 +121,8 @@ part 'mixin/user_mixin.dart';
 part 'mixin/element_mixin.dart';
 part 'mixin/dynamic_mixin.dart';
 part 'mixin/community_mixin.dart';
+part 'mixin/girl_mixin.dart';
+part 'mixin/chat_mixin.dart';
 part 'mixin/seed_mixin.dart';
 part 'mixin/order_mixin.dart';
 part 'mixin/sign_mixin.dart';
@@ -137,6 +148,8 @@ class AppRepo extends _BaseAppRepo
         _Element,
         _Dynamic,
         _Community,
+        _Girl,
+        _Chat,
         _Seed,
         _Order,
         _Sign,
@@ -161,6 +174,8 @@ abstract class _BaseAppRepo implements AppDomain {
   late final _elementService = ElementService(_apiDio);
   late final _dynamicService = DynamicService(_apiDio);
   late final _communityService = CommunityService(_apiDio);
+  late final _girlService = GirlService(_apiDio);
+  late final _chatService = ChatService(_apiDio);
   late final _seedService = SeedService(_apiDio);
   late final _orderService = OrderService(_apiDio);
   late final _signService = SignService(_apiDio);

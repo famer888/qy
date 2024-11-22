@@ -22,6 +22,7 @@ class _CacheManager implements CacheDomain {
   final _novelChapterKey = 'novel_chapter';
   final _novelFontSizeKey = 'novel_font_size';
   final _novelBgColorKey = 'novel_bg_color';
+  final _girlClassesKey = 'girl_classes';
 
   Future<void> init() async {
     if (_isInitialized) return;
@@ -33,6 +34,8 @@ class _CacheManager implements CacheDomain {
     appBox = HiveBoxCache(await Hive.openLazyBox(cacheKeys.appBox));
     chatBox = HiveBoxCache(await Hive.openLazyBox(cacheKeys.chats));
     videoBox = HiveBoxCache(await Hive.openLazyBox(cacheKeys.videoBox));
+
+    // Hive.openBox(name)
   }
 
   Future<String?> readAuthToken() async =>
@@ -192,4 +195,16 @@ class _CacheManager implements CacheDomain {
     }
     return 1;
   }
+
+  @override
+  Future<List> readGirlClasses() async {
+    if (await appBox.read(_girlClassesKey) case final list?) {
+      return list;
+    }
+    return [];
+  }
+
+  @override
+  Future<void> upsertGirlClasses({required List list}) =>
+      appBox.upsert(_girlClassesKey, list);
 }

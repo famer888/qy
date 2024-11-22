@@ -21,6 +21,7 @@ import '../common_widgets/status/loading.dart';
 import '../common_widgets/status/network_error.dart';
 import '../theme.dart';
 import 'content.dart';
+import 'girl/screen.dart';
 import 'issue/screen.dart';
 
 class CommunityScreen extends StatefulWidget {
@@ -185,7 +186,11 @@ class _BodyState extends State<_Body> {
       data: (data) => TabBarWithView.line(
         titles: data.map((e) => e.title).toList(),
         views: data.map((e) {
-          return CommunityContentView(id: e.id);
+          return e.type == 3 // 约炮
+              ? GirlScreen(id: e.id)
+              : e.type == 2 // 裸聊
+                  ? GirlScreen(id: e.id)
+                  : CommunityContentView(id: e.id);
         }).toList(),
       ),
       error: (_, __) => NetworkErrorView(onTap: _init),

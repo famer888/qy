@@ -40,6 +40,7 @@ class BuildConfig {
     chats: '${appName}box_Chats',
     videoBox: '${appName}_video_box',
     imageBox: '${appName}box_ImageCache',
+    girlBox: '${appName}girl_box',
     imageCacheSalt: 'B181a0y1tL',
   );
 }
