@@ -9,7 +9,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:safe_area_insets/safe_area_insets.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../app_config.dart';
