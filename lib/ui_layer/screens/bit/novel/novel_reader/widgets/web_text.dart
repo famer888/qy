@@ -18,6 +18,7 @@ class _WebTextState extends State<WebText> {
 
     element.style.height = '100%';
     element.style.color = 'white';
+    element.style.whiteSpace = 'pre-line';
     element.style.fontSize = '${widget.fontSize}px';
     element.textContent = widget.text;
 
