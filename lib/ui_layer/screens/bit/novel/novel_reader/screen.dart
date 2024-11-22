@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -19,7 +18,6 @@ import '../../../../router/routes.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_button.dart';
 import '../../../common_widgets/my_image.dart';
-import '../../../common_widgets/post/content/content.dart';
 import '../../../common_widgets/status/loading.dart';
 import '../../../common_widgets/status/network_error.dart';
 import '../../../image_paths.dart';
@@ -27,6 +25,7 @@ import '../../../theme.dart';
 import '../di/notifier.dart';
 import 'widgets/app_bar.dart';
 import 'widgets/bottom_panel.dart';
+import 'widgets/web_text.dart';
 
 const _animationDuration = Duration(milliseconds: 150);
 
@@ -204,8 +203,8 @@ class _NovelReaderState extends State<NovelReader> {
                 builder: (_, fontSize, __) {
                   if (kIsWeb) {
                     return WebText(
-                      content: text,
-                      style: TextStyle(color: Colors.white, fontSize: fontSize),
+                      text: text,
+                      fontSize: fontSize.toInt(),
                     );
                   }
                   return Text(
