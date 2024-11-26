@@ -1,7 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/domain.dart';
@@ -9,29 +7,16 @@ import '../../../../domain/model/banner_model.dart';
 import '../../../../domain/model/chat/chat_index_model.dart';
 import '../../../../domain/model/chat/chat_list_model.dart';
 import '../../../../domain/model/chat_nav_model.dart';
-import '../../../../domain/model/girl/girl_index_model.dart';
-import '../../../../domain/model/girl/girl_list_model.dart';
 import '../../../../domain/model/girl/girl_option_model.dart';
-import '../../../../domain/model/girl_sort_model.dart';
-import '../../../../domain/model/navigator_model.dart';
-import '../../../../domain/model/post/post_model.dart';
-import '../../../../domain/model/topic_model.dart';
+import '../../../../domain/model/tip_model.dart';
 import '../../../../domain/type_def.dart';
 import '../../../notifiers/user_notifier.dart';
-import '../../../router/routes.dart';
-import '../../../utils/app_global_data.dart';
-import '../../../utils/common_utils.dart';
-import '../../../utils/my_toast.dart';
 import '../../common_widgets/chat/card.dart';
-import '../../common_widgets/girl/card.dart';
-import '../../common_widgets/girl/list_card.dart';
-import '../../common_widgets/my_image.dart';
+import '../../common_widgets/marquee.dart';
 import '../../common_widgets/my_tab_bar.dart';
 import '../../../notifiers/home_config_notifier.dart';
 import '../../common_widgets/general_banner.dart';
 import '../../common_widgets/my_list_view.dart';
-import '../../common_widgets/post/card/card.dart';
-import '../../image_paths.dart';
 import '../../theme.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -46,7 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   final ValueNotifier<List<BannerModel>> _bannersNotifier = ValueNotifier([]);
 
-  final ValueNotifier<List<TopicModel>> topicsNotifier = ValueNotifier([]);
+  final _tipsNotifier = ValueNotifier<List<TipModel>>([]);
 
   late final List<ChatNavModel> _titles = _homeConfig.config.chatNav;
 
@@ -54,6 +39,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Map<String, dynamic> _filterMap = {};
   Map _filterTempMap = {};
+
+  void headerFunc(List<BannerModel> bannerList, List<TipModel> tipList) {
+    _bannersNotifier.value = bannerList;
+    _tipsNotifier.value = tipList;
+  }
 
   @override
   void initState() {
@@ -70,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
               SliverToBoxAdapter(
                 child: _Header(
                   bannersNotifier: _bannersNotifier,
-                  topicsNotifier: topicsNotifier,
+                  tipsNotifier: _tipsNotifier,
                 ),
               ),
             ],
@@ -85,6 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   for (final ChatNavModel nav in _titles)
                     ChatChildScreen(
                       nav: nav,
+                      headerFunc: _titles.indexOf(nav) == 0 ? headerFunc : null,
                     )
                 ],
               ),
@@ -113,11 +104,11 @@ class _ChatScreenState extends State<ChatScreen> {
 class _Header extends StatelessWidget {
   const _Header({
     required this.bannersNotifier,
-    required this.topicsNotifier,
+    required this.tipsNotifier,
     this.filterAction,
   });
   final ValueNotifier<List<BannerModel>> bannersNotifier;
-  final ValueNotifier<List<TopicModel>> topicsNotifier;
+  final ValueNotifier<List<TipModel>> tipsNotifier;
 
   final Function? filterAction;
 
@@ -136,93 +127,30 @@ class _Header extends StatelessWidget {
             );
           },
         ),
-        SizedBox(height: 10.w),
+        SizedBox(height: 4.w),
         ValueListenableBuilder(
-          valueListenable: topicsNotifier,
-          builder: (context, topics, child) {
-            if (topics.isEmpty) return const SizedBox.shrink();
-            return Padding(
-              padding: EdgeInsets.only(bottom: 5.w),
-              child: GridView.builder(
-                shrinkWrap: true,
-                addAutomaticKeepAlives: false,
-                addRepaintBoundaries: false,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2,
-                  mainAxisSpacing: 10.w,
-                  crossAxisSpacing: 10.w,
-                ),
-                primary: false,
-                padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-                itemBuilder: (context, index) {
-                  final topic = topics[index];
-                  return DecoratedBox(
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.w),
-                        ),
-                        color: Colors.white.withOpacity(0.1),
-                      ),
-                      child: Stack(
-                        fit: StackFit.expand,
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          MyImage.network(
-                            topic.bgThumb,
-                            borderRadius: 6.w,
-                          ),
-                          GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              CommunityTagDetailRoute('${topic.id}')
-                                  .push(context);
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  topics[index].name,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SizedBox(height: 2.w),
-                                Center(
-                                    child: Text(
-                                  "${topic.postNum}${'tiez'.tr(context: context)}",
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Colors.white,
-                                  ),
-                                ))
-                              ],
-                            ),
-                          ),
-                        ],
-                      ));
-                },
-                itemCount: topics.length,
-              ),
-            );
-          },
+          valueListenable: tipsNotifier,
+          builder: (_, tips, __) => MyMarqueeTipsWidget(tips: tips),
         ),
-        Divider(
-          color: Colors.white.withOpacity(0.04),
-          height: 10,
-          indent: MyTheme.pagePadding,
-          endIndent: MyTheme.pagePadding,
-        ),
+        // Divider(
+        //   color: Colors.white.withOpacity(0.04),
+        //   height: 10,
+        //   indent: MyTheme.pagePadding,
+        //   endIndent: MyTheme.pagePadding,
+        // ),
       ],
     );
   }
 }
 
 class ChatChildScreen extends StatefulWidget {
-  ChatChildScreen({super.key, required this.nav});
+  ChatChildScreen({
+    super.key,
+    required this.nav,
+    this.headerFunc,
+  });
   ChatNavModel nav;
+  Function(List<BannerModel> bannerList, List<TipModel> tipList)? headerFunc;
 
   @override
   State<ChatChildScreen> createState() => _ChatChildScreenState();
@@ -245,7 +173,21 @@ class _ChatChildScreenState extends State<ChatChildScreen> {
         page: page,
         limit: pageSize,
       );
-      // indexModel = result.data
+
+      if (widget.headerFunc != null) {
+        List<BannerModel> banner = [];
+
+        List<TipModel> tips = [];
+
+        if (result.data?.banner case final data? when data.isNotEmpty) {
+          banner = data;
+        }
+        if (result.data?.tips case final data? when data.isNotEmpty) {
+          tips = data;
+        }
+
+        widget.headerFunc?.call(banner, tips);
+      }
 
       if (result.data?.chats case final chats) {
         return chats;
@@ -256,6 +198,21 @@ class _ChatChildScreenState extends State<ChatChildScreen> {
         page: page,
         limit: pageSize,
       );
+
+      if (widget.headerFunc != null) {
+        List<BannerModel> banner = [];
+
+        List<TipModel> tips = [];
+
+        if (result.data?.banner case final data? when data.isNotEmpty) {
+          banner = data;
+        }
+        if (result.data?.tips case final data? when data.isNotEmpty) {
+          tips = data;
+        }
+
+        widget.headerFunc?.call(banner, tips);
+      }
 
       if (result.data?.chats case final chats) {
         return chats;
@@ -268,7 +225,7 @@ class _ChatChildScreenState extends State<ChatChildScreen> {
     //   // }
 
     //   // if (result.data?.notice case final data? when data.isNotEmpty) {
-    //   //   topicsNotifier.value = data;
+    //   //   tipsNotifier.value = data;
     //   // }
 
     //   if (result.data.chats case final chats?) {
