@@ -37,18 +37,11 @@ class CommunityScreen extends StatefulWidget {
 class _CommunityScreenState extends State<CommunityScreen> {
   Future<void> _showIssueAlert() {
     if (_type == ShowIssueType.girl) {
-      GirlIssueRoute().push(context);
-      return Future(
-        () {},
-      );
+      return const GirlIssueRoute().push(context);
     }
 
     if (_type == ShowIssueType.chat) {
-      ChatIssueRoute().push(context);
-
-      return Future(
-        () {},
-      );
+      return const ChatIssueRoute().push(context);
     }
 
     final issues = [
@@ -151,7 +144,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
     return ScreenBackground(
       child: Scaffold(
         body: SafeArea(child: _Body(
-          whenLoad: (type) {
+          onIssueTypeChanged: (type) {
             setState(() {
               _type = type;
             });
@@ -187,9 +180,9 @@ enum ShowIssueType {
 }
 
 class _Body extends StatefulWidget {
-  _Body({required this.whenLoad});
+  const _Body({required this.onIssueTypeChanged});
 
-  Function(ShowIssueType type) whenLoad;
+  final ValueChanged<ShowIssueType> onIssueTypeChanged;
 
   @override
   State<_Body> createState() => _BodyState();
@@ -219,20 +212,18 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
     if (result.data case final data? when result.isValid) {
       _controller = TabController(length: data.length, vsync: this);
 
-      // _controller.add
-
       _controller.addListener(() {
         if (_controller.indexIsChanging) {
-          ShowIssueType type = ShowIssueType.community;
+          final type = data[_controller.index].type;
+          final showIssueType = switch (type) {
+            //裸聊
+            2 => ShowIssueType.chat,
+            //约炮
+            3 => ShowIssueType.girl,
+            _ => ShowIssueType.community,
+          };
 
-          if (data[_controller.index].type == 3) {
-            // 约炮
-            type = ShowIssueType.girl;
-          } else if (data[_controller.index].type == 2) {
-            // 裸聊
-            type = ShowIssueType.chat;
-          }
-          widget.whenLoad.call(type);
+          widget.onIssueTypeChanged.call(showIssueType);
         }
       });
 
@@ -249,13 +240,16 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
       data: (data) => TabBarWithView.line(
         tabController: _controller,
         titles: data.map((e) => e.title).toList(),
-        views: data.map((e) {
-          return e.type == 3 // 约炮
-              ? GirlScreen()
-              : e.type == 2 // 裸聊
-                  ? ChatScreen()
-                  : CommunityContentView(id: e.id);
-        }).toList(),
+        views: [
+          for (final e in data)
+            switch (e.type) {
+              //裸聊
+              2 => const ChatScreen(),
+              //约炮
+              3 => const GirlScreen(),
+              _ => CommunityContentView(id: e.id),
+            }
+        ],
       ),
       error: (_, __) => NetworkErrorView(onTap: _init),
       orElse: () => const LoadingView(),
