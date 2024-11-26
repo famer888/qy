@@ -78,13 +78,13 @@ class _MonitorVideoDetailScreenState extends State<MonitorVideoDetailScreen> {
               context.pop();
             },
             child: Container(
-              margin: EdgeInsets.only(bottom: 40.w),
-              height: 40.w,
-              width: 40.w,
+              margin: EdgeInsets.only(bottom: 40.r),
+              height: 40.r,
+              width: 40.r,
               decoration: BoxDecoration(
                 gradient: MyTheme.gradient_90_114,
                 borderRadius: BorderRadius.all(
-                  Radius.circular(20.w),
+                  Radius.circular(20.r),
                 ),
               ),
               child: Center(
