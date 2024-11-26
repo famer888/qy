@@ -41,6 +41,11 @@ abstract class GirlDomain {
     required int id,
   });
 
+  // 收藏
+  AsyncJson girlFavorite({
+    required int id,
+  });
+
   /// 我的购买
   AsyncResult<List<GirlListModel>> girlBuyList({
     required int page,

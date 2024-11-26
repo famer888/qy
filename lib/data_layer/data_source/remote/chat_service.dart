@@ -15,6 +15,14 @@ class ChatService extends BaseService {
   }) =>
       post('/index', data: {'id': id, 'page': page, 'limit': limit});
 
+  /// 获取排序裸聊列表
+  AsyncJson chatSortIndex({
+    required String sort,
+    required int page,
+    required int limit,
+  }) =>
+      post('/list_sort', data: {'sort': sort, 'page': page, 'limit': limit});
+
   /// 裸聊详情
   AsyncJson chatDetail({
     required int id,
@@ -32,6 +40,12 @@ class ChatService extends BaseService {
     required int id,
   }) =>
       post('/buy', data: {'id': id});
+
+  // 收藏
+  AsyncJson chatFavorite({
+    required int id,
+  }) =>
+      post('/favorite', data: {'id': id});
 
   /// 我的购买
   AsyncJson chatBuyList({

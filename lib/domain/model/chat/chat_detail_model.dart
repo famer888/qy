@@ -1,6 +1,30 @@
 import '../common_media_model.dart';
 
 class ChatDetailModel {
+  final String? tip;
+  ChatInfoModel? chat;
+
+  ChatDetailModel({
+    this.tip,
+    this.chat,
+  });
+
+  factory ChatDetailModel.fromJson(Map<String, dynamic> json) {
+    return ChatDetailModel(
+      tip: json['tip'],
+      chat: ChatInfoModel.fromJson(json['chat']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'tip': tip,
+      'chat': chat?.toJson(),
+    };
+  }
+}
+
+class ChatInfoModel {
   final int? id;
   final int? aff;
   final String? name;
@@ -11,7 +35,7 @@ class ChatDetailModel {
   final String? time;
   final String? price;
   final String? cup;
-  final String? contact;
+  String? contact;
   final String? intro;
   final int? photoCt;
   final int? videoCt;
@@ -20,14 +44,14 @@ class ChatDetailModel {
   final int? payCt;
   final int? payFct;
   final int? viewFct;
-  final int? favoriteFct;
+  int? favoriteFct;
   final int? likeCt;
   final int? likeFct;
-  final int? isFavorite;
+  int? isFavorite;
   final int? isLike;
   final List<CommonMediaModel>? medias;
 
-  ChatDetailModel({
+  ChatInfoModel({
     this.id,
     this.aff,
     this.name,
@@ -55,8 +79,8 @@ class ChatDetailModel {
     this.medias,
   });
 
-  factory ChatDetailModel.fromJson(Map<String, dynamic> json) {
-    return ChatDetailModel(
+  factory ChatInfoModel.fromJson(Map<String, dynamic> json) {
+    return ChatInfoModel(
       id: json['id'],
       aff: json['aff'],
       name: json['name'],

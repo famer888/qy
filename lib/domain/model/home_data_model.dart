@@ -1,5 +1,6 @@
 import 'ai/ai_nav_model.dart';
 import 'chat_nav_model.dart';
+import 'chat_select_nav_model.dart';
 import 'girl_sort_model.dart';
 import 'novel/novel_nav_model.dart';
 import 'novel/novel_sort_nav_model.dart';
@@ -163,6 +164,7 @@ class Config {
     required this.rankTopNav,
     required this.girlSort,
     required this.chatNav,
+    required this.chatSelectNav,
     required this.rankCycleNav,
     required this.circleNav,
     required this.resourceNav,
@@ -204,6 +206,8 @@ class Config {
   final List<RankNavModel> rankTopNav;
   final List<GirlSortModel> girlSort;
   final List<ChatNavModel> chatNav;
+  final List<ChatSelectNavModel> chatSelectNav;
+
   final List<RankNavModel> rankCycleNav;
 
   ///社区
@@ -331,6 +335,9 @@ class Config {
             json['girl_sort']?.map((x) => GirlSortModel.fromJson(x)) ?? []),
         chatNav: List<ChatNavModel>.from(
             json['chat_nav']?.map((x) => ChatNavModel.fromJson(x)) ?? []),
+        chatSelectNav: List<ChatSelectNavModel>.from(json['chat_select_nav']
+                ?.map((x) => ChatSelectNavModel.fromJson(x)) ??
+            []),
         rankCycleNav: List<RankNavModel>.from(
             json['rank_cycle_nav']?.map((x) => RankNavModel.fromJson(x)) ?? []),
         openLive: json['open_live'],

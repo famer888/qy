@@ -11,6 +11,13 @@ abstract class ChatDomain {
     required int limit,
   });
 
+    /// 裸聊排序信息列表
+  AsyncResult<ChatIndexModel> chatSortIndex({
+    required String sort,
+    required int page,
+    required int limit,
+  });
+
   /// 裸聊详情
   AsyncResult<ChatDetailModel> chatDetail({
     required int id,
@@ -23,6 +30,11 @@ abstract class ChatDomain {
 
   // 解锁裸聊信息
   AsyncJson chatBuy({
+    required int id,
+  });
+
+  // 收藏
+  AsyncJson chatFavorite({
     required int id,
   });
 

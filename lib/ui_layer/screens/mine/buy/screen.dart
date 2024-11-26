@@ -4,8 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/api_validator.dart';
+import '../../../../domain/domain.dart';
 import '../../../../domain/enum.dart';
+import '../../../../domain/model/chat/chat_list_model.dart';
 import '../../../../domain/model/comic/comic_item_model.dart';
+import '../../../../domain/model/girl/girl_list_model.dart';
 import '../../../../domain/model/live/live_with_banners_model.dart';
 import '../../../../domain/model/mine/post/mine_post_list_model.dart';
 import '../../../../domain/model/mine/video/mine_video_model.dart';
@@ -24,6 +27,8 @@ import '../../bit/comic/card/comic_item_card.dart';
 import '../../bit/live/widgets/live_video_card.dart';
 import '../../bit/monitor/widgets/monitor_video_card.dart';
 import '../../bit/novel/card/novel_item_card.dart';
+import '../../common_widgets/chat/card.dart';
+import '../../common_widgets/girl/card.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
 import '../../common_widgets/my_app_bar.dart';
 import '../../common_widgets/my_list_view.dart';
@@ -59,6 +64,11 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
       'jiankong': const _MonitorView(),
       'manh': const _ComicView(),
       'xs': const _NovelView(),
+    });
+
+    data.addAll({
+      'yup': const _GirlView(),
+      'lliao': const _ChatView(),
     });
 
     return ScreenBackground(
@@ -309,6 +319,82 @@ class _MonitorViewState extends State<_MonitorView> {
       },
       onFetchingMore: (currentPage, pageSize) =>
           _getData(page: currentPage, pageSize: pageSize),
+    );
+  }
+}
+
+class _GirlView extends StatefulWidget {
+  const _GirlView();
+
+  @override
+  State<_GirlView> createState() => _GirlViewState();
+}
+
+class _GirlViewState extends State<_GirlView> {
+  late final _domain = context.read<GirlDomain>();
+
+  Future<List<GirlListModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await _domain.girlBuyList(page: page, limit: pageSize);
+    if (result.isValid) {
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      padding: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
+      childAspectRatio: 165 / (213 + 68),
+      itemBuilder: (context, item, index) => GirlCard(
+        data: item,
+      ),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _ChatView extends StatefulWidget {
+  const _ChatView();
+
+  @override
+  State<_ChatView> createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<_ChatView> {
+  late final _domain = context.read<ChatDomain>();
+
+  Future<List<ChatListModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await _domain.chatBuyList(page: page, limit: pageSize);
+    if (result.isValid) {
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      padding: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
+      childAspectRatio: 165 / (213 + 68),
+      itemBuilder: (context, item, index) => ChatCard(
+        data: item,
+      ),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
     );
   }
 }

@@ -18,7 +18,7 @@ class GirlListModel with _$GirlListModel {
   const factory GirlListModel.girl(
     int? id,
     String? title,
-    String? class_,
+    @JsonKey(name: 'class') String class_,
     String? cup,
     int? age,
     int? height,

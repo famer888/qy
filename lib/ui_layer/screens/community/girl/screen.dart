@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/banner_model.dart';
+import '../../../../domain/model/girl/girl_index_model.dart';
 import '../../../../domain/model/girl/girl_list_model.dart';
 import '../../../../domain/model/girl/girl_option_model.dart';
 import '../../../../domain/model/girl_sort_model.dart';
@@ -13,6 +14,7 @@ import '../../../../domain/model/post/post_model.dart';
 import '../../../../domain/model/topic_model.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../router/routes.dart';
+import '../../../utils/app_global_data.dart';
 import '../../../utils/common_utils.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/girl/card.dart';
@@ -27,13 +29,12 @@ import '../../image_paths.dart';
 import '../../theme.dart';
 
 class GirlScreen extends StatefulWidget {
-  const GirlScreen({super.key, required this.id});
-  final int id;
+  const GirlScreen({super.key});
   @override
   State<GirlScreen> createState() => _GirlScreenState();
 }
 
-class _GirlScreenState extends State<GirlScreen> {
+class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
   late final _domain = context.read<GirlDomain>();
   late final _homeConfig = context.read<HomeConfigNotifier>();
   late final _userNotifier = context.read<UserNotifier>();
@@ -46,16 +47,28 @@ class _GirlScreenState extends State<GirlScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  final List<GlobalKey<MyListViewState>> _listViewKeys = [];
+
+  late TabController _tabController;
+
   bool isInit = false;
 
   List<GirlOptionModel> options = [];
 
-  Map _filterMap = {};
+  Map<String, dynamic> _filterMap = {};
   Map _filterTempMap = {};
+
+  // final key = GlobalKey<MyListViewState>();
 
   @override
   void initState() {
     super.initState();
+
+    for (var i = 0; i < _titles.length; i++) {
+      _listViewKeys.add(GlobalKey<MyListViewState>());
+    }
+
+    _tabController = TabController(length: _titles.length, vsync: this);
 
     getOptionData();
   }
@@ -108,23 +121,22 @@ class _GirlScreenState extends State<GirlScreen> {
                                     mainAxisSpacing: 10.w,
                                     crossAxisSpacing: 8.w),
                             itemBuilder: (context, iIndex) {
-                              dynamic item = items[iIndex];
+                              GirlOptionItemModel item = items[iIndex];
                               return GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
                                   if (_filterTempMap[itemMap.value] ==
-                                      item['value']) {
+                                      item.value) {
                                     _filterTempMap[itemMap.value] = null;
                                   } else {
-                                    _filterTempMap[itemMap.value] =
-                                        item['value'];
+                                    _filterTempMap[itemMap.value] = item.value;
                                   }
                                   setState(() {});
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: _filterTempMap[itemMap.value] ==
-                                              item['value']
+                                              item.value
                                           ? MyTheme.red220Color
                                           : Colors.transparent,
                                       border: Border.all(
@@ -135,9 +147,9 @@ class _GirlScreenState extends State<GirlScreen> {
                                   child: Center(
                                     child: FittedBox(
                                       child: Text(
-                                        item['name'],
+                                        item.name ?? '',
                                         style: _filterTempMap[itemMap.value] ==
-                                                item['value']
+                                                item.value
                                             ? MyTheme.white255_14
                                             : MyTheme.font_red_220_14,
                                       ),
@@ -168,7 +180,7 @@ class _GirlScreenState extends State<GirlScreen> {
                           borderRadius: BorderRadius.circular(20.w)),
                       alignment: Alignment.center,
                       child: Text(
-                        'cz'.tr(),
+                        'chz'.tr(),
                         style: MyTheme.white255_14,
                       ),
                     ),
@@ -176,8 +188,14 @@ class _GirlScreenState extends State<GirlScreen> {
                   GestureDetector(
                     onTap: () {
                       _filterMap = Map.from(_filterTempMap);
+                      // _getData(page: 1, pageSize: 15, sort: 'hot');
                       setState(() {});
+
                       _scaffoldKey.currentState?.closeEndDrawer();
+
+                      _listViewKeys[_tabController.index]
+                          .currentState
+                          ?.reloadPage();
                     },
                     child: Container(
                       width: 140.w,
@@ -216,10 +234,11 @@ class _GirlScreenState extends State<GirlScreen> {
             List<GirlOptionItemModel> girlClassList =
                 List.from(element.items ?? []);
 
-            GirlCacheDomain cache = context.read<GirlCacheDomain>();
-            cache.upsertGirlClasses(
-                list: girlClassList.map((x) => x.toJson()).toList());
+            // GirlCacheDomain cache = context.read<GirlCacheDomain>();
+            // cache.upsertGirlClasses(
+            //     list: girlClassList.map((x) => x.toJson()).toList());
 
+            AppGlobal.girlClassList = girlClassList;
             break;
           }
         }
@@ -237,8 +256,16 @@ class _GirlScreenState extends State<GirlScreen> {
     required int pageSize,
     required String sort,
   }) async {
+    Map<String, dynamic> param = {};
+    for (var key in _filterMap.keys) {
+      if (_filterMap[key] != null) {
+        param[key] = _filterMap[key];
+      }
+    }
+
+    param.addAll({'sort': sort});
     final result = await _domain.girlIndex(
-      girlOptions: {'sort': sort},
+      girlOptions: param,
       page: page,
       limit: pageSize,
     );
@@ -269,65 +296,73 @@ class _GirlScreenState extends State<GirlScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        NestedScrollView(
-          headerSliverBuilder: (_, __) => [
-            SliverToBoxAdapter(
-              child: _Header(
-                bannersNotifier: _bannersNotifier,
-                topicsNotifier: topicsNotifier,
-                filterAction: () {
-                  _showFilterView();
-                },
+    return Scaffold(
+      endDrawer: filterView(),
+      key: _scaffoldKey,
+      body: Stack(
+        children: [
+          NestedScrollView(
+            headerSliverBuilder: (_, __) => [
+              SliverToBoxAdapter(
+                child: _Header(
+                  bannersNotifier: _bannersNotifier,
+                  topicsNotifier: topicsNotifier,
+                  filterAction: () {
+                    _showFilterView();
+                  },
+                ),
+              ),
+            ],
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+              child: TabBarWithView.fillColor(
+                tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+                tabBarHeight: 32.w,
+                isScrollable: true,
+                tabController: _tabController,
+                titles: isInit
+                    ? [for (final title in _titles) title.title ?? '']
+                    : [],
+                views: [
+                  for (final GirlSortModel nav in _titles)
+                    MyListView.grid(
+                      key: _listViewKeys[_titles.indexOf(nav)],
+                      // contentPadding: 15.w,
+                      padding:
+                          EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
+                      childAspectRatio: 165 / (213 + 68),
+
+                      itemBuilder: (context, item, index) => GirlCard(
+                        data: item,
+                      ),
+                      onFetchingMore: (currentPage, pageSize) => _getData(
+                        page: currentPage,
+                        pageSize: pageSize,
+                        sort: nav.type ?? '', // nav.sort ?? ''
+                      ),
+                    )
+                ],
               ),
             ),
-          ],
-          body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-            child: TabBarWithView.fillColor(
-              tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
-              tabBarHeight: 32.w,
-              isScrollable: true,
-              titles: isInit
-                  ? [for (final title in _titles) title.title ?? '']
-                  : [],
-              views: [
-                for (final GirlSortModel nav in _titles)
-                  MyListView.grid(
-                    // contentPadding: 15.w,
-                    padding:
-                        EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
-                    childAspectRatio: 165 / (213 + 68),
+          ),
+          // Positioned(
+          //   right: 20.w,
+          //   bottom: MyTheme.navbarHegiht + MyTheme.pagePadding * 2,
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       // Utils.navTo(context, '/homedatepublishpage');
 
-                    itemBuilder: (context, item, index) => GirlCard(
-                      data: item,
-                    ),
-                    onFetchingMore: (currentPage, pageSize) => _getData(
-                      page: currentPage,
-                      pageSize: pageSize,
-                      sort: nav.type ?? '', // nav.sort ?? ''
-                    ),
-                  )
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-          right: MyTheme.pagePadding * 2,
-          bottom: MyTheme.navbarHegiht + MyTheme.pagePadding * 2,
-          child: GestureDetector(
-            onTap: () {
-              // Utils.navTo(context, '/homedatepublishpage');
-            },
-            child: MyImage.asset(
-              MyImagePaths.appGirlPublish,
-              width: 40.w,
-              height: 40.w,
-            ),
-          ),
-        )
-      ],
+          //       GirlIssueRoute().push(context);
+          //     },
+          //     child: MyImage.asset(
+          //       MyImagePaths.appGirlPublish,
+          //       width: 40.w,
+          //       height: 40.w,
+          //     ),
+          //   ),
+          // )
+        ],
+      ),
     );
   }
 }
@@ -372,7 +407,7 @@ class _Header extends StatelessWidget {
                         // LocalPNG(name: "hls_search", width: 20.w, height: 20.w),
                         SizedBox(width: 10.w),
                         Expanded(
-                            child: Text("srsgjz".tr(),
+                            child: Text("qsrssgjz".tr(),
                                 style: MyTheme.white08_14_M,
                                 textAlign: TextAlign.left)),
                       ],
@@ -387,7 +422,8 @@ class _Header extends StatelessWidget {
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
                   // showFilterView();
-                  filterAction ?? ();
+
+                  filterAction?.call();
                 },
                 child: Row(
                   children: [

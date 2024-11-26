@@ -13,6 +13,17 @@ mixin _Chat on _BaseAppRepo implements ChatDomain {
           .guard;
 
   @override
+  AsyncResult<ChatIndexModel> chatSortIndex({
+    required String sort,
+    required int page,
+    required int limit,
+  }) =>
+      _chatService
+          .chatSortIndex(sort: sort, page: page, limit: limit)
+          .deserializeJsonBy(ChatIndexModel.fromJson)
+          .guard;
+
+  @override
   AsyncResult<ChatDetailModel> chatDetail({
     required int id,
   }) =>
@@ -32,6 +43,12 @@ mixin _Chat on _BaseAppRepo implements ChatDomain {
     required int id,
   }) =>
       _chatService.chatBuy(id: id);
+
+  @override
+  AsyncJson chatFavorite({
+    required int id,
+  }) =>
+      _chatService.chatFavorite(id: id);
 
   @override
   AsyncResult<List<ChatListModel>> chatBuyList({

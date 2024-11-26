@@ -48,6 +48,18 @@ class AppRouterPaths {
   /// 社区选择版块
   static const communityModule = '/communityModule';
 
+  /// 约炮发布
+  static const girlIssue = '/girlIssue';
+
+  /// 约炮 详情
+  static const girlDetail = '/girlDetail';
+
+  /// 裸聊发布
+  static const chatIssue = '/chatIssue';
+
+  /// 裸聊 详情
+  static const chatDetail = '/chatDetail';
+
   /// 下载帖子详情
   static const bitPostDetail = '/bitPostDetail/:id';
 

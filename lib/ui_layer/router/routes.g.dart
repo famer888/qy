@@ -19,6 +19,10 @@ List<RouteBase> get $appRoutes => [
       $communityIssueRoute,
       $communityModuleRoute,
       $communityPostDetailRoute,
+      $girlIssueRoute,
+      $girlDetailRoute,
+      $chatIssueRoute,
+      $chatDetailRoute,
       $loginRoute,
       $mineSetupRoute,
       $mineShareToUserRoute,
@@ -540,6 +544,110 @@ extension $CommunityPostDetailRouteExtension on CommunityPostDetailRoute {
 
   String get location => GoRouteData.$location(
         '/communityTieztDetail/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $girlIssueRoute => GoRouteData.$route(
+      path: '/girlIssue',
+      parentNavigatorKey: GirlIssueRoute.$parentNavigatorKey,
+      factory: $GirlIssueRouteExtension._fromState,
+    );
+
+extension $GirlIssueRouteExtension on GirlIssueRoute {
+  static GirlIssueRoute _fromState(GoRouterState state) =>
+      const GirlIssueRoute();
+
+  String get location => GoRouteData.$location(
+        '/girlIssue',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $girlDetailRoute => GoRouteData.$route(
+      path: '/girlDetail',
+      parentNavigatorKey: GirlDetailRoute.$parentNavigatorKey,
+      factory: $GirlDetailRouteExtension._fromState,
+    );
+
+extension $GirlDetailRouteExtension on GirlDetailRoute {
+  static GirlDetailRoute _fromState(GoRouterState state) => GirlDetailRoute(
+        int.parse(state.uri.queryParameters['id']!),
+      );
+
+  String get location => GoRouteData.$location(
+        '/girlDetail',
+        queryParams: {
+          'id': id.toString(),
+        },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $chatIssueRoute => GoRouteData.$route(
+      path: '/chatIssue',
+      parentNavigatorKey: ChatIssueRoute.$parentNavigatorKey,
+      factory: $ChatIssueRouteExtension._fromState,
+    );
+
+extension $ChatIssueRouteExtension on ChatIssueRoute {
+  static ChatIssueRoute _fromState(GoRouterState state) =>
+      const ChatIssueRoute();
+
+  String get location => GoRouteData.$location(
+        '/chatIssue',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $chatDetailRoute => GoRouteData.$route(
+      path: '/chatDetail',
+      parentNavigatorKey: ChatDetailRoute.$parentNavigatorKey,
+      factory: $ChatDetailRouteExtension._fromState,
+    );
+
+extension $ChatDetailRouteExtension on ChatDetailRoute {
+  static ChatDetailRoute _fromState(GoRouterState state) => ChatDetailRoute(
+        int.parse(state.uri.queryParameters['id']!),
+      );
+
+  String get location => GoRouteData.$location(
+        '/chatDetail',
+        queryParams: {
+          'id': id.toString(),
+        },
       );
 
   void go(BuildContext context) => context.go(location);

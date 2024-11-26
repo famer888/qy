@@ -196,4 +196,14 @@ class MyImagePaths {
   static const appMineAi = './assets/images/app_mine_ai.png';
   static const appGirlFilter= './assets/images/app_girl_filter.png';
   static const appGirlPublish = './assets/images/app_girl_publish.png';
+  static const appPostDelete = './assets/images/app_post_delete.png';
+  static const appGirlPicker= './assets/images/app_girl_imgpicker.png';
+  static const appChatPublish = './assets/images/app_chat_publish.png';
+  static const appChatCollectS = './assets/images/app_chat_collect_s.png';
+  static const appChatCllectN = './assets/images/app_chat_collect_n.png';
+  static const appChatOfficialTip = './assets/images/app_chat_official_tip.png';
+  static const appChatShare = './assets/images/app_chat_share.png';
+  static const appChatTrumpet = './assets/images/app_chat_trumpet.png';
+
+    
 }

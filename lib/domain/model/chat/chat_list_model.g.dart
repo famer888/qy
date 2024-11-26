@@ -1,23 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'girl_list_model.dart';
+part of 'chat_list_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GirlListGirlModelImpl _$$GirlListGirlModelImplFromJson(
+_$ChatListChatModelImpl _$$ChatListChatModelImplFromJson(
         Map<String, dynamic> json) =>
-    _$GirlListGirlModelImpl(
+    _$ChatListChatModelImpl(
       (json['id'] as num?)?.toInt(),
-      json['title'] as String?,
-      json['class'] as String,
-      json['cup'] as String?,
+      (json['aff'] as num?)?.toInt(),
+      json['name'] as String?,
       (json['age'] as num?)?.toInt(),
       (json['height'] as num?)?.toInt(),
-      (json['type'] as num?)?.toInt(),
-      json['price'] as String?,
-      (json['coins'] as num?)?.toInt(),
+      (json['weight'] as num?)?.toInt(),
+      json['cup'] as String?,
       (json['pay_ct'] as num?)?.toInt(),
       (json['pay_fct'] as num?)?.toInt(),
       (json['rid'] as num?)?.toInt(),
@@ -27,18 +25,16 @@ _$GirlListGirlModelImpl _$$GirlListGirlModelImplFromJson(
       $type: json['__type'] as String?,
     );
 
-Map<String, dynamic> _$$GirlListGirlModelImplToJson(
-        _$GirlListGirlModelImpl instance) =>
+Map<String, dynamic> _$$ChatListChatModelImplToJson(
+        _$ChatListChatModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'title': instance.title,
-      'class': instance.class_,
-      'cup': instance.cup,
+      'aff': instance.aff,
+      'name': instance.name,
       'age': instance.age,
       'height': instance.height,
-      'type': instance.type,
-      'price': instance.price,
-      'coins': instance.coins,
+      'weight': instance.weight,
+      'cup': instance.cup,
       'pay_ct': instance.payCt,
       'pay_fct': instance.payFct,
       'rid': instance.rid,
@@ -46,9 +42,9 @@ Map<String, dynamic> _$$GirlListGirlModelImplToJson(
       '__type': instance.$type,
     };
 
-_$GirlListAdModelImpl _$$GirlListAdModelImplFromJson(
+_$ChatListAdModelImpl _$$ChatListAdModelImplFromJson(
         Map<String, dynamic> json) =>
-    _$GirlListAdModelImpl(
+    _$ChatListAdModelImpl(
       (json['id'] as num).toInt(),
       json['title'] as String,
       json['description'] as String?,
@@ -79,8 +75,8 @@ _$GirlListAdModelImpl _$$GirlListAdModelImplFromJson(
       $type: json['__type'] as String?,
     );
 
-Map<String, dynamic> _$$GirlListAdModelImplToJson(
-        _$GirlListAdModelImpl instance) =>
+Map<String, dynamic> _$$ChatListAdModelImplToJson(
+        _$ChatListAdModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

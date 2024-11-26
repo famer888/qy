@@ -104,8 +104,8 @@ abstract class NovelCacheDomain {
 
 abstract class GirlCacheDomain {
   /// 取得 Girl Classes
-  Future<List> readGirlClasses();
+  List readGirlClasses();
 
   /// 记录Girl Classes
-  Future<void> upsertGirlClasses({required List list});
+  upsertGirlClasses({required List list});
 }

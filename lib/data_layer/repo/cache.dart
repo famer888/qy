@@ -6,6 +6,7 @@ class _CacheManager implements CacheDomain {
   late final ICache appBox;
   late final ICache chatBox;
   late final ICache videoBox;
+  late final Box girlBox;
 
   final _oauthIdKey = 'oauth_id';
   final _authTokenKey = 'wwsj_token';
@@ -35,7 +36,7 @@ class _CacheManager implements CacheDomain {
     chatBox = HiveBoxCache(await Hive.openLazyBox(cacheKeys.chats));
     videoBox = HiveBoxCache(await Hive.openLazyBox(cacheKeys.videoBox));
 
-    // Hive.openBox(name)
+    girlBox = await Hive.openBox(cacheKeys.girlBox);
   }
 
   Future<String?> readAuthToken() async =>
@@ -197,14 +198,13 @@ class _CacheManager implements CacheDomain {
   }
 
   @override
-  Future<List> readGirlClasses() async {
-    if (await appBox.read(_girlClassesKey) case final list?) {
+  List readGirlClasses() {
+    if (girlBox.get(_girlClassesKey) case final list?) {
       return list;
     }
     return [];
   }
 
   @override
-  Future<void> upsertGirlClasses({required List list}) =>
-      appBox.upsert(_girlClassesKey, list);
+  upsertGirlClasses({required List list}) => girlBox.put(_girlClassesKey, list);
 }

@@ -20,7 +20,11 @@ import '../screens/bit/novel/novel_part/novel_sort.dart';
 import '../screens/bit/novel/novel_part/novel_updating.dart';
 import '../screens/bit/novel/novel_reader/screen.dart';
 import '../screens/bit/seed/detail/screen.dart';
+import '../screens/community/chat/detail/screen.dart';
+import '../screens/community/chat/issue/screen.dart';
 import '../screens/community/circle_screen.dart';
+import '../screens/community/girl/detail/screen.dart';
+import '../screens/community/girl/issue/screen.dart';
 import '../screens/community/module/screen.dart';
 import '../screens/bit/screen.dart';
 import '../screens/bottom_navi_bar.dart';
@@ -330,6 +334,60 @@ class CommunityPostDetailRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return CommunityPostDetailScreen(id: id);
+  }
+}
+
+@TypedGoRoute<GirlIssueRoute>(path: AppRouterPaths.girlIssue)
+class GirlIssueRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const GirlIssueRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const GirlIssueScreen();
+  }
+}
+
+@TypedGoRoute<GirlDetailRoute>(path: AppRouterPaths.girlDetail)
+class GirlDetailRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const GirlDetailRoute(this.id);
+
+  final int id;
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return GirlDetailScreen(id: id);
+  }
+}
+
+@TypedGoRoute<ChatIssueRoute>(path: AppRouterPaths.chatIssue)
+class ChatIssueRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ChatIssueRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ChatIssueScreen();
+  }
+}
+
+@TypedGoRoute<ChatDetailRoute>(path: AppRouterPaths.chatDetail)
+class ChatDetailRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ChatDetailRoute(this.id);
+
+  final int id;
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ChatDetailScreen(id: id);
   }
 }
 

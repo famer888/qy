@@ -44,6 +44,7 @@ void main() async {
       providers: [
         Provider<AppDomain>.value(value: appRepo),
         Provider<CacheDomain>.value(value: appRepo.cache),
+        Provider<GirlCacheDomain>.value(value: appRepo.cache),
         Provider<HomeDomain>.value(value: appRepo),
         Provider<UserDomain>.value(value: appRepo),
         Provider<ElementDomain>.value(value: appRepo),

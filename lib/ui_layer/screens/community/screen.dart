@@ -7,8 +7,10 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/api_validator.dart';
 import '../../../domain/domain.dart';
+import '../../../logger.dart';
 import '../../notifiers/home_config_notifier.dart';
 import '../../router/routes.dart';
+import '../../utils/common_utils.dart';
 import '../image_paths.dart';
 
 import '../../../domain/async_value.dart';
@@ -20,6 +22,7 @@ import '../common_widgets/screen_background.dart';
 import '../common_widgets/status/loading.dart';
 import '../common_widgets/status/network_error.dart';
 import '../theme.dart';
+import 'chat/screen.dart';
 import 'content.dart';
 import 'girl/screen.dart';
 import 'issue/screen.dart';
@@ -33,6 +36,21 @@ class CommunityScreen extends StatefulWidget {
 
 class _CommunityScreenState extends State<CommunityScreen> {
   Future<void> _showIssueAlert() {
+    if (_type == ShowIssueType.girl) {
+      GirlIssueRoute().push(context);
+      return Future(
+        () {},
+      );
+    }
+
+    if (_type == ShowIssueType.chat) {
+      ChatIssueRoute().push(context);
+
+      return Future(
+        () {},
+      );
+    }
+
     final issues = [
       (
         title: 'tp'.tr(context: context),
@@ -126,16 +144,28 @@ class _CommunityScreenState extends State<CommunityScreen> {
     );
   }
 
+  ShowIssueType _type = ShowIssueType.community;
+
   @override
   Widget build(BuildContext context) {
     return ScreenBackground(
       child: Scaffold(
-        body: const SafeArea(child: _Body()),
+        body: SafeArea(child: _Body(
+          whenLoad: (type) {
+            setState(() {
+              _type = type;
+            });
+          },
+        )),
         floatingActionButton: GestureDetector(
           onTap: _showIssueAlert,
           behavior: HitTestBehavior.translucent,
           child: MyImage.asset(
-            MyImagePaths.appIssueIcon,
+            _type == ShowIssueType.girl
+                ? MyImagePaths.appGirlPublish
+                : _type == ShowIssueType.chat
+                    ? MyImagePaths.appChatPublish
+                    : MyImagePaths.appIssueIcon,
             width: 50.w,
             height: 50.w,
           ),
@@ -145,17 +175,32 @@ class _CommunityScreenState extends State<CommunityScreen> {
   }
 }
 
+enum ShowIssueType {
+  /// 社区,
+  community,
+
+  /// 约炮
+  girl,
+
+  /// 裸聊
+  chat,
+}
+
 class _Body extends StatefulWidget {
-  const _Body();
+  _Body({required this.whenLoad});
+
+  Function(ShowIssueType type) whenLoad;
 
   @override
   State<_Body> createState() => _BodyState();
 }
 
-class _BodyState extends State<_Body> {
+class _BodyState extends State<_Body> with TickerProviderStateMixin {
   late final _appDomain = context.read<CommunityDomain>();
   late final _config = context.read<HomeConfigNotifier>().config;
   AsyncValue<List<CommunityPostNavModel>> _asyncValue = const AsyncInit();
+
+  late TabController _controller;
 
   @override
   void initState() {
@@ -165,31 +210,58 @@ class _BodyState extends State<_Body> {
 
   Future<void> _init() async {
     if (_asyncValue.isLoading) return;
+
     setState(() {
       _asyncValue = const AsyncLoading();
     });
 
     final result = await _appDomain.reqGetPostNav();
 
-    setState(() {
-      if (result.data case final data? when result.isValid) {
-        _asyncValue = AsyncData(data);
-      } else {
-        _asyncValue = const AsyncError();
-      }
-    });
+    if (result.data case final data? when result.isValid) {
+      _controller = TabController(length: data.length, vsync: this);
+
+      // _controller.add
+
+      _controller.addListener(() {
+        logger.f('=================================' * 99);
+        logger.e('=================================' * 99);
+
+        if (_controller.indexIsChanging) {
+          logger.e('dasdasdasdasdasda');
+          logger.f('dasdasdasdasdasda');
+          logger.d('dasdasdasdasdasda');
+
+          ShowIssueType type = ShowIssueType.community;
+
+          if (data[_controller.index].type == 3) {
+            // 约炮
+            type = ShowIssueType.girl;
+          } else if (data[_controller.index].type == 2) {
+            // 裸聊
+            type = ShowIssueType.chat;
+          }
+          widget.whenLoad.call(type);
+        }
+      });
+
+      _asyncValue = AsyncData(data);
+    } else {
+      _asyncValue = const AsyncError();
+    }
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
       data: (data) => TabBarWithView.line(
+        tabController: _controller,
         titles: data.map((e) => e.title).toList(),
         views: data.map((e) {
           return e.type == 3 // 约炮
-              ? GirlScreen(id: e.id)
+              ? GirlScreen()
               : e.type == 2 // 裸聊
-                  ? GirlScreen(id: e.id)
+                  ? ChatScreen()
                   : CommunityContentView(id: e.id);
         }).toList(),
       ),

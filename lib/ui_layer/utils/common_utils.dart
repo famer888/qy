@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../app_config.dart';
 import '../../crypto.dart';
 import '../../logger.dart';
+import '../screens/theme.dart';
 import 'my_toast.dart';
 
 import '../../domain/domain.dart';
@@ -44,7 +45,7 @@ class CommonUtils {
 
   static log(dynamic object) {
     if (_isDebug) {
-      logger.i(object);
+      // logger.i(object);
     }
   }
 
@@ -281,6 +282,35 @@ class CommonUtils {
       return xFile;
     }
     return null;
+  }
+
+  //自定义输入框
+  static InputDecoration customInputStyle({
+    String? hit,
+    TextStyle? style,
+    TextStyle? counterStyle,
+    double horizontal = 8,
+    double vertical = 0,
+  }) {
+    //边框
+    OutlineInputBorder outline() {
+      return OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0.0),
+          borderSide: const BorderSide(color: Colors.transparent, width: 0));
+    }
+
+    return InputDecoration(
+      counterStyle: counterStyle,
+      hoverColor: Colors.white,
+      hintText: hit ?? 'qtxxbt'.tr(),
+      hintStyle: style ?? MyTheme.white08_14,
+      contentPadding:
+          EdgeInsets.symmetric(horizontal: horizontal.w, vertical: vertical.w),
+      disabledBorder: outline(),
+      focusedBorder: outline(),
+      border: outline(),
+      enabledBorder: outline(),
+    );
   }
 
   ///把String分隔成4个字符一段的

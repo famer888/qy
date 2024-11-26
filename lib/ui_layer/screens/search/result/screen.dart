@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/domain.dart';
+import '../../../../domain/model/chat/chat_list_model.dart';
 import '../../../../domain/model/comic/comic_item_model.dart';
+import '../../../../domain/model/girl/girl_list_model.dart';
 import '../../../../domain/model/live/live_with_banners_model.dart';
 import '../../../../domain/model/novel/novel_item_model.dart';
 import '../../../../domain/model/video/video_model.dart';
@@ -17,6 +19,8 @@ import '../../../notifiers/home_config_notifier.dart';
 import '../../bit/comic/card/comic_item_card.dart';
 import '../../bit/live/widgets/live_video_card.dart';
 import '../../bit/novel/card/novel_item_card.dart';
+import '../../common_widgets/chat/card.dart';
+import '../../common_widgets/girl/card.dart';
 import '../../common_widgets/video/card/video_card.dart';
 import '../../common_widgets/video/card/widgets/video_view.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
@@ -52,6 +56,11 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     data.addAll({
       'manh': _ComicView(word: widget.title),
       'xs': _NovelView(word: widget.title),
+    });
+
+    data.addAll({
+      'yup': _GirlView(word: widget.title),
+      'lliao': _ChatView(word: widget.title),
     });
 
     return ScreenBackground(
@@ -298,6 +307,88 @@ class _NovelViewState extends State<_NovelView> {
       crossAxisSpacing: 10.w,
       crossAxisCount: 3,
       itemBuilder: (_, item, index) => NovelItemCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _GirlView extends StatefulWidget {
+  const _GirlView({required this.word});
+
+  final String word;
+
+  @override
+  State<_GirlView> createState() => _GirlViewState();
+}
+
+class _GirlViewState extends State<_GirlView> {
+  late final _domain = context.read<GirlDomain>();
+
+  Future<List<GirlListModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await _domain.girlSearchList(
+        word: widget.word, page: page, limit: pageSize);
+    if (result.isValid) {
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      padding: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
+      childAspectRatio: 165 / (213 + 68),
+      itemBuilder: (context, item, index) => GirlCard(
+        data: item,
+      ),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _ChatView extends StatefulWidget {
+  const _ChatView({required this.word});
+
+  final String word;
+
+  @override
+  State<_ChatView> createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<_ChatView> {
+  late final _domain = context.read<ChatDomain>();
+
+  Future<List<ChatListModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await _domain.chatSearchList(
+        word: widget.word, page: page, limit: pageSize);
+    if (result.isValid) {
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      padding: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
+      childAspectRatio: 165 / (213 + 68),
+      itemBuilder: (context, item, index) => ChatCard(
+        data: item,
+      ),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

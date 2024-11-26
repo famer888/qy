@@ -1,6 +1,30 @@
 import '../common_media_model.dart';
 
 class GirlDetailModel {
+  final String? tip;
+  GirlInfoModel? girl;
+
+  GirlDetailModel({
+    this.tip,
+    this.girl,
+  });
+
+  factory GirlDetailModel.fromJson(Map<String, dynamic> json) {
+    return GirlDetailModel(
+      tip: json['tip'],
+      girl: GirlInfoModel.fromJson(json['girl']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'tip': tip,
+      'girl': girl?.toJson(),
+    };
+  }
+}
+
+class GirlInfoModel {
   final int? id;
   final int? aff;
   final String? title;
@@ -13,19 +37,19 @@ class GirlDetailModel {
   final int? age;
   final String? service;
   final String? cup;
-  final String? contact;
+  String? contact;
   final String? intro;
   final int? photoCt;
   final int? videoCt;
   final int? viewFct;
-  final int? favoriteFct;
+  int? favoriteFct;
   final int? likeCt;
   final int? likeFct;
-  final int? isFavorite;
+  int? isFavorite;
   final int? isLike;
   final List<CommonMediaModel>? medias;
 
-  GirlDetailModel({
+  GirlInfoModel({
     this.id,
     this.aff,
     this.title,
@@ -51,8 +75,8 @@ class GirlDetailModel {
     this.medias,
   });
 
-  factory GirlDetailModel.fromJson(Map<String, dynamic> json) {
-    return GirlDetailModel(
+  factory GirlInfoModel.fromJson(Map<String, dynamic> json) {
+    return GirlInfoModel(
       id: json['id'],
       aff: json['aff'],
       title: json['title'],

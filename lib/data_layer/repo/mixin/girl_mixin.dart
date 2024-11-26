@@ -40,6 +40,12 @@ mixin _Girl on _BaseAppRepo implements GirlDomain {
       _girlService.girlBuy(id: id);
 
   @override
+  AsyncJson girlFavorite({
+    required int id,
+  }) =>
+      _girlService.girlFavorite(id: id);
+
+  @override
   AsyncResult<List<GirlListModel>> girlBuyList({
     required int page,
     required int limit,

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'girl_list_model.dart';
+part of 'chat_list_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,29 +14,27 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-GirlListModel _$GirlListModelFromJson(Map<String, dynamic> json) {
+ChatListModel _$ChatListModelFromJson(Map<String, dynamic> json) {
   switch (json['__type']) {
-    case 'girl':
-      return GirlListGirlModel.fromJson(json);
+    case 'chat':
+      return ChatListChatModel.fromJson(json);
     case 'ad':
-      return GirlListAdModel.fromJson(json);
+      return ChatListAdModel.fromJson(json);
 
     default:
-      throw CheckedFromJsonException(json, '__type', 'GirlListModel',
+      throw CheckedFromJsonException(json, '__type', 'ChatListModel',
           'Invalid union type "${json['__type']}"!');
   }
 }
 
 /// @nodoc
-mixin _$GirlListModel {
+mixin _$ChatListModel {
   int? get id => throw _privateConstructorUsedError;
-  String? get title => throw _privateConstructorUsedError;
-  int? get type => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(GirlListGirlModel value) girl,
-    required TResult Function(GirlListAdModel value) ad,
+    required TResult Function(ChatListChatModel value) chat,
+    required TResult Function(ChatListAdModel value) ad,
   }) =>
       throw _privateConstructorUsedError;
 
@@ -46,47 +44,40 @@ mixin _$GirlListModel {
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$GirlListGirlModelImpl implements GirlListGirlModel {
-  const _$GirlListGirlModelImpl(
+class _$ChatListChatModelImpl implements ChatListChatModel {
+  const _$ChatListChatModelImpl(
       this.id,
-      this.title,
-      @JsonKey(name: 'class') this.class_,
-      this.cup,
+      this.aff,
+      this.name,
       this.age,
       this.height,
-      this.type,
-      this.price,
-      this.coins,
+      this.weight,
+      this.cup,
       this.payCt,
       this.payFct,
       this.rid,
       final List<CommonMediaModel>? medias,
       {final String? $type})
       : _medias = medias,
-        $type = $type ?? 'girl';
+        $type = $type ?? 'chat';
 
-  factory _$GirlListGirlModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GirlListGirlModelImplFromJson(json);
+  factory _$ChatListChatModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ChatListChatModelImplFromJson(json);
 
   @override
   final int? id;
   @override
-  final String? title;
+  final int? aff;
   @override
-  @JsonKey(name: 'class')
-  final String class_;
-  @override
-  final String? cup;
+  final String? name;
   @override
   final int? age;
   @override
   final int? height;
   @override
-  final int? type;
+  final int? weight;
   @override
-  final String? price;
-  @override
-  final int? coins;
+  final String? cup;
   @override
   final int? payCt;
   @override
@@ -108,58 +99,51 @@ class _$GirlListGirlModelImpl implements GirlListGirlModel {
 
   @override
   String toString() {
-    return 'GirlListModel.girl(id: $id, title: $title, class_: $class_, cup: $cup, age: $age, height: $height, type: $type, price: $price, coins: $coins, payCt: $payCt, payFct: $payFct, rid: $rid, medias: $medias)';
+    return 'ChatListModel.chat(id: $id, aff: $aff, name: $name, age: $age, height: $height, weight: $weight, cup: $cup, payCt: $payCt, payFct: $payFct, rid: $rid, medias: $medias)';
   }
 
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(GirlListGirlModel value) girl,
-    required TResult Function(GirlListAdModel value) ad,
+    required TResult Function(ChatListChatModel value) chat,
+    required TResult Function(ChatListAdModel value) ad,
   }) {
-    return girl(this);
+    return chat(this);
   }
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$GirlListGirlModelImplToJson(
+    return _$$ChatListChatModelImplToJson(
       this,
     );
   }
 }
 
-abstract class GirlListGirlModel implements GirlListModel {
-  const factory GirlListGirlModel(
+abstract class ChatListChatModel implements ChatListModel {
+  const factory ChatListChatModel(
       final int? id,
-      final String? title,
-      @JsonKey(name: 'class') final String class_,
-      final String? cup,
+      final int? aff,
+      final String? name,
       final int? age,
       final int? height,
-      final int? type,
-      final String? price,
-      final int? coins,
+      final int? weight,
+      final String? cup,
       final int? payCt,
       final int? payFct,
       final int? rid,
-      final List<CommonMediaModel>? medias) = _$GirlListGirlModelImpl;
+      final List<CommonMediaModel>? medias) = _$ChatListChatModelImpl;
 
-  factory GirlListGirlModel.fromJson(Map<String, dynamic> json) =
-      _$GirlListGirlModelImpl.fromJson;
+  factory ChatListChatModel.fromJson(Map<String, dynamic> json) =
+      _$ChatListChatModelImpl.fromJson;
 
   @override
   int? get id;
-  @override
-  String? get title;
-  @JsonKey(name: 'class')
-  String get class_;
-  String? get cup;
+  int? get aff;
+  String? get name;
   int? get age;
   int? get height;
-  @override
-  int? get type;
-  String? get price;
-  int? get coins;
+  int? get weight;
+  String? get cup;
   int? get payCt;
   int? get payFct;
   int? get rid;
@@ -169,8 +153,8 @@ abstract class GirlListGirlModel implements GirlListModel {
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$GirlListAdModelImpl implements GirlListAdModel {
-  const _$GirlListAdModelImpl(
+class _$ChatListAdModelImpl implements ChatListAdModel {
+  const _$ChatListAdModelImpl(
       this.id,
       this.title,
       this.description,
@@ -201,8 +185,8 @@ class _$GirlListAdModelImpl implements GirlListAdModel {
       {final String? $type})
       : $type = $type ?? 'ad';
 
-  factory _$GirlListAdModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GirlListAdModelImplFromJson(json);
+  factory _$ChatListAdModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ChatListAdModelImplFromJson(json);
 
   @override
   final int id;
@@ -264,28 +248,28 @@ class _$GirlListAdModelImpl implements GirlListAdModel {
 
   @override
   String toString() {
-    return 'GirlListModel.ad(id: $id, title: $title, description: $description, imgUrl: $imgUrl, urlConfig: $urlConfig, position: $position, androidDownUrl: $androidDownUrl, iosDownUrl: $iosDownUrl, type: $type, status: $status, oauthType: $oauthType, mvM3U8: $mvM3U8, channel: $channel, createdAt: $createdAt, router: $router, startAt: $startAt, endAt: $endAt, clicked: $clicked, sort: $sort, urlStr: $urlStr, linkUrl: $linkUrl, url: $url, resourceUrl: $resourceUrl, redirectType: $redirectType, reportId: $reportId, reportType: $reportType, subTitle: $subTitle)';
+    return 'ChatListModel.ad(id: $id, title: $title, description: $description, imgUrl: $imgUrl, urlConfig: $urlConfig, position: $position, androidDownUrl: $androidDownUrl, iosDownUrl: $iosDownUrl, type: $type, status: $status, oauthType: $oauthType, mvM3U8: $mvM3U8, channel: $channel, createdAt: $createdAt, router: $router, startAt: $startAt, endAt: $endAt, clicked: $clicked, sort: $sort, urlStr: $urlStr, linkUrl: $linkUrl, url: $url, resourceUrl: $resourceUrl, redirectType: $redirectType, reportId: $reportId, reportType: $reportType, subTitle: $subTitle)';
   }
 
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(GirlListGirlModel value) girl,
-    required TResult Function(GirlListAdModel value) ad,
+    required TResult Function(ChatListChatModel value) chat,
+    required TResult Function(ChatListAdModel value) ad,
   }) {
     return ad(this);
   }
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$GirlListAdModelImplToJson(
+    return _$$ChatListAdModelImplToJson(
       this,
     );
   }
 }
 
-abstract class GirlListAdModel implements GirlListModel {
-  const factory GirlListAdModel(
+abstract class ChatListAdModel implements ChatListModel {
+  const factory ChatListAdModel(
       final int id,
       final String title,
       final String? description,
@@ -312,14 +296,13 @@ abstract class GirlListAdModel implements GirlListModel {
       final int redirectType,
       final int reportId,
       final int reportType,
-      final String? subTitle) = _$GirlListAdModelImpl;
+      final String? subTitle) = _$ChatListAdModelImpl;
 
-  factory GirlListAdModel.fromJson(Map<String, dynamic> json) =
-      _$GirlListAdModelImpl.fromJson;
+  factory ChatListAdModel.fromJson(Map<String, dynamic> json) =
+      _$ChatListAdModelImpl.fromJson;
 
   @override
   int get id;
-  @override
   String get title;
   String? get description;
   String? get imgUrl;
@@ -327,7 +310,6 @@ abstract class GirlListAdModel implements GirlListModel {
   int? get position;
   String? get androidDownUrl;
   String? get iosDownUrl;
-  @override
   int? get type;
   int? get status;
   int? get oauthType;

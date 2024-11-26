@@ -125,7 +125,10 @@ class MyTheme {
   static const white07Color = Color.fromRGBO(255, 255, 255, 0.7);
   static const white08Color = Color.fromRGBO(255, 255, 255, 0.8);
   static const white09Color = Color.fromRGBO(255, 255, 255, 0.9);
+  static const whiteColor = Color.fromRGBO(255, 255, 255, 1);
+  static const whiteColor005 = Color.fromRGBO(255, 255, 255, 0.05);
 
+  static const blackColor = Color.fromRGBO(0, 0, 0, 1);
   static const blackColor07 = Color.fromRGBO(0, 0, 0, 0.7);
   static const blackColor18 = Color.fromRGBO(18, 18, 18, 1);
   static const blackColor25 = Color.fromRGBO(25, 25, 25, 1);
@@ -265,6 +268,13 @@ class MyTheme {
     decoration: TextDecoration.none,
   );
 
+  static final white08_14 = TextStyle(
+      color: white08Color,
+      fontSize: 14.sp,
+      overflow: TextOverflow.ellipsis,
+      fontWeight: FontWeight.normal,
+      decoration: TextDecoration.none);
+
   static final white08_14_M = TextStyle(
       color: white08Color,
       fontSize: 14.sp,
@@ -327,6 +337,11 @@ class MyTheme {
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
+  static final orange247_12 = TextStyle(
+      color: orange24718713,
+      fontSize: 12.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
   static final orange247_13 = TextStyle(
       color: orange24718713,
       fontSize: 13.sp,
@@ -1588,6 +1603,14 @@ class MyTheme {
       fontSize: 14.sp,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.normal,
+      decoration: TextDecoration.none);
+
+  static TextStyle font_red_220_20_semi = TextStyle(
+      fontFamily: hanyi,
+      color: red220Color,
+      fontSize: 20.sp,
+      overflow: TextOverflow.ellipsis,
+      fontWeight: FontWeight.w600,
       decoration: TextDecoration.none);
 
   static final black84_14 = TextStyle(
@@ -2911,11 +2934,11 @@ class MyTheme {
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
-  static final white20medium = TextStyle(
+  static final white20semi = TextStyle(
       fontFamily: hanyi,
       color: const Color.fromRGBO(255, 255, 255, 1),
       fontSize: 20.sp,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 

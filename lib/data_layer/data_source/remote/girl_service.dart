@@ -41,6 +41,12 @@ class GirlService extends BaseService {
   }) =>
       post('/buy', data: {'id': id});
 
+  // 收藏
+  AsyncJson girlFavorite({
+    required int id,
+  }) =>
+      post('/favorite', data: {'id': id});
+
   /// 我的购买
   AsyncJson girlBuyList({
     required int page,
