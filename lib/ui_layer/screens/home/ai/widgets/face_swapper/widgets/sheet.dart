@@ -15,14 +15,15 @@ import '../../../../../../utils/common_utils.dart';
 import '../../../../../../utils/my_toast.dart';
 import '../../../../../common_widgets/dialog/my_dialog.dart';
 import '../../../../../common_widgets/dialog/widgets/regular_dialog.dart';
+import '../../../../../common_widgets/localization_text.dart';
 import '../../../../../common_widgets/my_image.dart';
 import '../../../../../image_paths.dart';
 import '../../../../../theme.dart';
 
 class FaceSwapSheetView extends StatefulWidget {
-  const FaceSwapSheetView({super.key, required this.data});
+  const FaceSwapSheetView({super.key, this.data});
 
-  final AiFaceMaterialModel data;
+  final AiFaceMaterialModel? data;
 
   @override
   State<FaceSwapSheetView> createState() => _FaceSwapSheetViewState();
@@ -35,8 +36,9 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
   late final aiDomain = context.read<AIDomain>();
 
   Map uploadObject = {};
+  Map uploadGroudObject = {};
 
-  Future<void> imagePickerAssets() async {
+  Future<void> imagePickerAssets({bool isModel = false}) async {
     if (await CommonUtils.pickImage(limitSize: 2) case final xFile?) {
       MyToast.showLoading(text: 'scz'.tr());
       final result = await _homeConfig.uploadImage(xFile);
@@ -45,12 +47,21 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
 
         final image = await decodeImageFromList(await xFile.readAsBytes());
 
-        uploadObject = {
-          'media_url': url,
-          'url': _homeConfig.config.imgBase + url,
-          'thumb_width': image.width,
-          'thumb_height': image.height,
-        };
+        if (isModel) {
+          uploadGroudObject = {
+            'media_url': url,
+            'url': _homeConfig.config.imgBase + url,
+            'thumb_width': image.width,
+            'thumb_height': image.height,
+          };
+        } else {
+          uploadObject = {
+            'media_url': url,
+            'url': _homeConfig.config.imgBase + url,
+            'thumb_width': image.width,
+            'thumb_height': image.height,
+          };
+        }
 
         if (mounted) {
           setState(() {});
@@ -87,8 +98,15 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('${'mob'.tr()}-${item.title}',
-                        style: MyTheme.white15_M),
+                    item == null
+                        ? LocalizationText(
+                            'scmb',
+                            style: MyTheme.white15_M,
+                          )
+                        : Text(
+                            '${'mob'.tr()}-${item.title}',
+                            style: MyTheme.white15_M,
+                          ),
                     const SizedBox.shrink(),
                     InkWell(
                       onTap: () => context.pop(),
@@ -107,15 +125,83 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
                 ),
               ),
               SizedBox(height: 5.w),
-              SizedBox(
-                height: 140.w,
-                child: MyImage.network(
-                  item.thumb,
-                  fit: BoxFit.fitHeight,
-                  borderRadius: 6.w,
-                  backgroundColor: Colors.white.withOpacity(0.08),
-                ),
-              ),
+              item == null
+                  ? GestureDetector(
+                      onTap: () {
+                        imagePickerAssets(isModel: true).then((e) {
+                          setState(() {});
+                        });
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 140.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                          color: Colors.white.withOpacity(0.08),
+                        ),
+                        child: uploadGroudObject.isNotEmpty
+                            ? Stack(
+                                children: [
+                                  Center(
+                                    child: MyImage.network(
+                                      uploadGroudObject['url'],
+                                      fit: BoxFit.fitHeight,
+                                      borderRadius: 6.w,
+                                      backgroundColor: MyTheme.imageBgColor,
+                                    ),
+                                  ),
+                                  Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            uploadGroudObject = {};
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(5.w),
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xFF3094FF)),
+                                          child: Center(
+                                              child: Icon(
+                                            Icons.delete_forever,
+                                            size: 20.sp,
+                                            color: Colors.white,
+                                          )),
+                                        ),
+                                      ))
+                                ],
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const MyImage.asset(
+                                    MyImagePaths.appUploadImg,
+                                    width: 60,
+                                    height: 49,
+                                  ),
+                                  SizedBox(height: 8.w),
+                                  Text('djscmb'.tr(context: context),
+                                      style: MyTheme.white07_12),
+                                  SizedBox(height: 5.w),
+                                ],
+                              ),
+                      ),
+                    )
+                  : SizedBox(
+                      height: 140.w,
+                      child: Center(
+                        child: MyImage.network(
+                          item.thumb,
+                          fit: BoxFit.fitHeight,
+                          borderRadius: 6.w,
+                          backgroundColor: Colors.white.withOpacity(0.08),
+                        ),
+                      ),
+                    ),
               SizedBox(height: 10.w),
               Row(
                 children: [
@@ -160,11 +246,13 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
                         )
                       : Stack(
                           children: [
-                            MyImage.network(
-                              uploadObject['url'],
-                              fit: BoxFit.fitHeight,
-                              borderRadius: 6.w,
-                              backgroundColor: MyTheme.imageBgColor,
+                            Center(
+                              child: MyImage.network(
+                                uploadObject['url'],
+                                fit: BoxFit.fitHeight,
+                                borderRadius: 6.w,
+                                backgroundColor: MyTheme.imageBgColor,
+                              ),
                             ),
                             Positioned(
                                 top: 0,
@@ -235,7 +323,8 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
                     const Expanded(child: SizedBox()),
                     GestureDetector(
                       onTap: () async {
-                        if (uploadObject.isEmpty) {
+                        if (uploadObject.isEmpty ||
+                            (uploadGroudObject.isEmpty && item == null)) {
                           MyToast.showText(
                               text: 'qsctp'.tr(context: context)); //请上传图片
                           return;
@@ -245,11 +334,19 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
                         Member? user = userNotifier.member;
                         final userCoins = user.money; //用户剩余金币
 
-                        final result = await aiDomain.changeFace(
-                            id: item.id,
-                            thumb: uploadObject['media_url'],
-                            thumbW: uploadObject['thumb_width'],
-                            thumbH: uploadObject['thumb_height']);
+                        final result = item == null
+                            ? await aiDomain.customizeFace(
+                                ground: uploadGroudObject['media_url'],
+                                groundW: uploadGroudObject['thumb_width'],
+                                groundH: uploadGroudObject['thumb_height'],
+                                thumb: uploadObject['media_url'],
+                                thumbW: uploadObject['thumb_width'],
+                                thumbH: uploadObject['thumb_height'])
+                            : await aiDomain.changeFace(
+                                id: item.id,
+                                thumb: uploadObject['media_url'],
+                                thumbW: uploadObject['thumb_width'],
+                                thumbH: uploadObject['thumb_height']);
                         BotToast.closeAllLoading();
                         if (result.status == 1) {
                           setState(() {

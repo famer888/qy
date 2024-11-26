@@ -27,4 +27,8 @@ mixin _Proxy on _BaseAppRepo implements ProxyDomain {
           .deserializeJsonListBy(
               (e) => e.map(ProxyProfitModel.fromJson).toList())
           .guard;
+
+  @override
+  AsyncResult proxyApply({required String contact}) =>
+      _proxyService.proxyApply(contact: contact).deserialize().guard;
 }

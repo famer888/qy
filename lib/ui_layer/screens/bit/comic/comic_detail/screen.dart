@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/async_value.dart';
 import '../../../../../domain/enum.dart';
 import '../../../../../domain/model/comic/comic_item_model.dart';
 import '../../../../../domain/model/comic/comic_model.dart';
 import '../../../../../domain/model/video_comment_model.dart';
 import '../../../../../domain/remote_domain/domains/comic.dart';
-import '../../../../../domain/remote_domain/domains/user.dart';
 import '../../../../router/routes.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';

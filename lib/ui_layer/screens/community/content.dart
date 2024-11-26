@@ -35,7 +35,7 @@ class _CommunityContentViewState extends State<CommunityContentView> {
 
   final ValueNotifier<List<TopicModel>> topicsNotifier = ValueNotifier([]);
 
-  late final List<NavigatorModel> _titles = _homeConfig.config.forumNav ?? [];
+  late final List<NavigatorModel> _titles = _homeConfig.config.forumNav;
 
   bool isInit = false;
 

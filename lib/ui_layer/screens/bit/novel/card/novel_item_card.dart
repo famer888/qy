@@ -20,7 +20,7 @@ class NovelItemCard extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        NovelDetailRoute(data.id.toString() ?? '').push(context);
+        NovelDetailRoute(data.id.toString()).push(context);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

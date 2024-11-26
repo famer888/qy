@@ -11,7 +11,7 @@ class PostContentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
-      return _WebText(
+      return WebText(
         content: content ?? '',
         style: TextStyle(
           color: Colors.white70,
@@ -29,15 +29,15 @@ class PostContentView extends StatelessWidget {
   }
 }
 
-class _WebText extends StatefulWidget {
-  const _WebText({required this.content, required this.style});
+class WebText extends StatefulWidget {
+  const WebText({required this.content, required this.style});
   final String content;
   final TextStyle style;
   @override
-  State<_WebText> createState() => _WebTextState();
+  State<WebText> createState() => _WebTextState();
 }
 
-class _WebTextState extends State<_WebText> {
+class _WebTextState extends State<WebText> {
   late TextPainter textPainter;
 
   @override

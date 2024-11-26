@@ -1,7 +1,6 @@
 import '../../common_widgets/appbar_with_tabbar.dart';
 import '../../common_widgets/screen_background.dart';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,8 +16,9 @@ class HomeAiScreen extends StatefulWidget {
 
 class _HomeAiScreenState extends State<HomeAiScreen>
     with TickerProviderStateMixin {
-  late final navList = ['aihl'.tr(), 'aiqy'.tr()];
+  late final navList = ['aihl', 'aiqy'];
   late final tabController = TabController(length: navList.length, vsync: this);
+
   @override
   Widget build(BuildContext context) {
     return ScreenBackground(

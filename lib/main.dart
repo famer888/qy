@@ -1,11 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:safe_area_insets/safe_area_insets.dart';
 import 'package:utils/utils.dart';
-
 import 'data_layer/repo/repo.dart';
 import 'domain/domain.dart';
 import 'domain/remote_domain/domains/ai.dart';
@@ -165,12 +166,18 @@ class _MyAppState extends State<MyApp> {
       ),
       builder: (context, widget) {
         widget = botToastBuilder(context, widget!);
+        if (kIsWeb) {
+          widget = WebSafeAreaInsets(
+            child: widget,
+          );
+        }
         widget = MediaQuery(
           //设置文字大小不随系统设置改变
           data: MediaQuery.of(context)
               .copyWith(textScaler: const TextScaler.linear(1.0)),
           child: widget,
         );
+
         return widget;
       },
       scrollBehavior: ScrollConfiguration.of(context).copyWith(

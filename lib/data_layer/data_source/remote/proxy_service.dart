@@ -22,4 +22,7 @@ class ProxyService extends BaseService {
         'limit': limit,
         'status': 1,
       });
+
+  AsyncJson proxyApply({required String contact}) =>
+      post('/apply', data: {'contact': contact});
 }

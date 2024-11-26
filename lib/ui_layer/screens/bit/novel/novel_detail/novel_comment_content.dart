@@ -2,11 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/enum.dart';
 import '../../../../../domain/model/video_comment_model.dart';
 import '../../../../../domain/remote_domain/domains/novel.dart';
-import '../../../../../domain/remote_domain/domains/user.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/comment_tile.dart';
 import '../../../common_widgets/my_list_view.dart';

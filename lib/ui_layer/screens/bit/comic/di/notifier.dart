@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../../../domain/api_validator.dart';
 import '../../../../../../domain/domain.dart';
 import '../../../../../../domain/enum.dart';
 import '../../../../../../domain/model/comic/comic_model.dart';

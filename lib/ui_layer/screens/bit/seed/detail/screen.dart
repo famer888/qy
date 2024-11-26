@@ -78,7 +78,9 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
   void didChangeMetrics() {
     final newBottom = View.of(context).viewInsets.bottom;
     if (newBottom == 0 && newBottom < _viewBottom) {
-      unfocus();
+      Future.delayed(const Duration(milliseconds: 250)).then((_) {
+        unfocus();
+      });
     }
     _viewBottom = newBottom;
 

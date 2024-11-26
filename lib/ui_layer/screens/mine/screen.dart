@@ -13,10 +13,8 @@ import '../../../domain/model/member_model.dart';
 import '../../notifiers/home_config_notifier.dart';
 import '../../notifiers/user_notifier.dart';
 import '../../router/routes.dart';
-import '../../utils/my_toast.dart';
 import '../common_widgets/dialog/my_dialog.dart';
 import '../common_widgets/dialog/widgets/png_dialog.dart';
-import '../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../common_widgets/localization_text.dart';
 import '../common_widgets/member_vip.dart';
 import '../common_widgets/my_avatar.dart';
@@ -599,6 +597,7 @@ class _ChangeAppIconView extends StatefulWidget {
 
 class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
   final icons = [
+    'default',
     'wesee',
     'tiktok',
     'tieba',
@@ -611,10 +610,7 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
 
   @override
   void initState() {
-    AndroidDynamicIcon.initialize(classNames: [
-      'default',
-      ...icons,
-    ]);
+    AndroidDynamicIcon.initialize(classNames: icons);
     super.initState();
   }
 
@@ -670,7 +666,9 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
                                     ),
                                     Text(
                                       'qrggtb'.tr(context: context, namedArgs: {
-                                        'name': name.tr(context: context)
+                                        'name':
+                                            (name == 'default' ? 'yybt' : name)
+                                                .tr(context: context)
                                       }),
                                     ),
                                   ],
@@ -684,13 +682,13 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
                         child: Column(
                           children: [
                             Image.asset(
-                              'assets/images/$name.png',
+                              'assets/app_icons/$name.png',
                               width: 45.w,
                               height: 45.w,
                             ),
                             SizedBox(height: 5.w),
                             LocalizationText(
-                              name,
+                              name == 'default' ? 'yybt' : name,
                               style: MyTheme.white14,
                             ),
                           ],

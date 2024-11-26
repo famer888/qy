@@ -63,7 +63,7 @@ class NovelChapterCard extends StatelessWidget with RouteToReaderMixin {
     Widget ww;
     EdgeInsets padding;
 
-    if (item.type == 0 || (item.txt?.isNotEmpty ?? false)) {
+    if (item.type == 0 || (item.txt.isNotEmpty)) {
       padding = EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w);
       bgColor = Colors.transparent;
       bordColor = const Color.fromRGBO(255, 255, 255, 0.7);
@@ -88,7 +88,7 @@ class NovelChapterCard extends StatelessWidget with RouteToReaderMixin {
       ww = Row(
         children: [
           Text(
-            CommonUtils.renderFixedNumber(item.coins ?? 0),
+            CommonUtils.renderFixedNumber(item.coins),
             style: MyTheme.white12medium,
           ),
           SizedBox(width: 2.w),

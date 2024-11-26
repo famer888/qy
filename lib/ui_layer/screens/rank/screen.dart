@@ -9,7 +9,6 @@ import '../common_widgets/keep_alive_wrapper.dart';
 import '../common_widgets/my_app_bar.dart';
 import '../common_widgets/my_tab_bar.dart';
 import '../common_widgets/screen_background.dart';
-import '../theme.dart';
 import 'content.dart';
 
 class RankScreen extends StatefulWidget {
@@ -21,7 +20,7 @@ class RankScreen extends StatefulWidget {
 
 class _RankScreenState extends State<RankScreen> {
   late final _homeConfig = context.read<HomeConfigNotifier>();
-  late final List<RankNavModel> _titles = _homeConfig.config.rankTopNav ?? [];
+  late final List<RankNavModel> _titles = _homeConfig.config.rankTopNav;
 
   @override
   Widget build(BuildContext context) {

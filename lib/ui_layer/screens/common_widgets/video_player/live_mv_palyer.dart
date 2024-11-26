@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart' as html;
 import 'package:video_player/video_player.dart';
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/domain.dart';
@@ -132,24 +131,24 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
 
   //禁止web播放时默认静音
   void _openWebVioce() {
-    if (kIsWeb) {
-      flickManager?.flickVideoManager?.videoPlayerController?.addListener(() {
-        if (flickManager?.flickVideoManager?.videoPlayerController?.value
-                .isInitialized ??
-            false) {
-          // 视频初始化完成后取消静音
-          List<html.VideoElement> elements = html.document
-              .getElementsByTagName('video')
-              .cast<html.VideoElement>();
-          if (elements.isNotEmpty) {
-            html.VideoElement videoElement = elements.first;
-            videoElement.muted = false;
-            videoElement.volume = 1.0;
-          }
-          if (mounted) setState(() {});
-        }
-      });
-    }
+    // if (kIsWeb) {
+    //   flickManager?.flickVideoManager?.videoPlayerController?.addListener(() {
+    //     if (flickManager?.flickVideoManager?.videoPlayerController?.value
+    //             .isInitialized ??
+    //         false) {
+    //       // 视频初始化完成后取消静音
+    //       List<html.VideoElement> elements = html.document
+    //           .getElementsByTagName('video')
+    //           .cast<html.VideoElement>();
+    //       if (elements.isNotEmpty) {
+    //         html.VideoElement videoElement = elements.first;
+    //         videoElement.muted = false;
+    //         videoElement.volume = 1.0;
+    //       }
+    //       if (mounted) setState(() {});
+    //     }
+    //   });
+    // }
   }
 
   @override
@@ -996,29 +995,29 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
 
   void _changeFullScreen(FlickControlManager controlManager) {
     _hideKeyboard(context);
-    if (kIsWeb) {
-      List<html.VideoElement> elements =
-          html.document.querySelectorAll('video');
-      if (elements.isEmpty) return;
-
-      html.VideoElement video = elements.last;
-      video.muted = false;
-      video.volume = 1;
-      video.setAttribute('playsinline', 'true');
-      video.setAttribute('autoplay', 'true');
-
-      if (html.document.fullscreenElement == null) {
-        // Enter full screen
-        video.enterFullscreen();
-        video.controls = false; // hidden native controls
-      } else {
-        // Exit full screen
-        video.exitFullscreen();
-        video.controls = false; // hidden native controls
-      }
-    } else {
-      controlManager.toggleFullscreen();
-    }
+    // if (kIsWeb) {
+    //   List<html.VideoElement> elements =
+    //       html.document.querySelectorAll('video');
+    //   if (elements.isEmpty) return;
+    //
+    //   html.VideoElement video = elements.last;
+    //   video.muted = false;
+    //   video.volume = 1;
+    //   video.setAttribute('playsinline', 'true');
+    //   video.setAttribute('autoplay', 'true');
+    //
+    //   if (html.document.fullscreenElement == null) {
+    //     // Enter full screen
+    //     video.enterFullscreen();
+    //     video.controls = false; // hidden native controls
+    //   } else {
+    //     // Exit full screen
+    //     video.exitFullscreen();
+    //     video.controls = false; // hidden native controls
+    //   }
+    // } else {
+    controlManager.toggleFullscreen();
+    // }
   }
 
   //横屏时打赏弹窗布局
@@ -1088,7 +1087,18 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
                       onTap: () {
                         //立即打赏
                         if (_dsTextFieldController.text.isEmpty) {
-                          MyToast.showText(text: tr('srdsje'));
+                          MyToast.showText(
+                            text: tr('srdsje'),
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              decoration: TextDecoration.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 45,
+                              vertical: 23,
+                            ),
+                          );
                           return;
                         }
                         var payMoney = int.parse(_dsTextFieldController.text);
@@ -1097,7 +1107,18 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
                           //足够余额打赏
                           dasanOptional(payMoney);
                         } else {
-                          MyToast.showText(text: tr('ybzcz'));
+                          MyToast.showText(
+                            text: tr('ybzcz'),
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              decoration: TextDecoration.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 45,
+                              vertical: 23,
+                            ),
+                          );
                         }
                       },
                       child: Container(

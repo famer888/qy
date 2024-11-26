@@ -197,7 +197,6 @@ class _Body extends StatefulWidget {
 
 class _BodyState extends State<_Body> with TickerProviderStateMixin {
   late final _appDomain = context.read<CommunityDomain>();
-  late final _config = context.read<HomeConfigNotifier>().config;
   AsyncValue<List<CommunityPostNavModel>> _asyncValue = const AsyncInit();
 
   late TabController _controller;
@@ -223,14 +222,7 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
       // _controller.add
 
       _controller.addListener(() {
-        logger.f('=================================' * 99);
-        logger.e('=================================' * 99);
-
         if (_controller.indexIsChanging) {
-          logger.e('dasdasdasdasdasda');
-          logger.f('dasdasdasdasdasda');
-          logger.d('dasdasdasdasdasda');
-
           ShowIssueType type = ShowIssueType.community;
 
           if (data[_controller.index].type == 3) {

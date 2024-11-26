@@ -49,7 +49,6 @@ class VideoPlayer {
   final StreamController<VideoEvent> _eventController;
   final html.VideoElement _videoElement;
 
-  bool _isInitialized = false;
   bool _isBuffering = false;
   Hls? _hls;
 
@@ -68,7 +67,7 @@ class VideoPlayer {
     _videoElement.setAttribute('playsinline', 'true');
 
     // Set autoplay to false since most browsers won't autoplay a video unless it is muted
-    _videoElement.setAttribute('autoplay', 'false');
+    // _videoElement.setAttribute('autoplay', 'false');
 
     _videoElement.onCanPlayThrough.listen((dynamic _) {
       setBuffering(false);
@@ -189,14 +188,14 @@ class VideoPlayer {
 
   /// Disposes of the current [html.VideoElement].
   void dispose() {
-    if (_isInitialized) {
-      _hls?.stopLoad();
-      _hls?.destroy();
-      _videoElement.currentTime = 0;
-      _videoElement.removeAttribute('src');
-      _videoElement.load();
-      _isInitialized = false;
-    }
+    _onCanPlayListener?.cancel();
+    _onCanPlayListener = null;
+    _videoElement.currentTime = 0;
+    _videoElement.removeAttribute('src');
+    _videoElement.load();
+    _videoElement.remove();
+    _hls?.stopLoad();
+    _hls?.destroy();
   }
 
   // Sends an [VideoEventType.initialized] [VideoEvent] with info about the wrapped video.
@@ -264,12 +263,9 @@ class VideoPlayer {
     _videoElement.exitFullscreen();
   }
 
+  StreamSubscription? _onCanPlayListener;
   FutureOr<void> changeVideo(String src) async {
-    _hls?.stopLoad();
-    _hls?.destroy();
-    _videoElement.currentTime = 0;
-    bool isAndroid =
-        html.window.navigator.userAgent.toLowerCase().contains("android");
+    dispose();
     if (await _HlsHelper.shouldUseHlsLibrary(src)) {
       _hls = Hls(
         HlsConfig(
@@ -283,59 +279,49 @@ class VideoPlayer {
         _hls!.loadSource(src.toString());
       }));
       _hls!.on('hlsError', allowInterop((dynamic _, dynamic data) {
-        final ErrorData _data = ErrorData(data);
-        if (_data.fatal) {
+        final ErrorData errorData = ErrorData(data);
+        if (errorData.fatal) {
           _eventController.addError(PlatformException(
             code: _kErrorValueToErrorName[2]!,
-            message: _data.type,
-            details: _data.details,
+            message: errorData.type,
+            details: errorData.details,
           ));
         }
       }));
-      _videoElement.onCanPlay.listen((dynamic _) {
-        if (!_isInitialized) {
-          _isInitialized = true;
-          _sendInitialized();
-        }
-        setBuffering(false);
-      });
     } else {
-      _videoElement.removeAttribute('src');
-      _videoElement.load();
       _videoElement.src = src;
       _videoElement.load();
-      _videoElement.addEventListener('durationchange', (_) {
-        if (_videoElement.duration == 0) {
-          return;
-        }
-        if (!_isInitialized && isAndroid) {
-          _isInitialized = true;
-          _sendInitialized();
-        }
-      });
-      _videoElement.onCanPlay.listen((dynamic _) {
-        if (!_isInitialized && !isAndroid) {
-          _isInitialized = true;
-          _sendInitialized();
-        }
-      });
     }
-    initialize();
+
+    _onCanPlayListener = _videoElement.onCanPlay.listen((dynamic _) {
+      if (_onCanPlayListener == null) return;
+      _sendInitialized();
+
+      _onCanPlayListener?.cancel();
+      _onCanPlayListener = null;
+    });
   }
 }
 
 class _HlsHelper {
-  static Future<bool> shouldUseHlsLibrary(String src) async {
+  static FutureOr<bool> shouldUseHlsLibrary(String src) async {
     if (_completer == null) {
       _canPlayHlsNatively();
     }
+    if (shouldUse != null) {
+      return shouldUse!;
+    }
 
-    return !(await _completer!.future) &&
+    shouldUse = !(await _completer!.future) &&
         isSupported() &&
         src.toString().contains('m3u8');
+
+    return shouldUse!;
   }
 
   static Completer<bool>? _completer;
+
+  static bool? shouldUse;
 
   static _canPlayHlsNatively() async {
     _completer = Completer<bool>();

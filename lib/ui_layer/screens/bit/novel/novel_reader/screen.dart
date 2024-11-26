@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +25,8 @@ import '../../../theme.dart';
 import '../di/notifier.dart';
 import 'widgets/app_bar.dart';
 import 'widgets/bottom_panel.dart';
+import 'widgets/web_text_empty.dart'
+    if (dart.library.html) 'widgets/web_text.dart';
 
 const _animationDuration = Duration(milliseconds: 150);
 
@@ -105,21 +108,22 @@ class _NovelReaderScreenState extends State<NovelReaderScreen>
             },
             itemBuilder: (context, index) {
               final chapter = chapters[index];
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: onTogglePanelVisibility,
-                child: chapter.txt.trim().isNotEmpty
-                    ? NovelReader(
-                        chapter: chapter,
-                      )
-                    : PayView(
+              return chapter.txt.trim().isNotEmpty
+                  ? NovelReader(
+                      chapter: chapter,
+                      onTogglePanelVisibility: onTogglePanelVisibility,
+                    )
+                  : GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: onTogglePanelVisibility,
+                      child: PayView(
                         chapter: chapter,
                         onPaid: (txt) {
                           chapter.txt = txt;
                           setState(() {});
                         },
                       ),
-              );
+                    );
             },
           ),
           Align(
@@ -138,8 +142,12 @@ class _NovelReaderScreenState extends State<NovelReaderScreen>
 }
 
 class NovelReader extends StatefulWidget {
-  const NovelReader({super.key, required this.chapter});
+  const NovelReader(
+      {super.key,
+      required this.chapter,
+      required this.onTogglePanelVisibility});
   final NovelChaptersModel chapter;
+  final VoidCallback onTogglePanelVisibility;
   @override
   State<NovelReader> createState() => _NovelReaderState();
 }
@@ -199,9 +207,20 @@ class _NovelReaderState extends State<NovelReader> {
               ),
               child: Selector<NovelChangeNotifier, double>(
                 builder: (_, fontSize, __) {
-                  return Text(
-                    text,
-                    style: TextStyle(color: Colors.white, fontSize: fontSize),
+                  if (kIsWeb) {
+                    return WebText(
+                      text: text,
+                      fontSize: fontSize.toInt(),
+                      onTap: widget.onTogglePanelVisibility,
+                    );
+                  }
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: widget.onTogglePanelVisibility,
+                    child: Text(
+                      text,
+                      style: TextStyle(color: Colors.white, fontSize: fontSize),
+                    ),
                   );
                 },
                 selector: (_, notifier) => notifier.fontSize,

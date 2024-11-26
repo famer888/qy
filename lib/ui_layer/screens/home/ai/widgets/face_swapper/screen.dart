@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qypj/ui_layer/screens/home/ai/widgets/face_swapper/widgets/sheet.dart';
 
 import '../../../../../../domain/model/ai/ai_face_material_model.dart';
-import '../../../../../../domain/model/ai/ai_face_materials_with_banners_model.dart';
 import '../../../../../../domain/model/ai/ai_nav_model.dart';
 import '../../../../../../domain/model/banner_model.dart';
 import '../../../../../../domain/remote_domain/domains/ai.dart';
@@ -30,22 +30,40 @@ class _FaceSwapperViewState extends State<FaceSwapperView> {
       topics.isNotEmpty ? topics.first : AiFaceTopicModel(id: -1, name: ''));
 
   final bannersNotifier = ValueNotifier<List<BannerModel>>([]);
+  Future<void> _showSheetView() {
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => const FaceSwapSheetView(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return NestedScrollView(
-      headerSliverBuilder: (_, __) => [
-        SliverToBoxAdapter(
-          child: _Header(
-            bannersNotifier: bannersNotifier,
-            topics: topics,
-            currentTopicNotifier: currentTopicNotifier,
-          ),
+    return Scaffold(
+      floatingActionButton: GestureDetector(
+        onTap: _showSheetView,
+        child: Image.asset(
+          MyImagePaths.appCustomModel,
+          height: 32.w,
+          fit: BoxFit.fitHeight,
         ),
-      ],
-      body: _Body(
-        bannersNotifier: bannersNotifier,
-        currentTopicNotifier: currentTopicNotifier,
+      ),
+      body: NestedScrollView(
+        headerSliverBuilder: (_, __) => [
+          SliverToBoxAdapter(
+            child: _Header(
+              bannersNotifier: bannersNotifier,
+              topics: topics,
+              currentTopicNotifier: currentTopicNotifier,
+            ),
+          ),
+        ],
+        body: _Body(
+          bannersNotifier: bannersNotifier,
+          currentTopicNotifier: currentTopicNotifier,
+        ),
       ),
     );
   }
@@ -67,72 +85,63 @@ class _Header extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 6.w),
         ValueListenableBuilder(
           valueListenable: bannersNotifier,
-          builder: (context, banners, child) {
+          builder: (_, banners, __) {
             if (banners.isEmpty) return const SizedBox.shrink();
-
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-                  child: GeneralBanner(data: banners),
-                ),
-                SizedBox(height: 10.w),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 5.w),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    addRepaintBoundaries: false,
-                    addAutomaticKeepAlives: false,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: topics.length,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      childAspectRatio: 80.w / 35.w,
-                      mainAxisSpacing: 5.w,
-                      crossAxisSpacing: 5.w,
-                    ),
-                    itemBuilder: (context, index) {
-                      final topic = topics[index];
-                      return GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          currentTopicNotifier.value = topic;
-                        },
-                        child: DecoratedBox(
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.w),
-                            ),
-                            color: const Color(0xff262631),
-                          ),
-                          child: Center(
-                            child: ValueListenableBuilder(
-                              valueListenable: currentTopicNotifier,
-                              builder: (context, currentTopic, child) {
-                                return Text(
-                                  topic.name,
-                                  style: topic.id == currentTopic.id
-                                      ? MyTheme.jellyCyan_13
-                                      : MyTheme.white13,
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+              child: GeneralBanner(data: banners),
             );
           },
+        ),
+        SizedBox(height: 10.w),
+        Padding(
+          padding: EdgeInsets.only(bottom: 5.w),
+          child: GridView.builder(
+            shrinkWrap: true,
+            addRepaintBoundaries: false,
+            addAutomaticKeepAlives: false,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: topics.length,
+            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              childAspectRatio: 80.w / 35.w,
+              mainAxisSpacing: 5.w,
+              crossAxisSpacing: 5.w,
+            ),
+            itemBuilder: (context, index) {
+              final topic = topics[index];
+              return GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  currentTopicNotifier.value = topic;
+                },
+                child: DecoratedBox(
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.w),
+                    ),
+                    color: const Color(0xff262631),
+                  ),
+                  child: Center(
+                    child: ValueListenableBuilder(
+                      valueListenable: currentTopicNotifier,
+                      builder: (context, currentTopic, child) {
+                        return Text(
+                          topic.name,
+                          style: topic.id == currentTopic.id
+                              ? MyTheme.jellyCyan_13
+                              : MyTheme.white13,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ],
     );
@@ -217,34 +226,33 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.bannersNotifier.value.isNotEmpty)
-          TabBar(
-            controller: tabController,
-            isScrollable: true,
-            labelStyle: MyTheme.white15_M,
-            labelPadding: EdgeInsets.only(left: 5.w),
-            unselectedLabelStyle: MyTheme.white07_14,
-            overlayColor: WidgetStateProperty.resolveWith<Color>(
-              (_) => Colors.transparent,
-            ),
-            onTap: (index) {
-              final nav = sorts[index];
-              if (nav.type == 1) return;
-              if (!tabController.indexIsChanging) {
-                setState(() {
-                  if (nav.sort == 'asc') {
-                    nav.sort = 'desc';
-                  } else {
-                    nav.sort = 'asc';
-                  }
-                });
-              }
-            },
-            tabAlignment: TabAlignment.start,
-            indicatorColor: Colors.transparent,
-            dividerColor: Colors.transparent,
-            tabs: [for (final nav in sorts) _buildTab(nav)],
+        TabBar(
+          controller: tabController,
+          isScrollable: true,
+          labelStyle: MyTheme.white15_M,
+          labelPadding: EdgeInsets.only(left: 5.w),
+          unselectedLabelStyle: MyTheme.white07_14,
+          overlayColor: WidgetStateProperty.resolveWith<Color>(
+            (_) => Colors.transparent,
           ),
+          onTap: (index) {
+            final nav = sorts[index];
+            if (nav.type == 1) return;
+            if (!tabController.indexIsChanging) {
+              setState(() {
+                if (nav.sort == 'asc') {
+                  nav.sort = 'desc';
+                } else {
+                  nav.sort = 'asc';
+                }
+              });
+            }
+          },
+          tabAlignment: TabAlignment.start,
+          indicatorColor: Colors.transparent,
+          dividerColor: Colors.transparent,
+          tabs: [for (final nav in sorts) _buildTab(nav)],
+        ),
         Expanded(
           child: TabBarView(
             controller: tabController,

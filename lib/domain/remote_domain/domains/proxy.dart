@@ -18,4 +18,6 @@ abstract class ProxyDomain {
     required int page,
     required int limit,
   });
+
+  AsyncResult proxyApply({required String contact});
 }
