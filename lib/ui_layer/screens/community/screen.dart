@@ -212,13 +212,13 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
     if (result.data case final data? when result.isValid) {
       _controller = TabController(length: data.length, vsync: this);
 
-      // _controller.add
-
       _controller.addListener(() {
         if (_controller.indexIsChanging) {
           final type = data[_controller.index].type;
           final showIssueType = switch (type) {
+            //裸聊
             2 => ShowIssueType.chat,
+            //约炮
             3 => ShowIssueType.girl,
             _ => ShowIssueType.community,
           };
@@ -243,7 +243,9 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
         views: [
           for (final e in data)
             switch (e.type) {
+              //裸聊
               2 => const ChatScreen(),
+              //约炮
               3 => const GirlScreen(),
               _ => CommunityContentView(id: e.id),
             }
