@@ -121,7 +121,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final botToastBuilder = BotToastInit();
 
-    logger.e('123');
     return MaterialApp.router(
       routerConfig: AppRouter.router,
       localizationsDelegates: context.localizationDelegates,
