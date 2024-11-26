@@ -110,6 +110,12 @@ class _TabBarWithViewState extends State<TabBarWithView>
   };
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bar = Theme(
       data: Theme.of(context).copyWith(tabBarTheme: tabBarTheme),
