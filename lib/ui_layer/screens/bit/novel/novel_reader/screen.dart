@@ -15,6 +15,7 @@ import '../../../../../domain/model/novel/novel_model.dart';
 import '../../../../../domain/remote_domain/domains/novel.dart';
 import '../../../../notifiers/user_notifier.dart';
 import '../../../../router/routes.dart';
+import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_button.dart';
 import '../../../common_widgets/my_image.dart';
@@ -25,8 +26,6 @@ import '../../../theme.dart';
 import '../di/notifier.dart';
 import 'widgets/app_bar.dart';
 import 'widgets/bottom_panel.dart';
-import 'widgets/web_text_empty.dart'
-    if (dart.library.html) 'widgets/web_text.dart';
 
 const _animationDuration = Duration(milliseconds: 150);
 
@@ -180,7 +179,8 @@ class _NovelReaderState extends State<NovelReader> {
         await appDomain.downloadDataByte(urlPath: widget.chapter.txt);
     final utf8Str = utf8.decode(novelData);
 
-    final novelText = await PlatformAwareCrypto.decryptNovel(utf8Str);
+    final novelText = CommonUtils.optimizeWebText(
+        await PlatformAwareCrypto.decryptNovel(utf8Str));
 
     widget.chapter.text = novelText;
     _asyncValue = AsyncData(novelText);
@@ -207,20 +207,31 @@ class _NovelReaderState extends State<NovelReader> {
               ),
               child: Selector<NovelChangeNotifier, double>(
                 builder: (_, fontSize, __) {
-                  // if (kIsWeb) {
-                  //   return WebText(
-                  //     text: text,
-                  //     fontSize: fontSize.toInt(),
-                  //     onTap: widget.onTogglePanelVisibility,
-                  //   );
-                  // }
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: widget.onTogglePanelVisibility,
-                    child: Text(
-                      text,
-                      style: TextStyle(color: Colors.white, fontSize: fontSize),
-                    ),
+                    child: kIsWeb
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              for (final text in text.split('\n'))
+                                Text(
+                                  text,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: fontSize,
+                                  ),
+                                ),
+                            ],
+                          )
+                        : Text(
+                            text,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: fontSize,
+                            ),
+                          ),
                   );
                 },
                 selector: (_, notifier) => notifier.fontSize,

@@ -229,6 +229,14 @@ class CommonUtils {
     }
   }
 
+  static String optimizeWebText(String text) {
+    if (kIsWeb) {
+      final char = String.fromCharCode(0xFEFF);
+      return text.split('').join(char);
+    }
+    return text;
+  }
+
   static Future<bool> pngLimit2MSize(XFile file, {int size = 100}) async {
     int length = await file.length();
     if (length / 1024 > 2000) {

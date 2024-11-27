@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../domain/model/novel/novel_model.dart';
+import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/localization_text.dart';
 import '../../../common_widgets/my_button.dart';
 import '../../../common_widgets/my_image.dart';
@@ -63,7 +65,7 @@ class _NovelIntroContentState extends State<NovelIntroContent>
                         Padding(
                           padding: EdgeInsets.only(bottom: MyTheme.pagePadding),
                           child: Text(
-                            intro,
+                            CommonUtils.optimizeWebText(intro),
                             style: MyTheme.white07_14,
                             maxLines: 100,
                           ),
