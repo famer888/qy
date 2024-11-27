@@ -14,6 +14,7 @@ import 'common_widgets/my_image.dart';
 import 'common_widgets/pop_scope_wrapper.dart';
 import 'common_widgets/status/network_error.dart';
 import 'theme.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -39,6 +40,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     _loadDataFromCache();
     _checkLineAndFetchBeforeEnterHome();
+    FlutterNativeSplash.remove();
+
     super.initState();
   }
 
