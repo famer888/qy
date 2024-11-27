@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common_widgets/fab_pop_button.dart';
 import 'widgets/comment_view.dart';
 import 'widgets/introduction_view.dart';
 
@@ -73,23 +74,7 @@ class _LiveVideoDetailScreenState extends State<LiveVideoDetailScreen> {
             onTap: () {
               context.pop();
             },
-            child: Container(
-              margin: EdgeInsets.only(bottom: 40.r),
-              height: 40.r,
-              width: 40.r,
-              decoration: BoxDecoration(
-                gradient: MyTheme.gradient_90_114,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.r),
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  'fahui'.tr(context: context),
-                  style: MyTheme.white255_13_M,
-                ),
-              ),
-            ),
+            child: const FabPopButton(),
           ),
           body: _asyncValue.maybeWhen(
             orElse: () => const LoadingView(),
