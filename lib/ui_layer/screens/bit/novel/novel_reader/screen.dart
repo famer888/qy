@@ -207,13 +207,13 @@ class _NovelReaderState extends State<NovelReader> {
               ),
               child: Selector<NovelChangeNotifier, double>(
                 builder: (_, fontSize, __) {
-                  if (kIsWeb) {
-                    return WebText(
-                      text: text,
-                      fontSize: fontSize.toInt(),
-                      onTap: widget.onTogglePanelVisibility,
-                    );
-                  }
+                  // if (kIsWeb) {
+                  //   return WebText(
+                  //     text: text,
+                  //     fontSize: fontSize.toInt(),
+                  //     onTap: widget.onTogglePanelVisibility,
+                  //   );
+                  // }
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: widget.onTogglePanelVisibility,
