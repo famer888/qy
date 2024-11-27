@@ -98,7 +98,7 @@ flutter_native_splash:
   icon_background_color_dark: '#000000'
   image: assets/splash.png
   image_dark: assets/splash.png
-  fullscreen: true
+  fullscreen: false
   android_gravity: fill
   ios_content_mode: scaleAspectFill
   web_image_mode: cover
