@@ -8,6 +8,7 @@ import '../../../domain/async_value.dart';
 import '../../../domain/model/video_detail_model.dart';
 import '../../../domain/remote_domain/domains/mv.dart';
 import '../../utils/my_toast.dart';
+import '../common_widgets/fab_pop_button.dart';
 import '../common_widgets/keep_alive_wrapper.dart';
 import '../common_widgets/screen_background.dart';
 import '../common_widgets/status/loading.dart';
@@ -66,28 +67,7 @@ class _VideoDetailScreenState extends State<VideoDetailScreen> {
         child: Scaffold(
           extendBodyBehindAppBar: true,
           // appBar: const MyAppBar(),
-          floatingActionButton: GestureDetector(
-            onTap: () {
-              context.pop();
-            },
-            child: Container(
-              margin: EdgeInsets.only(bottom: 40.r),
-              height: 40.r,
-              width: 40.r,
-              decoration: BoxDecoration(
-                gradient: MyTheme.btnGradient_ff00edfd_ffbbe954,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.r),
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  'fahui'.tr(context: context),
-                  style: MyTheme.white255_13_M,
-                ),
-              ),
-            ),
-          ),
+          floatingActionButton: const FabPopButton(),
           body: _asyncValue.maybeWhen(
             orElse: () => const LoadingView(),
             error: (_, __) => NetworkErrorView(onTap: _initData),

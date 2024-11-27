@@ -3,6 +3,7 @@ import '../../../../../domain/async_value.dart';
 import '../../../../../domain/model/monitor/monitor_video_detail_data.dart';
 import '../../../../../domain/model/monitor/monitor_with_banners_model.dart';
 import '../../../../../domain/remote_domain/domains/monitor.dart';
+import '../../../common_widgets/fab_pop_button.dart';
 import '../../../common_widgets/my_app_bar.dart';
 import '../../../common_widgets/video_player/monitor_mv_player.dart';
 
@@ -73,28 +74,7 @@ class _MonitorVideoDetailScreenState extends State<MonitorVideoDetailScreen> {
             title: _asyncValue.data?.monitor.title,
             backgroundColor: Colors.black,
           ),
-          floatingActionButton: GestureDetector(
-            onTap: () {
-              context.pop();
-            },
-            child: Container(
-              margin: EdgeInsets.only(bottom: 40.r),
-              height: 40.r,
-              width: 40.r,
-              decoration: BoxDecoration(
-                gradient: MyTheme.gradient_90_114,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.r),
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  'fahui'.tr(context: context),
-                  style: MyTheme.white255_13_M,
-                ),
-              ),
-            ),
-          ),
+          floatingActionButton: const FabPopButton(),
           body: _asyncValue.maybeWhen(
             orElse: () => const LoadingView(),
             error: (_, __) => NetworkErrorView(onTap: _initData),
