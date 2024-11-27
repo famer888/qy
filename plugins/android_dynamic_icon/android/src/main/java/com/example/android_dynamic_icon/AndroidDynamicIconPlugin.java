@@ -80,7 +80,7 @@ public class AndroidDynamicIconPlugin implements FlutterPlugin, MethodCallHandle
             int componentState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
             int i=0;
             for(;i<classNames.size();i++) {
-                ComponentName cn = new ComponentName(packageName, packageName+"."+classNames.get(i));
+                ComponentName cn = new ComponentName(packageName, "com.tbone.qypj."+classNames.get(i));
                 int status = pm.getComponentEnabledSetting(cn);
 
 

@@ -26,7 +26,6 @@ if (flutterVersionName == null) {
 apply from: "../config.gradle"
 
 android {
-    namespace = packagedata["applicationId"]
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
