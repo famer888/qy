@@ -19,6 +19,7 @@ import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/dialog/my_dialog.dart';
 import '../../../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../../../common_widgets/my_app_bar.dart';
+import '../../../common_widgets/my_button.dart';
 import '../../../image_paths.dart';
 
 import '../../../../../domain/async_value.dart';
@@ -51,6 +52,7 @@ class ChatDetailScreen extends StatefulWidget {
 class _ChatDetailScreenState extends State<ChatDetailScreen>
     with WidgetsBindingObserver {
   late final _domain = context.read<ChatDomain>();
+  late final _userNotifier = context.read<UserNotifier>();
 
   // AsyncValue<ChatDetailModel> _asyncValue = const AsyncInit();
 
@@ -144,7 +146,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
           if (isInsufficient) {
             const CoinRechargeRoute().push(context);
           } else {
-            reqChatBuy();
+            reqChatBuy(userCoins - data.coins!);
           }
         },
         cancelOnTap: () {
@@ -155,11 +157,13 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
     );
   }
 
-  reqChatBuy() async {
+  reqChatBuy(int money) async {
     final result = await _domain.chatBuy(id: widget.id);
 
     if (result.status == 1) {
       data.contact = result.data['contact'];
+
+      _userNotifier.setMoney(money: money);
 
       setState(() {});
     } else {
@@ -292,10 +296,16 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                       ),
                                       Row(
                                         children: [
-                                          MyImage.asset(
-                                            MyImagePaths.appChatShare,
-                                            width: 25.w,
-                                            height: 25.w,
+                                          GestureDetector(
+                                            onTap: () {
+                                              const MineShareToUserRoute()
+                                                  .push(context);
+                                            },
+                                            child: MyImage.asset(
+                                              MyImagePaths.appChatShare,
+                                              width: 25.w,
+                                              height: 25.w,
+                                            ),
                                           ),
                                           SizedBox(
                                             width: 5.w,
@@ -453,15 +463,17 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                                 'a', '${data.coins}'),
                                         style: MyTheme.orange247_12,
                                       )
-                                    : Row(
-                                        children: [
-                                          Text(
-                                            'lxfs'.tr() +
+                                    : RichText(
+                                        maxLines: 999,
+                                        text: TextSpan(children: [
+                                          TextSpan(
+                                            text: 'lxfs'.tr() +
                                                 ": " +
                                                 '${data.contact}',
-                                            style: MyTheme.yellow255_12,
+                                            style: MyTheme.jellyCyan_12,
                                           ),
-                                          GestureDetector(
+                                          WidgetSpan(
+                                              child: GestureDetector(
                                             behavior:
                                                 HitTestBehavior.translucent,
                                             onTap: () {
@@ -480,51 +492,42 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                               width: 31.w,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
-                                                  color: MyTheme.red220Color,
+                                                  color: MyTheme.jellyCyanColor,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           7.5.w)),
                                               child: Text(
-                                                'fz'.tr(),
+                                                'fuz'.tr(),
                                                 style: MyTheme.white255_10,
                                               ),
                                             ),
-                                          )
-                                        ],
-                                      ),
+                                          ))
+                                        ])),
                                 SizedBox(
                                   height: 10.w,
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: 15.w),
-                          SizedBox(height: 15.w),
                           SizedBox(
                             height: 40.w,
                           ),
                           '${data.contact}'.isNotEmpty
                               ? Container()
-                              : GestureDetector(
-                                  behavior: HitTestBehavior.translucent,
-                                  onTap: buyChat,
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: MyTheme.pagePadding,
-                                        vertical: 20.h),
-                                    height: 50.w,
-                                    decoration: BoxDecoration(
-                                        color: MyTheme.red220Color,
-                                        borderRadius:
-                                            BorderRadius.circular(25.w)),
-                                    child: Center(
-                                      child: Text(
-                                        data.type == 1 // 0： 免费 1:VIP 2:金币
-                                            ? 'vmfjs'.tr()
-                                            : '${data.coins}' + 'jbjs'.tr(),
-                                        style: MyTheme.white255_16_M,
-                                      ),
-                                    ),
+                              : Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: MyTheme.pagePadding,
+                                      vertical: 20.h),
+                                  child: MyButton.gradient(
+                                    minimumSize: Size.fromHeight(40.w),
+                                    onPressed: () async {
+                                      // uploadData();
+                                      buyChat();
+                                    },
+                                    borderRadius: 8,
+                                    text: data.type == 1 // 0： 免费 1:VIP 2:金币
+                                        ? 'vmfjs'.tr()
+                                        : '${data.coins}' + 'jbjs'.tr(),
                                   ),
                                 ),
                         ],

@@ -124,7 +124,7 @@ class GirlListCard extends StatelessWidget {
                         ),
                         child: Text(
                           '¥' + (data.price ?? ''),
-                          style: MyTheme.red24015,
+                          style: MyTheme.jellyCyan_15,
                         )),
                   ),
                   // Positioned(left: 0, top: 0, child: videoType(data)),
@@ -160,7 +160,7 @@ class GirlListCard extends StatelessWidget {
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 7.w, vertical: 2.w),
                                         decoration: BoxDecoration(
-                                            color: MyTheme.red220Color,
+                                            color: MyTheme.jellyCyanColor,
                                             borderRadius:
                                                 BorderRadius.circular(9.w)),
                                         child: Text(

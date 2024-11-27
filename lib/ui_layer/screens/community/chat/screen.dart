@@ -9,6 +9,7 @@ import '../../../../domain/model/chat/chat_list_model.dart';
 import '../../../../domain/model/chat_nav_model.dart';
 import '../../../../domain/model/girl/girl_option_model.dart';
 import '../../../../domain/model/tip_model.dart';
+import '../../../../domain/remote_domain/domains/index.dart';
 import '../../../../domain/type_def.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../common_widgets/chat/card.dart';
@@ -163,77 +164,37 @@ class _ChatChildScreenState extends State<ChatChildScreen> {
     required int page,
     required int pageSize,
   }) async {
-    AsyncResult result;
-// AsyncResult
+    final result = widget.nav.type == 2
+        ? await _domain.chatSortIndex(
+            sort: widget.nav.sort!,
+            page: page,
+            limit: pageSize,
+          )
+        : await _domain.chatIndex(
+            id: widget.nav.id ?? 0,
+            page: page,
+            limit: pageSize,
+          );
 
-    ChatIndexModel indexModel;
-    if (widget.nav.type == 2) {
-      final result = await _domain.chatSortIndex(
-        sort: widget.nav.sort!,
-        page: page,
-        limit: pageSize,
-      );
+    if (widget.headerFunc != null) {
+      List<BannerModel> banner = [];
 
-      if (widget.headerFunc != null) {
-        List<BannerModel> banner = [];
+      List<TipModel> tips = [];
 
-        List<TipModel> tips = [];
-
-        if (result.data?.banner case final data? when data.isNotEmpty) {
-          banner = data;
-        }
-        if (result.data?.tips case final data? when data.isNotEmpty) {
-          tips = data;
-        }
-
-        widget.headerFunc?.call(banner, tips);
+      if (result.data?.banner case final data? when data.isNotEmpty) {
+        banner = data;
+      }
+      if (result.data?.tips case final data? when data.isNotEmpty) {
+        tips = data;
       }
 
-      if (result.data?.chats case final chats) {
-        return chats;
-      }
-    } else {
-      final result = await _domain.chatIndex(
-        id: widget.nav.id ?? 0,
-        page: page,
-        limit: pageSize,
-      );
-
-      if (widget.headerFunc != null) {
-        List<BannerModel> banner = [];
-
-        List<TipModel> tips = [];
-
-        if (result.data?.banner case final data? when data.isNotEmpty) {
-          banner = data;
-        }
-        if (result.data?.tips case final data? when data.isNotEmpty) {
-          tips = data;
-        }
-
-        widget.headerFunc?.call(banner, tips);
-      }
-
-      if (result.data?.chats case final chats) {
-        return chats;
-      }
+      widget.headerFunc?.call(banner, tips);
     }
 
-    // if (result.status == 1) {
-    //   // if (result.data?.banner case final data? when data.isNotEmpty) {
-    //   //   _bannersNotifier.value = data;
-    //   // }
+    if (result.data?.chats case final chats) {
+      return chats;
+    }
 
-    //   // if (result.data?.notice case final data? when data.isNotEmpty) {
-    //   //   tipsNotifier.value = data;
-    //   // }
-
-    //   if (result.data.chats case final chats?) {
-    //     return chats;
-    //   }
-    // } else {
-    //   MyToast.showText(text: result.msg ?? '');
-    // }
     return null;
   }
 

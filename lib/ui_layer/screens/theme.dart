@@ -1597,17 +1597,17 @@ class MyTheme {
       fontWeight: FontWeight.w500,
       decoration: TextDecoration.none);
 
-  static TextStyle font_red_220_14 = TextStyle(
+  static TextStyle font_jellyCyan_14 = TextStyle(
       fontFamily: hanyi,
-      color: red220Color,
+      color: jellyCyanColor,
       fontSize: 14.sp,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.normal,
       decoration: TextDecoration.none);
 
-  static TextStyle font_red_220_20_semi = TextStyle(
+  static TextStyle font_jellyCyan_20_semi = TextStyle(
       fontFamily: hanyi,
-      color: red220Color,
+      color: jellyCyanColor,
       fontSize: 20.sp,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w600,
@@ -2962,11 +2962,18 @@ class MyTheme {
       fontSize: 11.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
+
   static final jellyCyan_11_M = TextStyle(
       fontFamily: hanyi,
       color: jellyCyanColor103224185,
       fontSize: 11.sp,
       fontWeight: FontWeight.w500,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+  static final jellyCyan_12 = TextStyle(
+      fontFamily: hanyi,
+      color: jellyCyanColor103224185,
+      fontSize: 12.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
   static final hex0d141f_13 = TextStyle(

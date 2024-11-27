@@ -154,11 +154,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
           onTap: _showIssueAlert,
           behavior: HitTestBehavior.translucent,
           child: MyImage.asset(
-            _type == ShowIssueType.girl
-                ? MyImagePaths.appGirlPublish
-                : _type == ShowIssueType.chat
-                    ? MyImagePaths.appChatPublish
-                    : MyImagePaths.appIssueIcon,
+            // _type == ShowIssueType.girl
+            //     ? MyImagePaths.appGirlPublish
+            //     : _type == ShowIssueType.chat
+            //         ? MyImagePaths.appChatPublish
+            //         :
+                     MyImagePaths.appIssueIcon,
             width: 50.w,
             height: 50.w,
           ),

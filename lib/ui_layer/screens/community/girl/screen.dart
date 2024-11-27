@@ -10,10 +10,12 @@ import '../../../../domain/model/girl/girl_option_model.dart';
 import '../../../../domain/model/girl_sort_model.dart';
 import '../../../../domain/model/tip_model.dart';
 import '../../../notifiers/user_notifier.dart';
+import '../../../router/routes.dart';
 import '../../../utils/app_global_data.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/girl/card.dart';
 import '../../common_widgets/marquee.dart';
+import '../../common_widgets/my_button.dart';
 import '../../common_widgets/my_image.dart';
 import '../../common_widgets/my_tab_bar.dart';
 import '../../../notifiers/home_config_notifier.dart';
@@ -131,10 +133,11 @@ class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
                                   decoration: BoxDecoration(
                                       color: _filterTempMap[itemMap.value] ==
                                               item.value
-                                          ? MyTheme.red220Color
+                                          ? MyTheme.jellyCyanColor
                                           : Colors.transparent,
                                       border: Border.all(
-                                        color: MyTheme.red22005Color,
+                                        color: MyTheme.jellyCyanColor
+                                            .withOpacity(0.5),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(2.w)),
@@ -145,7 +148,7 @@ class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
                                         style: _filterTempMap[itemMap.value] ==
                                                 item.value
                                             ? MyTheme.white255_14
-                                            : MyTheme.font_red_220_14,
+                                            : MyTheme.font_jellyCyan_14,
                                       ),
                                     ),
                                   ),
@@ -158,29 +161,26 @@ class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
               SizedBox(
                 height: 130.w,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                Container(
+                  width: 140.w,
+                  height: 40.w,
+                  child: MyButton.gradient(
+                    minimumSize: Size.fromHeight(40.w),
+                    onPressed: () async {
                       _filterTempMap = {};
                       setState(() {});
                     },
-                    child: Container(
-                      width: 140.w,
-                      height: 40.w,
-                      decoration: BoxDecoration(
-                          color: MyTheme.red220Color,
-                          borderRadius: BorderRadius.circular(20.w)),
-                      alignment: Alignment.center,
-                      child: Text(
-                        'chz'.tr(),
-                        style: MyTheme.white255_14,
-                      ),
-                    ),
+                    borderRadius: 8,
+                    text: 'chz'.tr(context: context),
                   ),
-                  GestureDetector(
-                    onTap: () {
+                ),
+                Container(
+                  width: 140.w,
+                  height: 40.w,
+                  child: MyButton.gradient(
+                    minimumSize: Size.fromHeight(40.w),
+                    onPressed: () async {
                       _filterMap = Map.from(_filterTempMap);
                       // _getData(page: 1, pageSize: 15, sort: 'hot');
                       setState(() {});
@@ -191,21 +191,59 @@ class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
                           .currentState
                           ?.reloadPage();
                     },
-                    child: Container(
-                      width: 140.w,
-                      height: 40.w,
-                      decoration: BoxDecoration(
-                          color: MyTheme.red220Color,
-                          borderRadius: BorderRadius.circular(20.w)),
-                      alignment: Alignment.center,
-                      child: Text(
-                        'qd'.tr(),
-                        style: MyTheme.white255_14,
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                    borderRadius: 8,
+                    text: 'qd'.tr(context: context),
+                  ),
+                ),
+              ]),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     GestureDetector(
+              //       onTap: () {
+              //         _filterTempMap = {};
+              //         setState(() {});
+              //       },
+              //       child: Container(
+              //         width: 140.w,
+              //         height: 40.w,
+              //         decoration: BoxDecoration(
+              //             color: MyTheme.jellyCyanColor,
+              //             borderRadius: BorderRadius.circular(20.w)),
+              //         alignment: Alignment.center,
+              //         child: Text(
+              //           'chz'.tr(),
+              //           style: MyTheme.white255_14,
+              //         ),
+              //       ),
+              //     ),
+              //     GestureDetector(
+              //       onTap: () {
+              //         _filterMap = Map.from(_filterTempMap);
+              //         // _getData(page: 1, pageSize: 15, sort: 'hot');
+              //         setState(() {});
+
+              //         _scaffoldKey.currentState?.closeEndDrawer();
+
+              //         _listViewKeys[_tabController.index]
+              //             .currentState
+              //             ?.reloadPage();
+              //       },
+              //       child: Container(
+              //         width: 140.w,
+              //         height: 40.w,
+              //         decoration: BoxDecoration(
+              //             color: MyTheme.jellyCyanColor,
+              //             borderRadius: BorderRadius.circular(20.w)),
+              //         alignment: Alignment.center,
+              //         child: Text(
+              //           'qd'.tr(),
+              //           style: MyTheme.white255_14,
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // ),
               SizedBox(
                 height: 64.w,
               ),
@@ -392,16 +430,14 @@ class _Header extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(17.5.w))),
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      // Utils.navTo(context, "/homesearchpage");
-                    },
+                    onTap: () => const SearchRoute().push(context),
                     child: Row(
                       children: [
                         SizedBox(width: 10.w),
                         // LocalPNG(name: "hls_search", width: 20.w, height: 20.w),
                         SizedBox(width: 10.w),
                         Expanded(
-                            child: Text("qsrssgjz".tr(),
+                            child: Text("stzdmmhbt".tr(),
                                 style: MyTheme.white08_14_M,
                                 textAlign: TextAlign.left)),
                       ],
@@ -439,7 +475,7 @@ class _Header extends StatelessWidget {
             ],
           ),
         ),
-        // SizedBox(height: 6.w),
+        SizedBox(height: 6.w),
         ValueListenableBuilder(
           valueListenable: bannersNotifier,
           builder: (context, banners, child) {

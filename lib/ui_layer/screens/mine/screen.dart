@@ -39,15 +39,15 @@ class _MineScreenState extends State<MineScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            SizedBox(
-              height: 1.sw * 228 / 380,
-              child: const MyImage.asset(
-                MyImagePaths.appWdTopbgN,
-                fit: BoxFit.fill,
-                height: double.infinity,
-                width: double.infinity,
-              ),
-            ),
+            // SizedBox(
+            //   height: 1.sw * 228 / 380,
+            //   child: const MyImage.asset(
+            //     MyImagePaths.appWdTopbgN,
+            //     fit: BoxFit.fill,
+            //     height: double.infinity,
+            //     width: double.infinity,
+            //   ),
+            // ),
             Column(
               children: [
                 const _FixedTopArea(),

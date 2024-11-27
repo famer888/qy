@@ -338,7 +338,10 @@ abstract class _BaseAppRepo implements AppDomain {
 
     final lines = cacheLines ?? BuildConfig.apiLines;
 
-    List<Map> errorLines = [];
+    // List<Map> errorLines = [];
+
+    List<Map> resultLines = [];
+
     String? targetLine;
 
     for (String line in lines) {
@@ -354,12 +357,16 @@ abstract class _BaseAppRepo implements AppDomain {
       }
 
       /// check line
-      if (await _checkLine(line, headers)) {
-        targetLine = line;
-        _apiDio.options.headers = headers;
-        break;
-      }
-      errorLines.add({'url': line});
+      // if (await _checkLine(line, headers)) {
+      //   targetLine = line;
+      //   _apiDio.options.headers = headers;
+      //   break;
+      // }
+      // errorLines.add({'url': line});
+
+      Map<String, Object> lineInfo = await _checkLine2(line, headers);
+
+      resultLines.add(lineInfo);
     }
 
     /// use backup line
@@ -367,9 +374,11 @@ abstract class _BaseAppRepo implements AppDomain {
 
     if (targetLine != null) {
       _apiDio.options.baseUrl = targetLine;
-      if (errorLines.isNotEmpty) {
-        _reportErrorLine(errorLines);
-      }
+      // if (errorLines.isNotEmpty) {
+      //   _reportErrorLine(errorLines);
+      // }
+
+      _reportLine(resultLines);
       return true;
     }
     return false;
@@ -410,6 +419,23 @@ abstract class _BaseAppRepo implements AppDomain {
     return false;
   }
 
+  /// check line
+  Future<Map<String, Object>> _checkLine2(
+      String line, Map<String, dynamic>? headers) async {
+    const duration = Duration(seconds: 5);
+    try {
+      final resp = await Dio(BaseOptions(
+        connectTimeout: duration,
+        receiveTimeout: duration,
+        headers: headers,
+      )).get('$line/api/callback/checkLine');
+
+      return {'url': line, 'code': resp.statusCode ?? 0};
+    } catch (_) {
+      return {'url': line, 'code': 0};
+    }
+  }
+
   /// 启用备用线路
   Future<String?> _backupLine() async {
     try {
@@ -426,9 +452,9 @@ abstract class _BaseAppRepo implements AppDomain {
     return null;
   }
 
-  /// 回报错误线路
-  Future<void> _reportErrorLine(List<Map> lines) =>
-      _apiDio.post('/api/home/domainCheckReport', data: {'list': lines});
+  /// 上报线路
+  Future<void> _reportLine(List<Map> lines) =>
+      _apiDio.post('/api/home/domainCheckReport2', data: {'list': lines});
 
   @override
   AsyncJson uploadImage({

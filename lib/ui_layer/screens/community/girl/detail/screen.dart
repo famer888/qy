@@ -18,6 +18,7 @@ import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/dialog/my_dialog.dart';
 import '../../../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../../../common_widgets/my_app_bar.dart';
+import '../../../common_widgets/my_button.dart';
 import '../../../image_paths.dart';
 
 import '../../../../../domain/async_value.dart';
@@ -50,6 +51,7 @@ class GirlDetailScreen extends StatefulWidget {
 class _GirlDetailScreenState extends State<GirlDetailScreen>
     with WidgetsBindingObserver {
   late final _domain = context.read<GirlDomain>();
+  late final _userNotifier = context.read<UserNotifier>();
 
   AsyncValue<GirlDetailModel> _asyncValue = const AsyncInit();
 
@@ -143,7 +145,7 @@ class _GirlDetailScreenState extends State<GirlDetailScreen>
           if (isInsufficient) {
             const CoinRechargeRoute().push(context);
           } else {
-            reqGirlBuy();
+            reqGirlBuy(userCoins - data.coins!);
           }
         },
         cancelOnTap: () {
@@ -154,11 +156,12 @@ class _GirlDetailScreenState extends State<GirlDetailScreen>
     );
   }
 
-  reqGirlBuy() async {
+  reqGirlBuy(int money) async {
     final result = await _domain.girlBuy(id: widget.id);
 
     if (result.status == 1) {
       data.contact = result.data['contact'];
+      _userNotifier.setMoney(money: money);
 
       setState(() {});
     } else {
@@ -287,14 +290,20 @@ class _GirlDetailScreenState extends State<GirlDetailScreen>
                                     children: [
                                       Text(
                                         '¥${data.price}',
-                                        style: MyTheme.font_red_220_20_semi,
+                                        style: MyTheme.font_jellyCyan_20_semi,
                                       ),
                                       Row(
                                         children: [
-                                          MyImage.asset(
-                                            MyImagePaths.appChatShare,
-                                            width: 25.w,
-                                            height: 25.w,
+                                          GestureDetector(
+                                            onTap: () {
+                                              const MineShareToUserRoute()
+                                                  .push(context);
+                                            },
+                                            child: MyImage.asset(
+                                              MyImagePaths.appChatShare,
+                                              width: 25.w,
+                                              height: 25.w,
+                                            ),
                                           ),
                                           SizedBox(
                                             width: 5.w,
@@ -434,15 +443,17 @@ class _GirlDetailScreenState extends State<GirlDetailScreen>
                                                 'a', '${data.coins}'),
                                         style: MyTheme.orange247_12,
                                       )
-                                    : Row(
-                                        children: [
-                                          Text(
-                                            'lxfs'.tr() +
+                                    : RichText(
+                                        maxLines: 999,
+                                        text: TextSpan(children: [
+                                          TextSpan(
+                                            text: 'lxfs'.tr() +
                                                 ": " +
                                                 '${data.contact}',
-                                            style: MyTheme.yellow255_12,
+                                            style: MyTheme.jellyCyan_12,
                                           ),
-                                          GestureDetector(
+                                          WidgetSpan(
+                                              child: GestureDetector(
                                             behavior:
                                                 HitTestBehavior.translucent,
                                             onTap: () {
@@ -461,53 +472,64 @@ class _GirlDetailScreenState extends State<GirlDetailScreen>
                                               width: 31.w,
                                               alignment: Alignment.center,
                                               decoration: BoxDecoration(
-                                                  color: MyTheme.red220Color,
+                                                  color: MyTheme.jellyCyanColor,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           7.5.w)),
                                               child: Text(
-                                                'fz'.tr(),
+                                                'fuz'.tr(),
                                                 style: MyTheme.white255_10,
                                               ),
                                             ),
-                                          )
-                                        ],
-                                      ),
+                                          ))
+                                        ])),
                                 SizedBox(
                                   height: 10.w,
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: 15.w),
-                          SizedBox(height: 15.w),
                           SizedBox(
                             height: 40.w,
                           ),
                           '${data.contact}'.isNotEmpty
                               ? Container()
-                              : GestureDetector(
-                                  behavior: HitTestBehavior.translucent,
-                                  onTap: buyGirl,
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: MyTheme.pagePadding,
-                                        vertical: 20.h),
-                                    height: 50.w,
-                                    decoration: BoxDecoration(
-                                        color: MyTheme.red220Color,
-                                        borderRadius:
-                                            BorderRadius.circular(25.w)),
-                                    child: Center(
-                                      child: Text(
-                                        data.type == 1 // 0： 免费 1:VIP 2:金币
-                                            ? 'vmfjs'.tr()
-                                            : '${data.coins}' + 'jbjs'.tr(),
-                                        style: MyTheme.white255_16_M,
-                                      ),
-                                    ),
+                              : Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: MyTheme.pagePadding,
+                                      vertical: 20.h),
+                                  child: MyButton.gradient(
+                                    minimumSize: Size.fromHeight(40.w),
+                                    onPressed: () async {
+                                      buyGirl();
+                                    },
+                                    borderRadius: 8,
+                                    text: data.type == 1 // 0： 免费 1:VIP 2:金币
+                                        ? 'vmfjs'.tr()
+                                        : '${data.coins}' + 'jbjs'.tr(),
                                   ),
                                 ),
+                          // GestureDetector(
+                          //   behavior: HitTestBehavior.translucent,
+                          //   onTap: buyGirl,
+                          //   child: Container(
+                          //     margin: EdgeInsets.symmetric(
+                          //         horizontal: MyTheme.pagePadding,
+                          //         vertical: 20.h),
+                          //     height: 50.w,
+                          //     decoration: BoxDecoration(
+                          //         color: MyTheme.red220Color,
+                          //         borderRadius: BorderRadius.circular(25.w)),
+                          //     child: Center(
+                          //       child: Text(
+                          //         data.type == 1 // 0： 免费 1:VIP 2:金币
+                          //             ? 'vmfjs'.tr()
+                          //             : '${data.coins}' + 'jbjs'.tr(),
+                          //         style: MyTheme.white255_16_M,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

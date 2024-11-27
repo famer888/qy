@@ -19,6 +19,7 @@ import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/dialog/my_dialog.dart';
 import '../../../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../../../common_widgets/my_app_bar.dart';
+import '../../../common_widgets/my_button.dart';
 import '../../../image_paths.dart';
 
 import '../../../../../domain/async_value.dart';
@@ -136,7 +137,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                                         horizontal: 10.w, vertical: 5.w),
                                     decoration: BoxDecoration(
                                         color: isSelected
-                                            ? MyTheme.red220Color
+                                            ? MyTheme.jellyCyanColor
                                             : MyTheme.whiteColor
                                                 .withOpacity(0.05),
                                         borderRadius:
@@ -150,31 +151,17 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                               ))
                           .toList()),
                   const Spacer(),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
+                  MyButton.gradient(
+                    minimumSize: Size.fromHeight(40.w),
+                    onPressed: () async {
                       _seletedCates = seletedCates;
                       _seletedCates
                           .sort((a, b) => (a.id ?? 0).compareTo(b.id ?? 0));
                       setState(() {});
                       Navigator.of(ctx).pop();
                     },
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-                      height: 50.w,
-                      decoration: BoxDecoration(
-                          color: MyTheme.red220Color,
-                          borderRadius: BorderRadius.circular(25.w)),
-                      child: Center(
-                        child: Builder(builder: (context) {
-                          return Text(
-                            'qr'.tr(),
-                            style: MyTheme.white255_16_M,
-                          );
-                        }),
-                      ),
-                    ),
+                    borderRadius: 8,
+                    text: 'qr'.tr(context: context),
                   ),
                   const SizedBox(
                       // height: MyTheme.bottom + 20.w,
@@ -346,7 +333,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                       '*',
                       style: TextStyle(
                           // fontFamily: hanyi,
-                          color: MyTheme.red220Color,
+                          color: MyTheme.jellyCyanColor,
                           fontSize: 15.sp,
                           overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w500,
@@ -390,7 +377,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                     Text('*',
                         style: TextStyle(
                             // fontFamily: hanyi,
-                            color: MyTheme.red220Color,
+                            color: MyTheme.jellyCyanColor,
                             fontSize: 15.sp,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w500,
@@ -775,7 +762,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                       '*',
                       style: TextStyle(
                           // fontFamily: hanyi,
-                          color: MyTheme.red220Color,
+                          color: MyTheme.jellyCyanColor,
                           fontSize: 15.sp,
                           overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w500,
@@ -820,7 +807,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                       '*',
                       style: TextStyle(
                           // fontFamily: hanyi,
-                          color: MyTheme.red220Color,
+                          color: MyTheme.jellyCyanColor,
                           fontSize: 15.sp,
                           overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w500,
@@ -929,23 +916,13 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                 SizedBox(
                   height: 40.w,
                 ),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
+                MyButton.gradient(
+                  minimumSize: Size.fromHeight(40.w),
+                  onPressed: () async {
                     uploadData();
                   },
-                  child: Container(
-                    height: 50.w,
-                    decoration: BoxDecoration(
-                        color: MyTheme.red220Color,
-                        borderRadius: BorderRadius.circular(25.w)),
-                    child: Center(
-                      child: Text(
-                        'ljfb'.tr(),
-                        style: MyTheme.white16medium,
-                      ),
-                    ),
-                  ),
+                  borderRadius: 8,
+                  text: 'ljfb'.tr(context: context),
                 ),
                 SizedBox(
                   height: 100.w,

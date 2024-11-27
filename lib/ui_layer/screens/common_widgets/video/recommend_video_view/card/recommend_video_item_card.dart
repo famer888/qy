@@ -1,10 +1,19 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../../../domain/domain.dart';
 import '../../../../../../domain/model/video/recommend_video_model.dart';
+import '../../../../../../domain/model/video/video_model.dart';
+import '../../../../../../domain/remote_domain/domains/index.dart';
+import '../../../../../notifiers/home_config_notifier.dart';
 import '../../../../../router/routes.dart';
+import '../../../../../utils/my_toast.dart';
 import '../../../../theme.dart';
 import '../../../localization_text.dart';
+import '../../../my_button.dart';
 import '../../card/video_card.dart';
 
 class RecommendVideoItemCard extends StatefulWidget {
@@ -17,6 +26,8 @@ class RecommendVideoItemCard extends StatefulWidget {
 }
 
 class _RecommendVideoItemCardState extends State<RecommendVideoItemCard> {
+  late final _domain = context.read<IndexDomain>();
+  int page = 1;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,23 +64,92 @@ class _RecommendVideoItemCardState extends State<RecommendVideoItemCard> {
           ),
         ),
         if (widget.data.items.isNotEmpty == true)
-          GridView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.data.items.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: VideoCard.aspectRatio,
-              mainAxisSpacing: 8.w,
-              crossAxisSpacing: 8.w,
-            ),
-            itemBuilder: (context, index) {
-              final partsItem = widget.data.items[index];
-              return VideoCard(data: partsItem);
-            },
+          Column(
+            children: [
+              GridView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: widget.data.items.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: VideoCard.aspectRatio,
+                  mainAxisSpacing: 8.w,
+                  crossAxisSpacing: 8.w,
+                ),
+                itemBuilder: (context, index) {
+                  final partsItem = widget.data.items[index];
+                  return VideoCard(data: partsItem);
+                },
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.only(top: MyTheme.pagePadding, bottom: 10.w),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MyButton.highEmphasis(
+                      color: MyTheme.white008Color,
+                      borderRadius: 15.w,
+                      minimumSize: Size(150.w, 30.w),
+                      onPressed: _getData,
+                      child: LocalizationText('hyh', style: MyTheme.white12),
+                    ),
+                    SizedBox(width: 20.w),
+                    MyButton.highEmphasis(
+                      color: MyTheme.white008Color,
+                      borderRadius: 15.w,
+                      minimumSize: Size(150.w, 30.w),
+                      child: LocalizationText('ckgd', style: MyTheme.white12),
+                      onPressed: () {
+                        MoreRecommendVideoRoute(
+                                name: widget.data.title,
+                                id: widget.data.id,
+                                type: widget.data.type)
+                            .push(context);
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
       ],
     );
+  }
+
+  //换一换
+  Future<void> _getData() async {
+    page++;
+
+    late final navs =
+        context.read<HomeConfigNotifier>().homeData.config.mvSecondSortNav;
+    final limit = max(6, widget.data.items.length);
+
+    final result = widget.data.type == 1
+        ? await _domain.getMoreRecommendVideosBySort(
+            id: widget.data.id,
+            page: page,
+            limit: limit,
+          )
+        : await _domain.getMoreRecommendVideosByPart(
+            page: page,
+            limit: limit,
+            sort: navs.first.type,
+            id: widget.data.id,
+          );
+
+    if (result.status == 1) {
+      final newItems = result.data ?? [];
+      if (newItems.isEmpty) {
+        page = 0;
+        _getData();
+      } else {
+        widget.data.items = newItems;
+        setState(() {});
+      }
+    } else {
+      MyToast.showText(text: result.msg ?? '');
+    }
   }
 }

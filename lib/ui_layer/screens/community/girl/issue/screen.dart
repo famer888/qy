@@ -18,6 +18,7 @@ import '../../../../utils/common_utils.dart';
 import '../../../common_widgets/dialog/my_dialog.dart';
 import '../../../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../../../common_widgets/my_app_bar.dart';
+import '../../../common_widgets/my_button.dart';
 import '../../../image_paths.dart';
 
 import '../../../../../domain/async_value.dart';
@@ -400,7 +401,7 @@ class _GirlIssueScreenState extends State<GirlIssueScreen> {
                                 '*',
                                 style: TextStyle(
                                     // fontFamily: hanyi,
-                                    color: MyTheme.red220Color,
+                                    color: MyTheme.jellyCyanColor,
                                     fontSize: 15.sp,
                                     overflow: TextOverflow.ellipsis,
                                     fontWeight: FontWeight.w500,
@@ -444,7 +445,7 @@ class _GirlIssueScreenState extends State<GirlIssueScreen> {
                               Text('*',
                                   style: TextStyle(
                                       // fontFamily: hanyi,
-                                      color: MyTheme.red220Color,
+                                      color: MyTheme.jellyCyanColor,
                                       fontSize: 15.sp,
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.w500,
@@ -879,7 +880,7 @@ class _GirlIssueScreenState extends State<GirlIssueScreen> {
                                 '*',
                                 style: TextStyle(
                                     // fontFamily: hanyi,
-                                    color: MyTheme.red220Color,
+                                    color: MyTheme.jellyCyanColor,
                                     fontSize: 15.sp,
                                     overflow: TextOverflow.ellipsis,
                                     fontWeight: FontWeight.w500,
@@ -924,7 +925,7 @@ class _GirlIssueScreenState extends State<GirlIssueScreen> {
                                 '*',
                                 style: TextStyle(
                                     // fontFamily: hanyi,
-                                    color: MyTheme.red220Color,
+                                    color: MyTheme.jellyCyanColor,
                                     fontSize: 15.sp,
                                     overflow: TextOverflow.ellipsis,
                                     fontWeight: FontWeight.w500,
@@ -1038,23 +1039,13 @@ class _GirlIssueScreenState extends State<GirlIssueScreen> {
                           SizedBox(
                             height: 40.w,
                           ),
-                          GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
+                          MyButton.gradient(
+                            minimumSize: Size.fromHeight(40.w),
+                            onPressed: () async {
                               uploadData();
                             },
-                            child: Container(
-                              height: 50.w,
-                              decoration: BoxDecoration(
-                                  color: MyTheme.red220Color,
-                                  borderRadius: BorderRadius.circular(25.w)),
-                              child: Center(
-                                child: Text(
-                                  'ljfb'.tr(),
-                                  style: MyTheme.white16medium,
-                                ),
-                              ),
-                            ),
+                            borderRadius: 8,
+                            text: 'ljfb'.tr(context: context),
                           ),
                           SizedBox(
                             height: 100.w,
