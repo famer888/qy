@@ -1,4 +1,4 @@
-package com.xekoko.qypj
+package com.xekoko.qypjb
 
 import io.flutter.embedding.android.FlutterActivity
 
