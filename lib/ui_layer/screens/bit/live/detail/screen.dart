@@ -70,12 +70,7 @@ class _LiveVideoDetailScreenState extends State<LiveVideoDetailScreen> {
         child: Scaffold(
           extendBodyBehindAppBar: true,
           // appBar: const MyAppBar(),
-          floatingActionButton: GestureDetector(
-            onTap: () {
-              context.pop();
-            },
-            child: const FabPopButton(),
-          ),
+          floatingActionButton: const FabPopButton(),
           body: _asyncValue.maybeWhen(
             orElse: () => const LoadingView(),
             error: (_, __) => NetworkErrorView(onTap: _initData),

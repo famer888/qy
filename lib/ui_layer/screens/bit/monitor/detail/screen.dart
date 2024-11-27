@@ -74,12 +74,7 @@ class _MonitorVideoDetailScreenState extends State<MonitorVideoDetailScreen> {
             title: _asyncValue.data?.monitor.title,
             backgroundColor: Colors.black,
           ),
-          floatingActionButton: GestureDetector(
-            onTap: () {
-              context.pop();
-            },
-            child: const FabPopButton(),
-          ),
+          floatingActionButton: const FabPopButton(),
           body: _asyncValue.maybeWhen(
             orElse: () => const LoadingView(),
             error: (_, __) => NetworkErrorView(onTap: _initData),
