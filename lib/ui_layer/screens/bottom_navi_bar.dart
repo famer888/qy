@@ -244,94 +244,94 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   }
 
   //加载添加到主屏幕功能
-  void _addMainScreen() {
-    if (!kIsWeb) return;
-    final bool isInstall =
-        (js.context.callMethod('getInstallValue') as String) == '1';
-    final bool isSafari = js.context.callMethod('checkSafari') as bool;
-    if (!isSafari && !isInstall) {
-      showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(builder: (context, setBottomSheetState) {
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              decoration: BoxDecoration(
-                color: MyTheme.blackColor49,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(5.w),
-                    topLeft: Radius.circular(5.w)),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 20.w),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(width: 20.w, height: 20.w),
-                      Text(
-                        'tjwberk'.tr(),
-                        style: MyTheme.white14,
-                      ),
-                      GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Icon(
-                          Icons.close,
-                          size: 20.w,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30.w),
-                  LinkText(
-                    'tjwbdes'.tr(namedArgs: {
-                      'url': html.window.location.href,
-                    }),
-                    textStyle: MyTheme.red12,
-                    linkStyle: TextStyle(
-                      color: const Color.fromRGBO(25, 103, 210, 1),
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                  SizedBox(height: 20.w),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      final bool isDeferredNotNull =
-                          js.context.callMethod('isDeferredNotNull') as bool;
-                      if (isDeferredNotNull) {
-                        js.context.callMethod('presentAddToHome');
-                      } else {
-                        MyToast.showText(text: 'tjpjg'.tr(), time: 2);
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          gradient: MyTheme.btnGradient_ff00edfd_ffbbe954,
-                          borderRadius: BorderRadius.all(Radius.circular(3.w))),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-                      height: 32.w,
-                      alignment: Alignment.center,
-                      child: Text('tjwbzpm'.tr(), style: MyTheme.white13),
-                    ),
-                  ),
-                  SizedBox(height: 30.w),
-                ],
-              ),
-            );
-          });
-        },
-      );
-    }
-  }
+  // void _addMainScreen() {
+  //   if (!kIsWeb) return;
+  //   final bool isInstall =
+  //       (js.context.callMethod('getInstallValue') as String) == '1';
+  //   final bool isSafari = js.context.callMethod('checkSafari') as bool;
+  //   if (!isSafari && !isInstall) {
+  //     showModalBottomSheet(
+  //       backgroundColor: Colors.transparent,
+  //       isScrollControlled: true,
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return StatefulBuilder(builder: (context, setBottomSheetState) {
+  //           return Container(
+  //             padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+  //             decoration: BoxDecoration(
+  //               color: MyTheme.blackColor49,
+  //               borderRadius: BorderRadius.only(
+  //                   topRight: Radius.circular(5.w),
+  //                   topLeft: Radius.circular(5.w)),
+  //             ),
+  //             child: Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+  //                 SizedBox(height: 20.w),
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     SizedBox(width: 20.w, height: 20.w),
+  //                     Text(
+  //                       'tjwberk'.tr(),
+  //                       style: MyTheme.white14,
+  //                     ),
+  //                     GestureDetector(
+  //                       behavior: HitTestBehavior.translucent,
+  //                       onTap: () {
+  //                         Navigator.of(context).pop();
+  //                       },
+  //                       child: Icon(
+  //                         Icons.close,
+  //                         size: 20.w,
+  //                         color: Colors.white,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 SizedBox(height: 30.w),
+  //                 LinkText(
+  //                   'tjwbdes'.tr(namedArgs: {
+  //                     'url': html.window.location.href,
+  //                   }),
+  //                   textStyle: MyTheme.red12,
+  //                   linkStyle: TextStyle(
+  //                     color: const Color.fromRGBO(25, 103, 210, 1),
+  //                     fontSize: 12.sp,
+  //                   ),
+  //                 ),
+  //                 SizedBox(height: 20.w),
+  //                 GestureDetector(
+  //                   behavior: HitTestBehavior.translucent,
+  //                   onTap: () {
+  //                     final bool isDeferredNotNull =
+  //                         js.context.callMethod('isDeferredNotNull') as bool;
+  //                     if (isDeferredNotNull) {
+  //                       js.context.callMethod('presentAddToHome');
+  //                     } else {
+  //                       MyToast.showText(text: 'tjpjg'.tr(), time: 2);
+  //                     }
+  //                   },
+  //                   child: Container(
+  //                     decoration: BoxDecoration(
+  //                         gradient: MyTheme.btnGradient_ff00edfd_ffbbe954,
+  //                         borderRadius: BorderRadius.all(Radius.circular(3.w))),
+  //                     padding:
+  //                         EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+  //                     height: 32.w,
+  //                     alignment: Alignment.center,
+  //                     child: Text('tjwbzpm'.tr(), style: MyTheme.white13),
+  //                   ),
+  //                 ),
+  //                 SizedBox(height: 30.w),
+  //               ],
+  //             ),
+  //           );
+  //         });
+  //       },
+  //     );
+  //   }
+  // }
 
   @override
   void dispose() {
