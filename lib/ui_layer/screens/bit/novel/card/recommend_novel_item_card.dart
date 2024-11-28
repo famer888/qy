@@ -77,7 +77,7 @@ class _RecommendNovelItemCardState extends State<RecommendNovelItemCard> {
             children: [
               MyButton.highEmphasis(
                 color: MyTheme.white008Color,
-                borderRadius: 15.w,
+                borderRadius: 20.w,
                 minimumSize: Size(150.w, 40.w),
                 onPressed: _getData,
                 child: Row(
@@ -94,8 +94,8 @@ class _RecommendNovelItemCardState extends State<RecommendNovelItemCard> {
               SizedBox(width: 20.w),
               MyButton.highEmphasis(
                 color: MyTheme.white008Color,
-                borderRadius: 15.w,
-                minimumSize: Size(150.w, 30.w),
+                borderRadius: 20.w,
+                minimumSize: Size(150.w, 40.w),
                 child: Row(
                   children: [
                     MyImage.asset(

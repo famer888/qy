@@ -103,30 +103,30 @@ class GirlListCard extends StatelessWidget {
                                 'ryg'.tr(),
                             style: MyTheme.white255_15),
                       )),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                        height: 45.w,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: MyTheme.pagePadding),
-                        alignment: Alignment.centerRight,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromRGBO(0, 0, 0, 0.0),
-                              Color.fromRGBO(0, 0, 0, 0.6),
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                        ),
-                        child: Text(
-                          '¥' + (data.price ?? ''),
-                          style: MyTheme.jellyCyan_15,
-                        )),
-                  ),
+                  // Positioned(
+                  //   left: 0,
+                  //   right: 0,
+                  //   bottom: 0,
+                  //   child: Container(
+                  //       height: 45.w,
+                  //       padding: EdgeInsets.symmetric(
+                  //           horizontal: MyTheme.pagePadding),
+                  //       alignment: Alignment.centerRight,
+                  //       decoration: const BoxDecoration(
+                  //         gradient: LinearGradient(
+                  //           colors: [
+                  //             Color.fromRGBO(0, 0, 0, 0.0),
+                  //             Color.fromRGBO(0, 0, 0, 0.6),
+                  //           ],
+                  //           begin: Alignment.topCenter,
+                  //           end: Alignment.bottomCenter,
+                  //         ),
+                  //       ),
+                  //       child: Text(
+                  //         '¥' + (data.price ?? ''),
+                  //         style: MyTheme.jellyCyan_15,
+                  //       )),
+                  // ),
                   // Positioned(left: 0, top: 0, child: videoType(data)),
                 ],
               ),

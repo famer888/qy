@@ -552,40 +552,25 @@ class RelativeDateFormat {
   static final String oneMonthAgo = 'yq'.tr();
   static final String oneYearAgo = 'nq'.tr();
 
-  /// 时间转换
+  //时间转换
   static String format({DateTime? date}) {
-    if (date case final target?) {
-      num delta =
-          DateTime.now().millisecondsSinceEpoch - target.millisecondsSinceEpoch;
-
-      if (delta < 1 * oneMinute) {
-        num seconds = toSeconds(delta);
-        return '${(seconds <= 0 ? 1 : seconds).floor()}$oneSecondAgo';
-      }
-      if (delta < 60 * oneMinute) {
-        num minutes = toMinutes(delta);
-        return '${(minutes <= 0 ? 1 : minutes).floor()}$oneMinuteAgo';
-      }
-      if (delta < 24 * oneHour) {
-        num hours = toHours(delta);
-        return '${(hours <= 0 ? 1 : hours).floor()}$oneHourAgo';
-      }
-      if (delta < 48 * oneHour) {
-        return 'zut'.tr();
-      }
-      if (delta < 30 * oneDay) {
-        num days = toDays(delta);
-        return '${(days <= 0 ? 1 : days).floor()}$oneDayAgo';
-      }
-      if (delta < 12 * 4 * oneWeek) {
-        num months = toMonths(delta);
-        return '${(months <= 0 ? 1 : months).floor()}$oneMonthAgo';
-      } else {
-        num years = toYears(delta);
-        return '${(years <= 0 ? 1 : years).floor()}$oneYearAgo';
-      }
+    date = date ?? DateTime.now();
+    DateTime bjTime = DateTime.now();
+    int time = (bjTime.millisecondsSinceEpoch / 1000).round();
+    int step = (date.millisecondsSinceEpoch / 1000).round();
+    int delta = time - step;
+    if (delta < 60) {
+      return '${delta <= 0 ? 1 : delta}${'mq'.tr()}';
+    } else if (delta <= 3600) {
+      int minutes = (delta / 60).floor();
+      return '${minutes <= 0 ? 1 : minutes}${'fq'.tr()}';
+    } else if (delta <= 43200) {
+      //12小时为准
+      int hours = (delta / 60 / 60).floor();
+      return '${hours <= 0 ? 1 : hours}${'sq'.tr()}';
+    } else {
+      return '${date.month}月${date.day}日';
     }
-    return '';
   }
 
   static num toSeconds(num date) {
