@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:android_id/android_id.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -12,6 +13,7 @@ import 'package:cross_file/cross_file.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:utils/utils.dart';
+import 'package:universal_html/html.dart' as html;
 
 import '../../app_config.dart';
 import '../../crypto.dart';
@@ -332,56 +334,119 @@ abstract class _BaseAppRepo implements AppDomain {
     return info;
   }
 
+  // @override
+  // Future<bool> initLine() async {
+  //   final cacheLines = await _cacheManager.readLinesUrl();
+
+  //   final lines = cacheLines ?? BuildConfig.apiLines;
+
+  //   // List<Map> errorLines = [];
+
+  //   List<Map> resultLines = [];
+
+  //   String? targetLine;
+
+  //   for (String line in lines) {
+  //     Map<String, dynamic>? headers;
+
+  //     /// get secret value
+  //     if (!kIsWeb) {
+  //       final fdsKey = await _getFdsKey();
+  //       final secretValue = PlatformAwareCrypto.secretValue(fdsKey: fdsKey);
+  //       headers = {
+  //         'Cf-Ray-Xf': secretValue,
+  //       };
+  //     }
+
+  //     /// check line
+  //     // if (await _checkLine(line, headers)) {
+  //     //   targetLine = line;
+  //     //   _apiDio.options.headers = headers;
+  //     //   break;
+  //     // }
+  //     // errorLines.add({'url': line});
+
+  //     Map<String, Object> lineInfo = await _checkLine2(line, headers);
+
+  //     resultLines.add(lineInfo);
+  //   }
+
+  //   /// use backup line
+  //   targetLine ??= await _backupLine();
+
+  //   if (targetLine != null) {
+  //     _apiDio.options.baseUrl = targetLine;
+  //     // if (errorLines.isNotEmpty) {
+  //     //   _reportErrorLine(errorLines);
+  //     // }
+
+  //     _reportLine(resultLines);
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
   @override
-  Future<bool> initLine() async {
-    final cacheLines = await _cacheManager.readLinesUrl();
+  void setBaseURL(String url) async {
+    // TODO: 手动设置线路
+    if (!kIsWeb) {
+      final fdsKey = await _getFdsKey();
+      final secretValue = PlatformAwareCrypto.secretValue(fdsKey: fdsKey);
+      _apiDio.options.headers = {'Cf-Ray-Xf': secretValue};
+    }
+    _apiDio.options.baseUrl = url;
+  }
 
-    final lines = cacheLines ?? BuildConfig.apiLines;
+  @override
+  void initLine({
+    Function? success,
+    Function? failed,
+    Function(List<String>)? lines,
+  }) async {
+    List<String> unChecklines =
+        (await _cacheManager.readLinesUrl()) ?? BuildConfig.apiLines;
+    List<String> linesTemp = [...unChecklines];
 
-    // List<Map> errorLines = [];
+    if (!kIsWeb) {
+      final fdsKey = await _getFdsKey();
+      final secretValue = PlatformAwareCrypto.secretValue(fdsKey: fdsKey);
+      _apiDio.options.headers = {'Cf-Ray-Xf': secretValue};
+    }
 
-    List<Map> resultLines = [];
+    //无网络
+    ConnectivityResult connectivityResult =
+        await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      failed?.call();
+      return;
+    }
 
-    String? targetLine;
+    //返回所有线路 让用户直链
+    var gitLine = await _backupLine();
+    if (gitLine.isNotEmpty) linesTemp.add(gitLine);
+    lines?.call(linesTemp);
 
-    for (String line in lines) {
-      Map<String, dynamic>? headers;
-
-      /// get secret value
-      if (!kIsWeb) {
-        final fdsKey = await _getFdsKey();
-        final secretValue = PlatformAwareCrypto.secretValue(fdsKey: fdsKey);
-        headers = {
-          'Cf-Ray-Xf': secretValue,
-        };
+    //逻辑思路 1、异步检测所有线路 2、看是否有成功线路，有则结束检测，否则继续 3、检测GIT备用线路，成功则结束检测，否则失败
+    Future.wait(unChecklines.map((x) async {
+      return _checkLine(x);
+    })).then((result) async {
+      var first = result.firstWhere((p) => p["code"] == 200, orElse: () => {});
+      if (first.isNotEmpty) {
+        _apiDio.options.baseUrl = first["url"].toString();
+        success?.call();
+        _reportLine(result);
+      } else {
+        var p = await _checkLine(gitLine);
+        if (p["code"] == 200) {
+          _apiDio.options.baseUrl = p["url"].toString();
+          success?.call();
+          _reportLine(result);
+        } else {
+          //没有任何可用线路 失败回调
+          failed?.call();
+        }
       }
-
-      /// check line
-      // if (await _checkLine(line, headers)) {
-      //   targetLine = line;
-      //   _apiDio.options.headers = headers;
-      //   break;
-      // }
-      // errorLines.add({'url': line});
-
-      Map<String, Object> lineInfo = await _checkLine2(line, headers);
-
-      resultLines.add(lineInfo);
-    }
-
-    /// use backup line
-    targetLine ??= await _backupLine();
-
-    if (targetLine != null) {
-      _apiDio.options.baseUrl = targetLine;
-      // if (errorLines.isNotEmpty) {
-      //   _reportErrorLine(errorLines);
-      // }
-
-      _reportLine(resultLines);
-      return true;
-    }
-    return false;
+    });
   }
 
   Future<String> _getFdsKey() async {
@@ -404,52 +469,46 @@ abstract class _BaseAppRepo implements AppDomain {
   }
 
   /// check line
-  Future<bool> _checkLine(String line, Map<String, dynamic>? headers) async {
-    const duration = Duration(seconds: 5);
+  Future<Map<String, Object>> _checkLine(String line) async {
+    int code = 0;
+    String xt = line.trim();
     try {
-      final resp = await Dio(BaseOptions(
-        connectTimeout: duration,
-        receiveTimeout: duration,
-        headers: headers,
-      )).get('$line/api/callback/checkLine');
-      if (resp.statusCode == 200) {
-        return true;
+      if (kIsWeb) {
+        code = await html.HttpRequest.request('$xt/api/callback/checkLine',
+                method: "POST")
+            .then((value) => value.status ?? 0)
+            .timeout(const Duration(milliseconds: 5 * 1000));
+      } else {
+        code = await _apiDio
+            .post('$xt/api/callback/checkLine')
+            .then((value) => value.statusCode ?? 0);
       }
-    } catch (_) {}
-    return false;
-  }
-
-  /// check line
-  Future<Map<String, Object>> _checkLine2(
-      String line, Map<String, dynamic>? headers) async {
-    const duration = Duration(seconds: 5);
-    try {
-      final resp = await Dio(BaseOptions(
-        connectTimeout: duration,
-        receiveTimeout: duration,
-        headers: headers,
-      )).get('$line/api/callback/checkLine');
-
-      return {'url': line, 'code': resp.statusCode ?? 0};
     } catch (_) {
-      return {'url': line, 'code': 0};
+      code = 0;
     }
+    return {"url": xt, "code": code};
   }
 
   /// 启用备用线路
-  Future<String?> _backupLine() async {
+  Future<String> _backupLine() async {
+    final github =
+        (await _cacheManager.readGithubUrl()) ?? BuildConfig.githubLine;
+    dynamic line;
     try {
-      final github =
-          (await _cacheManager.readGithubUrl()) ?? BuildConfig.githubLine;
-      const duration = Duration(seconds: 5);
-      final resp = await Dio(
-        BaseOptions(connectTimeout: duration, receiveTimeout: duration),
-      ).get(github);
-      if (resp.statusCode == 200) {
-        return resp.data.toString().replaceAll('\n', '');
+      if (kIsWeb) {
+        line = await html.HttpRequest.request(github, method: "GET")
+            .then((value) => value.response)
+            .timeout(const Duration(milliseconds: 5 * 1000));
+      } else {
+        line = await Dio(BaseOptions(
+                connectTimeout: const Duration(seconds: 5),
+                receiveTimeout: const Duration(seconds: 5)))
+            .get(github);
       }
-    } catch (_) {}
-    return null;
+    } catch (_) {
+      line = "";
+    }
+    return line.toString().trim().replaceAll('\n', '');
   }
 
   /// 上报线路

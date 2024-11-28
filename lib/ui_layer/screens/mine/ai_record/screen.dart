@@ -86,7 +86,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
             labelStyle: MyTheme.white255_18,
             unselectedLabelStyle: MyTheme.white06_18,
             indicator: BoxDecoration(
-              color: MyTheme.jellyCyanColor103224185,
+              color: Colors.transparent,
               borderRadius: BorderRadius.circular(30.w),
             ),
           ),

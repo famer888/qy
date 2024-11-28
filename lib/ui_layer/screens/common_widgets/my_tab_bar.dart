@@ -8,7 +8,10 @@ enum TabBarType {
   line,
 
   /// 填充色
-  fillColor
+  fillColor,
+
+  /// 无
+  none
 }
 
 class TabBarWithView extends StatefulWidget {
@@ -45,6 +48,23 @@ class TabBarWithView extends StatefulWidget {
     this.initialIndex = 0,
     this.labelPadding,
   }) : type = TabBarType.fillColor;
+
+  const TabBarWithView.none({
+    super.key,
+    required this.titles,
+    required this.views,
+    this.tabBarPadding,
+    this.tabBarHeight,
+    this.isScrollable = true,
+    this.labelStyle,
+    this.unselectedLabelStyle,
+    this.tabController,
+    this.isCenter = false,
+    this.initialIndex = 0,
+    this.labelPadding,
+  })  : type = TabBarType.none,
+        tabPadding = null,
+        tabBarRightWidget = null;
 
   final TabBarType type;
 
@@ -106,6 +126,11 @@ class _TabBarWithViewState extends State<TabBarWithView>
         labelStyle: widget.labelStyle,
         unselectedLabelStyle: widget.unselectedLabelStyle,
         labelPadding: widget.labelPadding,
+      ),
+    TabBarType.none => MyTabBarTheme.none(
+        labelStyle: widget.labelStyle,
+        unselectedLabelStyle: widget.unselectedLabelStyle,
+        tabAlignment: widget.isScrollable ? TabAlignment.start : null,
       ),
   };
 
@@ -231,6 +256,25 @@ class MyTabBarTheme extends TabBarTheme {
               color: const Color.fromRGBO(35, 35, 55, 1),
               borderRadius: BorderRadius.circular(30.w),
             ),
+        tabAlignment: tabAlignment,
+        dividerColor: Colors.transparent,
+      );
+
+  factory MyTabBarTheme.none({
+    TextStyle? labelStyle,
+    TextStyle? unselectedLabelStyle,
+    TabAlignment? tabAlignment,
+  }) =>
+      MyTabBarTheme(
+        labelStyle: labelStyle ?? MyTheme.jellyCyan_18,
+        labelPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+        unselectedLabelStyle: unselectedLabelStyle ?? MyTheme.white18,
+        indicatorSize: TabBarIndicatorSize.label,
+        indicator: BoxDecoration(),
+        indicatorColor: Colors.transparent,
+        overlayColor: WidgetStateProperty.resolveWith<Color>(
+          (_) => Colors.transparent,
+        ),
         tabAlignment: tabAlignment,
         dividerColor: Colors.transparent,
       );

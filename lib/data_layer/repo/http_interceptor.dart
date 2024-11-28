@@ -40,7 +40,7 @@ class AutoEncryptAndDecryptInterceptor extends Interceptor {
     logger.i({
       'path': response.requestOptions.path,
       'data': response.data,
-      'encrypt': response.data['data'],
+      'encrypt': response.data, // Map?.from(response.data)['data'],
     });
 
     return super.onResponse(response, handler);

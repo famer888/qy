@@ -51,7 +51,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
         type: CommunityIssueType.image,
       ),
       (
-        title: 'spingty'.tr(context: context),
+        title: 'sping'.tr(context: context),
         iconName: MyImagePaths.appFabuVideo,
         type: CommunityIssueType.video,
       ),

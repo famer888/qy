@@ -10,6 +10,7 @@ import '../notifiers/home_config_notifier.dart';
 import '../notifiers/user_notifier.dart';
 import '../router/routes.dart';
 import '../utils/common_utils.dart';
+import '../utils/my_toast.dart';
 import 'common_widgets/my_image.dart';
 import 'common_widgets/pop_scope_wrapper.dart';
 import 'common_widgets/status/network_error.dart';
@@ -32,9 +33,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   AdModel? welcomeAds;
   String? officialWebUrl;
 
-  bool isCheckingLine = false;
+  bool isCheckingLine = true;
   bool isLineError = false;
   bool showAd = false;
+
+  List<String> lines = [];
 
   @override
   void initState() {
@@ -54,16 +57,23 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     setState(() {});
   }
 
-  _checkLineAndFetchBeforeEnterHome() async {
-    if (isCheckingLine) return;
-    isCheckingLine = true;
-    setState(() {
-      isLineError = false;
-    });
+  _checkLineAndFetchBeforeEnterHome() {
+    appDomain.initLine(
+      failed: () {
+        isCheckingLine = false;
+        if (mounted) setState(() {});
+      },
+      success: () {
+        _enterAdOrHome();
+      },
+      lines: (x) {
+        lines = x;
+      },
+    );
+  }
 
-    if (await appDomain.initLine() &&
-        await homeConfigNotifier.init() &&
-        mounted) {
+  _enterAdOrHome({bool showTip = false}) async {
+    if (await homeConfigNotifier.init() && mounted) {
       if (welcomeAds != null) {
         setState(() {
           showAd = true;
@@ -71,45 +81,90 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         return;
       }
       const HomeRoute().go(context);
+    } else if (showTip) {
+      MyToast.showText(text: 'wfljqsz'.tr(context: context));
     }
-
-    isCheckingLine = false;
-
-    setState(() {
-      isLineError = true;
-    });
   }
 
   Widget checkLineView() => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'jcxlsd'.tr(context: context),
-              style: MyTheme.gray14,
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20.w),
-            if (officialWebUrl?.isNotEmpty == true)
-              GestureDetector(
-                onTap: () {
-                  CommonUtils.launchUrl(officialWebUrl!);
-                },
-                child: Text(
-                  '${'gwdzdz'.tr(context: context)}:\n$officialWebUrl',
-                  style: MyTheme.red14,
-                  maxLines: 3,
+        child: isCheckingLine
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      isCheckingLine = false;
+                      if (mounted) setState(() {});
+                    },
+                    child: Text(
+                      'jcxlsd'.tr(
+                          context: context), //线路检测中，请稍等^_^ 若一直进不去请使用VPN翻墙软件观看！
+                      style: MyTheme.gray14,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: 20.w),
+                  if (officialWebUrl?.isNotEmpty == true)
+                    GestureDetector(
+                      onTap: () {
+                        CommonUtils.launchUrl(officialWebUrl!);
+                      },
+                      child: Text(
+                        '${'gwdzdz'.tr(context: context)}:\n$officialWebUrl', //若进不去点我重新安装
+                        style: MyTheme.red14,
+                        maxLines: 3,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                ],
+              )
+            : tryLinesWidget(),
+      );
+
+  //用户试用直链接
+  Widget tryLinesWidget() => Center(
+      child: lines.isEmpty
+          ? NetworkErrorView(
+              text: 'wfljqsz'.tr(context: context), //请检查手机网络设置或点击重试！
+              onTap: _checkLineAndFetchBeforeEnterHome,
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'xzbycs'.tr(context: context),
+                  style: MyTheme.white08_14_M,
+                  maxLines: 5,
                   textAlign: TextAlign.center,
                 ),
-              ),
-            if (isLineError)
-              NetworkErrorView(
-                text: 'wfljqsz'.tr(context: context),
-                onTap: _checkLineAndFetchBeforeEnterHome,
-              ),
-          ],
-        ),
-      );
+                SizedBox(height: 20.w),
+                Column(
+                  children: lines.asMap().keys.map((x) {
+                    return GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          appDomain.setBaseURL(lines[x].toString().trim());
+                          _enterAdOrHome(showTip: true);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              bottom: 10.w, left: 40.w, right: 40.w),
+                          decoration: BoxDecoration(
+                              color: MyTheme.grayColor150,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(3.w))),
+                          alignment: Alignment.center,
+                          height: 36.w,
+                          child: Text(
+                              'byxl'
+                                  .tr(context: context)
+                                  .replaceAll("0", "${x + 1}"),
+                              style: MyTheme.white13),
+                        ));
+                  }).toList(),
+                )
+              ],
+            ));
 
   @override
   Widget build(BuildContext context) {

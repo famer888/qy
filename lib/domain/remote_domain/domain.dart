@@ -53,7 +53,12 @@ abstract class RemoteDomain
         IndexDomain,
         RankDomain {
   Stream<MyTokenStatus?> get tokenStatusStream;
-  Future<bool> initLine();
+  void initLine({
+    Function? success,
+    Function? failed,
+    Function(List<String>)? lines,
+  });
+  void setBaseURL(String url);
 
   String getOAuthId();
   String getOAuthType();

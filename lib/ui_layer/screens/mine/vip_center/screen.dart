@@ -692,7 +692,7 @@ class _RightArea extends StatelessWidget {
             itemCount: products[selectedIndex].rights.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 160 / 43,
+              childAspectRatio: 160 / 60,
               crossAxisSpacing: 10.w,
               mainAxisSpacing: 10.w,
             ),
@@ -752,8 +752,8 @@ class _RightItem extends StatelessWidget {
                     child: Text(
                       subTitle,
                       style: MyTheme.white06_10,
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      textAlign: TextAlign.left,
                     ),
                   )
                 ]),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../../domain/async_value.dart';
 import '../../../../domain/model/seed/seed_nav_model.dart';
@@ -6,6 +7,7 @@ import '../../../../domain/remote_domain/domains/seed.dart';
 import '../../common_widgets/my_tab_bar.dart';
 import '../../common_widgets/status/loading.dart';
 import '../../common_widgets/status/network_error.dart';
+import '../../theme.dart';
 import 'content.dart';
 
 class SeedScreen extends StatefulWidget {
@@ -48,7 +50,10 @@ class _SeedScreenState extends State<SeedScreen> {
   @override
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
-      data: (data) => TabBarWithView.line(
+      data: (data) => TabBarWithView.none(
+        labelStyle: MyTheme.jellyCyan_15,
+        unselectedLabelStyle: MyTheme.white15,
+        tabBarHeight: 30.w,
         titles: data.map((e) => e.name).toList(),
         views: data.map((e) => SeedContentView(nav: e)).toList(),
       ),
