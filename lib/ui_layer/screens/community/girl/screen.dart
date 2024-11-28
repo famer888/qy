@@ -349,6 +349,7 @@ class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
               child: TabBarWithView.fillColor(
                 tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+                labelPadding: EdgeInsets.zero,
                 tabBarHeight: 32.w,
                 isScrollable: true,
                 tabController: _tabController,

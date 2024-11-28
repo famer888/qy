@@ -108,6 +108,7 @@ class _CommunityContentViewState extends State<CommunityContentView> {
               )
             : TabBarWithView.fillColor(
                 tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+                labelPadding: EdgeInsets.zero,
                 tabBarHeight: 32.w,
                 isScrollable: true,
                 titles:

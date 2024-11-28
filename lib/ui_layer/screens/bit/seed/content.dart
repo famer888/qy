@@ -70,6 +70,7 @@ class _SeedContentViewState extends State<SeedContentView> {
         padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
         child: TabBarWithView.fillColor(
           tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+          labelPadding: EdgeInsets.zero,
           tabBarHeight: 32.w,
           isScrollable: true,
           titles: isInit ? [for (final title in _titles) title.title] : [],

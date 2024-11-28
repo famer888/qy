@@ -69,6 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
               child: TabBarWithView.fillColor(
                 tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+                labelPadding: EdgeInsets.zero,
                 tabBarHeight: 32.w,
                 isScrollable: true,
                 titles: [for (final title in _titles) title.name ?? ''],

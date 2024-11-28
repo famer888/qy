@@ -112,7 +112,8 @@ class _CircleCommunityContentViewState
                 tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
                 tabBarHeight: 32.w,
                 isScrollable: true,
-                labelPadding: EdgeInsets.only(right: 8.w),
+                labelPadding: EdgeInsets.zero,
+                // labelPadding: EdgeInsets.only(right: 8.w),
                 titles:
                     isInit ? [for (final title in _titles) title.title] : [],
                 views: [
