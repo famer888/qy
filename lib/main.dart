@@ -16,7 +16,6 @@ import 'domain/remote_domain/domains/live.dart';
 import 'domain/remote_domain/domains/monitor.dart';
 import 'domain/remote_domain/domains/novel.dart';
 import 'domain/remote_domain/domains/rank.dart';
-import 'logger.dart';
 import 'ui_layer/notifiers/chat_notifier.dart';
 import 'ui_layer/notifiers/home_config_notifier.dart';
 import 'ui_layer/notifiers/user_notifier.dart';
@@ -122,6 +121,7 @@ class _MyAppState extends State<MyApp> {
     final botToastBuilder = BotToastInit();
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
