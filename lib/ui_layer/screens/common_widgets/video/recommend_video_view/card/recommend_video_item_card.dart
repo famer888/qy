@@ -11,9 +11,11 @@ import '../../../../../../domain/remote_domain/domains/index.dart';
 import '../../../../../notifiers/home_config_notifier.dart';
 import '../../../../../router/routes.dart';
 import '../../../../../utils/my_toast.dart';
+import '../../../../image_paths.dart';
 import '../../../../theme.dart';
 import '../../../localization_text.dart';
 import '../../../my_button.dart';
+import '../../../my_image.dart';
 import '../../card/video_card.dart';
 
 class RecommendVideoItemCard extends StatefulWidget {
@@ -93,14 +95,32 @@ class _RecommendVideoItemCardState extends State<RecommendVideoItemCard> {
                       borderRadius: 15.w,
                       minimumSize: Size(150.w, 40.w),
                       onPressed: _getData,
-                      child: LocalizationText('hyh', style: MyTheme.white14),
+                      child: Row(
+                        children: [
+                          MyImage.asset(
+                            MyImagePaths.appCommonReload,
+                            width: 15.w,
+                          ),
+                          SizedBox(width: 8.w),
+                          LocalizationText('hyh', style: MyTheme.white14),
+                        ],
+                      ),
                     ),
                     SizedBox(width: 20.w),
                     MyButton.highEmphasis(
                       color: MyTheme.white008Color,
                       borderRadius: 15.w,
                       minimumSize: Size(150.w, 40.w),
-                      child: LocalizationText('ckgd', style: MyTheme.white14),
+                      child: Row(
+                        children: [
+                          MyImage.asset(
+                            MyImagePaths.appCommonMore,
+                            width: 15.w,
+                          ),
+                          SizedBox(width: 8.w),
+                          LocalizationText('ckgd', style: MyTheme.white14),
+                        ],
+                      ),
                       onPressed: () {
                         MoreRecommendVideoRoute(
                                 name: widget.data.title,

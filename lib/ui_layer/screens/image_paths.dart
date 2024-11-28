@@ -200,6 +200,6 @@ class MyImagePaths {
   static const appChatOfficialTip = './assets/images/app_chat_official_tip.png';
   static const appChatShare = './assets/images/app_chat_share.png';
   static const appChatTrumpet = './assets/images/app_chat_trumpet.png';
-
-    
+  static const appCommonReload = './assets/images/app_common_reload.png';
+  static const appCommonMore = './assets/images/app_common_more.png';
 }

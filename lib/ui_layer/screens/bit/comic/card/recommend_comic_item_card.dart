@@ -9,6 +9,8 @@ import '../../../../router/routes.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/localization_text.dart';
 import '../../../common_widgets/my_button.dart';
+import '../../../common_widgets/my_image.dart';
+import '../../../image_paths.dart';
 import '../../../theme.dart';
 import 'comic_item_card.dart';
 
@@ -78,14 +80,32 @@ class _RecommendComicItemCardState extends State<RecommendComicItemCard> {
                 borderRadius: 15.w,
                 minimumSize: Size(150.w, 40.w),
                 onPressed: _getData,
-                child: LocalizationText('hyh', style: MyTheme.white14),
+                child: Row(
+                  children: [
+                    MyImage.asset(
+                      MyImagePaths.appCommonReload,
+                      width: 15.w,
+                    ),
+                    SizedBox(width: 8.w),
+                    LocalizationText('hyh', style: MyTheme.white14),
+                  ],
+                ),
               ),
               SizedBox(width: 20.w),
               MyButton.highEmphasis(
                 color: MyTheme.white008Color,
                 borderRadius: 15.w,
                 minimumSize: Size(150.w, 30.w),
-                child: LocalizationText('ckgd', style: MyTheme.white14),
+                child: Row(
+                  children: [
+                    MyImage.asset(
+                      MyImagePaths.appCommonMore,
+                      width: 15.w,
+                    ),
+                    SizedBox(width: 8.w),
+                    LocalizationText('ckgd', style: MyTheme.white14),
+                  ],
+                ),
                 onPressed: () {
                   MoreComicRoute(
                     title: widget.data.title ?? '',
