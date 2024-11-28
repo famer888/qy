@@ -92,7 +92,7 @@ class _RecommendVideoItemCardState extends State<RecommendVideoItemCard> {
                   children: [
                     MyButton.highEmphasis(
                       color: MyTheme.white008Color,
-                      borderRadius: 15.w,
+                      borderRadius: 20.w,
                       minimumSize: Size(150.w, 40.w),
                       onPressed: _getData,
                       child: Row(
@@ -109,7 +109,7 @@ class _RecommendVideoItemCardState extends State<RecommendVideoItemCard> {
                     SizedBox(width: 20.w),
                     MyButton.highEmphasis(
                       color: MyTheme.white008Color,
-                      borderRadius: 15.w,
+                      borderRadius: 20.w,
                       minimumSize: Size(150.w, 40.w),
                       child: Row(
                         children: [

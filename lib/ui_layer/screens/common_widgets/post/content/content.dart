@@ -10,15 +10,15 @@ class PostContentView extends StatelessWidget {
   final String? content;
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb) {
-      return WebText(
-        content: content ?? '',
-        style: TextStyle(
-          color: Colors.white70,
-          fontSize: 14.sp,
-        ),
-      );
-    }
+    // if (kIsWeb) {
+    //   return WebText(
+    //     content: content ?? '',
+    //     style: TextStyle(
+    //       color: Colors.white70,
+    //       fontSize: 14.sp,
+    //     ),
+    //   );
+    // }
     return Text(
       content ?? '',
       style: TextStyle(
