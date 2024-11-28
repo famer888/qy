@@ -91,16 +91,16 @@ class _RecommendVideoItemCardState extends State<RecommendVideoItemCard> {
                     MyButton.highEmphasis(
                       color: MyTheme.white008Color,
                       borderRadius: 15.w,
-                      minimumSize: Size(150.w, 30.w),
+                      minimumSize: Size(150.w, 40.w),
                       onPressed: _getData,
-                      child: LocalizationText('hyh', style: MyTheme.white12),
+                      child: LocalizationText('hyh', style: MyTheme.white14),
                     ),
                     SizedBox(width: 20.w),
                     MyButton.highEmphasis(
                       color: MyTheme.white008Color,
                       borderRadius: 15.w,
-                      minimumSize: Size(150.w, 30.w),
-                      child: LocalizationText('ckgd', style: MyTheme.white12),
+                      minimumSize: Size(150.w, 40.w),
+                      child: LocalizationText('ckgd', style: MyTheme.white14),
                       onPressed: () {
                         MoreRecommendVideoRoute(
                                 name: widget.data.title,

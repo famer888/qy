@@ -64,6 +64,8 @@ dependencies:
   android_dynamic_icon:
     path: plugins/android_dynamic_icon
   flutter_native_splash: ^2.4.0
+  connectivity_plus: ^2.0.2
+
 
 
 dependency_overrides:
