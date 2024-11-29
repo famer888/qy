@@ -14,14 +14,14 @@ class BuildConfig {
       'Vo+r0rRtdYoBhEVNA2UI8tFni929kY3ew27aeqSfQVC2V4gZZo1glBD7S67/2ZVP';
 
   /// 备用接口线路
-  static final apiLines = kIsWeb
+  static List<String> apiLines = kIsWeb
       ? [
-          'https://api1.lambaz1.net/api.php',
+          'https://api1.bwzkmplx.com/api.php',
         ]
       : [
-          'https://api2.uappapi.com/api.php',
-          'https://api3.uappapi1.com/api.php',
-          'https://api4.uappapi1.com/api.php',
+          'https://api2.bwzkmplx.com/api.php',
+          'https://api3.bwzkmplx.com/api.php',
+          'https://api4.bwzkmplx.com/api.php',
         ];
 
   /// 备用线路
