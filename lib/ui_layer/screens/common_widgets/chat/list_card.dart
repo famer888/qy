@@ -65,6 +65,7 @@ class ChatListCard extends StatelessWidget {
                           )),
                         )
                       : SizedBox(
+                          width: _w,
                           height: _w / imageRatio,
                           child: MyImage.network(
                             data.medias!.first.mediaUrl!,

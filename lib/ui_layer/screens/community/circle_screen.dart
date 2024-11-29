@@ -182,7 +182,8 @@ class _BodyState extends State<_Body> {
   @override
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
-      data: (data) => TabBarWithView.line(tabBarPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      data: (data) => TabBarWithView.line(
+        tabBarPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
         labelPadding: EdgeInsets.only(right: 15.w),
         titles: data.map((e) => e.name).toList(),
         views: data.map((e) {
