@@ -159,7 +159,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             //     : _type == ShowIssueType.chat
             //         ? MyImagePaths.appChatPublish
             //         :
-                     MyImagePaths.appIssueIcon,
+            MyImagePaths.appIssueIcon,
             width: 50.w,
             height: 50.w,
           ),
@@ -239,6 +239,8 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
       data: (data) => TabBarWithView.line(
+        tabBarPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+        labelPadding: EdgeInsets.only(right: 15.w),
         tabController: _controller,
         titles: data.map((e) => e.title).toList(),
         views: [

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/async_value.dart';
 import '../../../domain/domain.dart';
 import '../../../domain/model/home_data_model.dart';
 import '../../../domain/model/link_model.dart';
+import '../theme.dart';
 import 'api_link_view.dart';
 import 'my_tab_bar.dart';
 import 'video/recommend_video_view/recommend_video_view.dart';
@@ -59,6 +61,8 @@ class _TopNaviViewState extends State<TopNaviView>
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
       data: (data) => TabBarWithView.line(
+        tabBarPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+        labelPadding: EdgeInsets.only(right: 15.w),
         tabController: _tabController,
         titles: [
           if (widget.preTopNav case final preTopNav?)
