@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     _loadDataFromCache();
     _checkLineAndFetchBeforeEnterHome();
-    FlutterNativeSplash.remove();
+    if (!kIsWeb) {
+      FlutterNativeSplash.remove();
+    }
 
     super.initState();
   }
