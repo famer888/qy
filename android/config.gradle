@@ -1,7 +1,7 @@
 ext {
     versiondata = [
-            versionCode: 14,
-            versionName: "2.9.0"
+            versionCode: 291,
+            versionName: "2.9.1"
     ]
     signdata = [
             keyAlias     : 'upload',
@@ -10,6 +10,6 @@ ext {
             storePassword: 'youyu2021'
     ]
     packagedata = [
-            applicationId: 'com.xekoko.qypj'
+            applicationId: 'com.xekoko.qypjb'
     ]
 }

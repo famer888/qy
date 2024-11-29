@@ -1,0 +1,163 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../theme.dart';
+import 'gradient_button/button.dart';
+
+enum _Type {
+  highEmphasis,
+  lowEmphasis,
+  gradient,
+}
+
+typedef AsyncCallback = FutureOr<void> Function();
+
+class MyButton extends StatefulWidget {
+  const MyButton.highEmphasis({
+    super.key,
+    this.minimumSize,
+    this.onPressed,
+    this.padding,
+    this.child,
+    this.text,
+    this.color,
+    this.borderRadius,
+  })  : _type = _Type.highEmphasis,
+        gradient = null;
+
+  const MyButton.lowEmphasis({
+    super.key,
+    this.minimumSize,
+    this.onPressed,
+    this.padding,
+    this.child,
+    this.text,
+    this.color,
+    this.borderRadius,
+  })  : _type = _Type.lowEmphasis,
+        gradient = null;
+
+  const MyButton.gradient({
+    super.key,
+    this.minimumSize,
+    this.onPressed,
+    this.padding,
+    this.child,
+    this.text,
+    this.gradient,
+    this.borderRadius,
+  })  : _type = _Type.gradient,
+        color = null;
+
+  final Size? minimumSize;
+  final Widget? child;
+  final String? text;
+  final AsyncCallback? onPressed;
+  final EdgeInsetsGeometry? padding;
+  final Gradient? gradient;
+  final Color? color;
+  final double? borderRadius;
+
+  final _Type _type;
+  @override
+  State<MyButton> createState() => _MyButtonState();
+}
+
+class _MyButtonState extends State<MyButton> {
+  bool _isLoading = false;
+
+  @override
+  void didUpdateWidget(covariant MyButton oldWidget) {
+    if (oldWidget.onPressed != widget.onPressed) {
+      _isLoading = false;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final minimumSize = widget.minimumSize;
+    final padding = widget.padding;
+
+    late final Widget child;
+
+    if (_isLoading) {
+      child = const SizedBox(
+        height: 20,
+        width: 20,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Colors.white,
+        ),
+      );
+    } else if (widget.child != null) {
+      child = widget.child!;
+    } else if (widget.text != null) {
+      child = Text(
+        widget.text!,
+        textAlign: TextAlign.center,
+        style: MyTheme.white255_15_semibold,
+      );
+    } else {
+      child = const SizedBox.shrink();
+    }
+
+    final onPressed = widget.onPressed == null
+        ? null
+        : () async {
+            if (_isLoading) return;
+            setState(() {
+              _isLoading = true;
+            });
+            await widget.onPressed?.call();
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+              });
+            }
+          };
+
+    final shape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(
+          widget.borderRadius ?? (minimumSize?.height ?? 8.w) / 2),
+    );
+
+    return switch (widget._type) {
+      _Type.highEmphasis => FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: widget.color,
+            shape: shape,
+            minimumSize: minimumSize,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: padding,
+          ),
+          onPressed: onPressed,
+          child: child,
+        ),
+      _Type.gradient => GradientElevatedButton(
+          style: GradientElevatedButton.styleFrom(
+            gradient: widget.gradient ?? MyTheme.btnGradient_ff00edfd_ffbbe954,
+            shape: shape,
+            minimumSize: minimumSize,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: padding,
+          ),
+          onPressed: onPressed,
+          child: child,
+        ),
+      _Type.lowEmphasis => OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: const Color(0x19ECAE37),
+            side: const BorderSide(width: 1.0, color: Color(0x99ECAE37)),
+            shape: shape,
+            minimumSize: minimumSize,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: padding,
+          ),
+          onPressed: onPressed,
+          child: child,
+        ),
+    };
+  }
+}

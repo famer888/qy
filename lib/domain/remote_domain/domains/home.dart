@@ -1,0 +1,23 @@
+import '../../model/mine/welfare/app_center_model.dart';
+import '../../model/home_data_model.dart';
+import '../../model/mine/official_group/official_group_model.dart';
+import '../../type_def.dart';
+
+abstract class HomeDomain {
+  /// 获取全局config接口
+  AsyncResult<HomeData> getHomeConfig();
+
+  /// APP点击统计
+  AsyncJson reqAdClickCount({int? id, int? type});
+
+  /// 应用商店
+  AsyncResult<AppCenterModel?> getAppCenter();
+
+  /// 兑换
+  AsyncResult onExchange({
+    required String cdk,
+  });
+
+  /// 联系官方
+  AsyncResult<OfficialGroupModel> getContactList();
+}
