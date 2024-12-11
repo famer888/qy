@@ -18,9 +18,9 @@ export 'remote_domain/domains/mv.dart';
 export 'remote_domain/domains/privilege.dart';
 export 'remote_domain/domains/search.dart';
 
-abstract class AppDomain implements LocaleDomain, RemoteDomain {}
+abstract class AppDomain implements LocalDomain, RemoteDomain {}
 
-abstract class LocaleDomain {
+abstract class LocalDomain {
   CacheDomain get cache;
 }
 
