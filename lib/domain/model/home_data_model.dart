@@ -20,6 +20,7 @@ class HomeData {
     required this.config,
     this.notice,
     this.ads,
+    this.startScreenAds,
     required this.popAds,
     required this.help,
   });
@@ -29,6 +30,7 @@ class HomeData {
   final List<Notice> popAds;
   final Config config;
   final AdModel? ads;
+  final List<AdModel>? startScreenAds;
   final List<Help> help;
 
   factory HomeData.fromJson(Map<String, dynamic> json) => HomeData(
@@ -38,6 +40,8 @@ class HomeData {
         notice: json['notice'] == null ? null : Notice.fromJson(json['notice']),
         config: Config.fromJson(json['config']),
         ads: json['ads'] == null ? null : AdModel.fromJson(json['ads']),
+        startScreenAds: List<AdModel>.from(
+            json['start_screen_ads']?.map((x) => AdModel.fromJson(x)) ?? []),
         popAds: List<Notice>.from(
             json['pop_ads']?.map((x) => Notice.fromJson(x)) ?? []),
         help: List<Help>.from(json['help']?.map((x) => Help.fromJson(x)) ?? []),

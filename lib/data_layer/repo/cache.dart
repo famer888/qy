@@ -15,6 +15,7 @@ class _CacheManager implements CacheDomain {
   final _githubKey = 'github_url';
   final _officeWebKey = 'office_web';
   final _adsKey = 'ads';
+  final _startScreenAdsKey = 'startScreenAdsKey';
   final _searchHistoryKey = 'search_history';
   final _downloadVideoTasksKey = 'download_video_tasks';
   final _chatsKey = 'imchats';
@@ -77,6 +78,27 @@ class _CacheManager implements CacheDomain {
   }
 
   Future<void> upsertAds(AdModel ads) => appBox.upsert(_adsKey, ads.toJson());
+
+  @override
+  Future<List<AdModel>?> readStartScreenAds() async {
+    final ads = await appBox.read(_startScreenAdsKey);
+    try {
+      return (ads as List)
+          .map((e) => AdModel.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+    } catch (e) {
+      debugPrint('#########${e.toString()}');
+    }
+
+    return null;
+  }
+
+  Future<void> upsertStartScreenAds(List<AdModel> ads) async {
+    List<Map<String, dynamic>> adsList = ads.map((e) {
+      return e.toJson();
+    }).toList();
+    appBox.upsert(_startScreenAdsKey, adsList);
+  }
 
   @override
   Future<String?> readOfficeWeb() async {

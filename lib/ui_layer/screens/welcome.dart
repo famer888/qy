@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/domain.dart';
@@ -32,6 +33,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   late final userNotifier = context.read<UserNotifier>();
 
   AdModel? welcomeAds;
+  List<AdModel>? welcomeStartScreenAds;
+
   String? officialWebUrl;
 
   bool isCheckingLine = true;
@@ -53,10 +56,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   void _loadDataFromCache() async {
     officialWebUrl = await cacheDomain.readOfficeWeb();
-    welcomeAds = await cacheDomain.readAds();
-    if (welcomeAds?.imgUrl case final url? when mounted) {
-      precacheImage(NetworkImage(url), context);
-    }
+    // welcomeAds = await cacheDomain.readAds();
+    // if (welcomeAds?.imgUrl case final url? when mounted) {
+    //   precacheImage(NetworkImage(url), context);
+    // }
+
+    welcomeStartScreenAds = await cacheDomain.readStartScreenAds();
+
     setState(() {});
   }
 
@@ -77,7 +83,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   _enterAdOrHome({bool showTip = false}) async {
     if (await homeConfigNotifier.init() && mounted) {
-      if (welcomeAds != null) {
+      if (welcomeStartScreenAds != null) {
         setState(() {
           showAd = true;
         });
@@ -174,7 +180,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return PopScopeWrapper(
       child: Scaffold(
         backgroundColor: MyTheme.bgColor,
-        body: showAd ? AdView(adModel: welcomeAds!) : checkLineView(),
+        body: showAd
+            ? AdSwiperView(adModels: welcomeStartScreenAds ?? [])
+            // AdView(adModel: welcomeAds!)
+            : checkLineView(),
       ),
     );
   }
@@ -225,6 +234,121 @@ class _AdViewState extends State<AdView> {
               ),
             ),
           ),
+        Positioned(
+          top: MediaQuery.of(context).padding.top + 10.w,
+          right: 15.w,
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              if (countDownNotifier.value > 0) return;
+              const HomeRoute().go(context);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: 15.w),
+              height: 35.w,
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(0, 0, 0, 0.5),
+                borderRadius: BorderRadius.circular(35.w),
+              ),
+              child: Center(
+                child: ValueListenableBuilder(
+                  valueListenable: countDownNotifier,
+                  builder: (context, count, _) => Text(
+                    '${count > 0 ? count : 'adtg'.tr(context: context)}',
+                    style: MyTheme.white15semibold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class AdSwiperView extends StatefulWidget {
+  const AdSwiperView({super.key, required this.adModels});
+
+  final List<AdModel> adModels;
+
+  @override
+  State<AdSwiperView> createState() => _AdSwiperViewState();
+}
+
+class _AdSwiperViewState extends State<AdSwiperView> {
+  final ValueNotifier<int> countDownNotifier = ValueNotifier(5);
+  late final Timer _timer;
+
+  @override
+  void initState() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      countDownNotifier.value -= 1;
+      if (countDownNotifier.value == 0) {
+        _timer.cancel();
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final length = widget.adModels.length;
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Positioned.fill(
+            child: Swiper(
+          autoplay: length > 1,
+          itemBuilder: (BuildContext context, int index) {
+            precacheImage(
+                NetworkImage(CommonUtils.getThumb(widget
+                    .adModels[(index + 1).clamp(0, length - 1)]
+                    .toJson())),
+                context);
+
+            return GestureDetector(
+              onTap: () {
+                final ad = widget.adModels[index];
+                CommonUtils.openRoute(context, {
+                  'report_id': ad.id,
+                  'report_type': ad.type,
+                  'link_url': ad.url,
+                });
+              },
+              child: MyImage.network(
+                CommonUtils.getThumb(widget.adModels[index].toJson()),
+                fit: BoxFit.cover,
+              ),
+            );
+          },
+          itemCount: length,
+          pagination: SwiperPagination(
+            builder: SwiperCustomPagination(
+              builder: (context, config) => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  length,
+                  (index) {
+                    bool isActive = config.activeIndex == index;
+                    return Container(
+                      width: 5.w,
+                      height: 5.w,
+                      margin: EdgeInsets.only(right: 7.w),
+                      decoration: BoxDecoration(
+                        color: isActive
+                            ? Colors.white
+                            : Colors.white.withOpacity(0.3),
+                        shape: BoxShape.circle,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        )),
         Positioned(
           top: MediaQuery.of(context).padding.top + 10.w,
           right: 15.w,

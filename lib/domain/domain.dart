@@ -39,6 +39,9 @@ abstract class CacheDomain
   /// 获取广告缓存
   Future<AdModel?> readAds();
 
+  /// 获取广告缓存
+  Future<List<AdModel>?> readStartScreenAds();
+
   /// 获取官网链结缓存
   Future<String?> readOfficeWeb();
 }
