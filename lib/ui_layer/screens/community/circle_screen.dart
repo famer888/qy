@@ -210,13 +210,18 @@ class _BlurView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<UserNotifier, String>(
-      selector: (_, userNotifier) => userNotifier.member.vipStr,
-      builder: (context, vipStr, child) {
+    return Selector<UserNotifier, int>(
+      selector: (_, userNotifier) => userNotifier.member.hasSmqPrivilege,
+      builder: (context, hasSmqPrivilege, child) {
         final config = context.read<HomeConfigNotifier>().config;
-        if (config.vipLevelAwqStr.contains(vipStr)) {
+
+        if (hasSmqPrivilege == 1) {
+          // 改判断遮罩逻辑
           return const SizedBox.shrink();
         }
+        // if (config.vipLevelAwqStr.contains(vipStr)) {
+        //   return const SizedBox.shrink();
+        // }
 
         return GestureDetector(
           behavior: HitTestBehavior.translucent,

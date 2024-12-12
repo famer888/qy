@@ -22,6 +22,7 @@ import '../utils/common_utils.dart';
 import '../utils/my_toast.dart';
 import 'common_widgets/dialog/widgets/ad_dialog.dart';
 import 'common_widgets/dialog/widgets/announcement_dialog.dart';
+import 'common_widgets/dialog/widgets/app_down_center_dialog.dart';
 import 'common_widgets/dialog/widgets/download_apk_dialog.dart';
 import 'common_widgets/dialog/widgets/update_dialog.dart';
 import 'common_widgets/link_text.dart';
@@ -174,7 +175,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     if (needUpdate) {
       _showAppUpdateDialog();
     } else {
-      _showAnnouncementDialogIfNeed();
+      _showAppDownCenterDialog();
     }
   }
 
@@ -191,7 +192,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
             ? null
             : () {
                 cancelFunc();
-                _showAnnouncementDialogIfNeed();
+                _showAppDownCenterDialog();
               },
         confirm: () {
           if (Platform.isAndroid) {
@@ -222,6 +223,23 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
       json['redirect_type'] = '1';
     }
     CommonUtils.openRoute(context, json);
+  }
+
+  ///推荐app下载列表弹窗
+  void _showAppDownCenterDialog() {
+    final homeData = homeConfigNotifier.homeData;
+
+    if (homeData.noticeApps?.isNotEmpty ?? false) {
+      BotToast.showWidget(
+          toastBuilder: (cancelFunc) => AppDownCenterDialog(
+                cancel: () {
+                  cancelFunc();
+                  _showAnnouncementDialogIfNeed(); //app推荐下载弹窗展示完后再展示公告
+                },
+              ));
+    } else {
+      _showAnnouncementDialogIfNeed(); //app推荐为空直接展示公告
+    }
   }
 
   /// 系统公告弹窗

@@ -23,6 +23,7 @@ class HomeData {
     this.startScreenAds,
     required this.popAds,
     required this.help,
+    this.noticeApps,
   });
 
   final VersionMsg? versionMsg;
@@ -32,6 +33,7 @@ class HomeData {
   final AdModel? ads;
   final List<AdModel>? startScreenAds;
   final List<Help> help;
+  final List<Notice>? noticeApps;
 
   factory HomeData.fromJson(Map<String, dynamic> json) => HomeData(
         versionMsg: json['versionMsg'] == null
@@ -45,6 +47,8 @@ class HomeData {
         popAds: List<Notice>.from(
             json['pop_ads']?.map((x) => Notice.fromJson(x)) ?? []),
         help: List<Help>.from(json['help']?.map((x) => Help.fromJson(x)) ?? []),
+        noticeApps: List<Notice>.from(
+            json['notice_app']?.map((x) => Notice.fromJson(x)) ?? []),
       );
 }
 
@@ -352,33 +356,39 @@ class Notice {
   Notice({
     this.id,
     this.imgUrl,
+    this.title,
     this.router,
     this.type,
     this.height,
     this.width,
     this.urlStr,
+    this.linkUrl,
     this.reportId,
     this.reportType,
   });
 
   final int? id;
   final String? imgUrl;
+  final String? title;
   final String? router;
   final String? type;
   final int? height;
   final int? width;
   final String? urlStr;
+  final String? linkUrl;
   final int? reportId;
   final int? reportType;
 
   factory Notice.fromJson(Map<String, dynamic> json) => Notice(
         id: json['id'] ?? 0,
         imgUrl: json['img_url'] ?? '',
+        title: json['title'] ?? '',
         router: json['router'] ?? '',
         type: json['type'] ?? '',
         height: json['height'] ?? 100,
         width: json['width'] ?? 100,
         urlStr: json['url_str'] ?? '',
+        linkUrl: json['link_url'] ?? '',
         reportId: json['report_id'] ?? 0,
         reportType: json['report_type'] ?? 0,
       );
@@ -386,11 +396,13 @@ class Notice {
   Map<String, dynamic> toJson() => {
         'id': id,
         'img_url': imgUrl,
+        'title': title,
         'router': router,
         'type': type,
         'height': height,
         'width': width,
         'url_str': urlStr,
+        'link_url': linkUrl,
         'report_id': reportId,
         'report_type': reportType,
       };

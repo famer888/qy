@@ -85,6 +85,7 @@ class Member {
     this.stripType,
     required this.stripValue,
     this.vipUpgrade,
+    required this.hasSmqPrivilege,
   });
 
   final int? isFollow;
@@ -165,6 +166,7 @@ class Member {
   final int? stripType;
   final int stripValue;
   final int? vipUpgrade;
+  final int hasSmqPrivilege;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         postCount: json['post_count'] ?? 0,
@@ -251,6 +253,7 @@ class Member {
         stripType: json['strip_type'] ?? 1,
         stripValue: json['strip_value'] ?? 0,
         vipUpgrade: json['vip_upgrade'],
+        hasSmqPrivilege: json['has_smq_privilege'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -332,6 +335,7 @@ class Member {
         'strip_type': stripType,
         'strip_value': stripValue,
         'vip_upgrade': vipUpgrade,
+        'has_smq_privilege': hasSmqPrivilege,
       };
 
   Member copyWith({
@@ -493,6 +497,7 @@ class Member {
         stripType: stripType ?? this.stripType,
         stripValue: stripValue ?? this.stripValue,
         vipUpgrade: vipUpgrade ?? this.vipUpgrade,
+        hasSmqPrivilege: hasSmqPrivilege,
       );
 }
 

@@ -73,6 +73,7 @@ class UserModel {
   final bool? newUser;
   final List<dynamic>? tagList;
   final String? vipStr;
+  final int? hasSmqPrivilege;
 
   UserModel({
     this.uid,
@@ -149,6 +150,7 @@ class UserModel {
     this.newUser,
     this.tagList,
     this.vipStr,
+    this.hasSmqPrivilege,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -230,5 +232,6 @@ class UserModel {
             ? []
             : List<dynamic>.from(json['tag_list']!.map((x) => x)),
         vipStr: json['vip_str'],
+        hasSmqPrivilege: json['has_smq_privilege'],
       );
 }
