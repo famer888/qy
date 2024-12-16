@@ -28,6 +28,7 @@ apply from: "../config.gradle"
 android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+    namespace = "com.tbone.qypj"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

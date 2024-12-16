@@ -134,6 +134,12 @@ class _MyAppState extends State<MyApp> {
         splashColor: Colors.transparent,
         scaffoldBackgroundColor: MyTheme.bgColor,
         highlightColor: Colors.transparent,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android:
+                ZoomPageTransitionsBuilder(backgroundColor: Colors.transparent),
+          },
+        ),
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: MyTheme.cyanColor00edfd,
           selectionColor: MyTheme.cyanColor00edfd.withOpacity(0.5),

@@ -59,24 +59,6 @@ class _ImageCacheManager implements ImageCacheManager {
   }
 }
 
-const _kWidth = 600;
-
-ui.TargetImageSize getTargetSize(
-  int intrinsicWidth,
-  int intrinsicHeight,
-) {
-  if (kIsWeb) {
-    return const ui.TargetImageSize(width: null, height: null);
-  }
-
-  if (intrinsicWidth > _kWidth) {
-    final height = (intrinsicHeight / intrinsicWidth * _kWidth).floor();
-    return ui.TargetImageSize(width: _kWidth, height: height);
-  }
-
-  return ui.TargetImageSize(width: intrinsicWidth, height: intrinsicHeight);
-}
-
 const int _kDefaultSize = 1000;
 const int _kDefaultSizeBytes = 300 << 20; // 300 MiB
 
@@ -426,7 +408,6 @@ class _ImageCache extends ImageCache {
                 return await PaintingBinding.instance
                     .instantiateImageCodecWithSize(
                   await ui.ImmutableBuffer.fromUint8List(imageData),
-                  getTargetSize: getTargetSize,
                 );
               }(),
               scale: key.scale,
@@ -537,7 +518,6 @@ class _ImageCache extends ImageCache {
   ) async {
     return PaintingBinding.instance.instantiateImageCodecWithSize(
       await ui.ImmutableBuffer.fromUint8List(decrypted),
-      getTargetSize: getTargetSize,
     );
   }
 
