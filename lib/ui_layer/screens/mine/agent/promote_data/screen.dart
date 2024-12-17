@@ -139,7 +139,7 @@ class _WithdrawalCard extends StatelessWidget {
                   ),
                   SizedBox(height: 5.w),
                   Text(
-                    '${data.allReward}',
+                    data.allReward,
                     style: MyTheme.brown1187551_24_semi,
                   ),
                 ],

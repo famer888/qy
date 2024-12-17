@@ -4,8 +4,8 @@ class ProxyDetailModel {
   final String money;
   final int? level;
   final String? levelStr;
-  final num levelRate;
-  final num allReward;
+  final String levelRate;
+  final String allReward;
   final int? directProxyNum;
   final int? directPayNum;
   final int? directXiaJiDaiLi;
@@ -32,8 +32,8 @@ class ProxyDetailModel {
         money: json['proxy_money'],
         level: json['proxy_level'],
         levelStr: json['proxy_level_str'],
-        levelRate: json['proxy_level_rate'],
-        allReward: json['all_reward'],
+        levelRate: '${json['proxy_level_rate']}',
+        allReward: '${json['all_reward']}',
         directProxyNum: json['direct_proxy_num'],
         directPayNum: json['direct_pay_num'],
         directXiaJiDaiLi: json['direct_xiajidaili'],
