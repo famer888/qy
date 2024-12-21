@@ -191,11 +191,13 @@ class CommonUtils {
   static openRoute(BuildContext context, Map data) {
     if (data['link_url'] ?? data['url_str'] case final url?
         when url.isNotEmpty) {
-      ///上报点击量
-      context.read<HomeDomain>().reqAdClickCount(
-            id: data['report_id'],
-            type: data['report_type'],
-          );
+      if (data['report_id'] case final reportiId? when reportiId != null) {
+        ///上报点击量 report_id存在才上报
+        context.read<HomeDomain>().reqAdClickCount(
+              id: data['report_id'],
+              type: data['report_type'],
+            );
+      }
 
       if (data['redirect_type'] == 1) {
         final urlList = url.split('??');

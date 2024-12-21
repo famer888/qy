@@ -7,7 +7,7 @@ class BannerModel {
   final String? desc;
   final String router;
   final int? openType;
-  final int? fId;
+  // final int? fId;
   final int reportId;
   final int reportType;
   final String urlStr;
@@ -21,7 +21,7 @@ class BannerModel {
       this.desc,
       required this.router,
       this.openType,
-      this.fId,
+      // this.fId,
       required this.reportId,
       required this.reportType,
       required this.urlStr});
@@ -35,7 +35,7 @@ class BannerModel {
       desc: json['desc'],
       router: json['router'] ?? '',
       openType: json['open_type'],
-      fId: json['f_id'],
+      // fId: json['f_id'],
       reportId: json['report_id'],
       reportType: json['report_type'],
       urlStr: json['url_str'] ?? '');
@@ -49,7 +49,7 @@ class BannerModel {
         'desc': desc,
         'router': router,
         'open_type': openType,
-        'f_id': fId,
+        // 'f_id': fId,
         'report_id': reportId,
         'report_type': reportType,
         'url_str': urlStr,
