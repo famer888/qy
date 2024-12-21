@@ -134,12 +134,6 @@ class _MyAppState extends State<MyApp> {
         splashColor: Colors.transparent,
         scaffoldBackgroundColor: MyTheme.bgColor,
         highlightColor: Colors.transparent,
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.android:
-                ZoomPageTransitionsBuilder(backgroundColor: Colors.transparent),
-          },
-        ),
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: MyTheme.cyanColor00edfd,
           selectionColor: MyTheme.cyanColor00edfd.withOpacity(0.5),
@@ -153,6 +147,7 @@ class _MyAppState extends State<MyApp> {
           isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
         ),
+        colorScheme: const ColorScheme.dark(surface: Colors.transparent),
         primarySwatch: const MaterialColor(
           0xFF000000, //改了不好看
           <int, Color>{

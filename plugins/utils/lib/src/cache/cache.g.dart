@@ -405,6 +405,13 @@ class _ImageCache extends ImageCache {
                   });
                   throw Exception('NetworkImage is an empty cache');
                 }
+                if (kIsWeb) {
+                  return _Codec(await PaintingBinding.instance
+                      .instantiateImageCodecWithSize(
+                    await ui.ImmutableBuffer.fromUint8List(imageData),
+                  ));
+                }
+
                 return await PaintingBinding.instance
                     .instantiateImageCodecWithSize(
                   await ui.ImmutableBuffer.fromUint8List(imageData),
@@ -418,14 +425,28 @@ class _ImageCache extends ImageCache {
                 StreamController<ImageChunkEvent>();
 
             result = MultiFrameImageStreamCompleter(
-              codec: imageLoadAsync(
-                key,
-                cacheKey,
-                chunkEvents,
-                _instantiateImageCodec,
-                _imageCacheManager._hivePath,
-                _imageCacheManager.boxKey,
-              ),
+              codec: () async {
+                if (kIsWeb) {
+                  return _Codec(
+                    await imageLoadAsync(
+                      key,
+                      cacheKey,
+                      chunkEvents,
+                      _instantiateImageCodec,
+                      _imageCacheManager._hivePath,
+                      _imageCacheManager.boxKey,
+                    ),
+                  );
+                }
+                return await imageLoadAsync(
+                  key,
+                  cacheKey,
+                  chunkEvents,
+                  _instantiateImageCodec,
+                  _imageCacheManager._hivePath,
+                  _imageCacheManager.boxKey,
+                );
+              }(),
               chunkEvents: chunkEvents.stream,
               scale: key.scale,
               debugLabel: key.url,
@@ -662,4 +683,23 @@ class _ImageCacheHooker extends WidgetsFlutterBinding {
   ImageCache createImageCache() {
     return _ImageCache();
   }
+}
+
+class _Codec implements ui.Codec {
+  _Codec(this.codec);
+
+  final ui.Codec codec;
+
+  @override
+  void dispose() => codec.dispose();
+
+  @override
+  int get frameCount => codec.frameCount;
+
+  @override
+  Future<ui.FrameInfo> getNextFrame() => codec.getNextFrame();
+
+  @override
+  int get repetitionCount =>
+      codec.repetitionCount > 1 ? -1 : codec.repetitionCount;
 }
