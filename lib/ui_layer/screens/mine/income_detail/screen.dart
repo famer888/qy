@@ -20,7 +20,7 @@ class _MineIncomeDetailScreenState extends State<MineIncomeDetailScreen> {
         appBar: MyAppBar(
           title: 'symx'.tr(context: context),
         ),
-        body: const IncomeDetailView(source: ''),
+        body: const IncomeDetailView(source: 'post'),
       ),
     );
   }

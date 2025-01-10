@@ -139,6 +139,9 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
       final res = await orderDomain.incomeApplyWithdraw(
           cardId: cardId, amount: amount, type: widget.isAgent ? 1 : 2);
       if (res.isValid) {
+        if (res.msg case final msg?) {
+          MyToast.showText(text: msg);
+        }
       } else if (res.msg case final msg?) {
         MyToast.showText(text: msg);
       }
@@ -192,7 +195,8 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
                                               '${'ktye'.tr(context: context)}: ',
                                           style: MyTheme.hexa3a2a2_13),
                                       TextSpan(
-                                        text: '${data.proxyMoney}',
+                                        text:
+                                            '${widget.isAgent ? data.proxyMoney : data.incomeMoney}',
                                         style: MyTheme.jellyCyan_18_M,
                                       ),
                                       TextSpan(
