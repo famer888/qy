@@ -82,7 +82,8 @@ void main() async {
               return null;
             }
 
-            return previous?.member.uuid == value.member.uuid
+            return (previous?.member.uuid == value.member.uuid &&
+                    previous?.member.username == value.member.username)
                 ? previous!
                 : ChatNotifier(
                     cache: appRepo.cache,

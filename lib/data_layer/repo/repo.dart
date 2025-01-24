@@ -315,6 +315,7 @@ abstract class _BaseAppRepo implements AppDomain {
         : {
             'bundleId': packageInfo.packageName,
             'version': packageInfo.version,
+            // "build_affcode": "bZcpB",
           };
 
     info.addAll({
