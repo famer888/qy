@@ -104,6 +104,12 @@ class UserNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// 更新 IM 
+  void setImValue({required int imValue}) {
+    _member = _member.copyWith(imValue: imValue);
+    notifyListeners();
+  }
+
   void setThumb({required String thumb}) {
     _member = _member.copyWith(thumb: thumb);
     notifyListeners();

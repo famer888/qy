@@ -157,7 +157,8 @@ class _CoinItem extends StatelessWidget {
                 maxLines: 1,
               ),
             ),
-            const Spacer(),
+            SizedBox(width: 5.w),
+            // const Spacer(),
             Text('${item.createdAt}', style: MyTheme.gray153_12),
           ],
         )

@@ -1,11 +1,16 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../domain/api_validator.dart';
+import '../../../../../domain/domain.dart';
 import '../../../../notifiers/chat_notifier.dart';
 import '../../../../notifiers/home_config_notifier.dart';
+import '../../../../notifiers/user_notifier.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_app_bar.dart';
@@ -35,6 +40,11 @@ class ChatMessageScreen extends StatefulWidget {
 class _ChatMessageScreenState extends State<ChatMessageScreen> {
   bool isOnline = false;
   late final _homeConfigNotifier = context.read<HomeConfigNotifier>();
+
+  late final _imCoins = _homeConfigNotifier.config.imCoins;
+
+  late final _userDomain = context.read<UserDomain>();
+
   final textEditingController = TextEditingController();
   final focusNode = FocusNode();
 
@@ -69,16 +79,9 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
             .resolve(const ImageConfiguration())
             .addListener(ImageStreamListener((info, _) {
           String newUrl = '$url??${info.image.width}_${info.image.height}';
-          //发送图片
-          context.read<ChatNotifier>().sendMessage(
-                ChatUser(
-                    nickname: widget.nickName,
-                    avatar: widget.thumb,
-                    uuid: widget.toUuid),
-                newUrl,
-                'photos',
-              );
-          MyToast.closeAllLoading();
+
+// 发图片
+          _sendImg(newUrl);
         }));
       } else {
         MyToast.showText(text: uploadImageRes?['msg'] ?? 'failed');
@@ -87,8 +90,39 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
     }
   }
 
+  Future _sendImg(String url) async {
+    var result = await _userDomain.imSend(text: '[图片]');
+    if (result.isValid) {
+      _reduceUserImValue();
+    } else {
+      MyToast.showText(text: result.msg ?? '');
+      MyToast.closeAllLoading();
+      return;
+    }
+
+    //发送图片
+    context.read<ChatNotifier>().sendMessage(
+          ChatUser(
+              nickname: widget.nickName,
+              avatar: widget.thumb,
+              uuid: widget.toUuid),
+          url,
+          'photos',
+        );
+  }
+
   Future _sendMsg() async {
     final text = textEditingController.text.trim();
+
+    var result = await _userDomain.imSend(text: text);
+    if (result.isValid) {
+      // userNotifier.setInviteBy(inviteBy: value);
+      _reduceUserImValue();
+    } else {
+      MyToast.showText(text: result.msg ?? '');
+      return;
+    }
+
     textEditingController.clear();
     if (text.isNotEmpty) {
       context.read<ChatNotifier>().sendMessage(
@@ -100,6 +134,35 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
             'txt',
           );
     }
+  }
+
+  _reduceUserImValue() {
+    final userNotifier = context.read<UserNotifier>();
+
+    int imValue = userNotifier.member.imValue;
+    if (imValue > 0) {
+      userNotifier.setImValue(imValue: imValue - 1);
+    } else {
+      int money = userNotifier.member.money;
+      userNotifier.setImValue(imValue: max(money - _imCoins, 0));
+    }
+    setState(() {});
+  }
+
+  String _placeholerString() {
+    String text = 'srhf'.tr(context: context);
+    final userNotifier = context.read<UserNotifier>();
+    int imValue = userNotifier.member.imValue;
+    int money = userNotifier.member.money;
+
+    text = 'fsxxjbmf'
+        .tr(context: context)
+        .replaceAll('aa', '$_imCoins')
+        .replaceAll('bb', '$imValue');
+    // if (imValue > 0) {
+    // } else {}
+
+    return text;
   }
 
   @override
@@ -200,7 +263,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                                   cursorColor: MyTheme.cyanColor00edfd,
                                   textInputAction: TextInputAction.done,
                                   decoration: InputDecoration(
-                                    hintText: 'srhf'.tr(context: context),
+                                    hintText: _placeholerString(),
                                     hintStyle: MyTheme.gray180_15_M,
                                     contentPadding: EdgeInsets.zero,
                                   ),

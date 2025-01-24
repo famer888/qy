@@ -159,6 +159,7 @@ class Config {
     required this.faceSortNav,
     required this.faceCoins,
     required this.stripCoins,
+    required this.imCoins,
     required this.liveTopNav,
     required this.monitorTopNav,
     required this.comicTopNav,
@@ -257,6 +258,7 @@ class Config {
   final String vipNameAwqStr;
   final int faceCoins;
   final int stripCoins;
+  final int imCoins;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         imgUploadUrl: json['img_upload_url'],
@@ -314,6 +316,7 @@ class Config {
             json['face_sort_nav']?.map((x) => AiFaceSortModel.fromJson(x)) ??
                 []),
         stripCoins: json['strip_coins'] ?? 0,
+        imCoins: json['im_coins'] ?? 0,
         liveTopNav: List<LiveNavModel>.from(
             json['live_top_nav']?.map((x) => LiveNavModel.fromJson(x)) ?? []),
         monitorTopNav: List<MonitorNavModel>.from(

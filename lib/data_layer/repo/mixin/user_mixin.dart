@@ -6,6 +6,10 @@ mixin _User on _BaseAppRepo implements UserDomain {
       _userService.getUserInfo().deserializeJsonBy(Member.fromJson).guard;
 
   @override
+  AsyncResult imSend({required String text}) =>
+      _userService.imSend(text: text).deserialize().guard;
+
+  @override
   AsyncResult sendInvitation({required String affCode}) =>
       _userService.postInvitation(affCode: affCode).deserialize().guard;
 

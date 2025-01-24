@@ -84,6 +84,8 @@ class Member {
     required this.imgFaceValue,
     this.stripType,
     required this.stripValue,
+    this.imType,
+    required this.imValue,
     this.vipUpgrade,
     required this.hasSmqPrivilege,
   });
@@ -165,6 +167,8 @@ class Member {
   final int imgFaceValue;
   final int? stripType;
   final int stripValue;
+  final int? imType;
+  final int imValue;
   final int? vipUpgrade;
   final int hasSmqPrivilege;
 
@@ -252,6 +256,8 @@ class Member {
         imgFaceValue: json['img_face_value'] ?? 0,
         stripType: json['strip_type'] ?? 1,
         stripValue: json['strip_value'] ?? 0,
+        imType: json['im_type'] ?? 1,
+        imValue: json['im_value'] ?? 0,
         vipUpgrade: json['vip_upgrade'],
         hasSmqPrivilege: json['has_smq_privilege'] ?? 0,
       );
@@ -334,6 +340,8 @@ class Member {
         'img_face_value': imgFaceValue,
         'strip_type': stripType,
         'strip_value': stripValue,
+        'im_type': imType,
+        'im_value': imValue,
         'vip_upgrade': vipUpgrade,
         'has_smq_privilege': hasSmqPrivilege,
       };
@@ -416,6 +424,8 @@ class Member {
     int? imgFaceValue,
     int? stripType,
     int? stripValue,
+    int? imType,
+    int? imValue,
     int? vipUpgrade,
   }) =>
       Member(
@@ -496,6 +506,8 @@ class Member {
         imgFaceValue: imgFaceValue ?? this.imgFaceValue,
         stripType: stripType ?? this.stripType,
         stripValue: stripValue ?? this.stripValue,
+        imType: imType ?? this.imType,
+        imValue: imValue ?? this.imValue,
         vipUpgrade: vipUpgrade ?? this.vipUpgrade,
         hasSmqPrivilege: hasSmqPrivilege,
       );

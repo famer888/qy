@@ -10,6 +10,12 @@ class UserService extends BaseService {
   /// 获取用户接口
   AsyncJson getUserInfo() => post('/userInfo');
 
+  /// 发送IM消息
+  AsyncJson imSend({
+    required String text,
+  }) =>
+      post('/im_send', data: {'txt': text});
+
   /// 填写邀请码
   AsyncJson postInvitation({
     required String affCode,

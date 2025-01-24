@@ -24,6 +24,8 @@ abstract class UserDomain {
     String? intro,
   });
 
+  AsyncResult imSend({required String text});
+
   /// 填写邀请码
   AsyncResult sendInvitation({required String affCode});
 
