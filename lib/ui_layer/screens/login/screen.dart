@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         userName: userNameController.text, password: passwordController.text);
     if (result.status != 0) {
       await _userNotifier.init();
-      await Clipboard.setData(ClipboardData(
+      Clipboard.setData(ClipboardData(
           text:
               '回家地址：${_userNotifier.member.share?.affUrlCopy?.url} 帐号：${userNameController.text} 密码：${passwordController.text}'));
       await _showAlert();

@@ -114,17 +114,17 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
   Future _sendMsg() async {
     final text = textEditingController.text.trim();
 
-    var result = await _userDomain.imSend(text: text);
-    if (result.isValid) {
-      // userNotifier.setInviteBy(inviteBy: value);
-      _reduceUserImValue();
-    } else {
-      MyToast.showText(text: result.msg ?? '');
-      return;
-    }
-
     textEditingController.clear();
     if (text.isNotEmpty) {
+      var result = await _userDomain.imSend(text: text);
+      if (result.isValid) {
+        // userNotifier.setInviteBy(inviteBy: value);
+        _reduceUserImValue();
+      } else {
+        MyToast.showText(text: result.msg ?? '');
+        return;
+      }
+
       context.read<ChatNotifier>().sendMessage(
             ChatUser(
                 nickname: widget.nickName,
