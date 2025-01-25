@@ -72,6 +72,7 @@ class _MineSetupScreenState extends State<MineSetupScreen> {
 
   Future<void> _logOut() async {
     MyToast.showLoading();
+    await userDomain.clearCached();
     await userNotifier.logout();
     MyToast.closeAllLoading();
 
