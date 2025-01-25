@@ -99,6 +99,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
       MyToast.closeAllLoading();
       return;
     }
+    MyToast.closeAllLoading();
 
     //发送图片
     context.read<ChatNotifier>().sendMessage(
@@ -144,7 +145,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
       userNotifier.setImValue(imValue: imValue - 1);
     } else {
       int money = userNotifier.member.money;
-      userNotifier.setImValue(imValue: max(money - _imCoins, 0));
+      userNotifier.setMoney(money: max(money - _imCoins, 0));
     }
     setState(() {});
   }
