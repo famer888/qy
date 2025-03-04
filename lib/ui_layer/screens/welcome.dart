@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
+import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/domain.dart';
@@ -42,16 +43,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   bool showAd = false;
 
   List<String> lines = [];
+  Mixpanel? mixpanel;
 
   @override
   void initState() {
+    _initMixpanel();
     _loadDataFromCache();
     _checkLineAndFetchBeforeEnterHome();
     if (!kIsWeb) {
       FlutterNativeSplash.remove();
     }
-
     super.initState();
+  }
+
+  void _initMixpanel() async {
+    mixpanel = await Mixpanel.init("057e20d7df5fe50f5083adcf445aec29",
+        trackAutomaticEvents: true);
   }
 
   void _loadDataFromCache() async {
@@ -71,9 +78,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       failed: () {
         isCheckingLine = false;
         if (mounted) setState(() {});
+        mixpanel?.track("entry failure");
       },
       success: () {
         _enterAdOrHome();
+        mixpanel?.track("enter app");
       },
       lines: (x) {
         lines = x;
