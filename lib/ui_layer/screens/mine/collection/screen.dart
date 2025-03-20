@@ -67,7 +67,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
     });
 
     data.addAll({
-      'yup': const _GirlView(),
+      // 'yup': const _GirlView(),
       'lliao': const _ChatView(),
     });
 
