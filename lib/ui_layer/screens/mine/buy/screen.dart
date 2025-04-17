@@ -67,7 +67,7 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
     });
 
     data.addAll({
-      'yup': const _GirlView(),
+      // 'yup': const _GirlView(),
       'lliao': const _ChatView(),
     });
 

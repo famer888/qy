@@ -59,7 +59,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     });
 
     data.addAll({
-      'yup': _GirlView(word: widget.title),
+      // 'yup': _GirlView(word: widget.title),
       'lliao': _ChatView(word: widget.title),
     });
 

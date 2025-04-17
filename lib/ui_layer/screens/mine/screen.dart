@@ -4,6 +4,7 @@ import 'package:android_dynamic_icon/android_dynamic_icon.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -656,6 +657,7 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
                               confirmOnTap: () {
                                 _androidDynamicIconPlugin
                                     .changeIcon(classNames: [name, '']);
+                                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                               },
                               content: DefaultTextStyle(
                                 style: MyTheme.white233_14,
