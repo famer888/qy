@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../../domain/api_validator.dart';
 import '../../../router/routes.dart';
+import '../../../notifiers/home_config_notifier.dart';
+import '../../common_widgets/general_banner.dart';
 import '../../common_widgets/post/content/like_collect_share_area.dart';
 
 import '../../../../domain/domain.dart';
@@ -31,6 +33,7 @@ class CommunityDetailContentView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          TopAppsListWidget(),
           PostTitleView(
             topicTitle: data.title,
             viewCount: data.viewNum,
@@ -254,5 +257,24 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
         ],
       ),
     );
+  }
+}
+
+class TopAppsListWidget extends StatefulWidget {
+  const TopAppsListWidget();
+
+  @override
+  State<TopAppsListWidget> createState() => _TopAppsListWidgetState();
+}
+
+class _TopAppsListWidgetState extends State<TopAppsListWidget> {
+  late final homeConfigNotifier = context.read<HomeConfigNotifier>();
+
+  @override
+  Widget build(BuildContext context) {
+    return (homeConfigNotifier.config.postDetailAds ?? []).isNotEmpty
+        ? GeneralAppsListVidget(
+            data: homeConfigNotifier.config.postDetailAds ?? [])
+        : Container();
   }
 }

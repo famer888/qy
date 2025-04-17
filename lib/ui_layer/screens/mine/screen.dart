@@ -15,6 +15,7 @@ import '../../notifiers/user_notifier.dart';
 import '../../router/routes.dart';
 import '../common_widgets/dialog/my_dialog.dart';
 import '../common_widgets/dialog/widgets/png_dialog.dart';
+import '../common_widgets/general_banner.dart';
 import '../common_widgets/localization_text.dart';
 import '../common_widgets/member_vip.dart';
 import '../common_widgets/my_avatar.dart';
@@ -153,6 +154,7 @@ class _Body extends StatelessWidget {
                       height: 15.w,
                     )
                   : const _ChangeAppIconView(),
+              _PersonAdsBannerWidget(),
               const _SecondMenu(),
               SizedBox(height: 15.w),
             ],
@@ -702,5 +704,29 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
         ),
       ),
     );
+  }
+}
+
+class _PersonAdsBannerWidget extends StatefulWidget {
+  const _PersonAdsBannerWidget();
+
+  @override
+  State<_PersonAdsBannerWidget> createState() => __PersonAdsBannerWidgetState();
+}
+
+class __PersonAdsBannerWidgetState extends State<_PersonAdsBannerWidget> {
+  late final homeConfigNotifier = context.read<HomeConfigNotifier>();
+
+  @override
+  Widget build(BuildContext context) {
+    return (homeConfigNotifier.config.personAds ?? []).isNotEmpty
+        ? Container(
+            margin: EdgeInsets.only(bottom: 15.w),
+            child: GeneralAppsListVidget(
+              data: homeConfigNotifier.config.personAds ?? [],
+              aspectRatio: 7 / 3,
+            ),
+          )
+        : Container();
   }
 }

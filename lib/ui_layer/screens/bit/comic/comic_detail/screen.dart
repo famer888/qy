@@ -151,7 +151,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                       comments: detail.comments,
                     ),
                     SizedBox(height: 15.w),
-                    GeneralBanner(
+                    GeneralAppsListVidget(
                       data: data.banner,
                       aspectRatio: 7 / 2,
                     ),

@@ -1,4 +1,5 @@
 import 'ai/ai_nav_model.dart';
+import 'banner_model.dart';
 import 'chat_nav_model.dart';
 import 'chat_select_nav_model.dart';
 import 'girl_sort_model.dart';
@@ -179,6 +180,9 @@ class Config {
     required this.resourceNav,
     this.openLive,
     this.navPrepend,
+    this.adVersion,
+    this.postDetailAds,
+    this.personAds,
   });
 
   final String imgUploadUrl;
@@ -259,6 +263,10 @@ class Config {
   final int faceCoins;
   final int stripCoins;
   final int imCoins;
+
+  final int? adVersion;
+  final List<BannerModel>? postDetailAds;
+  final List<BannerModel>? personAds;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         imgUploadUrl: json['img_upload_url'],
@@ -352,6 +360,11 @@ class Config {
         rankCycleNav: List<RankNavModel>.from(
             json['rank_cycle_nav']?.map((x) => RankNavModel.fromJson(x)) ?? []),
         openLive: json['open_live'],
+        adVersion: json['ad_version'],
+        postDetailAds: List<BannerModel>.from(
+            json['post_detail_ads']?.map((x) => BannerModel.fromJson(x)) ?? []),
+        personAds: List<BannerModel>.from(
+            json['person_ads']?.map((x) => BannerModel.fromJson(x)) ?? []),
       );
 }
 

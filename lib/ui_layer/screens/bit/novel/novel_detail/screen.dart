@@ -350,7 +350,7 @@ class _Header extends StatelessWidget {
           if (banner.isNotEmpty)
             Padding(
               padding: EdgeInsets.only(bottom: 5.w),
-              child: GeneralBanner(data: banner, aspectRatio: 7 / 2),
+              child: GeneralAppsListVidget(data: banner, aspectRatio: 7 / 2),
             ),
         ],
       ),

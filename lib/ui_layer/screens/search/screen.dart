@@ -332,7 +332,7 @@ class _SearchContentViewState extends State<_SearchContentView> {
       children: [
         SizedBox(height: 16.w),
         banner.isNotEmpty
-            ? GeneralBanner(
+            ? GeneralAppsListVidget(
                 aspectRatio: 10 / 3,
                 data: banner,
                 radius: 5.0,

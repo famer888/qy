@@ -114,21 +114,22 @@ class _AppDownCenterCardState extends State<AppDownCenterCard> {
             controller: _scrollController, // 将相同的 ScrollController 传递给 ListView
             padding: EdgeInsets.all(MyTheme.pagePadding),
             children: [
+              // 现在只用同一种排列 一排4个
               GridView.builder(
                   shrinkWrap: true,
                   addRepaintBoundaries: false,
                   addAutomaticKeepAlives: false,
                   physics: const BouncingScrollPhysics(),
-                  itemCount: groupedApps.first.length,
+                  itemCount: apps.length,
                   padding: EdgeInsets.zero,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 50 / 58,
+                    crossAxisCount: 4,
+                    childAspectRatio: 49 / 62,
                     // mainAxisSpacing: 10.w,
                     // crossAxisSpacing: 10.w,
                   ),
                   itemBuilder: (context, index) {
-                    Notice? model = groupedApps.first[index];
+                    Notice? model = apps[index];
                     return GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
@@ -138,8 +139,8 @@ class _AppDownCenterCardState extends State<AppDownCenterCard> {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: 76.w,
-                            width: 76.w,
+                            height: 56.w,
+                            width: 56.w,
                             child: MyImage.network(
                               model.imgUrl ?? '',
                               fit: BoxFit.fill,
@@ -153,62 +154,108 @@ class _AppDownCenterCardState extends State<AppDownCenterCard> {
                                 color: Colors.white,
                                 overflow: TextOverflow.ellipsis,
                                 decoration: TextDecoration.none,
-                                fontSize: 13.sp),
+                                fontSize: 11.sp),
                             maxLines: 1,
                           ),
                         ],
                       ),
                     );
                   }),
-              groupedApps.length < 2
-                  ? SizedBox()
-                  : GridView.builder(
-                      shrinkWrap: true,
-                      addRepaintBoundaries: false,
-                      addAutomaticKeepAlives: false,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: groupedApps.last.length,
-                      padding: EdgeInsets.zero,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        childAspectRatio: 49 / 62,
-                        // mainAxisSpacing: 10.w,
-                        // crossAxisSpacing: 10.w,
-                      ),
-                      itemBuilder: (context, index) {
-                        Notice? model = groupedApps.last[index];
-                        return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            final json = model.toJson() ?? {};
-                            CommonUtils.openRoute(context, json);
-                          },
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 56.w,
-                                width: 56.w,
-                                child: MyImage.network(
-                                  model.imgUrl ?? '',
-                                  fit: BoxFit.fill,
-                                  borderRadius: 10.w,
-                                ),
-                              ),
-                              SizedBox(height: 5.w),
-                              Text(
-                                model.title ?? '',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    overflow: TextOverflow.ellipsis,
-                                    decoration: TextDecoration.none,
-                                    fontSize: 11.sp),
-                                maxLines: 1,
-                              ),
-                            ],
-                          ),
-                        );
-                      })
+              // GridView.builder(
+              //     shrinkWrap: true,
+              //     addRepaintBoundaries: false,
+              //     addAutomaticKeepAlives: false,
+              //     physics: const BouncingScrollPhysics(),
+              //     itemCount: groupedApps.first.length,
+              //     padding: EdgeInsets.zero,
+              //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              //       crossAxisCount: 3,
+              //       childAspectRatio: 50 / 58,
+              //       // mainAxisSpacing: 10.w,
+              //       // crossAxisSpacing: 10.w,
+              //     ),
+              //     itemBuilder: (context, index) {
+              //       Notice? model = groupedApps.first[index];
+              //       return GestureDetector(
+              //         behavior: HitTestBehavior.translucent,
+              //         onTap: () {
+              //           final json = model.toJson() ?? {};
+              //           CommonUtils.openRoute(context, json);
+              //         },
+              //         child: Column(
+              //           children: [
+              //             SizedBox(
+              //               height: 76.w,
+              //               width: 76.w,
+              //               child: MyImage.network(
+              //                 model.imgUrl ?? '',
+              //                 fit: BoxFit.fill,
+              //                 borderRadius: 10.w,
+              //               ),
+              //             ),
+              //             SizedBox(height: 5.w),
+              //             Text(
+              //               model.title ?? '',
+              //               style: TextStyle(
+              //                   color: Colors.white,
+              //                   overflow: TextOverflow.ellipsis,
+              //                   decoration: TextDecoration.none,
+              //                   fontSize: 13.sp),
+              //               maxLines: 1,
+              //             ),
+              //           ],
+              //         ),
+              //       );
+              //     }),
+              // groupedApps.length < 2
+              //     ? SizedBox()
+              //     : GridView.builder(
+              //         shrinkWrap: true,
+              //         addRepaintBoundaries: false,
+              //         addAutomaticKeepAlives: false,
+              //         physics: const BouncingScrollPhysics(),
+              //         itemCount: groupedApps.last.length,
+              //         padding: EdgeInsets.zero,
+              //         gridDelegate:
+              //             const SliverGridDelegateWithFixedCrossAxisCount(
+              //           crossAxisCount: 4,
+              //           childAspectRatio: 49 / 62,
+              //           // mainAxisSpacing: 10.w,
+              //           // crossAxisSpacing: 10.w,
+              //         ),
+              //         itemBuilder: (context, index) {
+              //           Notice? model = groupedApps.last[index];
+              //           return GestureDetector(
+              //             behavior: HitTestBehavior.translucent,
+              //             onTap: () {
+              //               final json = model.toJson() ?? {};
+              //               CommonUtils.openRoute(context, json);
+              //             },
+              //             child: Column(
+              //               children: [
+              //                 SizedBox(
+              //                   height: 56.w,
+              //                   width: 56.w,
+              //                   child: MyImage.network(
+              //                     model.imgUrl ?? '',
+              //                     fit: BoxFit.fill,
+              //                     borderRadius: 10.w,
+              //                   ),
+              //                 ),
+              //                 SizedBox(height: 5.w),
+              //                 Text(
+              //                   model.title ?? '',
+              //                   style: TextStyle(
+              //                       color: Colors.white,
+              //                       overflow: TextOverflow.ellipsis,
+              //                       decoration: TextDecoration.none,
+              //                       fontSize: 11.sp),
+              //                   maxLines: 1,
+              //                 ),
+              //               ],
+              //             ),
+              //           );
+              //         })
             ],
           ),
         ),

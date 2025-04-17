@@ -271,7 +271,7 @@ class _IntroductionViewState extends State<IntroductionView> {
             if (widget.data.banner case final banner? when banner.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(bottom: 20.w),
-                child: GeneralBanner(
+                child: GeneralAppsListVidget(
                   data: banner,
                   aspectRatio: 10 / 3,
                 ),

@@ -3,11 +3,12 @@ class BannerModel {
   final String linkUrl;
   final String resourceUrl;
   final int redirectType;
+  final String? title;
   final String? name;
   final String? desc;
   final String router;
   final int? openType;
-  // final int? fId;
+  final int? fId;
   final int reportId;
   final int reportType;
   final String urlStr;
@@ -17,11 +18,12 @@ class BannerModel {
       required this.linkUrl,
       required this.resourceUrl,
       required this.redirectType,
+      this.title,
       this.name,
       this.desc,
       required this.router,
       this.openType,
-      // this.fId,
+      this.fId,
       required this.reportId,
       required this.reportType,
       required this.urlStr});
@@ -31,11 +33,12 @@ class BannerModel {
       linkUrl: json['link_url'],
       resourceUrl: json['resource_url'],
       redirectType: json['redirect_type'],
+      title: json['title'],
       name: json['name'],
       desc: json['desc'],
       router: json['router'] ?? '',
       openType: json['open_type'],
-      // fId: json['f_id'],
+      fId: json['f_id'],
       reportId: json['report_id'],
       reportType: json['report_type'],
       urlStr: json['url_str'] ?? '');
@@ -45,11 +48,11 @@ class BannerModel {
         'link_url': linkUrl,
         'resource_url': resourceUrl,
         'redirect_type': redirectType,
-        'name': name,
+        'title': title,
         'desc': desc,
         'router': router,
         'open_type': openType,
-        // 'f_id': fId,
+        'f_id': fId,
         'report_id': reportId,
         'report_type': reportType,
         'url_str': urlStr,
