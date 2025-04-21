@@ -88,6 +88,7 @@ class CommentTile extends StatelessWidget {
                   if (res.isValid) {
                     data.isLike = isLike ? 0 : 1;
                     isLike ? data.likeCount-- : data.likeCount++;
+                    if (data.likeCount < 0) data.likeCount = 0;
                     setState(() {});
                   } else if (res.msg case final msg?) {
                     MyToast.showText(text: msg);
@@ -107,7 +108,10 @@ class CommentTile extends StatelessWidget {
                     ),
                     SizedBox(height: 1.w),
                     Text(
-                      CommonUtils.renderFixedNumber(data.likeCount),
+                      CommonUtils.renderFixedNumber(
+                          data.isLike == 1 && data.likeCount <= 0
+                              ? 1
+                              : data.likeCount),
                       style: MyTheme.gray203_12,
                     )
                   ],
