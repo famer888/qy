@@ -219,9 +219,9 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     if (notice == null) return;
     final json = notice.toJson();
     json['link_url'] = json['url_str'];
-    if (json['type'] == 'route') {
-      json['redirect_type'] = '1';
-    }
+    // if (json['type'] == 'route') {
+    //   json['redirect_type'] = 1;
+    // }
     CommonUtils.openRoute(context, json);
   }
 

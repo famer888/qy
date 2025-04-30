@@ -381,6 +381,7 @@ class Notice {
     this.linkUrl,
     this.reportId,
     this.reportType,
+    this.redirectType,
   });
 
   final int? id;
@@ -394,6 +395,7 @@ class Notice {
   final String? linkUrl;
   final int? reportId;
   final int? reportType;
+  final int? redirectType;
 
   factory Notice.fromJson(Map<String, dynamic> json) => Notice(
         id: json['id'] ?? 0,
@@ -407,6 +409,7 @@ class Notice {
         linkUrl: json['link_url'] ?? '',
         reportId: json['report_id'] ?? 0,
         reportType: json['report_type'] ?? 0,
+        redirectType: json['redirect_type'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -421,6 +424,7 @@ class Notice {
         'link_url': linkUrl,
         'report_id': reportId,
         'report_type': reportType,
+        'redirect_type': redirectType,
       };
 }
 
