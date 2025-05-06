@@ -56,7 +56,7 @@
     "htt": "板块",
     "znxzyg": "只能选择一个视频",
     "zdjzbkb": "最多上传9张，最大每张1M以内",
-    "zdybm": "最大100M以内",
+    "zdybm": "最大2GB以内",
     "scsp": "上传视频",
     "fbtz": "发布帖子",
     "fbdtz": "发布的帖子",
@@ -93,7 +93,7 @@
     "yjs": "已解锁",
     "djfz": "点击复制",
     "qxzbkbp": "请选择1M以内的图片",
-    "qxzbmbv": "请选择100MB以内的视频",
+    "qxzbmbv": "请选择2GB以内的视频",
     "qxzmpf": "请选择mp4格式的视频",
     "tjsp": "添加视频",
     "tjfm": "添加封面",
@@ -946,5 +946,7 @@
     "dqhy": "当前会员：",
     "ksjz": "可升级至",
     "sfqrsj": "是否确认升级至",
-    "xxxxx": "xxxxxxx"
+    "xxxxx": "xxxxxxx",
+    "r2qxsc": "上传已取消",
+    "r2scsb": "上传失败"
 }

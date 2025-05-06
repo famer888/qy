@@ -269,9 +269,7 @@ class CommonUtils {
     int length = await file.length();
     if (length / (1024 * 1024) > size) {
       MyToast.showText(
-        text: 'qxzbmbv'.tr(
-          namedArgs: {'size': '$size'},
-        ),
+        text: 'qxzbmbv'.tr(),
       );
       return false;
     }
@@ -286,7 +284,7 @@ class CommonUtils {
     return null;
   }
 
-  static Future<XFile?> pickVideo({int limitSize = 100}) async {
+  static Future<XFile?> pickVideo({int limitSize = 2048}) async {
     if (await ImagePicker().pickVideo(source: ImageSource.gallery)
         case final xFile? when await _videoLimitSize(xFile, limitSize)) {
       return xFile;

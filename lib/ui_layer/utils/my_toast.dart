@@ -1,8 +1,14 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cross_file/cross_file.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_thumbnail_video/index.dart';
+import 'package:get_thumbnail_video/video_thumbnail.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/type_def.dart';
@@ -72,9 +78,11 @@ class XFileProgressToast extends StatefulWidget {
     super.key,
     required this.file,
     required this.response,
+    required this.onCoverDataLoad,
   });
   final XFile file;
   final ValueChanged<Json?> response;
+  final ValueChanged<Uint8List> onCoverDataLoad;
 
   @override
   State<XFileProgressToast> createState() => _XFileProgressToastState();
@@ -90,41 +98,100 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
     _upData();
   }
 
+  final CancelToken cancelToken = CancelToken();
+
   _upData() async {
-    final result = await homeConfigNotifier.uploadVideo(
-      xFile: widget.file,
-      progressCallback: (count, total) {
-        final tmp = (count / total * 100).round();
-        setState(() => progress = "${'scz'.tr()} $tmp%");
-      },
-    );
-    widget.response(result);
+    final result = await Future.wait([
+      loadCoverData(),
+      homeConfigNotifier.uploadVideo(
+        xFile: widget.file,
+        cancelToken: cancelToken,
+        progressCallback: (count, total) {
+          final tmp = (count / total * 100).round();
+          setState(() => progress = "${'scz'.tr()} $tmp%");
+        },
+      )
+    ]);
+    widget.response({
+      'cover': result[0],
+      'video': result[1],
+    });
+  }
+
+  Future<ui.Image> loadUiImage(Uint8List bytes) async {
+    final codec = await ui.instantiateImageCodec(bytes);
+    final frame = await codec.getNextFrame();
+    return frame.image;
+  }
+
+  Future<Map<String, dynamic>?> loadCoverData() async {
+    try {
+      final coverData = await VideoThumbnail.thumbnailData(
+        video: widget.file.path,
+        imageFormat: ImageFormat.PNG,
+        timeMs: 1000,
+        quality: 25,
+      );
+
+      final image = await loadUiImage(coverData);
+
+      if (cancelToken.isCancelled) {
+        return null;
+      }
+
+      widget.onCoverDataLoad(coverData);
+
+      final path = await homeConfigNotifier.uploadImageByte(
+        bytes: coverData,
+        cancelToken: cancelToken,
+      );
+
+      return path
+        ?..addAll({
+          'thumb_width': image.width.round(),
+          'thumb_height': image.height.round(),
+        });
+    } catch (_) {
+      return null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(54, 54, 54, 0.8),
-        borderRadius: BorderRadius.all(Radius.circular(4)),
-      ),
-      height: 110.w,
-      width: 110.w,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 40.w,
-            height: 40.w,
-            child: CircularProgressIndicator(
-              color: MyTheme.jellyCyanColor103224185,
-              strokeWidth: 1.w,
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            color: Color.fromRGBO(54, 54, 54, 0.8),
+            borderRadius: BorderRadius.all(Radius.circular(4)),
           ),
-          SizedBox(height: 10.w),
-          Text(progress, style: MyTheme.white255_14)
-        ],
-      ),
+          height: 110.w,
+          width: 110.w,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 40.w,
+                height: 40.w,
+                child: CircularProgressIndicator(
+                  color: MyTheme.jellyCyanColor103224185,
+                  strokeWidth: 1.w,
+                ),
+              ),
+              SizedBox(height: 10.w),
+              Text(progress, style: MyTheme.white255_14)
+            ],
+          ),
+        ),
+        SizedBox(height: 10.w),
+        TextButton(
+          onPressed: () {
+            cancelToken.cancel();
+          },
+          child: Text('qx'.tr(), style: MyTheme.white15),
+        ),
+      ],
     );
   }
 }

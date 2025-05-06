@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:cross_file/cross_file.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import '../../domain/domain.dart';
 import '../../domain/model/home_data_model.dart';
@@ -48,16 +51,34 @@ class HomeConfigNotifier extends ChangeNotifier {
     }
   }
 
+  Future<Json?> uploadImageByte({
+    required Uint8List bytes,
+    required CancelToken? cancelToken,
+  }) async {
+    try {
+      final result = await _domain.uploadImageBytes(
+        baseUrl: _config.imgUploadUrl,
+        key: _config.uploadImgKey,
+        bytes: bytes,
+        position: 'upload',
+        cancelToken: cancelToken,
+      );
+      return result;
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<Json?> uploadVideo({
     required XFile xFile,
     required void Function(int count, int total) progressCallback,
+    required CancelToken cancelToken,
   }) async {
     try {
       final result = await _domain.uploadVideo(
         xFile: xFile,
-        baseUrl: config.mp4UploadUrl ?? '',
-        key: config.uploadMp4Key ?? '',
         progressCallback: progressCallback,
+        cancelToken: cancelToken,
       );
       return result;
     } catch (_) {

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../../../notifiers/home_config_notifier.dart';
 import '../../../../utils/common_utils.dart';
@@ -26,7 +23,7 @@ class VideoPickerGrid extends StatefulWidget {
 
 class _VideoPickerGridState extends State<VideoPickerGrid> {
   late final homeConfigNotifier = context.read<HomeConfigNotifier>();
-  VideoPlayerController? _controller;
+  Uint8List? coverData;
 
   Future<void> _videoPickerAssets() async {
     if (await CommonUtils.pickVideo() case final xFile?) {
@@ -45,36 +42,43 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
         file: file,
         response: (data) async {
           BotToast.closeAllLoading();
-          if (data?['code'] == 1) {
-            final url = "${data?['msg']}";
-            if (kIsWeb) {
-              _controller = VideoPlayerController.network(file.path);
-            } else {
-              _controller = VideoPlayerController.file(File(file.path));
-            }
-            await _controller?.initialize();
-            widget.video.clear();
+          if (data?['cover']?['code'] == 1 && data?['video']?['code'] == 1) {
+            final cover = data?['cover'];
 
-            setState(() {
-              widget.video.addAll({
-                'media_url': url,
-                'type': 1,
-                'thumb_width': _controller?.value.size.width.round(),
-                'thumb_height': _controller?.value.size.height.round(),
-              });
+            final url = "${data?['video']?['message']}";
+
+            widget.video.clear();
+            widget.video.addAll({
+              'cover': '${cover?['msg']}',
+              'media_url': url,
+              'type': 1,
+              'thumb_width': cover?['thumb_width'] ?? 0,
+              'thumb_height': cover?['thumb_height'] ?? 0,
             });
           } else {
-            MyToast.showText(text: data?['msg'] ?? 'failed');
+            MyToast.showText(
+                text: data?['cover']?['code'] != 1
+                    ? data?['cover']?['message'] ?? data?['video']?['message']
+                    : 'r2scsb'.tr());
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {
+                widget.upList.removeWhere((el) => el['type'] == 1);
+                widget.video.clear();
+                coverData = null;
+              });
+            });
           }
+        },
+        onCoverDataLoad: (Uint8List value) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() {
+              coverData = value;
+            });
+          });
         },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
   }
 
   @override
@@ -87,14 +91,14 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
       mainAxisSpacing: 10.w,
       crossAxisSpacing: 10.w,
       children: [
-        widget.video.isNotEmpty
+        coverData != null
             ? Stack(
+                fit: StackFit.expand,
                 children: [
-                  Center(
-                      child: AspectRatio(
-                    aspectRatio: _controller!.value.aspectRatio,
-                    child: VideoPlayer(_controller!),
-                  )),
+                  Image.memory(
+                    coverData!,
+                    fit: BoxFit.cover,
+                  ),
                   Center(
                     child: MyImage.asset(
                       MyImagePaths.appVPlayN,
@@ -108,10 +112,9 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
                     child: GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () => setState(() {
-                        _controller?.dispose();
-                        _controller = null;
                         widget.upList.removeWhere((el) => el['type'] == 1);
                         widget.video.clear();
+                        coverData = null;
                       }),
                       child: MyImage.asset(
                         MyImagePaths.appIssueCancelIcon,

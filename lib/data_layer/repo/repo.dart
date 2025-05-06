@@ -116,6 +116,7 @@ import '../data_source/remote/sign_service.dart';
 import '../data_source/remote/user_service.dart';
 import '../data_source/remote/withdraw_service.dart';
 import 'http_interceptor.dart';
+import 'r2_uploader.dart';
 import 'utils.dart';
 part 'cache.dart';
 part 'mixin/home_mixin.dart';
@@ -516,6 +517,43 @@ abstract class _BaseAppRepo implements AppDomain {
       _apiDio.post('/api/home/domainCheckReport2', data: {'list': lines});
 
   @override
+  AsyncJson uploadImageBytes({
+    required String baseUrl,
+    required String key,
+    required Uint8List bytes,
+    String position = 'head',
+    String? id,
+    CancelToken? cancelToken,
+    ProgressCallback? progressCallback,
+  }) async {
+    final _id = id ?? '${DateTime.now().millisecondsSinceEpoch}';
+    final newKey = 'id=$_id&position=$position${key.replaceFirst('head', '')}';
+    final tmpSha256 = _gvSha256(newKey);
+    final sign = _gvMD5(tmpSha256);
+    final imageName = _gvMD5(_id);
+
+    final formData = FormData.fromMap({
+      'id': _id,
+      'position': position,
+      'sign': sign,
+      'cover': MultipartFile.fromBytes(
+        bytes,
+        filename: '$imageName.png',
+        contentType: MediaType.parse('image/png'),
+      ),
+    });
+
+    final response = await _dio.post(
+      baseUrl,
+      data: formData,
+      cancelToken: cancelToken,
+      onSendProgress: progressCallback,
+      options: Options(contentType: Headers.multipartFormDataContentType),
+    );
+    return jsonDecode(response.data);
+  }
+
+  @override
   AsyncJson uploadImage({
     required XFile xFile,
     required String baseUrl,
@@ -556,39 +594,14 @@ abstract class _BaseAppRepo implements AppDomain {
   @override
   AsyncJson uploadVideo({
     required XFile xFile,
-    required String baseUrl,
-    required String key,
     CancelToken? cancelToken,
     ProgressCallback? progressCallback,
   }) async {
-    final timeStamp = '${DateTime.now().millisecondsSinceEpoch}';
-    final newKey = '$timeStamp${key.replaceFirst('head', '')}';
-    final sign = _gvMD5(newKey);
-
-    final formData = FormData.fromMap({
-      'timestamp': timeStamp,
-      'uuid': '9544f11ed4381ebcef5429b6f20e69c1',
-      'sign': sign,
-      'video': kIsWeb
-          ? MultipartFile.fromBytes(
-              await xFile.readAsBytes(),
-              filename: xFile.name,
-              contentType: MediaType.parse('video/mp4'),
-            )
-          : await MultipartFile.fromFile(
-              xFile.path,
-              filename: xFile.name,
-              contentType: MediaType.parse('video/mp4'),
-            ),
-    });
-    final response = await _dio.post(
-      baseUrl,
-      data: formData,
-      cancelToken: cancelToken,
-      onSendProgress: progressCallback,
-      options: Options(contentType: Headers.multipartFormDataContentType),
+    final result = await R2UploaderUtil(cancelToken: cancelToken).upload(
+      xFile: xFile,
+      progressCallback: progressCallback,
     );
-    return jsonDecode(response.data);
+    return result;
   }
 
   @override
