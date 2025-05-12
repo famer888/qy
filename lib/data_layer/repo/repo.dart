@@ -593,11 +593,19 @@ abstract class _BaseAppRepo implements AppDomain {
 
   @override
   AsyncJson uploadVideo({
+    required String r2URL,
+    required String r2Key,
+    required String r2CompleteURL,
     required XFile xFile,
     CancelToken? cancelToken,
     ProgressCallback? progressCallback,
   }) async {
-    final result = await R2UploaderUtil(cancelToken: cancelToken).upload(
+    final result = await R2UploaderUtil(
+      cancelToken: cancelToken,
+      r2URL: r2URL,
+      r2Key: r2Key,
+      r2CompleteURL: r2CompleteURL,
+    ).upload(
       xFile: xFile,
       progressCallback: progressCallback,
     );

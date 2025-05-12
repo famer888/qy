@@ -14,6 +14,7 @@ import 'package:web/web.dart' as web;
 
 import 'src/image_resizer.dart';
 import 'src/pkg_web_tweaks.dart';
+import 'package:js/js_util.dart' as js;
 
 const String _kImagePickerInputsDomId = '__image_picker_web-file-input';
 const String _kAcceptImageMimeType = 'image/*';
@@ -379,18 +380,13 @@ class WebXFile extends XFile {
   }
 
   Future<Uint8List> _blobToByteBuffer(web.Blob blob) async {
-    final reader = web.FileReader();
-    reader.readAsArrayBuffer(blob);
-
-    await reader.onLoadEnd.first;
-
-    final Uint8List? result =
-        (reader.result as JSArrayBuffer?)?.toDart.asUint8List();
-
-    if (result == null) {
+    try {
+      final buffer =
+          await js.promiseToFuture<JSArrayBuffer>(blob.arrayBuffer());
+      final Uint8List result = buffer.toDart.asUint8List();
+      return result;
+    } catch (_) {
       throw Exception('Cannot read bytes from Blob. Is it still available?');
     }
-
-    return result;
   }
 }

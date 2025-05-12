@@ -76,6 +76,9 @@ class HomeConfigNotifier extends ChangeNotifier {
   }) async {
     try {
       final result = await _domain.uploadVideo(
+        r2URL: _config.r2URL ?? '',
+        r2Key: _config.r2Key ?? '',
+        r2CompleteURL: _config.r2CompleteURL ?? '',
         xFile: xFile,
         progressCallback: progressCallback,
         cancelToken: cancelToken,

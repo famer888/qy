@@ -2,7 +2,6 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:cross_file/cross_file.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,8 @@ import 'package:provider/provider.dart';
 import '../../domain/type_def.dart';
 import '../notifiers/home_config_notifier.dart';
 import '../screens/theme.dart';
+import '../screens/common_widgets/my_image.dart';
+import '../screens/image_paths.dart';
 
 class MyToast {
   static showText({
@@ -90,7 +91,7 @@ class XFileProgressToast extends StatefulWidget {
 
 class _XFileProgressToastState extends State<XFileProgressToast> {
   late final homeConfigNotifier = context.read<HomeConfigNotifier>();
-  String progress = 'scz'.tr();
+  final ValueNotifier<String> progress = ValueNotifier('scz'.tr());
 
   @override
   void initState() {
@@ -108,7 +109,7 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
         cancelToken: cancelToken,
         progressCallback: (count, total) {
           final tmp = (count / total * 100).round();
-          setState(() => progress = "${'scz'.tr()} $tmp%");
+          progress.value = "${'scz'.tr()} $tmp%";
         },
       )
     ]);
@@ -152,7 +153,11 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
           'thumb_height': image.height.round(),
         });
     } catch (_) {
-      return null;
+      widget.onCoverDataLoad(Uint8List(0));
+      return {
+        'code': 1,
+        'msg': '',
+      };
     }
   }
 
@@ -171,16 +176,24 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 40.w,
-                height: 40.w,
-                child: CircularProgressIndicator(
-                  color: MyTheme.jellyCyanColor103224185,
-                  strokeWidth: 1.w,
+              const SizedBox(
+                width: 40,
+                height: 40,
+                child: MyImage.asset(
+                  MyImagePaths.appLoading,
+                  height: 40,
+                  width: 40,
                 ),
               ),
               SizedBox(height: 10.w),
-              Text(progress, style: MyTheme.white255_14)
+              RepaintBoundary(
+                child: ValueListenableBuilder(
+                  valueListenable: progress,
+                  builder: (_, text, __) {
+                    return Text(text, style: MyTheme.white255_14);
+                  },
+                ),
+              ),
             ],
           ),
         ),

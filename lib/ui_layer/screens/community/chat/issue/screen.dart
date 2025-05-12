@@ -888,7 +888,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                                             MainAxisAlignment.center,
                                         children: [
                                           MyImage.asset(
-                                              MyImagePaths.appGirlPicker,
+                                              MyImagePaths.appGirlImgpicker,
                                               width: 30.w,
                                               height: 30.w),
                                           SizedBox(height: 5.w),

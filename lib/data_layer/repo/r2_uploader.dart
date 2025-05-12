@@ -11,26 +11,30 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 class R2UploaderUtil {
-  R2UploaderUtil({this.cancelToken});
+  R2UploaderUtil({
+    this.cancelToken,
+    required this.r2URL,
+    required this.r2Key,
+    required this.r2CompleteURL,
+  });
 
   final CancelToken? cancelToken;
 
-  late final _r2Dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://r2.microservices.vip',
-    ),
-  );
+  late final _r2Dio = Dio();
 
-  final signKey = 'd2bf7126723ea8f6005ba141ea3c3e2c';
+  final String r2URL;
+  final String r2Key;
+  final String r2CompleteURL;
+
   late final timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
   late final signature =
-      md5.convert(utf8.encode('$timeStamp$signKey')).toString();
+      md5.convert(utf8.encode('$timeStamp$r2Key')).toString();
 
   Future<Map<String, dynamic>> upload({
     required XFile xFile,
     ProgressCallback? progressCallback,
   }) async {
-    const chunkSize = 5 * 1024 * 1024; // 2MB
+    const chunkSize = 5 * 1024 * 1024; // 5MB
     final fileSize = await xFile.length();
 
     final numberOfChunks = (fileSize / chunkSize).ceil();
@@ -83,7 +87,7 @@ class R2UploaderUtil {
   Future<Map> _getMultipartData(int numberOfChunks) async {
     try {
       final uploadResponse = await _r2Dio.post(
-        '/multipart_upload',
+        r2URL,
         data: FormData.fromMap({
           'sign': signature,
           'timestamp': timeStamp,
@@ -102,7 +106,7 @@ class R2UploaderUtil {
       String name, String id, List<Map> sliceTags) async {
     try {
       final uploadResponse = await _r2Dio.post(
-        '/multipart_complete',
+        r2CompleteURL,
         data: FormData.fromMap({
           'sign': signature,
           'timestamp': timeStamp,

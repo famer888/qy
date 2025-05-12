@@ -85,6 +85,9 @@ abstract class RemoteDomain
 
   /// 视频上传
   AsyncJson uploadVideo({
+    required String r2URL,
+    required String r2Key,
+    required String r2CompleteURL,
     required XFile xFile,
     CancelToken? cancelToken,
     ProgressCallback? progressCallback,

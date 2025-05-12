@@ -319,7 +319,7 @@ class _GirlDetailScreenState extends State<GirlDetailScreen>
                                                       ? MyImagePaths
                                                           .appChatCollectS
                                                       : MyImagePaths
-                                                          .appChatCllectN,
+                                                          .appChatCollectN,
                                                   width: 25.w,
                                                   height: 25.w,
                                                 ),

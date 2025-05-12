@@ -5,8 +5,10 @@ class MyImagePaths {
   static const appFabuVideo = './assets/images/app_fabu_video.png';
   static const appCommunCmtN = './assets/images/app_commun_cmt_n.png';
   static const appMineJellyShareQrBg = './assets/images/app_mine_jelly_share_qr_bg.png';
+  static const appChatOfficialTip = './assets/images/app_chat_official_tip.png';
   static const uploadFaceError1 = './assets/images/upload_face_error_1.png';
   static const appLiveColloctionS = './assets/images/app_live_colloction_s.png';
+  static const appChatCollectN = './assets/images/app_chat_collect_n.png';
   static const appTabWodeN = './assets/images/app_tab_wode_n.png';
   static const appLoginBackground = './assets/images/app_login_background.png';
   static const appZfAgnN = './assets/images/app_zf_agn_n.png';
@@ -27,13 +29,17 @@ class MyImagePaths {
   static const appMineWelfareBackground = './assets/images/app_mine_welfare_background.png';
   static const appMineShareQrcodeBg = './assets/images/app_mine_share_qrcode_bg.png';
   static const appBackIcon = './assets/images/app_back_icon.png';
+  static const appChatPublish = './assets/images/app_chat_publish.png';
+  static const appChatTrumpet = './assets/images/app_chat_trumpet.png';
   static const appMineGroup = './assets/images/app_mine_group.png';
   static const appClose = './assets/images/app_close.png';
   static const appComicNext = './assets/images/app_comic_next.png';
+  static const appCommonReload = './assets/images/app_common_reload.png';
   static const appIssueIcon = './assets/images/app_issue_icon.png';
   static const appIssueAdd = './assets/images/app_issue_add.png';
   static const appMineShareBackground = './assets/images/app_mine_share_background.png';
   static const appTabShequS = './assets/images/app_tab_shequ_s.png';
+  static const appGirlPublish = './assets/images/app_girl_publish.png';
   static const appHashtagIcon = './assets/images/app_hashtag_icon.png';
   static const appProxyBtnBg = './assets/images/app_proxy_btn_bg.png';
   static const appWdZzkf = './assets/images/app_wd_zzkf.png';
@@ -48,7 +54,9 @@ class MyImagePaths {
   static const appDownload = './assets/images/app_download.png';
   static const appZfMxN = './assets/images/app_zf_mx_n.png';
   static const appDlbtw = './assets/images/app_dlbtw.png';
+  static const appChatShare = './assets/images/app_chat_share.png';
   static const appMineBuy = './assets/images/app_mine_buy.png';
+  static const qyMineVipUpgrade = './assets/images/qy_mine_vip_upgrade.png';
   static const appTabDownloadN = './assets/images/app_tab_download_n.png';
   static const appLiveShare = './assets/images/app_live_share.png';
   static const appCoinLogo = './assets/images/app_coin_logo.png';
@@ -76,6 +84,7 @@ class MyImagePaths {
   static const appThumbUpOffIcon = './assets/images/app_thumb_up_off_icon.png';
   static const appMeOriginalN = './assets/images/app_me_original_n.png';
   static const appNovelMl = './assets/images/app_novel_ml.png';
+  static const appGirlFilter = './assets/images/app_girl_filter.png';
   static const appIssueDelete = './assets/images/app_issue_delete.png';
   static const appNovelFontsize1 = './assets/images/app_novel_fontsize1.png';
   static const appMonitorZanS = './assets/images/app_monitor_zan_s.png';
@@ -83,6 +92,7 @@ class MyImagePaths {
   static const appGrayUp = './assets/images/app_gray_up.png';
   static const appMineCustomerMessage = './assets/images/app_mine_customer_message.png';
   static const appDljq = './assets/images/app_dljq.png';
+  static const appGirlImgpicker = './assets/images/app_girl_imgpicker.png';
   static const appSearchIcon = './assets/images/app_search_icon.png';
   static const appVPauseN = './assets/images/app_v_pause_n.png';
   static const appVipBannerBackground = './assets/images/app_vip_banner_background.png';
@@ -94,6 +104,7 @@ class MyImagePaths {
   static const appUpdateUpBg = './assets/images/app_update_up_bg.png';
   static const appZfXfbN = './assets/images/app_zf_xfb_n.png';
   static const appUploadImg = './assets/images/app_upload_img.png';
+  static const appCommonMore = './assets/images/app_common_more.png';
   static const appResouIcon = './assets/images/app_resou_icon.png';
   static const appRank = './assets/images/app_rank.png';
   static const appCustomModel = './assets/images/app_custom_model.png';
@@ -131,6 +142,7 @@ class MyImagePaths {
   static const appDialogClose = './assets/images/app_dialog_close.png';
   static const appMonitorZanN = './assets/images/app_monitor_zan_n.png';
   static const appZfUsN = './assets/images/app_zf_us_n.png';
+  static const appLoading = './assets/images/app_loading.gif';
   static const appTabAreaS = './assets/images/app_tab_area_s.png';
   static const appDaSan = './assets/images/app_da_san.png';
   static const appOffline = './assets/images/app_offline.png';
@@ -152,6 +164,7 @@ class MyImagePaths {
   static const appCircleClose = './assets/images/app_circle_close.png';
   static const appLiveColloctionN = './assets/images/app_live_colloction_n.png';
   static const appCopy = './assets/images/app_copy.png';
+  static const appChatCollectS = './assets/images/app_chat_collect_s.png';
   static const appPrevIconGrey = './assets/images/app_prev_icon_grey.png';
   static const appSingInJb = './assets/images/app_singIn_jb.png';
   static const appFxxbbT = './assets/images/app_fxxbb_t.png';
@@ -184,22 +197,11 @@ class MyImagePaths {
   static const appYjt = './assets/images/app_yjt.png';
   static const appVipIcon = './assets/images/app_vip_icon.png';
   static const appMonitorOnVoice = './assets/images/app_monitor_on_voice.png';
+  static const appPostDelete = './assets/images/app_post_delete.png';
   static const appCancelWithCircle = './assets/images/app_cancel_with_circle.png';
   static const appSearchLogo = './assets/images/app_search_logo.png';
   static const appTabShequN = './assets/images/app_tab_shequ_n.png';
   static const appVideoCoinN = './assets/images/app_video_coin_n.png';
   static const appAnnouncementUpBg = './assets/images/app_announcement_up_bg.png';
   static const appMineAi = './assets/images/app_mine_ai.png';
-  static const appGirlFilter= './assets/images/app_girl_filter.png';
-  static const appGirlPublish = './assets/images/app_girl_publish.png';
-  static const appPostDelete = './assets/images/app_post_delete.png';
-  static const appGirlPicker= './assets/images/app_girl_imgpicker.png';
-  static const appChatPublish = './assets/images/app_chat_publish.png';
-  static const appChatCollectS = './assets/images/app_chat_collect_s.png';
-  static const appChatCllectN = './assets/images/app_chat_collect_n.png';
-  static const appChatOfficialTip = './assets/images/app_chat_official_tip.png';
-  static const appChatShare = './assets/images/app_chat_share.png';
-  static const appChatTrumpet = './assets/images/app_chat_trumpet.png';
-  static const appCommonReload = './assets/images/app_common_reload.png';
-  static const appCommonMore = './assets/images/app_common_more.png';
 }

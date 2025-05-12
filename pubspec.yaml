@@ -17,7 +17,8 @@ dependencies:
   go_router: 14.4.1
 #  go_router: 12.1.3
 
-  flutter_screenutil: ^5.9.1
+  flutter_screenutil:
+    path: plugins/flutter_screenutil-5.9.3
   utils:
     path: plugins/utils
   logger: ^2.0.2+1

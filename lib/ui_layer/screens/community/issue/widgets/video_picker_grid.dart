@@ -52,6 +52,7 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
               'cover': '${cover?['msg']}',
               'media_url': url,
               'type': 1,
+              'video_type': 'r2',
               'thumb_width': cover?['thumb_width'] ?? 0,
               'thumb_height': cover?['thumb_height'] ?? 0,
             });
