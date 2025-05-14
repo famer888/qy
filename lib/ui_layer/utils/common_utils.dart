@@ -103,7 +103,7 @@ class CommonUtils {
       html.document.execCommand('copy');
       tempTextArea.remove();
     } else {
-      Clipboard.setData(ClipboardData(text: text));
+      CommonUtils.copyToClipboard(text: text);
     }
   }
 

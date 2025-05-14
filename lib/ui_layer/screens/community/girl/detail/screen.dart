@@ -458,8 +458,8 @@ class _GirlDetailScreenState extends State<GirlDetailScreen>
                                                 HitTestBehavior.translucent,
                                             onTap: () {
                                               // uploadData();
-                                              Clipboard.setData(ClipboardData(
-                                                  text: '${data.contact}'));
+                                              CommonUtils.copyToClipboard(
+                                                  text: '${data.contact}');
 
                                               MyToast.showText(
                                                   text: 'yfz'.tr());

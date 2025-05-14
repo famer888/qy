@@ -10,6 +10,7 @@ import '../../../../../domain/remote_domain/domains/seed.dart';
 import '../../../../../domain/type_def.dart';
 import '../../../../notifiers/user_notifier.dart';
 import '../../../../router/routes.dart';
+import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/post/content/comment_count.dart';
 import '../../../common_widgets/post/content/content.dart';
@@ -121,7 +122,7 @@ class _SourceAreaState extends State<_SourceArea> {
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 if (!showSecret) return;
-                Clipboard.setData(ClipboardData(text: secret));
+                CommonUtils.copyToClipboard(text: secret);
                 MyToast.showText(text: 'fzcg'.tr(context: context));
               },
               child: RichText(
@@ -147,7 +148,7 @@ class _SourceAreaState extends State<_SourceArea> {
             GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                Clipboard.setData(ClipboardData(text: currentLink));
+                CommonUtils.copyToClipboard(text: currentLink);
                 MyToast.showText(text: 'fzcg'.tr(context: context));
               },
               child: RichText(

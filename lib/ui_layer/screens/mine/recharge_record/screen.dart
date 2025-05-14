@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/order_model.dart';
 import '../../../router/routes.dart';
+import '../../../utils/common_utils.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/my_app_bar.dart';
 import '../../common_widgets/my_image.dart';
@@ -85,8 +86,8 @@ class OrderItem extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Clipboard.setData(ClipboardData(
-                      text: '${'ddbh'.tr(context: context)}：${order.id}'));
+                  CommonUtils.copyToClipboard(
+                      text: '${'ddbh'.tr(context: context)}：${order.id}');
                   MyToast.showText(text: 'fzcgl'.tr(context: context));
                 },
                 child: Row(

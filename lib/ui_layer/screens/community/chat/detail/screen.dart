@@ -478,8 +478,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                                 HitTestBehavior.translucent,
                                             onTap: () {
                                               // uploadData();
-                                              Clipboard.setData(ClipboardData(
-                                                  text: '${data.contact}'));
+                                              CommonUtils.copyToClipboard(
+                                                  text: '${data.contact}');
 
                                               MyToast.showText(
                                                   text: 'yfz'.tr());
