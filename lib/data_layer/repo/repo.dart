@@ -10,6 +10,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cross_file/cross_file.dart';
+import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:utils/utils.dart';
@@ -593,19 +594,13 @@ abstract class _BaseAppRepo implements AppDomain {
 
   @override
   AsyncJson uploadVideo({
-    required String r2URL,
-    required String r2Key,
-    required String r2CompleteURL,
+    required BuildContext context,
     required XFile xFile,
     CancelToken? cancelToken,
     ProgressCallback? progressCallback,
   }) async {
-    final result = await R2UploaderUtil(
-      cancelToken: cancelToken,
-      r2URL: r2URL,
-      r2Key: r2Key,
-      r2CompleteURL: r2CompleteURL,
-    ).upload(
+    final result =
+        await R2UploaderUtil(context: context, cancelToken: cancelToken).upload(
       xFile: xFile,
       progressCallback: progressCallback,
     );

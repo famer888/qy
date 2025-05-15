@@ -94,7 +94,7 @@
   "ssmj": "漫剧",
   "yjs": "已解锁",
   "djfz": "点击复制",
-  "qxzbkbp": "请选择{size}MB以内的图片",
+  "qxzbkbp": "请选择5MB以内的图片",
   "qxzbmbv": "请选择2GB以内的视频",
   "qxzmpf": "请选择mp4格式的视频",
   "tjsp": "添加视频",
@@ -1128,5 +1128,9 @@
   "fsxxjbmf": "发消息一次aa金币 免费次数bb",
   "xxxxx": "xxxxxx",
   "r2qxsc": "上传已取消",
-  "r2scsb": "上传失败"
+  "r2scsb": "上传失败",
+  "mrdxdk": "###APP内打开",
+  "azbz": "如果没有自动跳转，请按照以下步骤安装:【设置-通用-设备管理-已下载的描述文件（点击手动安装）】",
+  "qsyxz": "请使用Safari浏览器打开",
+  "xxxxxx": "xxxx"
 }

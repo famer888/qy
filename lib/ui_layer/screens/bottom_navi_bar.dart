@@ -480,7 +480,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                       width: 200.w,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: MyTheme.whiteColor,
+                        gradient: MyTheme.gradient_90_114,
                         borderRadius: BorderRadius.all(
                           Radius.circular(15.w),
                         ),
@@ -491,7 +491,10 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                           MyImage.asset(MyImagePaths.appLogoIcon,
                               width: 18.w, height: 18.w),
                           SizedBox(width: 5.w),
-                          Text('mrdxdk'.tr(context: context),
+                          Text(
+                              'mrdxdk'
+                                  .tr(context: context)
+                                  .replaceAll('###', 'yybt'.tr()),
                               style: MyTheme.black1434)
                         ],
                       ),

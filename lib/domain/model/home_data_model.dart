@@ -180,7 +180,6 @@ class Config {
     required this.resourceNav,
     this.openLive,
     this.navPrepend,
-    this.adVersion,
     this.postDetailAds,
     this.personAds,
     this.pwaDownloadUrl,
@@ -188,6 +187,10 @@ class Config {
     this.r2Key,
     this.r2CompleteURL,
     this.pwaApk,
+    this.keywords,
+    this.description,
+    this.title,
+    this.adVersion,
   });
 
   final String imgUploadUrl;
@@ -269,7 +272,6 @@ class Config {
   final int stripCoins;
   final int imCoins;
 
-  final int? adVersion;
   final List<BannerModel>? postDetailAds;
   final List<BannerModel>? personAds;
 
@@ -282,6 +284,13 @@ class Config {
 
   //paw_apk下载
   final String? pwaApk;
+
+  //seo
+  final String? keywords;
+  final String? description;
+  final String? title;
+
+  final int? adVersion;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         imgUploadUrl: json['img_upload_url'],
@@ -375,7 +384,6 @@ class Config {
         rankCycleNav: List<RankNavModel>.from(
             json['rank_cycle_nav']?.map((x) => RankNavModel.fromJson(x)) ?? []),
         openLive: json['open_live'],
-        adVersion: json['ad_version'],
         postDetailAds: List<BannerModel>.from(
             json['post_detail_ads']?.map((x) => BannerModel.fromJson(x)) ?? []),
         personAds: List<BannerModel>.from(
@@ -385,6 +393,10 @@ class Config {
         r2Key: json['r2Key'] ?? '',
         r2CompleteURL: json['r2CompleteURL'] ?? '',
         pwaApk: json['pwa_apk'] ?? '',
+        keywords: json['keywords'] ?? '',
+        description: json['description'] ?? '',
+        title: json['title'] ?? '',
+        adVersion: json['ad_version'] ?? 0,
       );
 }
 

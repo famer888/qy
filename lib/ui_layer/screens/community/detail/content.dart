@@ -274,7 +274,7 @@ class _TopAppsListWidgetState extends State<TopAppsListWidget> {
   @override
   Widget build(BuildContext context) {
     return (homeConfigNotifier.config.postDetailAds ?? []).isNotEmpty
-        ? GeneralAppsListVidget(
+        ? GeneralBannerAppsListWidget(
             data: homeConfigNotifier.config.postDetailAds ?? [])
         : Container();
   }

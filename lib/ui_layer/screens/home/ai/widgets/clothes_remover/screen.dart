@@ -36,7 +36,7 @@ class _ClothesRemoverViewState extends State<ClothesRemoverView> {
   Future _initData() async {}
 
   Future<void> imagePickerAssets() async {
-    if (await CommonUtils.pickImage(limitSize: 2) case final xFile?) {
+    if (await CommonUtils.pick2MImage() case final xFile?) {
       MyToast.showLoading(text: 'scz'.tr());
       final result = await _homeConfig.uploadImage(xFile);
       if (result != null && result['code'] == 1) {

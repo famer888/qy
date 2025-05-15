@@ -105,6 +105,7 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
     final result = await Future.wait([
       loadCoverData(),
       homeConfigNotifier.uploadVideo(
+        context: context,
         xFile: widget.file,
         cancelToken: cancelToken,
         progressCallback: (count, total) {
@@ -152,7 +153,7 @@ class _XFileProgressToastState extends State<XFileProgressToast> {
           'thumb_width': image.width.round(),
           'thumb_height': image.height.round(),
         });
-    } catch (_) {
+    } catch (e) {
       widget.onCoverDataLoad(Uint8List(0));
       return {
         'code': 1,

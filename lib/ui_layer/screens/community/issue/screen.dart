@@ -412,6 +412,8 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
   /// 发布
   Future<void> _send() async {
     final topic = topicNotifier.value;
+    List<Map> p = List.from(upList);
+
     if (topic == null) {
       MyToast.showText(
           text: 'q'.tr(context: context) + 'xzht'.tr(context: context));
@@ -439,9 +441,9 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
       }
 
       //视频数据添加到尾部
-      final index = upList.indexWhere((el) => el['media_url'].contains('.mp4'));
-      if (index == -1) {
-        upList.add(video);
+      final index = upList.indexWhere((el) => el['type'] == 1);
+      if (index == -1 && video.isNotEmpty) {
+        p.add(video);
       }
     }
     if (type == CommunityIssueType.imageAndText) {
@@ -461,7 +463,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
         contact: contactController.text,
         type: '${topic.type}',
         coins: coinController.text.isEmpty ? '0' : coinController.text,
-        medias: jsonEncode(upList),
+        medias: jsonEncode(p),
         isPublic: isOpenNotifier.value ? 1 : 0,
       );
       BotToast.closeAllLoading();

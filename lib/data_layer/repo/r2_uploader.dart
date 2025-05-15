@@ -9,22 +9,33 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:qypj/ui_layer/notifiers/home_config_notifier.dart';
 
 class R2UploaderUtil {
-  R2UploaderUtil({
-    this.cancelToken,
-    required this.r2URL,
-    required this.r2Key,
-    required this.r2CompleteURL,
-  });
+  R2UploaderUtil({required BuildContext context, this.cancelToken})
+      : r2URL = Provider.of<HomeConfigNotifier>(context, listen: false)
+                .homeData
+                .config
+                .r2URL ??
+            '',
+        r2Key = Provider.of<HomeConfigNotifier>(context, listen: false)
+                .homeData
+                .config
+                .r2Key ??
+            '',
+        r2CompleteURL = Provider.of<HomeConfigNotifier>(context, listen: false)
+                .homeData
+                .config
+                .r2CompleteURL ??
+            '';
 
   final CancelToken? cancelToken;
-
-  late final _r2Dio = Dio();
-
   final String r2URL;
   final String r2Key;
   final String r2CompleteURL;
+
+  late final _r2Dio = Dio();
 
   late final timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
   late final signature =
@@ -69,7 +80,7 @@ class R2UploaderUtil {
     });
 
     try {
-      final sliceTags = await uploader.exec(5);
+      final sliceTags = await uploader.exec(kIsWeb ? 5 : 15);
       final completeData =
           await _multipartComplete(uploadName, uploadId, sliceTags);
       if (completeData['status'] == 'success') {

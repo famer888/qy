@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 import '../enum.dart';
 import '../type_def.dart';
@@ -75,8 +76,8 @@ abstract class RemoteDomain
 
   AsyncJson uploadImage({
     required String baseUrl,
-    required String key,
     required XFile xFile,
+    required String key,
     String? id,
     String position = 'head',
     CancelToken? cancelToken,
@@ -85,9 +86,7 @@ abstract class RemoteDomain
 
   /// 视频上传
   AsyncJson uploadVideo({
-    required String r2URL,
-    required String r2Key,
-    required String r2CompleteURL,
+    required BuildContext context,
     required XFile xFile,
     CancelToken? cancelToken,
     ProgressCallback? progressCallback,

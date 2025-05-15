@@ -357,21 +357,17 @@ class CommonUtils {
   }
 
   /// xfile限制图片大小
-  static Future<bool> _pngLimitSize(XFile file, int size) async {
+  static Future<bool> _pngLimitSize(XFile file) async {
     int length = await file.length();
-    if (length / (1024 * 1024) > size) {
-      MyToast.showText(
-        text: 'qxzbkbp'.tr(
-          namedArgs: {'size': '$size'},
-        ),
-      );
+    if (length / (1024 * 1024) > 5) {
+      MyToast.showText(text: 'qxzbkbp'.tr());
       return false;
     }
     return true;
   }
 
   /// xfile限制视频大小
-  static Future<bool> _videoLimitSize(XFile file, int size) async {
+  static Future<bool> _videoLimitSize(XFile file, {int size = 2048}) async {
     int length = await file.length();
     if (length / (1024 * 1024) > size) {
       MyToast.showText(
@@ -382,17 +378,25 @@ class CommonUtils {
     return true;
   }
 
-  static Future<XFile?> pickImage({int limitSize = 1}) async {
+  static Future<XFile?> pick2MImage() async {
     if (await ImagePicker().pickImage(source: ImageSource.gallery)
-        case final xFile? when await _pngLimitSize(xFile, limitSize)) {
+        case final xFile? when await pngLimit2MSize(xFile)) {
       return xFile;
     }
     return null;
   }
 
-  static Future<XFile?> pickVideo({int limitSize = 2048}) async {
+  static Future<XFile?> pickImage() async {
+    if (await ImagePicker().pickImage(source: ImageSource.gallery)
+        case final xFile? when await _pngLimitSize(xFile)) {
+      return xFile;
+    }
+    return null;
+  }
+
+  static Future<XFile?> pickVideo() async {
     if (await ImagePicker().pickVideo(source: ImageSource.gallery)
-        case final xFile? when await _videoLimitSize(xFile, limitSize)) {
+        case final xFile? when await _videoLimitSize(xFile)) {
       return xFile;
     }
     return null;
