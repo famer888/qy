@@ -180,9 +180,17 @@ class Config {
     required this.resourceNav,
     this.openLive,
     this.navPrepend,
-    this.adVersion,
     this.postDetailAds,
     this.personAds,
+    this.pwaDownloadUrl,
+    this.r2URL,
+    this.r2Key,
+    this.r2CompleteURL,
+    this.pwaApk,
+    this.keywords,
+    this.description,
+    this.title,
+    this.adVersion,
   });
 
   final String imgUploadUrl;
@@ -264,9 +272,25 @@ class Config {
   final int stripCoins;
   final int imCoins;
 
-  final int? adVersion;
   final List<BannerModel>? postDetailAds;
   final List<BannerModel>? personAds;
+
+  final String? pwaDownloadUrl;
+
+  //R2分片上传
+  final String? r2URL;
+  final String? r2Key;
+  final String? r2CompleteURL;
+
+  //paw_apk下载
+  final String? pwaApk;
+
+  //seo
+  final String? keywords;
+  final String? description;
+  final String? title;
+
+  final int? adVersion;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         imgUploadUrl: json['img_upload_url'],
@@ -360,11 +384,19 @@ class Config {
         rankCycleNav: List<RankNavModel>.from(
             json['rank_cycle_nav']?.map((x) => RankNavModel.fromJson(x)) ?? []),
         openLive: json['open_live'],
-        adVersion: json['ad_version'],
         postDetailAds: List<BannerModel>.from(
             json['post_detail_ads']?.map((x) => BannerModel.fromJson(x)) ?? []),
         personAds: List<BannerModel>.from(
             json['person_ads']?.map((x) => BannerModel.fromJson(x)) ?? []),
+        pwaDownloadUrl: json['pwa_download_url'] ?? '',
+        r2URL: json['r2URL'] ?? '',
+        r2Key: json['r2Key'] ?? '',
+        r2CompleteURL: json['r2CompleteURL'] ?? '',
+        pwaApk: json['pwa_apk'] ?? '',
+        keywords: json['keywords'] ?? '',
+        description: json['description'] ?? '',
+        title: json['title'] ?? '',
+        adVersion: json['ad_version'] ?? 0,
       );
 }
 

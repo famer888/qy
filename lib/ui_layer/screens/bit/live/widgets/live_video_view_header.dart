@@ -29,7 +29,7 @@ class LiveVideoViewHeader extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralAppsListVidget(data: banners),
+              child: GeneralBannerAppsListWidget(data: banners),
             );
           },
         ),

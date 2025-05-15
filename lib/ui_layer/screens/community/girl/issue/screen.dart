@@ -1010,7 +1010,7 @@ class _GirlIssueScreenState extends State<GirlIssueScreen> {
                                                   children: [
                                                     MyImage.asset(
                                                         MyImagePaths
-                                                            .appGirlPicker,
+                                                            .appGirlImgpicker,
                                                         width: 30.w,
                                                         height: 30.w),
                                                     SizedBox(height: 5.w),

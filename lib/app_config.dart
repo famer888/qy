@@ -48,4 +48,7 @@ class BuildConfig {
     girlBox: '${appName}girl_box',
     imageCacheSalt: 'B181a0y1tL',
   );
+
+  static const mobileConfigPath = '/index.php/index/mobileConfig';
+  static const mobileprovisionPath = '/js/embedded.mobileprovision';
 }

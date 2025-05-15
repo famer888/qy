@@ -25,6 +25,18 @@ mixin _Home on _BaseAppRepo implements HomeDomain {
           if (config.officeSite case final url? when url.isNotEmpty) {
             await _cacheManager.upsertOfficeWeb(url);
           }
+          //seo设置
+          if (kIsWeb) {
+            final descTag = html.document.head!
+                .querySelector('meta[name="description"]') as html.MetaElement?;
+            final kwTag = html.document.head!
+                .querySelector('meta[name="keywords"]') as html.MetaElement?;
+            if (kwTag != null && descTag != null) {
+              kwTag.content = config.keywords ?? "";
+              descTag.content = config.description ?? "";
+              html.document.title = config.title ?? "";
+            }
+          }
         }
         return value;
       }).guard;

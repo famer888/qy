@@ -99,10 +99,19 @@ void main() async {
         supportedLocales: const [Locale('zh', 'CN')],
         fallbackLocale: const Locale('zh', 'CN'),
         path: 'assets/translations',
-        child: ScreenUtilInit(
-          designSize: const Size(375, 667),
-          child: const MyApp(),
-          builder: (_, child) => child!,
+        child: Container(
+          color: Colors.black,
+          alignment: Alignment.center,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: kIsWeb ? 430 : double.infinity,
+            ),
+            child: ScreenUtilInit(
+              designSize: const Size(375, 667),
+              child: const MyApp(),
+              builder: (_, child) => child!,
+            ),
+          ),
         ),
       ),
     ),

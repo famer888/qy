@@ -724,7 +724,7 @@ class __PersonAdsBannerWidgetState extends State<_PersonAdsBannerWidget> {
     return (homeConfigNotifier.config.personAds ?? []).isNotEmpty
         ? Container(
             margin: EdgeInsets.only(bottom: 15.w),
-            child: GeneralAppsListVidget(
+            child: GeneralBannerAppsListWidget(
               data: homeConfigNotifier.config.personAds ?? [],
               aspectRatio: 7 / 3,
             ),

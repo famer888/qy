@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../domain/type_def.dart';
 import '../../../domain/domain.dart';
 import '../../notifiers/user_notifier.dart';
+import '../../utils/common_utils.dart';
 import '../../utils/my_toast.dart';
 import '../common_widgets/dialog/my_dialog.dart';
 import '../common_widgets/dialog/widgets/regular_dialog.dart';
@@ -45,9 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
         userName: userNameController.text, password: passwordController.text);
     if (result.status != 0) {
       await _userNotifier.init();
-      Clipboard.setData(ClipboardData(
+      CommonUtils.copyToClipboard(
           text:
-              '回家地址：${_userNotifier.member.share?.affUrlCopy?.url} 帐号：${userNameController.text} 密码：${passwordController.text}'));
+              '回家地址：${_userNotifier.member.share?.affUrlCopy?.url} 帐号：${userNameController.text} 密码：${passwordController.text}');
       await _showAlert();
       if (mounted) {
         context.pop();

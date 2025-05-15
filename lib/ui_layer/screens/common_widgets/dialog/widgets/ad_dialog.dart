@@ -20,44 +20,38 @@ class AdDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const Positioned.fill(
-          child: ColoredBox(
-            color: Colors.black38,
-          ),
-        ),
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () => confirm.call(),
-                child: RepaintBoundary(
-                  child: Image.network(
-                    adUrl,
-                    width: adWidth?.w,
-                    height: adHeight?.w,
-                  ),
+    return ColoredBox(
+      color: Colors.black38,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () => confirm.call(),
+              child: RepaintBoundary(
+                child: Image.network(
+                  adUrl,
+                  width: adWidth?.w,
+                  height: adHeight?.w,
                 ),
               ),
-              SizedBox(height: 20.w),
-              GestureDetector(
-                onTap: () => cancel.call(),
-                child: SizedBox(
-                  child: MyImage.asset(
-                    MyImagePaths.appCancelWithCircle,
-                    fit: BoxFit.cover,
-                    width: 33.w,
-                    height: 33.w,
-                  ),
+            ),
+            SizedBox(height: 20.w),
+            GestureDetector(
+              onTap: () => cancel.call(),
+              child: SizedBox(
+                child: MyImage.asset(
+                  MyImagePaths.appCancelWithCircle,
+                  fit: BoxFit.cover,
+                  width: 33.w,
+                  height: 33.w,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

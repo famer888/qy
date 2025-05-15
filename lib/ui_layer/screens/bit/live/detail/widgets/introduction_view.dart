@@ -174,7 +174,7 @@ class _HeaderViewState extends State<_HeaderView> {
           if (widget.data.banners case final banners? when banners.isNotEmpty)
             Padding(
               padding: EdgeInsets.only(bottom: 15.w),
-              child: GeneralAppsListVidget(
+              child: GeneralBannerAppsListWidget(
                 data: banners,
                 aspectRatio: 10 / 3,
               ),

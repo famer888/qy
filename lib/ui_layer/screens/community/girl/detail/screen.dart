@@ -319,7 +319,7 @@ class _GirlDetailScreenState extends State<GirlDetailScreen>
                                                       ? MyImagePaths
                                                           .appChatCollectS
                                                       : MyImagePaths
-                                                          .appChatCllectN,
+                                                          .appChatCollectN,
                                                   width: 25.w,
                                                   height: 25.w,
                                                 ),
@@ -458,8 +458,8 @@ class _GirlDetailScreenState extends State<GirlDetailScreen>
                                                 HitTestBehavior.translucent,
                                             onTap: () {
                                               // uploadData();
-                                              Clipboard.setData(ClipboardData(
-                                                  text: '${data.contact}'));
+                                              CommonUtils.copyToClipboard(
+                                                  text: '${data.contact}');
 
                                               MyToast.showText(
                                                   text: 'yfz'.tr());

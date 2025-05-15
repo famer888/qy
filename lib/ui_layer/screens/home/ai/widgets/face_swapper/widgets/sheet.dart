@@ -39,7 +39,7 @@ class _FaceSwapSheetViewState extends State<FaceSwapSheetView> {
   Map uploadGroudObject = {};
 
   Future<void> imagePickerAssets({bool isModel = false}) async {
-    if (await CommonUtils.pickImage(limitSize: 2) case final xFile?) {
+    if (await CommonUtils.pick2MImage() case final xFile?) {
       MyToast.showLoading(text: 'scz'.tr());
       final result = await _homeConfig.uploadImage(xFile);
       if (result != null && result['code'] == 1) {

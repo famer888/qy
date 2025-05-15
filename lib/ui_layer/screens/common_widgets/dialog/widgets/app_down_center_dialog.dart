@@ -18,12 +18,8 @@ class AppDownCenterDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final homeConfigNotifier = context.read<HomeConfigNotifier>();
-    final apps = homeConfigNotifier.homeData.noticeApps;
-
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      // onTap: () => cancel.call(),
+    return ColoredBox(
+      color: Colors.black38,
       child: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 35.w),

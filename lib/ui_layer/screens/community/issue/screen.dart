@@ -381,7 +381,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                   SizedBox(height: 20.w),
                   UploadHintText(
                     title: 'sctp'.tr(context: context),
-                    subTitle: 'spfm'.tr(context: context),
+                    subTitle: '',
                     text: 'zdjzbkb'.tr(context: context),
                   ),
                   SizedBox(height: 10.w),
@@ -412,6 +412,8 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
   /// 发布
   Future<void> _send() async {
     final topic = topicNotifier.value;
+    List<Map> p = List.from(upList);
+
     if (topic == null) {
       MyToast.showText(
           text: 'q'.tr(context: context) + 'xzht'.tr(context: context));
@@ -438,13 +440,10 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
         return;
       }
 
-      //设置默认第一张图为封面
-      final index = upList.indexWhere((el) => el['media_url'].contains('.mp4'));
-      if (index == -1) {
-        video['cover'] = upList.first['media_url'];
-        video['url'] = upList.first['url'];
-        upList.removeAt(0);
-        upList.add(video);
+      //视频数据添加到尾部
+      final index = upList.indexWhere((el) => el['type'] == 1);
+      if (index == -1 && video.isNotEmpty) {
+        p.add(video);
       }
     }
     if (type == CommunityIssueType.imageAndText) {
@@ -464,7 +463,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
         contact: contactController.text,
         type: '${topic.type}',
         coins: coinController.text.isEmpty ? '0' : coinController.text,
-        medias: jsonEncode(upList),
+        medias: jsonEncode(p),
         isPublic: isOpenNotifier.value ? 1 : 0,
       );
       BotToast.closeAllLoading();

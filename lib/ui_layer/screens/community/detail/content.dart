@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../../domain/api_validator.dart';
 import '../../../router/routes.dart';
 import '../../../notifiers/home_config_notifier.dart';
+import '../../../utils/common_utils.dart';
 import '../../common_widgets/general_banner.dart';
 import '../../common_widgets/post/content/like_collect_share_area.dart';
 
@@ -139,9 +140,9 @@ class _ContactViewState extends State<_ContactView> {
                 : GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      Clipboard.setData(ClipboardData(
+                      CommonUtils.copyToClipboard(
                         text: contact,
-                      ));
+                      );
                       MyToast.showText(text: tr('fzcglx'));
                     },
                     child: RichText(
@@ -273,7 +274,7 @@ class _TopAppsListWidgetState extends State<TopAppsListWidget> {
   @override
   Widget build(BuildContext context) {
     return (homeConfigNotifier.config.postDetailAds ?? []).isNotEmpty
-        ? GeneralAppsListVidget(
+        ? GeneralBannerAppsListWidget(
             data: homeConfigNotifier.config.postDetailAds ?? [])
         : Container();
   }
