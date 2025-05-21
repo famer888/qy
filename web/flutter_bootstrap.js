@@ -4,6 +4,8 @@
 document.body.style.height = '100%';
 document.documentElement.style.height = '100%';
 document.body.style.margin = '0px';
+document.body.style.overflow = 'hidden';
+document.documentElement.style.overflow = 'hidden';
 
 const outerDiv = document.createElement('div');
 outerDiv.style.width = '100%';
