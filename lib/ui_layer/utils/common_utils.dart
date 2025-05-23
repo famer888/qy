@@ -310,11 +310,7 @@ class CommonUtils {
         final Map<String, dynamic> params = {};
         if (urlList.first == BuildConfig.webViewPathName) {
           final newUrl = urlList.last.toString().substring(4).trim();
-          // if (kIsWeb) {
-          //   launchUrl(Uri.decodeComponent(newUrl));
-          // } else {
           WebViewRoute(newUrl).push(context);
-          // }
         } else {
           if (urlList.length > 1 && urlList.last != '') {
             urlList[1].split('&').forEach((item) {

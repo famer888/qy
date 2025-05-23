@@ -145,7 +145,9 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
             if (isClosed) return;
             isClosed = true;
             cancelFunc();
-            _showDialog(index: nextIndex);
+            if (notice.redirectType != 1) {
+              _showDialog(index: nextIndex);
+            }
             _adOnTap(notice: notice);
           },
           adUrl: notice.imgUrl ?? '',
