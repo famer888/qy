@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 import '../../app_global.dart';
 import '../../crypto.dart';
@@ -153,6 +154,42 @@ class DownloadUtil {
 
   // 请求权限
   Future<bool> getPermission() async {
+    final deviceInfo = DeviceInfoPlugin();
+    final androidInfo = await deviceInfo.androidInfo;
+    final sdkInt = androidInfo.version.sdkInt;
+
+    if (sdkInt >= 33) {
+      // Android 13 (API 33) 及以上版本
+      return await requestPermissionsForAndroid13AndAbove();
+    } else {
+      // Android 13 以下版本
+      return await getAndroid12Permission();
+    }
+  }
+
+  Future<bool> requestPermissionsForAndroid13AndAbove() async {
+    bool allPermissionsGranted = true;
+
+    var statusVideos = await Permission.videos.status;
+    if (statusVideos.isDenied) {
+      var result = await Permission.videos.request();
+      if (!result.isGranted) {
+        allPermissionsGranted = false;
+      }
+    }
+
+    var statusAudio = await Permission.audio.status;
+    if (statusAudio.isDenied) {
+      var result = await Permission.audio.request();
+      if (!result.isGranted) {
+        allPermissionsGranted = false;
+      }
+    }
+
+    return allPermissionsGranted;
+  }
+
+  Future<bool> getAndroid12Permission() async {
     PermissionStatus storageStatus = await Permission.storage.status;
     if (storageStatus == PermissionStatus.denied) {
       storageStatus = await Permission.storage.request();
@@ -195,6 +232,7 @@ class DownloadUtil {
     if (havePermission) {
       creating = true;
     } else {
+      MyToast.showText(text: 'qdkqx'.tr());
       return;
     }
     try {
