@@ -14,6 +14,7 @@ class LinkModel {
     required this.api,
     required this.params,
     this.uiType,
+  this.is_nav_prepend
   });
 
   int id;
@@ -30,6 +31,8 @@ class LinkModel {
   String api;
   Map params;
   int? uiType;
+  bool? is_nav_prepend;
+
 
   factory LinkModel.fromJson(Map<String, dynamic> json) => LinkModel(
         id: json['id'],

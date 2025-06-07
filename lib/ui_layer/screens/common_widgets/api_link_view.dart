@@ -249,14 +249,17 @@ class _HeaderTopicsViewState extends State<_HeaderTopicsView> {
   bool _isExpended = false;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ValueListenableBuilder(
-          valueListenable: widget.topicsNotifier,
-          builder: (context, topics, child) {
-            if (topics.isEmpty) return const SizedBox.shrink();
-            return Padding(
-              padding: EdgeInsets.only(bottom: 5.w),
+    return ValueListenableBuilder(
+      valueListenable: widget.topicsNotifier,
+      builder: (context, topics, child) {
+        if (topics.isEmpty) return const SizedBox.shrink();
+
+        bool isGirlTopic = topics.first.resourceUrl.isNotEmpty;//如果配置了图片则横行展示上图下文布局
+
+        return isGirlTopic ? girdTopicView(topics) : Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 5.w, bottom: 5.w),
               child: AnimatedSize(
                 duration: const Duration(milliseconds: 250),
                 alignment: Alignment.topCenter,
@@ -267,9 +270,9 @@ class _HeaderTopicsViewState extends State<_HeaderTopicsView> {
                     addAutomaticKeepAlives: false,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount:
-                        _isExpended ? topics.length : min(8, topics.length),
+                    _isExpended ? topics.length : min(8, topics.length),
                     padding:
-                        EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                    EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
                       childAspectRatio: 80.w / 35.w,
@@ -302,7 +305,7 @@ class _HeaderTopicsViewState extends State<_HeaderTopicsView> {
                                   widget.onLinkNavTap(topic.linkUrl);
                                 } else if (topic.openType == 1) {
                                   MoreVideoRoute(
-                                          name: topic.name, id: topic.linkUrl)
+                                      name: topic.name, id: topic.linkUrl)
                                       .push(context);
                                 }
                               }
@@ -316,41 +319,98 @@ class _HeaderTopicsViewState extends State<_HeaderTopicsView> {
                       );
                     }),
               ),
-            );
-          },
-        ),
-        Offstage(
-          offstage: widget.topicsNotifier.value.length <= 8,
-          child: InkWell(
-            onTap: () {
-              _isExpended = !_isExpended;
-              if (mounted) {
-                setState(() {});
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.w),
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text(
-                  _isExpended
-                      ? 'ycgd'.tr(context: context)
-                      : 'zkckgd'.tr(context: context),
-                  style: MyTheme.white12,
-                ),
-                SizedBox(width: 3.w),
-                MyImage.asset(
-                  _isExpended
-                      ? MyImagePaths.appGrayUp
-                      : MyImagePaths.appGrayDown,
-                  width: 10.w,
-                  height: 10.w,
-                )
-              ]),
             ),
-          ),
-        ),
-      ],
+            Offstage(
+              offstage: widget.topicsNotifier.value.length <= 8,
+              child: InkWell(
+                onTap: () {
+                  _isExpended = !_isExpended;
+                  if (mounted) {
+                    setState(() {});
+                  }
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.w),
+                  child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text(
+                      _isExpended
+                          ? 'ycgd'.tr(context: context)
+                          : 'zkckgd'.tr(context: context),
+                      style: MyTheme.white12,
+                    ),
+                    SizedBox(width: 3.w),
+                    MyImage.asset(
+                      _isExpended
+                          ? MyImagePaths.appGrayUp
+                          : MyImagePaths.appGrayDown,
+                      width: 10.w,
+                      height: 10.w,
+                    )
+                  ]),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
+
+  Widget girdTopicView(List<NavModel> contentTopics) {
+    return Container(
+        height: 75.w,
+        margin: EdgeInsets.only(top: 10.w),
+        child: GridView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemCount: contentTopics.length,
+            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+              childAspectRatio: 1 / 0.7,
+              mainAxisSpacing: 10.w,
+              crossAxisSpacing: 10.w,
+            ),
+            itemBuilder: (context, index) {
+              final topic = contentTopics[index];
+              return GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  final linkUrl = topic.linkUrl;
+                  final redirectType = topic.redirectType;
+                  if (linkUrl.isEmpty) {
+                    return;
+                  }
+
+                  if (redirectType < 3) {
+                    CommonUtils.openRoute(context, topic.toJson());
+                  } else {
+                    if (topic.openType == 0) {
+                      widget.onLinkNavTap(topic.linkUrl);
+                    } else if (topic.openType == 1) {
+                      MoreVideoRoute(
+                          name: topic.name, id: topic.linkUrl)
+                          .push(context);
+                    }
+                  }
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                    width: 50.w, height: 50.w,
+                        child: MyImage.network(topic.resourceUrl, width: 50.w, height: 50.w, borderRadius: 5.w, backgroundColor: MyTheme.white008Color)),
+                    SizedBox(height: 3.w),
+                    Text(
+                      topic.name ?? '',
+                      style: MyTheme.white12,
+                    ),
+                  ],
+                ),
+              );
+            }),
+      );
+  }
+
 }

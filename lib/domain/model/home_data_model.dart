@@ -180,6 +180,7 @@ class Config {
     required this.resourceNav,
     this.openLive,
     this.navPrepend,
+    this.nav_default,
     this.postDetailAds,
     this.personAds,
     this.pwaDownloadUrl,
@@ -213,6 +214,7 @@ class Config {
   final String? proxyJoinNum;
 
   final List<PreTopNavModel>? navPrepend;
+  int? nav_default;
 
   final int? navId;
   final int? awNavid;
@@ -364,6 +366,7 @@ class Config {
             []),
         navPrepend: List<PreTopNavModel>.from(
             json['nav_prepend']?.map((x) => PreTopNavModel.fromJson(x)) ?? []),
+        nav_default: json['nav_default'],
         novelNav: List<NovelNavModel>.from(
             json['novel_nav']?.map((x) => NovelNavModel.fromJson(x)) ?? []),
         novelTypeNav: List<NovelTypeNavListModel>.from(json['novel_type_nav']
@@ -525,6 +528,7 @@ class Help {
     required this.type,
     required this.name,
   });
+
   final List<HelpItem> items;
   final int type;
   final String name;
@@ -546,6 +550,7 @@ class HelpItem {
       required this.views,
       required this.createdAt,
       required this.updatedAt});
+
   final int id;
   final String question;
   final String answer;
@@ -568,20 +573,28 @@ class HelpItem {
 
 class PreTopNavModel {
   PreTopNavModel({
-    required this.title,
-    required this.id,
+    this.label,
+    this.type,
+    this.sort,
+    this.value,
   });
 
-  final String title;
-  final int id;
+  final String? label;
+  final int? type;
+  final int? sort;
+  final String? value;
 
   factory PreTopNavModel.fromJson(Map<String, dynamic> json) => PreTopNavModel(
-        title: json['title'],
-        id: json['id'],
+        label: json['label'],
+        type: json['type'],
+        sort: json['sort'],
+        value: json['value'].toString(),
       );
 
   Map<String, dynamic> toJson() => {
-        'title': title,
-        'id': id,
+        'label': label,
+        'type': type,
+        'sort': sort,
+        'value': value,
       };
 }

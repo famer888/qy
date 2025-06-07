@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qypj/ui_layer/notifiers/home_config_notifier.dart';
+import 'package:qypj/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
+import 'package:qypj/ui_layer/screens/webview/screen.dart';
 
 import '../../../domain/async_value.dart';
 import '../../../domain/domain.dart';
@@ -29,6 +32,13 @@ class _TopNaviViewState extends State<TopNaviView>
   late final _appDomain = context.read<AppDomain>();
   AsyncValue<List<LinkModel>> _asyncValue = const AsyncInit();
   late final TabController _tabController;
+
+  late final _homeConfig = context.read<HomeConfigNotifier>();
+
+  //需要插入额外的分类界面
+  late List<PreTopNavModel> nav_prepend = _homeConfig.config.navPrepend ?? [];
+  int _initialIndex = 0;
+
   @override
   void initState() {
     _init();
@@ -45,9 +55,29 @@ class _TopNaviViewState extends State<TopNaviView>
     final result = await _appDomain.getFirstTopNavConfig(navId: widget.id);
 
     if (result.data?.value case final data?) {
-      _tabController = TabController(
-          length: data.length + (widget.preTopNav?.length ?? 0), vsync: this);
-      _asyncValue = AsyncData(data);
+
+      List<LinkModel> list = List.from(data);
+      for (var e in nav_prepend) {
+        LinkModel item = LinkModel(
+            is_nav_prepend: true,
+            id: 0,
+            linkUrl: e.value ?? '',
+            resourceUrl: '',
+            redirectType: e.type ?? 0,
+            name: e.label ?? '',
+            desc: '',
+            api: '',
+            params: {});
+        list.insert(e.sort ?? 0, item); //插入到对应位置
+      }
+
+      // _initialIndex = (_homeConfig.config.nav_default ?? 0) + nav_prepend.length;
+
+      _initialIndex = (_homeConfig.config.nav_default ?? 0);
+
+      _tabController = TabController(length: list.length, vsync: this, initialIndex: _initialIndex);
+
+      _asyncValue = AsyncData(list);
     } else {
       _asyncValue = const AsyncError();
     }
@@ -64,28 +94,32 @@ class _TopNaviViewState extends State<TopNaviView>
         tabBarPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
         labelPadding: EdgeInsets.only(right: 15.w),
         tabController: _tabController,
-        titles: [
-          if (widget.preTopNav case final preTopNav?)
-            for (final e in preTopNav) e.title,
-          for (final e in data) e.name,
-        ],
-        views: [
-          if (widget.preTopNav case final preTopNav?)
-            for (final e in preTopNav) RecommendVideoView(id: e.id),
-          for (final e in data)
-            ApiLinkView(
-              linkModel: e,
-              onLinkNavTap: (value) {
-                if (data.indexWhere((element) => element.linkUrl == value)
-                    case final index when index != -1) {
-                  _tabController.index = index;
-                }
-              },
-            ),
-        ],
+        initialIndex: _initialIndex,
+        titles: data.map((e) => e.name).toList(),
+        views: data.map((e) {
+          return (e.is_nav_prepend ?? false)
+              ? configNavPrependPage(e)
+              : ApiLinkView(
+            linkModel: e,
+            onLinkNavTap: (value) {
+              if (data.indexWhere((element) => element.linkUrl == value)
+              case final index when index != -1) {
+                _tabController.index = index;
+              }
+            },
+          );
+        }).toList(),
       ),
       error: (_, __) => NetworkErrorView(onTap: _init),
       orElse: () => const LoadingView(),
+    );
+  }
+
+  Widget configNavPrependPage(LinkModel data) {
+    return KeepAliveWrapper(
+      child: data.redirectType == 2
+          ? WebViewScreen(url: data.linkUrl, needNav: false)
+          : data.redirectType == 1 ? RecommendVideoView(id: 1) : Container(),
     );
   }
 }
