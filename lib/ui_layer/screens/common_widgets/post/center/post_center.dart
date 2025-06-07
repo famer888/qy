@@ -39,15 +39,13 @@ class _PostCenterState extends State<PostCenter> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenBackground(
-      child: Scaffold(
-        body: MyListView.list(
-          padding: EdgeInsets.zero,
-          header: widget.header,
-          itemBuilder: (context, item, index) => PostCenterCard(data: item),
-          onFetchingMore: (currentPage, pageSize) =>
-              getData(currentPage: currentPage, limit: pageSize),
-        ),
+    return Scaffold(
+      body: MyListView.list(
+        padding: EdgeInsets.zero,
+        header: widget.header,
+        itemBuilder: (context, item, index) => PostCenterCard(data: item),
+        onFetchingMore: (currentPage, pageSize) =>
+            getData(currentPage: currentPage, limit: pageSize),
       ),
     );
   }

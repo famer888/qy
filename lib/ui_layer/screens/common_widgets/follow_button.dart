@@ -22,17 +22,17 @@ class FollowButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 10.w),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: isFollowed ? const Color(0xFF60b2dc) : Colors.transparent,
+            color: isFollowed ? MyTheme.jellyCyanColor : Colors.transparent,
             borderRadius: BorderRadius.circular(12.5.w),
             border: Border.all(
                 color:
-                    isFollowed ? Colors.transparent : const Color(0xFF60b2dc),
+                    isFollowed ? Colors.transparent : MyTheme.jellyCyanColor,
                 width: 1.w)),
         child: Text(
           isFollowed
               ? 'ygz'.tr(context: context)
               : '+${'gz'.tr(context: context)}',
-          style: isFollowed ? MyTheme.white11 : MyTheme.blue80_11,
+          style: isFollowed ? MyTheme.white11 : MyTheme.jellyCyan_11,
         ),
       ),
     );
