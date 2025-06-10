@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qypj/ui_layer/screens/common_widgets/video/card/video_card.dart';
 
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/domain.dart';
@@ -126,7 +127,7 @@ class _VideoViewState extends State<_VideoView> {
   @override
   Widget build(BuildContext context) {
     return MyListView.grid(
-      childAspectRatio: 1,
+      childAspectRatio: 163 / 159,
       itemBuilder: (_, item, __) => MineVideoTile(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,

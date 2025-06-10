@@ -33,7 +33,7 @@ class MineVideoTile extends StatelessWidget {
             ),
           ),
           SizedBox(height: 3.5.w),
-          Text(data.title ?? 'loading', style: MyTheme.white255_14),
+          Text(data.title ?? 'loading', style: MyTheme.white255_14, maxLines: 2),
           SizedBox(height: 3.5.w),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

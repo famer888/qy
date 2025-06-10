@@ -299,8 +299,7 @@ class _VideoViewState extends State<_VideoView> {
   Widget build(BuildContext context) {
     return MyListView.grid(
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-      childAspectRatio: VideoCard.aspectRatio,
-      mainAxisSpacing: 5.w,
+      childAspectRatio: 163 / 159,
       itemBuilder: (context, item, index) => MineVideoTile(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
