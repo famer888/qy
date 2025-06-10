@@ -2,12 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qypj/domain/model/mine/video/mine_video_model.dart';
 import 'package:qypj/domain/model/video/video_model.dart';
 import 'package:qypj/ui_layer/screens/common_widgets/follow_button.dart';
 import 'package:qypj/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
 import 'package:qypj/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:qypj/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:qypj/ui_layer/screens/common_widgets/video/card/video_card.dart';
+import 'package:qypj/ui_layer/screens/mine/common_widgets/video_tile.dart';
 import 'package:qypj/ui_layer/utils/common_utils.dart';
 
 import '../../../domain/async_value.dart';
@@ -271,7 +273,7 @@ class _VideoView extends StatefulWidget {
 class _VideoViewState extends State<_VideoView> {
   late final _appDomain = context.read<AppDomain>();
 
-  Future<List<VideoCardModel>?> _getData({
+  Future<List<MineVideoModel>?> _getData({
     required int page,
     required int pageSize,
   }) async {
@@ -286,7 +288,7 @@ class _VideoViewState extends State<_VideoView> {
     );
 
     if (result.status == 1) {
-      return result.data?.map<VideoCardModel>((x) => VideoCardModel.fromJson(x)).toList();
+      return result.data?.map<MineVideoModel>((x) => MineVideoModel.fromJson(x)).toList();
     } else {
       MyToast.showText(text: result.msg ?? '');
     }
@@ -299,7 +301,7 @@ class _VideoViewState extends State<_VideoView> {
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
       childAspectRatio: VideoCard.aspectRatio,
       mainAxisSpacing: 5.w,
-      itemBuilder: (context, item, index) => VideoCard(data: item),
+      itemBuilder: (context, item, index) => MineVideoTile(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

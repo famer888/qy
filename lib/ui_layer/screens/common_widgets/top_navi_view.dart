@@ -71,8 +71,6 @@ class _TopNaviViewState extends State<TopNaviView>
         list.insert(e.sort ?? 0, item); //插入到对应位置
       }
 
-      // _initialIndex = (_homeConfig.config.nav_default ?? 0) + nav_prepend.length;
-
       _initialIndex = (_homeConfig.config.nav_default ?? 0);
 
       _tabController = TabController(length: list.length, vsync: this, initialIndex: _initialIndex);
@@ -119,7 +117,7 @@ class _TopNaviViewState extends State<TopNaviView>
     return KeepAliveWrapper(
       child: data.redirectType == 2
           ? WebViewScreen(url: data.linkUrl, needNav: false)
-          : data.redirectType == 1 ? RecommendVideoView(id: 1) : Container(),
+          : data.redirectType == 1 ? const RecommendVideoView(id: 1) : Container(),
     );
   }
 }
