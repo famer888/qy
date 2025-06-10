@@ -76,7 +76,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
   Widget configSubListView(PostCreatorInfoModel data) {
     return Container(
       child: TabBarWithView.line(
-        // isCenter: true,
+        isCenter: true,
         initialIndex: 0,
         tabBarPadding: EdgeInsets.symmetric(horizontal: 10.w),
         titles: [

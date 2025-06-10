@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:qypj/ui_layer/screens/common_widgets/follow_button.dart';
+import 'package:qypj/ui_layer/screens/common_widgets/my_avatar.dart';
 
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
@@ -35,6 +37,9 @@ class IntroductionView extends StatefulWidget {
 }
 
 class _IntroductionViewState extends State<IntroductionView> {
+
+  late final userNotifier = context.read<UserNotifier>();
+
   Widget _btnItem(
       {required String icon,
       required String name,
@@ -105,6 +110,43 @@ class _IntroductionViewState extends State<IntroductionView> {
             //       ],
             //     ),
             //   ),
+            widget.data.detail.member == null
+                ? Container()
+                : Container(
+              padding: EdgeInsets.only(top: 13.w),
+              child: GestureDetector(
+                onTap: () {
+                  UserCenterRoute('${widget.data.detail.member?.aff}').push(context);
+                },
+                child: Row(children: [
+                  MyAvatar(
+                      size: 50.w,
+                      thumb: widget.data.detail.member?.thumb ?? ''),
+                  SizedBox(width: 10.w),
+                  Expanded(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(widget.data.detail.member?.nickname ?? '',
+                                style: MyTheme.white16medium),
+                            SizedBox(height: 2.w),
+                            Text(
+                                '${'zp'.tr(context: context)}${CommonUtils.renderFixedNumber(widget.data.detail.member?.workCt ?? 0)}  |  ${'fans'.tr(context: context)}${CommonUtils.renderFixedNumber(widget.data.detail.member?.fansCt ?? 0)}',
+                                style: MyTheme.white07_14),
+                          ])),
+                  Selector<UserNotifier, bool>(
+                      selector: (_, notifier) =>
+                          notifier.userFollowingStatus.contains('${widget.data.detail.member?.aff}'),
+                      builder: (_, isFollowed, __) {
+                        return FollowButton(
+                            isFollowed: isFollowed,
+                            onTap: () async {
+                              await userNotifier.changeUserFollow('${widget.data.detail.member?.aff}');
+                            });
+                      })
+                ]),
+              ),
+            ),
             SizedBox(height: 22.w),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

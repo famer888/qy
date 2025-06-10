@@ -74,8 +74,12 @@ class UserModel {
   final List<dynamic>? tagList;
   final String? vipStr;
   final int? hasSmqPrivilege;
+  final int? workCt;
+  final int? fansCt;
 
   UserModel({
+    this.workCt,
+    this.fansCt,
     this.uid,
     this.uuid,
     this.username,
@@ -154,6 +158,8 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        fansCt: json['fans_ct'],
+        workCt: json['work_ct'],
         uid: json['uid'],
         uuid: json['uuid'],
         username: json['username'],
