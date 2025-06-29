@@ -343,13 +343,13 @@ class CommonUtils {
 
   static Future<bool> pngLimit2MSize(XFile file, {int size = 100}) async {
     int length = await file.length();
-    if (length / 1024 > 2000) {
+    if (length / 1024 > 2048) {
       MyToast.showText(
         text: tr('qxzb2mkbp'),
       );
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
   /// xfile限制图片大小
