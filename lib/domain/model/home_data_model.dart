@@ -192,6 +192,7 @@ class Config {
     this.description,
     this.title,
     this.adVersion,
+    this.buoy,
   });
 
   final String imgUploadUrl;
@@ -293,6 +294,8 @@ class Config {
   final String? title;
 
   final int? adVersion;
+
+  final List<BannerModel>? buoy;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         imgUploadUrl: json['img_upload_url'],
@@ -400,6 +403,8 @@ class Config {
         description: json['description'] ?? '',
         title: json['title'] ?? '',
         adVersion: json['ad_version'] ?? 0,
+        buoy: List<BannerModel>.from(
+            json['buoy']?.map((x) => BannerModel.fromJson(x)) ?? []),
       );
 }
 
