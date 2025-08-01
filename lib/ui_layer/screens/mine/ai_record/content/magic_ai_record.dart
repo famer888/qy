@@ -1,55 +1,59 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:provider/provider.dart';
 
-import '../../../../../domain/enum.dart';
-import '../../../../../domain/model/ai/ai_record_model.dart';
-import '../../../../../domain/remote_domain/domains/ai.dart';
+import '../../../../../domain/model/ai/ai_magic_record_model.dart';
+import '../../../../../domain/remote_domain/domains/aimagic.dart';
 import '../../../common_widgets/keep_alive_wrapper.dart';
 import '../../../common_widgets/my_list_view.dart';
 import '../../../common_widgets/my_tab_bar.dart';
 import '../../../theme.dart';
-import 'card/ai_record_card.dart';
+import 'card/magic_record_card.dart';
 
-class MineClothesRemoverRecordContent extends StatefulWidget {
-  const MineClothesRemoverRecordContent({super.key});
+class MineMagicRecordScreen extends StatefulWidget {
+  const MineMagicRecordScreen({super.key, this.status});
+
+  final int? status; //  0-待处理 1-处理中 2-切片中 3-已成功 4-已失败
 
   @override
-  State<MineClothesRemoverRecordContent> createState() =>
-      _MineClothesRemoverRecordContentState();
+  State<MineMagicRecordScreen> createState() => _MineMagicRecordScreenState();
 }
 
-class _MineClothesRemoverRecordContentState
-    extends State<MineClothesRemoverRecordContent> {
-  late final aiDomain = context.read<AIDomain>();
-
+class _MineMagicRecordScreenState extends State<MineMagicRecordScreen> {
   @override
   Widget build(BuildContext context) {
     return TabBarWithView.line(
       labelStyle: MyTheme.white16medium,
       unselectedLabelStyle: MyTheme.white07_15,
       tabBarHeight: 40.w,
+      labelPadding: EdgeInsets.zero,
       isScrollable: false,
       titles: [
         'pdz'.tr(context: context),
         'clz'.tr(context: context),
+        'qpz'.tr(context: context),
         'sccg'.tr(context: context),
         'scsb'.tr(context: context),
       ],
       views: const [
         KeepAliveWrapper(
-          child: _ContentStripOffRecordScreen(status: AiStatus.pending),
+          child: _ContentStripOffRecordScreen(status: 0),
         ),
         KeepAliveWrapper(
-          child: _ContentStripOffRecordScreen(status: AiStatus.processing),
+          child: _ContentStripOffRecordScreen(status: 1),
         ),
         KeepAliveWrapper(
-          child: _ContentStripOffRecordScreen(status: AiStatus.successful),
+          child: _ContentStripOffRecordScreen(status: 2),
         ),
         KeepAliveWrapper(
-          child: _ContentStripOffRecordScreen(status: AiStatus.failure),
+          child: _ContentStripOffRecordScreen(status: 3),
+        ),
+        KeepAliveWrapper(
+          child: _ContentStripOffRecordScreen(status: 4),
         ),
       ],
     );
@@ -57,9 +61,9 @@ class _MineClothesRemoverRecordContentState
 }
 
 class _ContentStripOffRecordScreen extends StatefulWidget {
-  const _ContentStripOffRecordScreen({super.key, required this.status});
+  const _ContentStripOffRecordScreen({this.status});
 
-  final AiStatus status;
+  final int? status; // 0-待处理 1-处理中 2-切片中 3-已成功 4-已失败
 
   @override
   State<_ContentStripOffRecordScreen> createState() =>
@@ -68,14 +72,14 @@ class _ContentStripOffRecordScreen extends StatefulWidget {
 
 class _ContentStripOffRecordScreenState
     extends State<_ContentStripOffRecordScreen> {
-  late final aiDomain = context.read<AIDomain>();
+  late final aiDomain = context.read<AIMagicDomain>();
 
-  Future<List<AiRecordModel>?> _getData({
+  Future<List<AIMagicRecordModel>?> _getData({
     required int page,
     required int pageSize,
   }) async {
-    final result = await aiDomain.aIMyStrip(
-      status: widget.status,
+    final result = await aiDomain.aiMagicRecord(
+      status: widget.status ?? 0,
       page: page,
       limit: pageSize,
     );
@@ -85,17 +89,14 @@ class _ContentStripOffRecordScreenState
   @override
   Widget build(BuildContext context) {
     return MyListView.grid(
-      childAspectRatio: AIRecordCard.aspectRatio,
-      itemBuilder: (_, item, __) => AIRecordCard(
-        data: item,
-        type: AIRecordType.StripOff,
-        delSucess: () {
-          context.pop();
-          setState(
-            () {},
-          );
-        },
-      ),
+      key: UniqueKey(),
+      childAspectRatio: 170 / 250,
+      itemBuilder: (_, item, __) => AIMagicRecordCard(
+          data: item,
+          delSucess: () {
+            context.pop();
+            setState(() {});
+          }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

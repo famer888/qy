@@ -227,6 +227,9 @@ class AppRouterPaths {
   /// ai科技
   static const aiService = '/aiService';
 
+  /// ai科技
+  static const aiMagicDetail = '/aiMagicDetail';
+
   /// 精采发现
   static const discovery = '/discovery';
 

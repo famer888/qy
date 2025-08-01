@@ -13,12 +13,13 @@ class AppBarWithTabBar extends StatelessWidget implements PreferredSizeWidget {
     required this.tabController,
     required this.titles,
     required this.fontSize,
+    this.labelPadding,
   });
 
   final TabController tabController;
   final List<String> titles;
   final double fontSize;
-
+  final EdgeInsetsGeometry? labelPadding;
   @override
   final Size preferredSize = const Size.fromHeight(44);
 
@@ -67,6 +68,7 @@ class AppBarWithTabBar extends StatelessWidget implements PreferredSizeWidget {
                 isScrollable: false,
                 padding: EdgeInsets.symmetric(vertical: 2.w),
                 controller: tabController,
+                labelPadding: labelPadding,
                 tabAlignment: TabAlignment.center,
                 tabs: titles
                     .map((title) => Tab(

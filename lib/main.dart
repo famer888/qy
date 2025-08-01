@@ -10,6 +10,8 @@ import 'package:utils/utils.dart';
 import 'data_layer/repo/repo.dart';
 import 'domain/domain.dart';
 import 'domain/remote_domain/domains/ai.dart';
+import 'domain/remote_domain/domains/aidraw.dart';
+import 'domain/remote_domain/domains/aimagic.dart';
 import 'domain/remote_domain/domains/comic.dart';
 import 'domain/remote_domain/domains/index.dart';
 import 'domain/remote_domain/domains/live.dart';
@@ -63,6 +65,8 @@ void main() async {
         Provider<MessageDomain>.value(value: appRepo),
         Provider<PrivilegeDomain>.value(value: appRepo),
         Provider<AIDomain>.value(value: appRepo),
+        Provider<AIMagicDomain>.value(value: appRepo),
+        Provider<AIDrawDomain>.value(value: appRepo),
         Provider<LiveDomain>.value(value: appRepo),
         Provider<MonitorDomain>.value(value: appRepo),
         Provider<ComicDomain>.value(value: appRepo),

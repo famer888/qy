@@ -19,7 +19,11 @@ import 'package:universal_html/html.dart' as html;
 import '../../app_config.dart';
 import '../../crypto.dart';
 import '../../domain/enum.dart';
+import '../../domain/model/ai/ai_draw_model.dart';
+import '../../domain/model/ai/ai_draw_record_model.dart';
 import '../../domain/model/ai/ai_face_materials_with_banners_model.dart';
+import '../../domain/model/ai/ai_magic_model.dart';
+import '../../domain/model/ai/ai_magic_record_model.dart';
 import '../../domain/model/ai/ai_record_model.dart';
 import '../../domain/model/chat/chat_detail_model.dart';
 import '../../domain/model/chat/chat_index_model.dart';
@@ -82,6 +86,8 @@ import '../../domain/model/mine/welfare/welfare_task_list_model.dart';
 
 import '../../domain/model/vip_upgrade_model.dart';
 import '../../domain/remote_domain/domains/ai.dart';
+import '../../domain/remote_domain/domains/aidraw.dart';
+import '../../domain/remote_domain/domains/aimagic.dart';
 import '../../domain/remote_domain/domains/comic.dart';
 import '../../domain/remote_domain/domains/index.dart';
 import '../../domain/remote_domain/domains/live.dart';
@@ -94,6 +100,8 @@ import '../../domain/domain.dart';
 import '../../logger.dart';
 import '../data_source/remote/account_service.dart';
 import '../data_source/remote/ai_service.dart';
+import '../data_source/remote/aidraw_service.dart';
+import '../data_source/remote/aimagic_service.dart';
 import '../data_source/remote/comic_service.dart';
 import '../data_source/remote/community_service.dart';
 import '../data_source/remote/girl_service.dart';
@@ -138,6 +146,8 @@ part 'mixin/mv_mixin.dart';
 part 'mixin/message_mixin.dart';
 part 'mixin/privilege_mixin.dart';
 part 'mixin/ai_mixin.dart';
+part 'mixin/aimagic_mixin.dart';
+part 'mixin/aidraw_mixin.dart';
 part 'mixin/live_mixin.dart';
 part 'mixin/monitor_mixin.dart';
 part 'mixin/novel_mixin.dart';
@@ -165,6 +175,8 @@ class AppRepo extends _BaseAppRepo
         _Message,
         _Privilege,
         _AI,
+        _AIMagic,
+        _AIDraw,
         _Live,
         _Monitor,
         _Novel,
@@ -191,6 +203,8 @@ abstract class _BaseAppRepo implements AppDomain {
   late final _messageService = MessageService(_apiDio);
   late final _privilegeService = PrivilegeService(_apiDio);
   late final _aiService = AIService(_apiDio);
+  late final _aiMagicService = AIMagicService(_apiDio);
+  late final _aidrawService = AIDrawService(_apiDio);
   late final _liveService = LiveService(_apiDio);
   late final _monitorService = MonitorService(_apiDio);
   late final _comicService = ComicService(_apiDio);

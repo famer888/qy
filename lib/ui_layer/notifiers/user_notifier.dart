@@ -104,7 +104,7 @@ class UserNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 更新 IM 
+  /// 更新 IM
   void setImValue({required int imValue}) {
     _member = _member.copyWith(imValue: imValue);
     notifyListeners();
@@ -137,6 +137,16 @@ class UserNotifier extends ChangeNotifier {
 
   void setImgFaceValue({required int num}) {
     _member = _member.copyWith(imgFaceValue: num);
+    notifyListeners();
+  }
+
+  void setMagicValue({required int num}) {
+    _member = _member.copyWith(aiMagicValue: num);
+    notifyListeners();
+  }
+
+  void setDrawValue({required int num}) {
+    _member = _member.copyWith(aiDrawValue: num);
     notifyListeners();
   }
 

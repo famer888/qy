@@ -3031,4 +3031,30 @@ class MyTheme {
       fontWeight: FontWeight.w600,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
+
+  static final nav_active_14 = TextStyle(
+      fontFamily: hanyi,
+      color: const Color(0xff5da3f7),
+      fontSize: 14.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static final TextStyle white06_15 = TextStyle(
+      color: white06Color,
+      fontSize: 15.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+  static final blue80_16 = TextStyle(
+      fontFamily: hanyi,
+      color: const Color.fromRGBO(55, 110, 246, 1),
+      fontSize: 16.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+  static final white244_20 = TextStyle(
+      fontFamily: hanyi,
+      color: const Color.fromRGBO(244, 244, 244, 1),
+      fontSize: 18.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
 }

@@ -160,6 +160,8 @@ class Config {
     required this.faceSortNav,
     required this.faceCoins,
     required this.stripCoins,
+    required this.payAiMagic,
+    required this.payAiDraw,
     required this.imCoins,
     required this.liveTopNav,
     required this.monitorTopNav,
@@ -271,6 +273,9 @@ class Config {
   final String wdaiStr;
   final List<String> vipLevelAwqStr;
   final String vipNameAwqStr;
+
+  final int payAiMagic;
+  final int payAiDraw;
   final int faceCoins;
   final int stripCoins;
   final int imCoins;
@@ -353,6 +358,8 @@ class Config {
             json['face_sort_nav']?.map((x) => AiFaceSortModel.fromJson(x)) ??
                 []),
         stripCoins: json['strip_coins'] ?? 0,
+        payAiMagic: json['pay_ai_magic'] ?? 0,
+        payAiDraw: json['pay_ai_draw'] ?? 0,
         imCoins: json['im_coins'] ?? 0,
         liveTopNav: List<LiveNavModel>.from(
             json['live_top_nav']?.map((x) => LiveNavModel.fromJson(x)) ?? []),

@@ -8,6 +8,8 @@ import '../enum.dart';
 import '../type_def.dart';
 import 'domains/account.dart';
 import 'domains/ai.dart';
+import 'domains/aidraw.dart';
+import 'domains/aimagic.dart';
 import 'domains/comic.dart';
 import 'domains/community.dart';
 import 'domains/dynamic.dart';
@@ -47,6 +49,8 @@ abstract class RemoteDomain
         MessageDomain,
         PrivilegeDomain,
         AIDomain,
+        AIMagicDomain,
+        AIDrawDomain,
         LiveDomain,
         MonitorDomain,
         ComicDomain,

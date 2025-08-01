@@ -1,28 +1,30 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-
-import '../../../../../domain/enum.dart';
-import '../../../../../domain/model/ai/ai_record_model.dart';
+import '../../../../../domain/model/ai/ai_draw_record_model.dart';
 import '../../../../../domain/remote_domain/domains/ai.dart';
+import '../../../../../domain/remote_domain/domains/aidraw.dart';
 import '../../../common_widgets/keep_alive_wrapper.dart';
 import '../../../common_widgets/my_list_view.dart';
 import '../../../common_widgets/my_tab_bar.dart';
-import '../../../theme.dart';
-import 'card/ai_record_card.dart';
 
-class MineFaceSwapperRecordContent extends StatefulWidget {
-  const MineFaceSwapperRecordContent({super.key});
+import '../../../theme.dart';
+import 'package:provider/provider.dart';
+
+import 'card/draw_record_card.dart';
+
+class MineDrawArtScreen extends StatefulWidget {
+  const MineDrawArtScreen({super.key, this.status});
+
+  final int? status; // 0-待处理 1-处理中 2-已成功 3-已失败
 
   @override
-  State<MineFaceSwapperRecordContent> createState() =>
-      _MineFaceSwapperRecordContentState();
+  State<MineDrawArtScreen> createState() => _MineDrawArtScreenState();
 }
 
-class _MineFaceSwapperRecordContentState
-    extends State<MineFaceSwapperRecordContent> {
+class _MineDrawArtScreenState extends State<MineDrawArtScreen> {
   @override
   Widget build(BuildContext context) {
     return TabBarWithView.line(
@@ -38,42 +40,42 @@ class _MineFaceSwapperRecordContentState
       ],
       views: const [
         KeepAliveWrapper(
-          child: _ContentFaceSwapRecordScreen(status: AiStatus.pending),
+          child: _ContentStripOffRecordScreen(status: 0),
         ),
         KeepAliveWrapper(
-          child: _ContentFaceSwapRecordScreen(status: AiStatus.processing),
+          child: _ContentStripOffRecordScreen(status: 1),
         ),
         KeepAliveWrapper(
-          child: _ContentFaceSwapRecordScreen(status: AiStatus.successful),
+          child: _ContentStripOffRecordScreen(status: 2),
         ),
         KeepAliveWrapper(
-          child: _ContentFaceSwapRecordScreen(status: AiStatus.failure),
+          child: _ContentStripOffRecordScreen(status: 3),
         ),
       ],
     );
   }
 }
 
-class _ContentFaceSwapRecordScreen extends StatefulWidget {
-  const _ContentFaceSwapRecordScreen({super.key, required this.status});
+class _ContentStripOffRecordScreen extends StatefulWidget {
+  const _ContentStripOffRecordScreen({this.status});
 
-  final AiStatus status;
+  final int? status; // 0-待处理 1-处理中 2-已成功 3-已失败
 
   @override
-  State<_ContentFaceSwapRecordScreen> createState() =>
-      _ContentFaceSwapRecordScreenState();
+  State<_ContentStripOffRecordScreen> createState() =>
+      _ContentStripOffRecordScreenState();
 }
 
-class _ContentFaceSwapRecordScreenState
-    extends State<_ContentFaceSwapRecordScreen> {
-  late final aiDomain = context.read<AIDomain>();
+class _ContentStripOffRecordScreenState
+    extends State<_ContentStripOffRecordScreen> {
+  late final aiDomain = context.read<AIDrawDomain>();
 
-  Future<List<AiRecordModel>?> _getData({
+  Future<List<AIDrawRecordModel>?> _getData({
     required int page,
     required int pageSize,
   }) async {
-    final result = await aiDomain.aIMyFace(
-      status: widget.status,
+    final result = await aiDomain.aiDrawRecord(
+      status: widget.status ?? 0,
       page: page,
       limit: pageSize,
     );
@@ -83,10 +85,11 @@ class _ContentFaceSwapRecordScreenState
   @override
   Widget build(BuildContext context) {
     return MyListView.grid(
-      childAspectRatio: AIRecordCard.aspectRatio,
-      itemBuilder: (_, item, __) => AIRecordCard(
+      key: UniqueKey(),
+      crossAxisCount: 1,
+      childAspectRatio: 2.3 / 1,
+      itemBuilder: (_, item, __) => AIDrawRecordCard(
           data: item,
-          type: AIRecordType.FaceSwap,
           delSucess: () {
             context.pop();
             setState(() {});

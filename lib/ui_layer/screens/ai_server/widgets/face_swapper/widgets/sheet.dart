@@ -8,17 +8,17 @@ import 'package:provider/provider.dart';
 import '../../../../../../../domain/model/ai/ai_face_material_model.dart';
 import '../../../../../../../domain/model/member_model.dart';
 import '../../../../../../../domain/remote_domain/domains/ai.dart';
-import '../../../../../../notifiers/home_config_notifier.dart';
-import '../../../../../../notifiers/user_notifier.dart';
-import '../../../../../../router/routes.dart';
-import '../../../../../../utils/common_utils.dart';
-import '../../../../../../utils/my_toast.dart';
-import '../../../../../common_widgets/dialog/my_dialog.dart';
-import '../../../../../common_widgets/dialog/widgets/regular_dialog.dart';
-import '../../../../../common_widgets/localization_text.dart';
-import '../../../../../common_widgets/my_image.dart';
-import '../../../../../image_paths.dart';
-import '../../../../../theme.dart';
+import '../../../../../notifiers/home_config_notifier.dart';
+import '../../../../../notifiers/user_notifier.dart';
+import '../../../../../router/routes.dart';
+import '../../../../../utils/common_utils.dart';
+import '../../../../../utils/my_toast.dart';
+import '../../../../common_widgets/dialog/my_dialog.dart';
+import '../../../../common_widgets/dialog/widgets/regular_dialog.dart';
+import '../../../../common_widgets/localization_text.dart';
+import '../../../../common_widgets/my_image.dart';
+import '../../../../image_paths.dart';
+import '../../../../theme.dart';
 
 class FaceSwapSheetView extends StatefulWidget {
   const FaceSwapSheetView({super.key, this.data});

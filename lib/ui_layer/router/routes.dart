@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../domain/model/ai/ai_magic_model.dart';
 import '../../domain/model/video_detail_model.dart';
+import '../screens/ai_server/screen.dart';
+import '../screens/ai_server/widgets/ai_magic/detail/ai_magic_detail.dart';
 import '../screens/bit/comic/comic_detail/screen.dart';
 import '../screens/bit/comic/comic_part/comic_end.dart';
 import '../screens/bit/comic/comic_part/comic_more.dart';
@@ -33,7 +36,6 @@ import '../screens/community/issue/screen.dart';
 import '../screens/community/screen.dart';
 import '../screens/community/tag_detail/screen.dart';
 import '../screens/discovery/screen.dart';
-import '../screens/home/ai/screen.dart';
 import '../screens/home/screen.dart';
 import '../screens/local_video/screen.dart';
 import '../screens/login/screen.dart';
@@ -921,7 +923,22 @@ class HomeAIRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const HomeAiScreen();
+    return const AIServerScreen();
+  }
+}
+
+@TypedGoRoute<AIMagicDetailRoute>(path: AppRouterPaths.aiMagicDetail)
+class AIMagicDetailRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const AIMagicDetailRoute(this.$extra);
+
+  final AIMagicModel $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return AIMagicDetail(data: $extra);
   }
 }
 

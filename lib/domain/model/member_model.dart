@@ -88,6 +88,8 @@ class Member {
     required this.imValue,
     this.vipUpgrade,
     required this.hasSmqPrivilege,
+    required this.aiMagicValue,
+    required this.aiDrawValue,
   });
 
   final int? isFollow;
@@ -171,6 +173,8 @@ class Member {
   final int imValue;
   final int? vipUpgrade;
   final int hasSmqPrivilege;
+  final int aiMagicValue;
+  final int aiDrawValue;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         postCount: json['post_count'] ?? 0,
@@ -260,6 +264,8 @@ class Member {
         imValue: json['im_value'] ?? 0,
         vipUpgrade: json['vip_upgrade'],
         hasSmqPrivilege: json['has_smq_privilege'] ?? 0,
+        aiMagicValue: json['ai_magic_value'] ?? 0,
+        aiDrawValue: json['ai_draw_value'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -344,6 +350,8 @@ class Member {
         'im_value': imValue,
         'vip_upgrade': vipUpgrade,
         'has_smq_privilege': hasSmqPrivilege,
+        'ai_magic_value': aiMagicValue,
+        'ai_draw_value': aiDrawValue,
       };
 
   Member copyWith({
@@ -427,6 +435,8 @@ class Member {
     int? imType,
     int? imValue,
     int? vipUpgrade,
+    int? aiMagicValue,
+    int? aiDrawValue,
   }) =>
       Member(
         isFollow: isFollow ?? this.isFollow,
@@ -510,6 +520,8 @@ class Member {
         imValue: imValue ?? this.imValue,
         vipUpgrade: vipUpgrade ?? this.vipUpgrade,
         hasSmqPrivilege: hasSmqPrivilege,
+        aiMagicValue: aiMagicValue ?? this.aiMagicValue,
+        aiDrawValue: aiDrawValue ?? this.aiDrawValue,
       );
 }
 

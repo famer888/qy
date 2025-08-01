@@ -2,14 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
+import '../../common_widgets/appbar_with_tabbar.dart';
 import '../../common_widgets/keep_alive_wrapper.dart';
 import '../../common_widgets/my_tab_bar.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
 import 'content/clothes_remover_record.dart';
+import 'content/draw_art_record.dart';
 import 'content/face_swapper_record.dart';
+import 'content/magic_ai_record.dart';
 
 class MineAIRecordScreen extends StatefulWidget {
   const MineAIRecordScreen({super.key});
@@ -21,6 +23,8 @@ class MineAIRecordScreen extends StatefulWidget {
 class _MineAIRecordScreenState extends State<MineAIRecordScreen>
     with TickerProviderStateMixin {
   List<String> navList = [
+    tr('aimf'),
+    tr('aihh'),
     tr('aihl'),
     tr('aiqy'),
   ];
@@ -30,13 +34,21 @@ class _MineAIRecordScreenState extends State<MineAIRecordScreen>
   Widget build(BuildContext context) {
     return ScreenBackground(
       child: Scaffold(
-        appBar: _AppBar(
+        appBar: AppBarWithTabBar(
           tabController: tabController,
           titles: navList,
+          fontSize: 16.sp,
+          labelPadding: EdgeInsets.symmetric(horizontal: 8.w),
         ),
         body: TabBarView(
           controller: tabController,
           children: const [
+            KeepAliveWrapper(
+              child: MineMagicRecordScreen(),
+            ),
+            KeepAliveWrapper(
+              child: MineDrawArtScreen(),
+            ),
             KeepAliveWrapper(
               child: MineFaceSwapperRecordContent(),
             ),
@@ -85,10 +97,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           tabBarTheme: MyTabBarTheme.fillColor(
             labelStyle: MyTheme.white255_18,
             unselectedLabelStyle: MyTheme.white06_18,
-            indicator: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(30.w),
-            ),
+            indicator: const BoxDecoration(),
           ),
         ),
         child: RepaintBoundary(

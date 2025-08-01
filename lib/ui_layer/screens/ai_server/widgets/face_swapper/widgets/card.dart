@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../domain/model/ai/ai_face_material_model.dart';
-import '../../../../../../utils/common_utils.dart';
-import '../../../../../common_widgets/my_image.dart';
-import '../../../../../theme.dart';
+import '../../../../../utils/common_utils.dart';
+import '../../../../common_widgets/my_image.dart';
+import '../../../../theme.dart';
 import 'sheet.dart';
 
 class FaceSwapperCard extends StatelessWidget {

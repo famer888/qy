@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:qypj/ui_layer/screens/home/ai/widgets/face_swapper/widgets/sheet.dart';
+import 'package:utils/utils.dart';
 
 import '../../../../../../domain/model/ai/ai_face_material_model.dart';
 import '../../../../../../domain/model/ai/ai_nav_model.dart';
 import '../../../../../../domain/model/banner_model.dart';
 import '../../../../../../domain/remote_domain/domains/ai.dart';
-import '../../../../../notifiers/home_config_notifier.dart';
-import '../../../../../utils/my_toast.dart';
-import '../../../../common_widgets/general_banner.dart';
-import '../../../../common_widgets/my_image.dart';
-import '../../../../common_widgets/my_list_view.dart';
-import '../../../../image_paths.dart';
-import '../../../../theme.dart';
+import '../../../../notifiers/home_config_notifier.dart';
+import '../../../../utils/my_toast.dart';
+import '../../../common_widgets/general_banner.dart';
+import '../../../common_widgets/my_image.dart';
+import '../../../common_widgets/my_list_view.dart';
+import '../../../image_paths.dart';
+import '../../../theme.dart';
 import 'widgets/card.dart';
+import 'widgets/sheet.dart';
 
 class FaceSwapperView extends StatefulWidget {
   const FaceSwapperView({super.key});
@@ -249,6 +250,7 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
             }
           },
           tabAlignment: TabAlignment.start,
+          indicator: const BoxDecoration(),
           indicatorColor: Colors.transparent,
           dividerColor: Colors.transparent,
           tabs: [for (final nav in sorts) _buildTab(nav)],
