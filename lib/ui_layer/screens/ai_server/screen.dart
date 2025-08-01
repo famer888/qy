@@ -399,16 +399,6 @@ class _AIServerScreenState extends State<AIServerScreen>
             KeepAliveWrapper(child: ClothesRemoverView()),
           ],
         ),
-        floatingActionButton: index != 2
-            ? const SizedBox()
-            : GestureDetector(
-                onTap: onOpenMaterialDetail,
-                child: Image.asset(
-                  MyImagePaths.appCustomModel,
-                  height: 32.w,
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
       ),
     );
   }
