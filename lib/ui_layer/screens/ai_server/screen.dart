@@ -399,7 +399,7 @@ class _AIServerScreenState extends State<AIServerScreen>
             KeepAliveWrapper(child: ClothesRemoverView()),
           ],
         ),
-        floatingActionButton: index != 0
+        floatingActionButton: index != 2
             ? const SizedBox()
             : GestureDetector(
                 onTap: onOpenMaterialDetail,
