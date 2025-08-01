@@ -28,6 +28,8 @@ final class VideoPlayer {
     private final VideoPlayerOptions options;
     private boolean isPlaybackCompleted = false;
 
+    private boolean isLooping = false;
+
     /**
      * Creates a video player.
      *
@@ -94,7 +96,11 @@ final class VideoPlayer {
             }
         });
         ijkMediaPlayer.setOnCompletionListener(mp -> {
-            if(!isPlaybackCompleted) {
+            if(isLooping) {
+                seekTo(0);
+                play();
+            }
+            else if(!isPlaybackCompleted) {
                 isPlaybackCompleted = true;
                 videoPlayerEvents.onCompleted();
             }
@@ -138,7 +144,7 @@ final class VideoPlayer {
     }
 
     void setLooping(boolean value) {
-        ijkMediaPlayer.setLooping(value);
+        isLooping = value;
     }
 
     void setVolume(double value) {
