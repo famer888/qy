@@ -17,15 +17,15 @@ subprojects {
         }
     }
 }
-subprojects {
-    if (project.name == "image_gallery_saver") {
-        afterEvaluate {
-            android {
-                compileSdkVersion 34
-            }
-        }
-    }
-}
+//subprojects {
+//    if (project.name == "image_gallery_saver") {
+//        afterEvaluate {
+//            android {
+//                compileSdkVersion 34
+//            }
+//        }
+//    }
+//}
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }

@@ -4,13 +4,14 @@
 
 import 'dart:async';
 import 'dart:collection';
-import 'dart:html';
+import 'dart:js_interop';
+import 'dart:ui_web' as ui_web;
+import 'package:web/web.dart' as web;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
-import 'src/shims/dart_ui.dart' as ui;
 import 'src/video_player.dart';
 
 /// The web implementation of [VideoPlayerPlatform].
@@ -21,11 +22,11 @@ class VideoPlayerPlugin extends VideoPlayerPlatform {
   static void registerWith(Registrar registrar) {
     final plugin = VideoPlayerPlugin().._initPool();
     VideoPlayerPlatform.instance = plugin;
-    late final StreamSubscription _subscription;
-    _subscription = window.onClick.listen((event) {
+
+    web.window.onclick = (web.Event event) {
       plugin._blessing();
-      _subscription.cancel();
-    });
+      web.window.onclick = null;
+    }.toJS;
   }
 
   // Map of textureId -> VideoPlayer instances
@@ -76,13 +77,13 @@ class VideoPlayerPlugin extends VideoPlayerPlatform {
     }
   }
 
-  VideoElement _createPlayer(int textureId) {
-    final videoElement = VideoElement()
+  web.HTMLVideoElement _createPlayer(int textureId) {
+    final videoElement = web.HTMLVideoElement()
       ..style.border = 'none'
       ..style.height = '100%'
       ..style.width = '100%';
 
-    ui.platformViewRegistry.registerViewFactory(
+    ui_web.platformViewRegistry.registerViewFactory(
         'videoPlayer-$textureId', (int viewId) => videoElement);
 
     final VideoPlayer player = VideoPlayer(videoElement: videoElement)
@@ -106,7 +107,7 @@ class VideoPlayerPlugin extends VideoPlayerPlatform {
         if (dataSource.package != null && dataSource.package!.isNotEmpty) {
           assetUrl = 'packages/${dataSource.package}/$assetUrl';
         }
-        assetUrl = ui.webOnlyAssetManager.getAssetUrl(assetUrl);
+        assetUrl = ui_web.assetManager.getAssetUrl(assetUrl);
         uri = assetUrl;
         break;
       case DataSourceType.file:
@@ -125,7 +126,7 @@ class VideoPlayerPlugin extends VideoPlayerPlatform {
       textureId = _available.removeFirst();
       _unavailable.add(textureId);
     }
-    changeVideo(textureId, uri);
+    await changeVideo(textureId, uri);
 
     return textureId;
   }
@@ -196,7 +197,6 @@ class VideoPlayerPlugin extends VideoPlayerPlatform {
     _player(textureId).exitFullScreen();
   }
 
-  @override
   Future<void> changeVideo(int textureId, String src) async {
     await _player(textureId).changeVideo(src);
   }

@@ -3,9 +3,10 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:html' as html;
-import 'dart:js';
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
+import 'package:web/web.dart' as web;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
@@ -40,14 +41,14 @@ const String _kDefaultErrorMessage =
 class VideoPlayer {
   /// Create a [VideoPlayer] from a [html.VideoElement] instance.
   VideoPlayer({
-    required html.VideoElement videoElement,
+    required web.HTMLVideoElement videoElement,
     @visibleForTesting StreamController<VideoEvent>? eventController,
   })  : _videoElement = videoElement,
         _eventController =
             eventController ?? StreamController<VideoEvent>.broadcast();
 
   final StreamController<VideoEvent> _eventController;
-  final html.VideoElement _videoElement;
+  final web.HTMLVideoElement _videoElement;
 
   bool _isBuffering = false;
   Hls? _hls;
@@ -61,13 +62,9 @@ class VideoPlayer {
   /// and attaches listeners to the internal events from the [html.VideoElement]
   /// to react to them / expose them through the [VideoPlayer.events] stream.
   void initialize() {
-    _videoElement..controls = false;
-
-    // Allows Safari iOS to play the video inline
-    _videoElement.setAttribute('playsinline', 'true');
-
-    // Set autoplay to false since most browsers won't autoplay a video unless it is muted
-    // _videoElement.setAttribute('autoplay', 'false');
+    _videoElement
+      ..controls = false
+      ..playsInline = true;
 
     _videoElement.onCanPlayThrough.listen((dynamic _) {
       setBuffering(false);
@@ -83,12 +80,12 @@ class VideoPlayer {
     });
 
     // The error event fires when some form of error occurs while attempting to load or perform the media.
-    _videoElement.onError.listen((html.Event _) {
+    _videoElement.onError.listen((web.Event _) {
       setBuffering(false);
       // The Event itself (_) doesn't contain info about the actual error.
       // We need to look at the HTMLMediaElement.error.
       // See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/error
-      final html.MediaError error = _videoElement.error!;
+      final web.MediaError error = _videoElement.error!;
       _eventController.addError(PlatformException(
         code: _kErrorValueToErrorName[error.code]!,
         message: error.message != '' ? error.message : _kDefaultErrorMessage,
@@ -110,18 +107,19 @@ class VideoPlayer {
   /// When called from some user interaction (a tap on a button), the above
   /// limitation should disappear.
   Future<void> play() {
-    return _videoElement.play().catchError((Object e) {
+    return _videoElement.play().toDart.catchError((Object e) {
       // play() attempts to begin playback of the media. It returns
       // a Promise which can get rejected in case of failure to begin
       // playback for any reason, such as permission issues.
-      // The rejection handler is called with a DomException.
+      // The rejection handler is called with a DOMException.
       // See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/play
-      final html.DomException exception = e as html.DomException;
+      final web.DOMException exception = e as web.DOMException;
       _eventController.addError(PlatformException(
         code: exception.name,
         message: exception.message,
       ));
-    }, test: (Object e) => e is html.DomException);
+      return null;
+    }, test: (Object e) => e is web.DOMException);
   }
 
   /// Pauses the video in the current position.
@@ -140,14 +138,19 @@ class VideoPlayer {
   /// Values must fall between 0 and 1, where 0 is muted and 1 is the loudest.
   ///
   /// When volume is set to 0, the `muted` property is also applied to the
-  /// [html.VideoElement]. This is required for auto-play on the web.
+  /// [web.HTMLVideoElement]. This is required for auto-play on the web.
   void setVolume(double volume) {
     assert(volume >= 0 && volume <= 1);
 
     // TODO(ditman): Do we need to expose a "muted" API?
     // https://github.com/flutter/flutter/issues/60721
-    _videoElement.muted = !(volume > 0.0);
-    _videoElement.volume = volume;
+
+    // If the volume is set to 0.0, only change muted attribute, but don't adjust the volume.
+    _videoElement.muted = volume == 0.0;
+    // Set the volume only if it's greater than 0.0.
+    if (volume > 0.0) {
+      _videoElement.volume = volume;
+    }
   }
 
   void muted(bool value) {
@@ -186,11 +189,13 @@ class VideoPlayer {
     return Duration(milliseconds: (_videoElement.currentTime * 1000).round());
   }
 
-  /// Disposes of the current [html.VideoElement].
+  /// Disposes of the current [web.VideoElement].
   void dispose() {
     _onCanPlayListener?.cancel();
     _onCanPlayListener = null;
+    _videoElement.pause();
     _videoElement.currentTime = 0;
+    _videoElement.srcObject = null;
     _videoElement.removeAttribute('src');
     _videoElement.load();
     _videoElement.remove();
@@ -235,7 +240,7 @@ class VideoPlayer {
     }
   }
 
-  // Broadcasts the [html.VideoElement.buffered] status through the [events] stream.
+  // Broadcasts the [web.HTMLVideoElement.buffered] status through the [events] stream.
   void _sendBufferingRangesUpdate() {
     _eventController.add(VideoEvent(
       buffered: _toDurationRange(_videoElement.buffered),
@@ -243,8 +248,8 @@ class VideoPlayer {
     ));
   }
 
-  // Converts from [html.TimeRanges] to our own List<DurationRange>.
-  List<DurationRange> _toDurationRange(html.TimeRanges buffered) {
+  // Converts from [web.TimeRanges] to our own List<DurationRange>.
+  List<DurationRange> _toDurationRange(web.TimeRanges buffered) {
     final List<DurationRange> durationRange = <DurationRange>[];
     for (int i = 0; i < buffered.length; i++) {
       durationRange.add(DurationRange(
@@ -255,12 +260,65 @@ class VideoPlayer {
     return durationRange;
   }
 
+  late final web.EventListener _videoClickListener = (web.Event event) {
+    event.stopPropagation();
+  }.toJS;
+
+  late final web.EventListener _fullscreenChangeListener = (web.Event event) {
+    if (_checkIsFullscreen()) {
+      _addVideoEventListeners();
+    } else {
+      _removeVideoEventListeners();
+    }
+  }.toJS;
+  bool _checkIsFullscreen() {
+    final document = web.document;
+    return document.fullscreenElement != null ||
+        document.getProperty('webkitFullscreenElement'.toJS) != null ||
+        document.getProperty('mozFullScreenElement'.toJS) != null ||
+        document.getProperty('msFullscreenElement'.toJS) != null;
+  }
+
+  void _addVideoEventListeners() {
+    _videoElement.addEventListener('click', _videoClickListener);
+    _videoElement.addEventListener('pointerdown', _videoClickListener);
+  }
+
+  void _removeVideoEventListeners() {
+    _videoElement.removeEventListener('click', _videoClickListener);
+    _videoElement.removeEventListener('pointerdown', _videoClickListener);
+    _videoElement.removeEventListener(
+        'fullscreenchange', _fullscreenChangeListener);
+  }
+
   void requestFullScreen() {
-    _videoElement.enterFullscreen();
+    final document = web.document;
+
+    if (_checkIsFullscreen()) {
+      document.exitFullscreen();
+    } else {
+      for (final method in [
+        'requestFullscreen',
+        'webkitEnterFullscreen',
+        'webkitRequestFullscreen',
+        'mozRequestFullScreen',
+        'msRequestFullscreen'
+      ]) {
+        final jsMethod = method.toJS;
+        if (_videoElement.hasProperty(jsMethod).toDart) {
+          try {
+            _videoElement.addEventListener(
+                'fullscreenchange', _fullscreenChangeListener);
+            _videoElement.callMethod(jsMethod);
+            break;
+          } catch (_) {}
+        }
+      }
+    }
   }
 
   void exitFullScreen() {
-    _videoElement.exitFullscreen();
+    web.document.exitFullscreen();
   }
 
   StreamSubscription? _onCanPlayListener;
@@ -269,25 +327,32 @@ class VideoPlayer {
     if (await _HlsHelper.shouldUseHlsLibrary(src)) {
       _hls = Hls(
         HlsConfig(
-          xhrSetup: allowInterop(
-            (html.HttpRequest xhr, String _) {},
-          ),
+          xhrSetup: (web.XMLHttpRequest xhr, String _) {}.toJS,
         ),
       );
       _hls!.attachMedia(_videoElement);
-      _hls!.on('hlsMediaAttached', allowInterop((_, __) {
-        _hls!.loadSource(src.toString());
-      }));
-      _hls!.on('hlsError', allowInterop((dynamic _, dynamic data) {
-        final ErrorData errorData = ErrorData(data);
-        if (errorData.fatal) {
-          _eventController.addError(PlatformException(
-            code: _kErrorValueToErrorName[2]!,
-            message: errorData.type,
-            details: errorData.details,
-          ));
-        }
-      }));
+
+      _hls!.on(
+        'hlsMediaAttached',
+        (String _, JSObject __) {
+          _hls!.loadSource(src.toString());
+        }.toJS,
+      );
+
+      _hls!.on(
+          'hlsError',
+          (String _, JSObject data) {
+            try {
+              final ErrorData _data = ErrorData(data);
+              if (_data.fatal) {
+                _eventController.addError(PlatformException(
+                  code: _kErrorValueToErrorName[2]!,
+                  message: _data.type,
+                  details: _data.details,
+                ));
+              }
+            } catch (_) {}
+          }.toJS);
     } else {
       _videoElement.src = src;
       _videoElement.load();
@@ -328,16 +393,18 @@ class _HlsHelper {
     bool canPlayHls = false;
     try {
       final String canPlayType =
-          html.VideoElement().canPlayType('application/vnd.apple.mpegurl');
+          web.HTMLVideoElement().canPlayType('application/vnd.apple.mpegurl');
+
       canPlayHls = canPlayType != '';
-    } catch (e) {}
+    } catch (_) {}
 
     if (!canPlayHls) {
-      final head = html.querySelector('head');
-      final script = html.ScriptElement()
-        ..type = "application/javascript"
+      final script = web.HTMLScriptElement()
+        ..type = "text/javascript"
         ..src = 'assets/packages/video_player_web/assets/hls.js';
-      head?.children.add(script);
+      final head = web.document.head;
+      head?.appendChild(script);
+
       await script.onLoad.first;
     }
     _completer!.complete(canPlayHls);

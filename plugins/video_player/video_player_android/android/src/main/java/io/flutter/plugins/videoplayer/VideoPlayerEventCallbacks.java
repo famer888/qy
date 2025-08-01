@@ -45,12 +45,13 @@ final class VideoPlayerEventCallbacks implements VideoPlayerCallbacks {
 
   @Override
   public void onInitialized(
-      int width, int height, long durationInMs, int rotationCorrectionInDegrees) {
+      int width, int height, long durationInMs, int rotationCorrectionInDegrees, String codecName) {
     Map<String, Object> event = new HashMap<>();
     event.put("event", "initialized");
     event.put("width", width);
     event.put("height", height);
     event.put("duration", durationInMs);
+    event.put("codecName", codecName);
     if (rotationCorrectionInDegrees != 0) {
       event.put("rotationCorrection", rotationCorrectionInDegrees);
     }

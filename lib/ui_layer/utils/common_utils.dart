@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -529,7 +529,8 @@ class CommonUtils {
       html.document.body?.children.remove(anchor);
       html.Url.revokeObjectUrl(url);
     } else {
-      final result = await ImageGallerySaver.saveImage(bytes); //这个是核心的保存图片的插件
+      final result =
+          await ImageGallerySaverPlus.saveImage(bytes); //这个是核心的保存图片的插件
       if (result['isSuccess']) {
         MyToast.showText(text: tr('tpybc'));
       } else if (Platform.isAndroid) {

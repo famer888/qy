@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/async_value.dart';
@@ -320,7 +320,7 @@ class _BodyState extends State<_Body> {
         final pngBytes = byteData.buffer.asUint8List();
 
         /// 这个是核心的保存图片的插件
-        final result = await ImageGallerySaver.saveImage(pngBytes);
+        final result = await ImageGallerySaverPlus.saveImage(pngBytes);
         if (!context.mounted) return;
 
         if (result['isSuccess']) {

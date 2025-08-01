@@ -136,6 +136,7 @@ class AndroidVideoPlayer extends VideoPlayerPlatform {
             size: Size((map['width'] as num?)?.toDouble() ?? 0.0,
                 (map['height'] as num?)?.toDouble() ?? 0.0),
             rotationCorrection: map['rotationCorrection'] as int? ?? 0,
+            codecName: map['codecName'],
           );
         case 'completed':
           return VideoEvent(

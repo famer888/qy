@@ -192,7 +192,6 @@ public class VideoPlayerPlugin implements FlutterPlugin, ActivityAware, AndroidV
                         .setPosition(player.getPosition())
                         .setTextureId(arg.getTextureId())
                         .build();
-        player.sendBufferingUpdate();
         return result;
     }
 

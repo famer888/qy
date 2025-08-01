@@ -384,6 +384,10 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Only set for [asset] videos. The package that the asset was loaded from.
   final String? package;
 
+  String? get codecName => _codecName;
+
+  String? _codecName;
+
   Future<ClosedCaptionFile>? _closedCaptionFileFuture;
   ClosedCaptionFile? _closedCaptionFile;
   Timer? _timer;
@@ -402,8 +406,22 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   @visibleForTesting
   int get textureId => _textureId;
 
+  static final _initListeners = <VoidCallback>[];
+
+  static void addInitListener(VoidCallback listener) {
+    _initListeners.add(listener);
+  }
+
+  static void removeInitListener(VoidCallback listener) {
+    _initListeners.remove(listener);
+  }
+
   /// Attempts to open the given [dataSource] and load metadata about the video.
-  Future<void> initialize() async {
+  Future<void> initialize({bool shouldInitNotify = true}) async {
+    if (shouldInitNotify) {
+      _initListeners.forEach((e) => e.call());
+    }
+
     final bool allowBackgroundPlayback =
         videoPlayerOptions?.allowBackgroundPlayback ?? false;
     if (!allowBackgroundPlayback) {
@@ -465,6 +483,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
       switch (event.eventType) {
         case VideoEventType.initialized:
+          _codecName = event.codecName;
           value = value.copyWith(
             duration: event.duration,
             size: event.size,
@@ -679,6 +698,11 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     value = value.copyWith(volume: volume.clamp(0.0, 1.0));
     await _applyVolume();
   }
+
+  void requestFullScreen() =>
+      _videoPlayerPlatform.requestFullScreen(_textureId);
+
+  void exitFullScreen() => _videoPlayerPlatform.exitFullScreen(_textureId);
 
   /// Sets the playback speed of [this].
   ///
