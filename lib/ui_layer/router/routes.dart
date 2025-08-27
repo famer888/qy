@@ -642,8 +642,8 @@ class ChatMessageRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ChatMessageScreen(
       toUuid: toUuid,
-      nickName: nickName,
-      thumb: thumb,
+      nickName: Uri.decodeComponent(nickName),
+      thumb: Uri.decodeComponent(thumb),
     );
   }
 }

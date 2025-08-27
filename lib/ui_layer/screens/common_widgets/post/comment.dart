@@ -168,7 +168,7 @@ class _Header extends StatelessWidget {
                             user.thumb?.isEmpty == true ? '' : user.thumb!,
                           );
                           ChatMessageRoute(
-                            nickName: nick ?? '',
+                            nickName: Uri.encodeComponent(nick ?? ''),
                             thumb: url,
                             toUuid: uuid,
                           ).push(context);

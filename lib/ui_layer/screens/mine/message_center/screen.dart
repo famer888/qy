@@ -91,10 +91,12 @@ class _MessageCenterScreenState extends State<MessageCenterScreen> {
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
                               ChatMessageRoute(
-                                      nickName: e.touser?.nickname ?? '',
-                                      toUuid: e.touser?.uuid ?? '',
-                                      thumb: e.touser?.avatar ?? '')
-                                  .push(context);
+                                nickName: Uri.encodeComponent(
+                                    e.touser?.nickname ?? ''),
+                                thumb:
+                                    Uri.encodeComponent(e.touser?.avatar ?? ''),
+                                toUuid: e.touser?.uuid ?? '',
+                              ).push(context);
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15.w),
