@@ -91,8 +91,8 @@ class _MessageCenterScreenState extends State<MessageCenterScreen> {
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
                               ChatMessageRoute(
-                                nickName: Uri.encodeComponent(
-                                    e.touser?.nickname ?? ''),
+                                nickName:
+                                    e.touser?.nickname ?? '',
                                 thumb:
                                     Uri.encodeComponent(e.touser?.avatar ?? ''),
                                 toUuid: e.touser?.uuid ?? '',
@@ -122,7 +122,8 @@ class _MessageCenterScreenState extends State<MessageCenterScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            e.touser?.nickname ?? '',
+                                            Uri.decodeComponent(
+                                                e.touser?.nickname ?? ''),
                                             style: MyTheme.white13medium,
                                           ),
                                           SizedBox(height: 9.w),
