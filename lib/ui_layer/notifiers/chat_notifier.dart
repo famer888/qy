@@ -205,7 +205,11 @@ class ChatNotifier extends ChangeNotifier {
       avatar: Uri.encodeComponent(member.thumb ?? ''),
       time: (DateTime.now().millisecondsSinceEpoch / 1000).floor().toString(),
       content_type: msgType == 'photos' ? 1 : 0,
-      touser: target,
+      touser: ChatUser(
+        nickname: Uri.encodeComponent(target.nickname),
+        avatar: Uri.encodeComponent(target.avatar),
+        uuid: target.uuid,
+      ),
     );
 
     updateChatIM(chat);
