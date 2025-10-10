@@ -1,7 +1,7 @@
 ext {
     versiondata = [
-            versionCode: 351,
-            versionName: "3.5.1"
+            versionCode: 352,
+            versionName: "3.5.2"
     ]
     signdata = [
             keyAlias     : 'upload',
