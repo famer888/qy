@@ -24,9 +24,9 @@ class _MineAIRecordScreenState extends State<MineAIRecordScreen>
     with TickerProviderStateMixin {
   List<String> navList = [
     tr('aimf'),
-    tr('aihh'),
-    tr('aihl'),
     tr('aiqy'),
+    tr('aihl'),
+    tr('aihh'),
   ];
   late final tabController = TabController(length: navList.length, vsync: this);
 
@@ -47,13 +47,13 @@ class _MineAIRecordScreenState extends State<MineAIRecordScreen>
               child: MineMagicRecordScreen(),
             ),
             KeepAliveWrapper(
-              child: MineDrawArtScreen(),
+              child: MineClothesRemoverRecordContent(),
             ),
             KeepAliveWrapper(
               child: MineFaceSwapperRecordContent(),
             ),
             KeepAliveWrapper(
-              child: MineClothesRemoverRecordContent(),
+              child: MineDrawArtScreen(),
             ),
           ],
         ),

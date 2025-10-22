@@ -40,7 +40,13 @@ class _AIServerScreenState extends State<AIServerScreen>
   late final aiDomain = context.read<AIDomain>();
 
   late int faceCoinsValue = _homeConfig.config.faceCoins;
-  late final titles = ['aimf', 'aihh', 'aihl', 'aiqy'];
+  // 魔法、脱衣、图片换脸、绘画
+  late final titles = [
+    'aimf',
+    'aiqy',
+    'aihl',
+    'aihh',
+  ];
   late final tabController =
       TabController(length: titles.length, vsync: this, initialIndex: 0);
   int index = 0;
@@ -394,9 +400,9 @@ class _AIServerScreenState extends State<AIServerScreen>
           controller: tabController,
           children: const [
             KeepAliveWrapper(child: AIMagic()),
-            KeepAliveWrapper(child: AIArtScreen()),
-            KeepAliveWrapper(child: FaceSwapperView()),
             KeepAliveWrapper(child: ClothesRemoverView()),
+            KeepAliveWrapper(child: FaceSwapperView()),
+            KeepAliveWrapper(child: AIArtScreen()),
           ],
         ),
       ),
