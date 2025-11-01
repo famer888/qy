@@ -55,6 +55,7 @@ import '../screens/mine/help/screen.dart';
 import '../screens/mine/income_detail/screen.dart';
 import '../screens/mine/message_center/chat_message/screen.dart';
 import '../screens/mine/message_center/customer_service/screen.dart';
+import '../screens/mine/message_center/customer_service/screen_net.dart';
 import '../screens/mine/message_center/screen.dart';
 import '../screens/mine/message_center/system_message/screen.dart';
 import '../screens/mine/official_group/screen.dart';
@@ -498,7 +499,8 @@ class MineCustomerServiceRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const MineCustomerServiceScreen();
+    // return const MineCustomerServiceScreen();
+    return const MineCustomerServiceWebScreen();
   }
 }
 

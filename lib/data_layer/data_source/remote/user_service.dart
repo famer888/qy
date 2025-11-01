@@ -175,6 +175,9 @@ class UserService extends BaseService {
   }) =>
       post('/upgrade', data: {'id': id});
 
+  /// 获取客服url
+  AsyncJson customerConf() => post('/customer_conf');
+
   /// 清除缓存
   AsyncJson clearCached() => post('/clear_cached');
 }

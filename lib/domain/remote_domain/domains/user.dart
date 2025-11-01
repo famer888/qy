@@ -106,6 +106,9 @@ abstract class UserDomain {
   ///金币升级VIP
   AsyncResult userUpgrade({required int id});
 
+  /// 获取客服url
+  AsyncResult customerConf();
+
   /// 清除缓存
   AsyncJson clearCached();
 }

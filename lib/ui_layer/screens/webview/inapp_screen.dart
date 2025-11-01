@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -20,16 +21,16 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'fake_native_widget.dart' if (dart.library.html) 'real_web_widget.dart'
     as ui;
 
-class WebViewScreen extends StatefulWidget {
-  const WebViewScreen({super.key, required this.url, this.needNav = true});
+class InAppWebViewScreen extends StatefulWidget {
+  const InAppWebViewScreen({super.key, required this.url, this.needNav = true});
   final String url;
   final bool? needNav;
 
   @override
-  State<WebViewScreen> createState() => _WebViewScreenState();
+  State<InAppWebViewScreen> createState() => _InAppWebViewScreenState();
 }
 
-class _WebViewScreenState extends State<WebViewScreen> {
+class _InAppWebViewScreenState extends State<InAppWebViewScreen> {
   String titleText = '';
   late WebViewController _controller;
 
@@ -87,55 +88,48 @@ class _WebViewScreenState extends State<WebViewScreen> {
               )
             : null,
         backgroundColor: MyTheme.bgColor,
-        body: kIsWeb ? _buildHtmlWidget() : _buildNativeWidget(),
+        body: _buildNativeWidget(),
       ),
     );
   }
 
   Widget _buildNativeWidget() {
-    WebViewController ctrl = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onHttpError: (HttpResponseError error) {},
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
-      ..addJavaScriptChannel('FlutterChannel', onMessageReceived: (js) {
-        jumpToPage(js.message.toString());
-      })
-      ..loadRequest(Uri.parse(Uri.decodeComponent(widget.url)));
+    return InAppWebView(
+      initialSettings: InAppWebViewSettings(javaScriptEnabled: true),
+      initialUrlRequest: URLRequest(url: WebUri(widget.url)),
+      onWebViewCreated: (controller) {
+        // _controller = controller;
 
-    if (ctrl.platform is AndroidWebViewController) {
-      AndroidWebViewController.enableDebugging(true);
-      (ctrl.platform as AndroidWebViewController)
-          .setOnShowFileSelector((params) async {
-        // 这里调用系统文件选择器，或者用 file_picker 插件
-        final result =
-            await ImagePicker().pickImage(source: ImageSource.gallery);
-        if (result != null && result.path.isNotEmpty) {
-          return [Uri.file(result.path).toString()];
+        // 监听 JS 调用：window.flutter_inappwebview.callHandler("jumpOutLink", l)
+        // controller.addJavaScriptHandler(
+        //   handlerName: 'jumpOutLink',
+        //   callback: (args) async {
+        //     final link = args.isNotEmpty ? (args[0] as String?) : null;
+        //     if (link == null) return 'no-link';
+
+        //     // TODO: 根据你的业务处理，比如外跳
+        //     // final uri = Uri.parse(link);
+        //     // if (await canLaunchUrl(uri)) {
+        //     //   await launchUrl(uri, mode: LaunchMode.externalApplication);
+        //     // }
+        //     jumpOutLink(link);
+        //     return 'ok'; // 可返回给 JS
+        //   },
+        // );
+      },
+
+      // 可选：拦截 window.open 的新窗口
+      onCreateWindow: (controller, createWindowAction) async {
+        final url = createWindowAction.request.url?.toString();
+        if (url != null) {
+          jumpOutLink(url);
+
+          // final uri = Uri.parse(url);
+          // launchUrl(uri, mode: LaunchMode.externalApplication);
         }
-        return [];
-      });
-    }
-    _controller = ctrl;
-    return WebViewWidget(
-        controller: _controller,
-        gestureRecognizers: Set()
-          ..add(
-            Factory<VerticalDragGestureRecognizer>(
-              () => VerticalDragGestureRecognizer(),
-            ),
-          ));
+        return true; // 自己处理了
+      },
+    );
   }
 
   Widget _buildHtmlWidget() {
@@ -185,4 +179,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
   void jumpOutLink(String msg) {
     CommonUtils.launchUrl(msg);
   }
+
+  Uint8List? _snapshot;
+  bool _showSnapshot = false;
+
+  bool _exiting = false;
 }
