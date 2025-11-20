@@ -2,7 +2,7 @@ name: qypj
 description: ""
 publish_to: "none"
 
-version: 3.6.0
+version: 3.7.0
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -50,7 +50,7 @@ dependencies:
   intl: ^0.19.0
   android_id: ^0.3.6
   webview_flutter: 4.8.0
-  flutter_inappwebview: 6.0.0
+  # flutter_inappwebview: 6.0.0
   cross_file: any
   qr_flutter: ^4.1.0
   image_gallery_saver_plus: ^3.0.5
@@ -72,6 +72,8 @@ dependencies:
   mixpanel_flutter: ^2.3.4
   get_thumbnail_video:
     path: plugins/video_thumbnail
+  flutter_inappwebview:
+    path: plugins/flutter_inappwebview
 dev_dependencies:
   flutter_test:
     sdk: flutter

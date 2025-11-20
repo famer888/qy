@@ -1,9 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
-import 'package:qypj/ui_layer/screens/theme.dart';
+// import 'package:hjsq/ui_layer/screens/common_widgets/auto_carousel_slider.dart';
+// import 'package:hjsq/ui_layer/screens/theme.dart';
+
+import 'package:visibility_detector/visibility_detector.dart';
+
 import '../../../domain/model/banner_model.dart';
 import '../../utils/common_utils.dart';
+import '../theme.dart';
 import 'my_image.dart';
 
 class GeneralAppListSwiper extends StatefulWidget {
@@ -30,48 +37,115 @@ class GeneralAppListSwiper extends StatefulWidget {
 }
 
 class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
-  double _childAspectRatio = 57 / 76;
+  final double _childAspectRatio = 57 / 76;
+  int threshold = 10;
 
-  int _ColumeNumber = 5;
+  int _ColumNumber = 5;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    _ColumeNumber = widget.columnNumber;
+    _ColumNumber = widget.columnNumber;
+    threshold = _ColumNumber * 2;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<List<BannerModel>> pages = [];
-    List<BannerModel> page = [];
-    for (var element in widget.data ?? []) {
-      if (page.length >= _ColumeNumber * 2) {
-        pages.add(page);
-        page = [];
+    if (widget.data.length > threshold) {
+      // 取前 _ColumNumber 个（不足 _ColumNumber 个则全取）
+      final firstPart =
+          widget.data.sublist(0, min(_ColumNumber, widget.data.length));
+      // 取第 _ColumNumber+1 个之后的部分（如果不够 _ColumNumber 个就为空）
+      final secondPart = widget.data.length > _ColumNumber
+          ? widget.data.sublist(_ColumNumber)
+          : [];
+      final itemWidth = (ScreenUtil().screenWidth -
+              (_ColumNumber + 1) * 6.w -
+              MyTheme.pagePadding * 2) /
+          _ColumNumber;
+
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(firstPart.length, (index) {
+                final item = firstPart[index];
+                return GestureDetector(
+                  onTap: () {
+                    CommonUtils.openRoute(context, item.toJson());
+                  },
+                  child: SizedBox(
+                      width: itemWidth,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: itemWidth,
+                            height: itemWidth,
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: MyImage.network(
+                                  CommonUtils.getThumb(item.toJson()),
+                                  fit: BoxFit.cover,
+                                  borderRadius: 8.w),
+                            ),
+                          ),
+                          SizedBox(height: 8.w),
+                          Text(
+                            item.name ?? item.title ?? "",
+                            style: TextStyle(
+                                color: Colors.white,
+                                overflow: TextOverflow.ellipsis,
+                                decoration: TextDecoration.none,
+                                height: 1,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 11.sp),
+                          ),
+                        ],
+                      )),
+                );
+              }),
+            ),
+          ),
+          if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
+            SizedBox(height: 10.w),
+          if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
+            InfiniteBannerList(banners: secondPart, columNumber: _ColumNumber),
+        ],
+      );
+    } else {
+      List<List<BannerModel>> pages = [];
+      List<BannerModel> page = [];
+      for (var element in widget.data) {
+        if (page.length >= _ColumNumber * 2) {
+          pages.add(page);
+          page = [];
+        }
+        page.add(element);
       }
-      page.add(element);
-    }
 
-    if (page.isNotEmpty) {
-      pages.add(page);
-    }
+      if (page.isNotEmpty) {
+        pages.add(page);
+      }
 
-    return Container(
+      return Container(
         child: widget.data.isEmpty
             ? Container()
             : LayoutBuilder(builder: (context, constrains) {
                 double width = constrains.maxWidth;
                 double itemWidth =
-                    (width - (_ColumeNumber - 1) * 10.w) / _ColumeNumber;
+                    (width - (_ColumNumber - 1) * 10.w) / _ColumNumber;
                 double itemHeight = itemWidth / _childAspectRatio;
+                // double bannerHeight = widget.data.length >= 10 ? itemHeight + (pages.first.length > _ColumeNumber ? 10.w : 7.w) :
+                // (itemHeight * (pages.first.length <= _ColumeNumber ? 1 : 2)) + (pages.first.length > _ColumeNumber ? 15.w : 0);
                 double bannerHeight = (itemHeight *
-                        (pages.first.length <= _ColumeNumber ? 1 : 2)) +
-                    (pages.first.length > _ColumeNumber ? 10.w : 0);
+                        (pages.first.length <= _ColumNumber ? 1 : 2)) +
+                    (pages.first.length > _ColumNumber ? 15.w : 0);
 
-                return Container(
-                  // color: Colors.amberAccent,
+                return SizedBox(
                   width: width,
                   height: bannerHeight,
                   child: widget.data.isEmpty
@@ -85,7 +159,7 @@ class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
                               width: width,
                               child: GridView.count(
                                   padding: EdgeInsets.only(bottom: 10.w),
-                                  crossAxisCount: _ColumeNumber,
+                                  crossAxisCount: _ColumNumber,
                                   mainAxisSpacing: 10.w,
                                   crossAxisSpacing: 10.w,
                                   physics: const NeverScrollableScrollPhysics(),
@@ -109,11 +183,14 @@ class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
                                             SizedBox(
                                               width: w,
                                               height: w,
-                                              child: MyImage.network(
-                                                CommonUtils.getThumb(
-                                                    e.toJson()),
-                                                fit: BoxFit.cover,
-                                                borderRadius: 8.w,
+                                              child: AspectRatio(
+                                                aspectRatio: 1,
+                                                child: MyImage.network(
+                                                  CommonUtils.getThumb(
+                                                      e.toJson()),
+                                                  fit: BoxFit.cover,
+                                                  borderRadius: 8.w,
+                                                ),
                                               ),
                                             ),
                                             // SizedBox(height: 8.w),
@@ -132,7 +209,7 @@ class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
                                                       height: 1,
                                                       fontWeight:
                                                           FontWeight.w600,
-                                                      fontSize: 9.sp),
+                                                      fontSize: 11.sp),
                                                 ),
                                               ),
                                             )
@@ -190,6 +267,149 @@ class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
                               : null,
                         ),
                 );
-              }));
+              }),
+      );
+    }
+  }
+}
+
+class InfiniteBannerList extends StatefulWidget {
+  final List<BannerModel> banners;
+  final int columNumber;
+
+  const InfiniteBannerList(
+      {required this.banners, required this.columNumber, super.key});
+
+  @override
+  State<InfiniteBannerList> createState() => _InfiniteBannerListState();
+}
+
+class _InfiniteBannerListState extends State<InfiniteBannerList> {
+  final ScrollController _controller = ScrollController();
+  bool _isUserTouching = false;
+  bool _autoScrollRunning = false;
+  bool _isVisible = true; // 当前是否在屏幕可见范围内
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startAutoScroll();
+    });
+  }
+
+  void _startAutoScroll() {
+    if (_autoScrollRunning) return;
+    _autoScrollRunning = true;
+
+    const scrollSpeed = 1.0; // 每帧滚动像素数
+    const interval = Duration(milliseconds: 32);
+
+    Future.doWhile(() async {
+      if (!mounted) return false;
+      await Future.delayed(interval);
+
+      // 若不可见或用户正在触摸，则暂停
+      if (!_isVisible || _isUserTouching) return true;
+
+      if (_controller.hasClients) {
+        final max = _controller.position.maxScrollExtent;
+        final pos = _controller.position.pixels;
+
+        if (pos >= max - 1) {
+          final middle = max / 2;
+          _controller.jumpTo(middle);
+        } else {
+          _controller.jumpTo(pos + scrollSpeed);
+        }
+      }
+      return true;
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _autoScrollRunning = false;
+    VisibilityDetectorController.instance
+        .forget(ValueKey('InfiniteBannerList_${widget.hashCode}'));
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final itemWidth = (ScreenUtil().screenWidth -
+            (widget.columNumber + 1) * 7 -
+            MyTheme.pagePadding * 2) /
+        widget.columNumber;
+
+    return VisibilityDetector(
+      key: ValueKey('InfiniteBannerList_${widget.hashCode}'),
+      onVisibilityChanged: (info) {
+        if (!mounted) return; // 防止销毁后继续调用
+        final visibleFraction = info.visibleFraction;
+        final newVisible = visibleFraction > 0.1; // 超过10%算可见
+        if (newVisible != _isVisible) {
+          setState(() => _isVisible = newVisible);
+        }
+      },
+      child: Listener(
+        onPointerDown: (_) => _isUserTouching = true,
+        onPointerUp: (_) => _isUserTouching = false,
+        onPointerCancel: (_) => _isUserTouching = false,
+        child: SizedBox(
+          height: itemWidth + 28,
+          child: ScrollConfiguration(
+            behavior:
+                ScrollConfiguration.of(context).copyWith(scrollbars: false),
+            child: ListView.builder(
+              controller: _controller,
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemCount: widget.banners.length * 2,
+              itemBuilder: (context, index) {
+                final banner = widget.banners[index % widget.banners.length];
+                return GestureDetector(
+                  onTap: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    CommonUtils.openRoute(context, banner.toJson());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox.square(
+                          dimension: itemWidth,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: MyImage.network(
+                              CommonUtils.getThumb(banner.toJson()),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          banner.name ?? banner.title ?? "",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            overflow: TextOverflow.ellipsis,
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
