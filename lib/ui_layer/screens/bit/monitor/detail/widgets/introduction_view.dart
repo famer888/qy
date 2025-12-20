@@ -15,6 +15,8 @@ import '../../../../image_paths.dart';
 import '../../../../theme.dart';
 import '../../widgets/monitor_video_card.dart';
 
+import '../../../../../../report/ui_layer/report_general_banner.dart';
+
 class MonitorVideoDetailIntroductionView extends StatefulWidget {
   const MonitorVideoDetailIntroductionView(
       {super.key, required this.id, required this.data});
@@ -122,7 +124,7 @@ class _HeaderViewState extends State<_HeaderView> {
             if (widget.data.banners case final banners? when banners.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(bottom: 12.w),
-                child: GeneralBannerAppsListWidget(
+                child: ReportGeneralAppsListVidget(
                   data: banners,
                   aspectRatio: 10 / 3,
                 ),

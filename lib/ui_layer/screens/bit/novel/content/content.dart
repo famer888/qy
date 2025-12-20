@@ -15,6 +15,8 @@ import '../../../common_widgets/my_tab_bar.dart';
 import '../../../theme.dart';
 import '../card/novel_item_card.dart';
 
+import '../../../../../report/ui_layer/report_general_banner.dart';
+
 class NovelContent extends StatefulWidget {
   const NovelContent({super.key, required this.id});
   final int id;
@@ -125,7 +127,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),

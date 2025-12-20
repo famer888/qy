@@ -13,10 +13,15 @@ import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../app_config.dart';
+import '../../data_layer/repo/repo.dart';
 import '../../domain/domain.dart';
 import '../../domain/enum.dart';
 import '../../domain/model/banner_model.dart';
 import '../../domain/model/home_data_model.dart';
+import '../../report/event_tracking.dart';
+import '../../report/ui_layer/report_app_down_center_dialog.dart';
+import '../../report/ui_layer/report_popup_alert.dart';
+import '../../report/ui_layer/report_timing_observer.dart';
 import '../notifiers/home_config_notifier.dart';
 import '../notifiers/user_notifier.dart';
 import '../router/routes.dart';
@@ -35,6 +40,8 @@ import 'image_paths.dart';
 import 'theme.dart';
 
 import 'package:universal_html/js.dart' as js;
+
+import '../../report/ui_layer/report_gesture_detector.dart';
 
 class BottomNaviBar extends StatefulWidget {
   const BottomNaviBar({
@@ -90,7 +97,8 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     //处理剪贴板内容
     _getClipboardText();
     // 显示弹窗
-    _showDialog();
+    // _showDialog();
+    _showActivityDialogReport();
 
     if (!kIsWeb) _initDownloadStatus();
   }
@@ -109,58 +117,71 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   Future<void> _getClipboardText() async {
     if (kIsWeb) {
       final uri = Uri.parse(html.window.location.href);
-      final affCode = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
-      if (affCode.isNotEmpty) {
-        domain.sendInvitation(affCode: affCode);
-      }
+      String aff = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
+      String traceID = uri.queryParameters['trace_id'] ?? '';
+      if (aff.isNotEmpty) domain.sendInvitation(affCode: aff);
+      if (traceID.isNotEmpty) context.read<AppRepo>().setReportTraceId(traceID);
     } else {
       final result = await Clipboard.getData(Clipboard.kTextPlain);
-      if (result?.text?.split(':') case final clipTextList?
-          when clipTextList.length > 1 &&
-              clipTextList[0] == BuildConfig.affCodeKey) {
-        if (clipTextList[1] case final affCode when affCode.isNotEmpty) {
-          domain.sendInvitation(affCode: affCode);
-        }
+      if (result?.text case final String text when text.isNotEmpty) {
+        final params = Uri.splitQueryString(text);
+        String aff = params[BuildConfig.affCodeKey] ?? '';
+        String traceID = params['trace_id'] ?? '';
+        if (aff.isNotEmpty) domain.sendInvitation(affCode: aff);
+        if (traceID.isNotEmpty)
+          context.read<AppRepo>().setReportTraceId(traceID);
       }
     }
   }
 
-  // 显示弹窗
-  void _showDialog({int index = 0}) {
-    if (homeConfigNotifier.homeData.popAds case final popAds
-        when popAds.length > index) {
-      final notice = popAds[index];
-      final nextIndex = index + 1;
-
-      ///fix toast cancelFunc bug
-      bool isClosed = false;
-
-      BotToast.showWidget(
-        toastBuilder: (cancelFunc) => AdDialog(
-          cancel: () {
-            if (isClosed) return;
-            isClosed = true;
-            cancelFunc();
-            _showDialog(index: nextIndex);
-          },
-          confirm: () {
-            if (isClosed) return;
-            isClosed = true;
-            cancelFunc();
-            if (notice.redirectType != 1) {
-              _showDialog(index: nextIndex);
-            }
-            _adOnTap(notice: notice);
-          },
-          adUrl: notice.imgUrl ?? '',
-          adWidth: notice.width,
-          adHeight: notice.height,
-        ),
-      );
-    } else {
-      _showAppUpdateDialogIfNeed();
-    }
+  /// 活动弹窗 带report
+  void _showActivityDialogReport() {
+    final popAds = homeConfigNotifier.homeData.popAds;
+    ReportPopupAlert(
+      popAds,
+      context,
+      cancel: () {
+        _showAppUpdateDialogIfNeed();
+      },
+    );
   }
+
+  // // 显示弹窗
+  // void _showDialog({int index = 0}) {
+  //   if (homeConfigNotifier.homeData.popAds case final popAds
+  //       when popAds.length > index) {
+  //     final notice = popAds[index];
+  //     final nextIndex = index + 1;
+
+  //     ///fix toast cancelFunc bug
+  //     bool isClosed = false;
+
+  //     BotToast.showWidget(
+  //       toastBuilder: (cancelFunc) => AdDialog(
+  //         cancel: () {
+  //           if (isClosed) return;
+  //           isClosed = true;
+  //           cancelFunc();
+  //           _showDialog(index: nextIndex);
+  //         },
+  //         confirm: () {
+  //           if (isClosed) return;
+  //           isClosed = true;
+  //           cancelFunc();
+  //           if (notice.redirectType != 1) {
+  //             _showDialog(index: nextIndex);
+  //           }
+  //           _adOnTap(notice: notice);
+  //         },
+  //         adUrl: notice.imgUrl ?? '',
+  //         adWidth: notice.width,
+  //         adHeight: notice.height,
+  //       ),
+  //     );
+  //   } else {
+  //     _showAppUpdateDialogIfNeed();
+  //   }
+  // }
 
   /// 检查更新
   Future<void> _showAppUpdateDialogIfNeed() async {
@@ -235,7 +256,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
 
     if (homeData.noticeApps?.isNotEmpty ?? false) {
       BotToast.showWidget(
-          toastBuilder: (cancelFunc) => AppDownCenterDialog(
+          toastBuilder: (cancelFunc) => ReportAppDownCenterDialog(
                 cancel: () {
                   cancelFunc();
                   _showAnnouncementDialogIfNeed(); //app推荐下载弹窗展示完后再展示公告
@@ -298,7 +319,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   //                       'tjwberk'.tr(),
   //                       style: MyTheme.white14,
   //                     ),
-  //                     GestureDetector(
+  //                     ReportGestureDetector(
   //                       behavior: HitTestBehavior.translucent,
   //                       onTap: () {
   //                         Navigator.of(context).pop();
@@ -323,7 +344,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   //                   ),
   //                 ),
   //                 SizedBox(height: 20.w),
-  //                 GestureDetector(
+  //                 ReportGestureDetector(
   //                   behavior: HitTestBehavior.translucent,
   //                   onTap: () {
   //                     final bool isDeferredNotNull =
@@ -398,7 +419,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                       builder: (context, tokenStatus, child) =>
                           tokenStatus == MyTokenStatus.valid
                               ? const SizedBox.shrink()
-                              : GestureDetector(
+                              : ReportGestureDetector(
                                   onTap: () => const LoginRoute().push(context),
                                   child: Container(
                                     color: const Color(0x66ff0000),
@@ -476,7 +497,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
               floatingActionButton: kIsWeb && !CommonUtils.isPWA()
                   ? Padding(
                       padding: EdgeInsets.only(bottom: 10.w),
-                      child: GestureDetector(
+                      child: ReportGestureDetector(
                         onTap: () {
                           final config =
                               context.read<HomeConfigNotifier>().config;
@@ -528,6 +549,20 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   void _goBranch(int index) {
     widget.navigationShell.goBranch(index,
         initialLocation: index == widget.navigationShell.currentIndex);
+
+    // 获取当前路由的路径
+    final currentLocation =
+        GoRouter.of(context).routerDelegate.currentConfiguration.uri.toString();
+
+    PageInfo info = PageInfo.path(currentLocation);
+    RouteStore.currentPageKey = info.key;
+    RouteStore.currentPageName = info.name;
+
+    EventTracking().reportSingle({
+      "event": "navigation",
+      "navigation_key": currentLocation, //RouteStore.currentPageKey,
+      "navigation_name": RouteStore.currentPageName,
+    });
   }
 }
 
@@ -588,7 +623,7 @@ class _TopADWidgetState extends State<TopADWidget> {
                 loop: widget.toADs.length > 1,
                 itemBuilder: (BuildContext context, int index) {
                   double w = 80.w;
-                  return GestureDetector(
+                  return ReportGestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       CommonUtils.openRoute(
@@ -645,7 +680,7 @@ class _TopADWidgetState extends State<TopADWidget> {
                 top: 0,
                 width: 20.w,
                 height: 20.w,
-                child: GestureDetector(
+                child: ReportGestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       setState(() {

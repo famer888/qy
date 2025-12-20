@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../app_global.dart';
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/banner_model.dart';
 import '../../../../domain/model/girl/girl_list_model.dart';
@@ -11,7 +12,6 @@ import '../../../../domain/model/girl_sort_model.dart';
 import '../../../../domain/model/tip_model.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../router/routes.dart';
-import '../../../utils/app_global_data.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/girl/card.dart';
 import '../../common_widgets/marquee.dart';
@@ -23,6 +23,10 @@ import '../../common_widgets/general_banner.dart';
 import '../../common_widgets/my_list_view.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
+
+import '../../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../../report/ui_layer/report_general_banner.dart';
 
 class GirlScreen extends StatefulWidget {
   const GirlScreen({super.key});
@@ -118,7 +122,7 @@ class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
                                     crossAxisSpacing: 8.w),
                             itemBuilder: (context, iIndex) {
                               GirlOptionItemModel item = items[iIndex];
-                              return GestureDetector(
+                              return ReportGestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
                                   if (_filterTempMap[itemMap.value] ==
@@ -199,7 +203,7 @@ class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               //   children: [
-              //     GestureDetector(
+              //     ReportGestureDetector(
               //       onTap: () {
               //         _filterTempMap = {};
               //         setState(() {});
@@ -217,7 +221,7 @@ class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
               //         ),
               //       ),
               //     ),
-              //     GestureDetector(
+              //     ReportGestureDetector(
               //       onTap: () {
               //         _filterMap = Map.from(_filterTempMap);
               //         // _getData(page: 1, pageSize: 15, sort: 'hot');
@@ -381,7 +385,7 @@ class _GirlScreenState extends State<GirlScreen> with TickerProviderStateMixin {
           // Positioned(
           //   right: 20.w,
           //   bottom: MyTheme.navbarHegiht + MyTheme.pagePadding * 2,
-          //   child: GestureDetector(
+          //   child: ReportGestureDetector(
           //     onTap: () {
           //       // Utils.navTo(context, '/homedatepublishpage');
 
@@ -429,7 +433,7 @@ class _Header extends StatelessWidget {
                       // border: Border.all(
                       //     color: MyTheme.black31Color, width: 1.5.w),
                       borderRadius: BorderRadius.all(Radius.circular(17.5.w))),
-                  child: GestureDetector(
+                  child: ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () => const SearchRoute().push(context),
                     child: Row(
@@ -449,7 +453,7 @@ class _Header extends StatelessWidget {
               SizedBox(
                 width: 10.w,
               ),
-              GestureDetector(
+              ReportGestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
                   // showFilterView();
@@ -483,7 +487,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),

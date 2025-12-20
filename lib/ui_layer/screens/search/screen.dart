@@ -17,6 +17,10 @@ import '../common_widgets/screen_background.dart';
 import '../image_paths.dart';
 import '../theme.dart';
 
+import '../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../report/ui_layer/report_general_banner.dart';
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -74,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 style: MyTheme.white16medium,
                               ),
                               const Spacer(),
-                              GestureDetector(
+                              ReportGestureDetector(
                                 onTap: _homeConfigNotifier.clearSearchHistory,
                                 child: Text(tr('qcjl'),
                                     style: MyTheme.jellyCyan_13),
@@ -146,7 +150,7 @@ class _SearchBarState extends State<_SearchBar> {
         padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
         child: Row(
           children: [
-            GestureDetector(
+            ReportGestureDetector(
               child: MyImage.asset(
                 MyImagePaths.appBackIcon,
                 width: 20.w,
@@ -172,7 +176,7 @@ class _SearchBarState extends State<_SearchBar> {
               ),
             ),
             SizedBox(width: 5.w),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () {
                 widget.onSubmitted.call(textEditingController.text);
               },
@@ -210,7 +214,7 @@ class _KeywordTile extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          GestureDetector(
+          ReportGestureDetector(
             onTap: onTap,
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 100.w),
@@ -226,7 +230,7 @@ class _KeywordTile extends StatelessWidget {
             width: 1.w,
             margin: EdgeInsets.symmetric(horizontal: 10.w),
           ),
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: onDelete,
             child: MyImage.asset(
@@ -332,7 +336,7 @@ class _SearchContentViewState extends State<_SearchContentView> {
       children: [
         SizedBox(height: 16.w),
         banner.isNotEmpty
-            ? GeneralBannerAppsListWidget(
+            ? ReportGeneralAppsListVidget(
                 aspectRatio: 10 / 3,
                 data: banner,
                 radius: 5.0,
@@ -360,7 +364,7 @@ class _SearchContentViewState extends State<_SearchContentView> {
                       addAutomaticKeepAlives: false,
                       padding: EdgeInsets.zero,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => GestureDetector(
+                      itemBuilder: (context, index) => ReportGestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
                               widget.onSubmitted(hotTags[index].work);

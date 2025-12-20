@@ -18,6 +18,10 @@ import '../../../../image_paths.dart';
 import '../../../../theme.dart';
 import '../../widgets/live_video_card.dart';
 
+import '../../../../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../../../../report/ui_layer/report_general_banner.dart';
+
 class LiveVideoDetailIntroductionView extends StatefulWidget {
   const LiveVideoDetailIntroductionView(
       {super.key, required this.id, required this.data});
@@ -125,7 +129,7 @@ class _HeaderViewState extends State<_HeaderView> {
                 children: [
                   StatefulBuilder(builder: (_, setState) {
                     final isFavorite = videoInfo.isFavorite == 1;
-                    return GestureDetector(
+                    return ReportGestureDetector(
                       onTap: () async {
                         if (videoInfo.id case final id?) {
                           final domain = context.read<UserDomain>();
@@ -151,7 +155,7 @@ class _HeaderViewState extends State<_HeaderView> {
                     );
                   }),
                   SizedBox(width: 20.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       const MineShareToUserRoute().push(context);
                     },
@@ -174,7 +178,7 @@ class _HeaderViewState extends State<_HeaderView> {
           if (widget.data.banners case final banners? when banners.isNotEmpty)
             Padding(
               padding: EdgeInsets.only(bottom: 15.w),
-              child: GeneralBannerAppsListWidget(
+              child: ReportGeneralAppsListVidget(
                 data: banners,
                 aspectRatio: 10 / 3,
               ),

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:developer' as dev;
 import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -47,7 +48,7 @@ class CommonUtils {
 
   static log(dynamic object) {
     if (_isDebug) {
-      // logger.i(object);
+      dev.log(object is String ? object: object.toString());
     }
   }
 

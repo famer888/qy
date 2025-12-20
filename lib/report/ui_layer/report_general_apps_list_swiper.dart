@@ -1,22 +1,26 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
+import 'package:provider/provider.dart';
 // import 'package:hjsq/ui_layer/screens/common_widgets/auto_carousel_slider.dart';
 // import 'package:hjsq/ui_layer/screens/theme.dart';
 
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../domain/model/banner_model.dart';
-import '../../utils/common_utils.dart';
-import '../theme.dart';
-import 'my_image.dart';
+import '../../ui_layer/screens/common_widgets/my_image.dart';
+import '../../ui_layer/screens/theme.dart';
+import '../../ui_layer/utils/common_utils.dart';
 
-import '../../../report/ui_layer/report_gesture_detector.dart';
+import 'report_gesture_detector.dart';
 
-class GeneralAppListSwiper extends StatefulWidget {
-  GeneralAppListSwiper({
+import 'report_general_banner.dart';
+import '../event_tracking.dart';
+import 'report_timing_observer.dart';
+
+class ReportGeneralAppListSwiper extends StatefulWidget {
+  ReportGeneralAppListSwiper({
     super.key,
     required this.data,
     this.radius = 5,
@@ -35,20 +39,102 @@ class GeneralAppListSwiper extends StatefulWidget {
   bool useMargin = false;
 
   @override
-  State<GeneralAppListSwiper> createState() => _GeneralAppListSwiperState();
+  State<ReportGeneralAppListSwiper> createState() =>
+      _ReportGeneralAppListSwiperState();
 }
 
-class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
+class _ReportGeneralAppListSwiperState
+    extends State<ReportGeneralAppListSwiper> {
   final double _childAspectRatio = 57 / 76;
   int threshold = 10;
-
   int _ColumNumber = 5;
+
+  Map<String, bool> adIdMap = {}; // 已经显示true 未显示null
+  List<String> get adIds => List<String>.from(adIdMap.keys);
+  bool didReport = false; //本生命周期内 只上报一次
 
   @override
   void initState() {
     super.initState();
     _ColumNumber = widget.columnNumber;
     threshold = _ColumNumber * 2;
+  }
+
+  void _showBanner(BannerModel banner) {
+    // 没存进Map 就是没上传过show 上传&记录
+
+    CommonUtils.log('_showBanner ');
+    if (adIdMap[banner.advertiseCode] == null) {
+      CommonUtils.log('_showBanner show');
+      postActionReport(banner, "show");
+      adIdMap[banner.advertiseCode ?? ''] = true;
+    }
+
+    if (adIds.length == widget.data.length) {
+      postShowReport();
+    }
+  }
+
+  @override
+  void dispose() {
+    postShowReport();
+    super.dispose();
+  }
+
+  //展示广告上报 展示完或页面消失上报
+  void postShowReport() {
+    if (didReport) return;
+
+    // final pageName = context.parentTitle;
+    // final widgetType = context.parentWidgetType.toString();
+    BannerModel tp = widget.data.first;
+    EventTracking().reportSingle({
+      "event": "ad_impression",
+      "page_key": RouteStore.currentPageKey,
+      "page_name": RouteStore.currentPageName,
+      "ad_slot_key": tp.advertiseLocationCode,
+      "ad_slot_name": tp.adSlotName,
+      "ad_id": adIds.join(","),
+      "creative_id": "",
+      "ad_type": tp.adType,
+    }).then((value) {
+      didReport = true;
+      // CommonUtils.log(value);
+    });
+  }
+
+  //上传广告行为
+  void postActionReport(BannerModel tp, String action) {
+    // final pageName = context.parentTitle;
+    // final widgetType = context.parentWidgetType.toString();
+
+    EventTracking().reportSingle({
+      "event": "advertising",
+      "event_type": action,
+      "advertising_key": tp.advertiseLocationCode,
+      "advertising_name": tp.adSlotName,
+      "advertising_id": tp.advertiseCode,
+    });
+  }
+
+  //点击广告上报
+  void postClickReport(BannerModel tp) {
+    postActionReport(tp, "click");
+
+    // final pageName = context.parentTitle;
+    // final widgetType = context.parentWidgetType.toString();
+    EventTracking().reportSingle({
+      "event": "ad_click",
+      "page_key": RouteStore.currentPageKey,
+      "page_name": RouteStore.currentPageName,
+      "ad_slot_key": tp.advertiseLocationCode,
+      "ad_slot_name": tp.adSlotName,
+      "ad_id": tp.advertiseCode,
+      "creative_id": "",
+      "ad_type": tp.adType,
+    }).then((value) {
+      // CommonUtils.log(value);
+    });
   }
 
   @override
@@ -74,8 +160,11 @@ class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(firstPart.length, (index) {
                 final item = firstPart[index];
+
+                _showBanner(item);
                 return ReportGestureDetector(
                   onTap: () {
+                    postClickReport(widget.data[index]);
                     CommonUtils.openRoute(context, item.toJson());
                   },
                   child: SizedBox(
@@ -115,7 +204,17 @@ class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
           if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
             SizedBox(height: 10.w),
           if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
-            InfiniteBannerList(banners: secondPart, columNumber: _ColumNumber),
+            ReportInfiniteBannerList(
+              banners: secondPart,
+              columNumber: _ColumNumber,
+              showFunc: (item) {
+                _showBanner(item);
+              },
+              tapFunc: (item) {
+                postClickReport(item);
+                CommonUtils.openRoute(context, item.toJson());
+              },
+            ),
         ],
       );
     } else {
@@ -157,72 +256,94 @@ class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
                           loop: pages.length > 1,
                           itemBuilder: (BuildContext context, int index) {
                             double w = itemWidth;
-                            return SizedBox(
-                              width: width,
-                              child: GridView.count(
-                                  padding: EdgeInsets.only(bottom: 10.w),
-                                  crossAxisCount: _ColumNumber,
-                                  mainAxisSpacing: 10.w,
-                                  crossAxisSpacing: 10.w,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  childAspectRatio: _childAspectRatio,
-                                  shrinkWrap: true,
-                                  children: pages[index].map((e) {
-                                    // return Container();
+                            return VisibilityDetector(
+                              key: Key("swiper_item_$index"),
+                              onVisibilityChanged: (info) {
+                                if (didReport) {
+                                  return;
+                                }
+                                if (info.visibleFraction > 0.8 &&
+                                    adIds.length < widget.data.length) {
+                                  for (var bannerModel in pages[index]) {
+                                    _showBanner(bannerModel);
+                                    // adIds.add(bannerModel.reportId);
+                                  }
+                                }
+                              },
+                              child: SizedBox(
+                                width: width,
+                                child: Builder(builder: (context) {
+                                  return GridView.count(
+                                      padding: EdgeInsets.only(bottom: 10.w),
+                                      crossAxisCount: _ColumNumber,
+                                      mainAxisSpacing: 10.w,
+                                      crossAxisSpacing: 10.w,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      childAspectRatio: _childAspectRatio,
+                                      shrinkWrap: true,
+                                      children: pages[index].map((e) {
+                                        // return Container();
 
-                                    return ReportGestureDetector(
-                                        behavior: HitTestBehavior.translucent,
-                                        onTap: () {
-                                          FocusManager.instance.primaryFocus
-                                              ?.unfocus();
-                                          CommonUtils.openRoute(
-                                              context, e.toJson());
-                                        },
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: w,
-                                              height: w,
-                                              child: AspectRatio(
-                                                aspectRatio: 1,
-                                                child: MyImage.network(
-                                                  CommonUtils.getThumb(
-                                                      e.toJson()),
-                                                  fit: BoxFit.cover,
-                                                  borderRadius: 8.w,
+                                        return ReportGestureDetector(
+                                            behavior:
+                                                HitTestBehavior.translucent,
+                                            onTap: () {
+                                              FocusManager.instance.primaryFocus
+                                                  ?.unfocus();
+                                              postClickReport(
+                                                  widget.data[index]);
+                                              CommonUtils.openRoute(
+                                                  context, e.toJson());
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: w,
+                                                  height: w,
+                                                  child: AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: MyImage.network(
+                                                      CommonUtils.getThumb(
+                                                          e.toJson()),
+                                                      fit: BoxFit.cover,
+                                                      borderRadius: 8.w,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            // SizedBox(height: 8.w),
-                                            Expanded(
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                // color: Colors.blue,
-                                                child: Text(
-                                                  e.name ?? e.title ?? "",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      decoration:
-                                                          TextDecoration.none,
-                                                      height: 1,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11.sp),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ));
-                                  }).toList()
+                                                // SizedBox(height: 8.w),
+                                                Expanded(
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    // color: Colors.blue,
+                                                    child: Text(
+                                                      e.name ?? e.title ?? "",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .none,
+                                                          height: 1,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 11.sp),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ));
+                                      }).toList()
 
-                                  // pages[index].map((e) {
-                                  //   return Container();
-                                  // }).toList(),
-                                  ),
+                                      // pages[index].map((e) {
+                                      //   return Container();
+                                      // }).toList(),
+                                      );
+                                }),
+                              ),
                             );
                           },
                           itemCount: pages.length,
@@ -275,18 +396,26 @@ class _GeneralAppListSwiperState extends State<GeneralAppListSwiper> {
   }
 }
 
-class InfiniteBannerList extends StatefulWidget {
+class ReportInfiniteBannerList extends StatefulWidget {
   final List<BannerModel> banners;
   final int columNumber;
+  final Function(BannerModel banner)? showFunc;
+  final Function(BannerModel banner)? tapFunc;
 
-  const InfiniteBannerList(
-      {required this.banners, required this.columNumber, super.key});
+  const ReportInfiniteBannerList({
+    required this.banners,
+    required this.columNumber,
+    this.showFunc,
+    this.tapFunc,
+    super.key,
+  });
 
   @override
-  State<InfiniteBannerList> createState() => _InfiniteBannerListState();
+  State<ReportInfiniteBannerList> createState() =>
+      _ReportInfiniteBannerListState();
 }
 
-class _InfiniteBannerListState extends State<InfiniteBannerList> {
+class _ReportInfiniteBannerListState extends State<ReportInfiniteBannerList> {
   final ScrollController _controller = ScrollController();
   bool _isUserTouching = false;
   bool _autoScrollRunning = false;
@@ -334,7 +463,7 @@ class _InfiniteBannerListState extends State<InfiniteBannerList> {
     _controller.dispose();
     _autoScrollRunning = false;
     VisibilityDetectorController.instance
-        .forget(ValueKey('InfiniteBannerList_${widget.hashCode}'));
+        .forget(ValueKey('ReportInfiniteBannerList_${widget.hashCode}'));
     super.dispose();
   }
 
@@ -346,7 +475,7 @@ class _InfiniteBannerListState extends State<InfiniteBannerList> {
         widget.columNumber;
 
     return VisibilityDetector(
-      key: ValueKey('InfiniteBannerList_${widget.hashCode}'),
+      key: ValueKey('ReportInfiniteBannerList_${widget.hashCode}'),
       onVisibilityChanged: (info) {
         if (!mounted) return; // 防止销毁后继续调用
         final visibleFraction = info.visibleFraction;
@@ -371,10 +500,12 @@ class _InfiniteBannerListState extends State<InfiniteBannerList> {
               itemCount: widget.banners.length * 2,
               itemBuilder: (context, index) {
                 final banner = widget.banners[index % widget.banners.length];
+                widget.showFunc?.call(banner);
                 return ReportGestureDetector(
                   onTap: () {
                     FocusManager.instance.primaryFocus?.unfocus();
-                    CommonUtils.openRoute(context, banner.toJson());
+                    widget.tapFunc?.call(banner);
+                    // CommonUtils.openRoute(context, banner.toJson());
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),

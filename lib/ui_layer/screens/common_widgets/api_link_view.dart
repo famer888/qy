@@ -25,6 +25,10 @@ import 'my_image.dart';
 import 'my_list_view.dart';
 import 'my_tab_bar.dart';
 
+import '../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../report/ui_layer/report_general_banner.dart';
+
 class ApiLinkView extends StatefulWidget {
   const ApiLinkView(
       {super.key, required this.linkModel, required this.onLinkNavTap});
@@ -158,7 +162,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),
@@ -183,7 +187,7 @@ class _Header extends StatelessWidget {
                 ),
                 itemBuilder: (context, index) {
                   final partsItem = parts[index];
-                  return GestureDetector(
+                  return ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       final linkUrl = partsItem.urlStr;
@@ -298,7 +302,7 @@ class _HeaderTopicsViewState extends State<_HeaderTopicsView> {
                                 color: const Color(0xff262631),
                               ),
                               child: Center(
-                                child: GestureDetector(
+                                child: ReportGestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onTap: () {
                                     final linkUrl = topic.linkUrl;
@@ -387,7 +391,7 @@ class _HeaderTopicsViewState extends State<_HeaderTopicsView> {
           ),
           itemBuilder: (context, index) {
             final topic = contentTopics[index];
-            return GestureDetector(
+            return ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 final linkUrl = topic.linkUrl;

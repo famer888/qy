@@ -17,6 +17,7 @@ import 'package:utils/utils.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../app_config.dart';
+import '../../app_global.dart';
 import '../../crypto.dart';
 import '../../domain/enum.dart';
 import '../../domain/model/ai/ai_draw_model.dart';
@@ -98,6 +99,8 @@ import '../../domain/result.dart';
 import '../../domain/type_def.dart';
 import '../../domain/domain.dart';
 import '../../logger.dart';
+import '../../report/event_tracking.dart';
+import '../../report/ui_layer/report_timing_interceptor.dart';
 import '../data_source/remote/account_service.dart';
 import '../data_source/remote/ai_service.dart';
 import '../data_source/remote/aidraw_service.dart';
@@ -240,6 +243,9 @@ abstract class _BaseAppRepo implements AppDomain {
   Json _appInfo = {};
 
   @override
+  Json get info => _appInfo;
+
+  @override
   CacheDomain get cache => _cacheManager;
 
   Future<void> init() async {
@@ -260,6 +266,7 @@ abstract class _BaseAppRepo implements AppDomain {
         },
       ),
     );
+    _apiDio.interceptors.add(ReportTimingInterceptor());
   }
 
   Future _cleanToken() async {
@@ -415,6 +422,12 @@ abstract class _BaseAppRepo implements AppDomain {
   }
 
   @override
+  void setReportTraceId(String id) async {
+    _cacheManager.upsertReportTraceId(id);
+    AppGlobal.reportTraceId = id;
+  }
+
+  @override
   void initLine({
     Function? success,
     Function? failed,
@@ -428,6 +441,18 @@ abstract class _BaseAppRepo implements AppDomain {
       final fdsKey = await _getFdsKey();
       final secretValue = PlatformAwareCrypto.secretValue(fdsKey: fdsKey);
       _apiDio.options.headers = {'Cf-Ray-Xf': secretValue};
+    }
+
+    // 读取本地上报AppId
+    final String? localReportAppId = await _cacheManager.readReportAppId();
+    if (localReportAppId case final String reportAppId) {
+      AppGlobal.reportAppId = reportAppId;
+    }
+
+    // 读取本地上报traceId
+    final String? localReportTraceId = await _cacheManager.readReportTraceId();
+    if (localReportTraceId case final String reportTraceId) {
+      AppGlobal.reportTraceId = reportTraceId;
     }
 
     //无网络

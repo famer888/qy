@@ -13,6 +13,9 @@ class _CacheManager implements CacheDomain {
   final _fdsKey = 'fds_key';
   final _linesUrlKey = 'lines_url';
   final _githubKey = 'github_url';
+  final _reportKey = 'report_url';
+  final _reportAppIdKey = 'report_app_id';
+  final _reportTraceIdKey = 'report_trace_id';
   final _officeWebKey = 'office_web';
   final _adsKey = 'ads';
   final _startScreenAdsKey = 'startScreenAdsKey';
@@ -52,6 +55,16 @@ class _CacheManager implements CacheDomain {
   Future<String?> readGithubUrl() async =>
       (await appBox.read(_githubKey))?.toString();
   Future<void> upsertGithubUrl(String url) => appBox.upsert(_githubKey, url);
+
+  Future<String?> readReportAppId() async =>
+      (await appBox.read(_reportAppIdKey))?.toString();
+  Future<void> upsertReportAppId(String appid) =>
+      appBox.upsert(_reportAppIdKey, appid);
+
+  Future<String?> readReportTraceId() async =>
+      (await appBox.read(_reportTraceIdKey))?.toString();
+  Future<void> upsertReportTraceId(String id) =>
+      appBox.upsert(_reportTraceIdKey, id);
 
   Future<List<String>?> readLinesUrl() async {
     if (await appBox.read(_linesUrlKey) case final data? when data.isNotEmpty) {

@@ -22,6 +22,10 @@ import '../../common_widgets/post/content/media.dart';
 import '../../common_widgets/post/content/title.dart';
 import '../../theme.dart';
 
+import '../../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../../report/ui_layer/report_general_banner.dart';
+
 class CommunityDetailContentView extends StatelessWidget {
   const CommunityDetailContentView({super.key, required this.data});
   final TopicDetail data;
@@ -117,7 +121,7 @@ class _ContactViewState extends State<_ContactView> {
                     child: Text(tr('nrycjsck'), style: MyTheme.blue80_14_M),
                   ),
                   SizedBox(height: 10.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: _pay,
                     child: Container(
@@ -137,7 +141,7 @@ class _ContactViewState extends State<_ContactView> {
               )
             : contact.contains('111111')
                 ? const SizedBox.shrink()
-                : GestureDetector(
+                : ReportGestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       CommonUtils.copyToClipboard(
@@ -274,7 +278,7 @@ class _TopAppsListWidgetState extends State<TopAppsListWidget> {
   @override
   Widget build(BuildContext context) {
     return (homeConfigNotifier.config.postDetailAds ?? []).isNotEmpty
-        ? GeneralBannerAppsListWidget(
+        ? ReportGeneralAppsListVidget(
             data: homeConfigNotifier.config.postDetailAds ?? [])
         : Container();
   }

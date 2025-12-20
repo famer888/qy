@@ -31,6 +31,10 @@ import '../di/notifier.dart';
 import '../sheets/comic_chapters_sheet.dart';
 import '../sheets/comic_comment_sheet.dart';
 
+import '../../../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../../../report/ui_layer/report_general_banner.dart';
+
 ///漫画详情界面
 class ComicDetailScreen extends StatefulWidget {
   const ComicDetailScreen({super.key, required this.id});
@@ -91,7 +95,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: MyAppBar(
-        rightWidget: GestureDetector(
+        rightWidget: ReportGestureDetector(
           onTap: () {
             const MineShareToUserRoute().push(context);
           },
@@ -151,7 +155,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                       comments: detail.comments,
                     ),
                     SizedBox(height: 15.w),
-                    GeneralBannerAppsListWidget(
+                    ReportGeneralAppsListVidget(
                       data: data.banner,
                       aspectRatio: 7 / 2,
                     ),
@@ -322,7 +326,7 @@ class _ChaptersView extends StatelessWidget with RouteToReaderMixin {
             itemCount: chapters.length,
             itemBuilder: (_, index) {
               final chapter = chapters[index];
-              return GestureDetector(
+              return ReportGestureDetector(
                 onTap: () {
                   routeToReader(context, index);
                 },
@@ -353,7 +357,7 @@ class _ChaptersView extends StatelessWidget with RouteToReaderMixin {
             },
           ),
         ),
-        GestureDetector(
+        ReportGestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
             showChaptersBottomSheet(context);
@@ -507,7 +511,7 @@ class _Footer extends StatelessWidget with RouteToReaderMixin {
                         builder: (_, isFavorite, __) {
                           return SizedBox(
                             width: 50.w,
-                            child: GestureDetector(
+                            child: ReportGestureDetector(
                               onTap: () {
                                 comicChangeNotifier.toggleFavorite();
                               },

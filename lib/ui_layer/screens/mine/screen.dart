@@ -26,6 +26,10 @@ import '../common_widgets/screen_background.dart';
 import '../image_paths.dart';
 import '../theme.dart';
 
+import '../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../report/ui_layer/report_general_banner.dart';
+
 class MineScreen extends StatefulWidget {
   const MineScreen({super.key});
 
@@ -90,7 +94,7 @@ class _FixedTopArea extends StatelessWidget {
         children: [
           const _SystemNoticeIcon(),
           SizedBox(width: 20.w),
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () => const MineSetupRoute().push(context),
             child: MyImage.asset(
               MyImagePaths.appMineSetting,
@@ -109,7 +113,7 @@ class _SystemNoticeIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         const MessageCenterRoute().push(context);
       },
@@ -202,7 +206,7 @@ class _HeaderInfo extends StatelessWidget {
                     if (member.vipUpgrade == 1)
                       Padding(
                         padding: EdgeInsets.only(left: 2.w),
-                        child: GestureDetector(
+                        child: ReportGestureDetector(
                           onTap: () {
                             const VipUpgradeRoute().push(context);
                           },
@@ -236,7 +240,7 @@ class _HeaderInfo extends StatelessWidget {
               builder: (context, tokenStatus, child) => tokenStatus ==
                       MyTokenStatus.valid
                   ? const SizedBox.shrink()
-                  : GestureDetector(
+                  : ReportGestureDetector(
                       onTap: () => const LoginRoute().push(context),
                       child: Container(
                         width: 70.w,
@@ -308,7 +312,7 @@ class _VIPCenterState extends State<_VIPCenter> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 65.w,
-      child: GestureDetector(
+      child: ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => const VipCenterRoute().push(context),
         child: Stack(
@@ -438,7 +442,7 @@ class _FirstMenuCard extends StatelessWidget {
   final String backgroundImg;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Stack(
@@ -563,7 +567,7 @@ class _SecondMenu extends StatelessWidget {
           childAspectRatio: 1,
           children: [
             for (final data in menu)
-              GestureDetector(
+              ReportGestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: data.onTap,
                 child: Column(
@@ -645,7 +649,7 @@ class _ChangeAppIconViewState extends State<_ChangeAppIconView> {
               child: Row(
                 children: [
                   for (final name in icons)
-                    GestureDetector(
+                    ReportGestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () async {
                         MyDialog.showDialog(
@@ -724,7 +728,7 @@ class __PersonAdsBannerWidgetState extends State<_PersonAdsBannerWidget> {
     return (homeConfigNotifier.config.personAds ?? []).isNotEmpty
         ? Container(
             margin: EdgeInsets.only(bottom: 15.w),
-            child: GeneralBannerAppsListWidget(
+            child: ReportGeneralAppsListVidget(
               data: homeConfigNotifier.config.personAds ?? [],
               aspectRatio: 7 / 3,
             ),

@@ -15,6 +15,8 @@ import '../../common_widgets/screen_background.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
 
+import '../../../../report/ui_layer/report_gesture_detector.dart';
+
 class MessageCenterScreen extends StatefulWidget {
   const MessageCenterScreen({super.key});
 
@@ -87,7 +89,7 @@ class _MessageCenterScreenState extends State<MessageCenterScreen> {
                               ),
                             ],
                           ),
-                          child: GestureDetector(
+                          child: ReportGestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
                               ChatMessageRoute(
@@ -269,7 +271,7 @@ class _MessageActionItem extends StatelessWidget {
       newTimeString = dateFormat2.format(dateTime);
     }
 
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Padding(

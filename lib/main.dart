@@ -44,6 +44,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider<AppRepo>.value(value: appRepo),
         Provider<AppDomain>.value(value: appRepo),
         Provider<CacheDomain>.value(value: appRepo.cache),
         Provider<GirlCacheDomain>.value(value: appRepo.cache),

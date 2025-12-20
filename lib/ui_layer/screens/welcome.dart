@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../domain/domain.dart';
 import '../../domain/model/home_data_model.dart';
+import '../../report/ui_layer/report_ad_swiper_view.dart';
 import '../notifiers/home_config_notifier.dart';
 import '../notifiers/user_notifier.dart';
 import '../router/routes.dart';
@@ -57,8 +58,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void _initMixpanel() async {
-    mixpanel = await Mixpanel.init("057e20d7df5fe50f5083adcf445aec29",
-        trackAutomaticEvents: true);
+    // mixpanel = await Mixpanel.init("057e20d7df5fe50f5083adcf445aec29",
+    //     trackAutomaticEvents: true);
   }
 
   void _loadDataFromCache() async {
@@ -190,7 +191,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       child: Scaffold(
         backgroundColor: MyTheme.bgColor,
         body: showAd
-            ? AdSwiperView(adModels: welcomeStartScreenAds ?? [])
+            ? ReportAdSwiperView(adModels: welcomeStartScreenAds ?? [])
             // AdView(adModel: welcomeAds!)
             : checkLineView(),
       ),

@@ -24,6 +24,10 @@ import '../di/notifier.dart';
 import 'novel_comment_content.dart';
 import 'novel_intro_content.dart';
 
+import '../../../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../../../report/ui_layer/report_general_banner.dart';
+
 ///小说详情界面
 class NovelDetailScreen extends StatefulWidget {
   const NovelDetailScreen({super.key, required this.id});
@@ -78,7 +82,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: MyAppBar(
-          rightWidget: GestureDetector(
+          rightWidget: ReportGestureDetector(
             onTap: () {
               const MineShareToUserRoute().push(context);
             },
@@ -288,7 +292,7 @@ class _Header extends StatelessWidget {
                     )
                   ]),
                   StatefulBuilder(builder: (_, setState) {
-                    return GestureDetector(
+                    return ReportGestureDetector(
                       onTap: () async {
                         if (detail.id case final id) {
                           final domain = context.read<UserDomain>();
@@ -325,7 +329,7 @@ class _Header extends StatelessWidget {
                       builder: (_, isFavorite, __) {
                         final novelChangeNotifier =
                             context.read<NovelChangeNotifier>();
-                        return GestureDetector(
+                        return ReportGestureDetector(
                           onTap: () {
                             novelChangeNotifier.toggleFavorite();
                           },
@@ -350,7 +354,7 @@ class _Header extends StatelessWidget {
           if (banner.isNotEmpty)
             Padding(
               padding: EdgeInsets.only(bottom: 5.w),
-              child: GeneralBannerAppsListWidget(data: banner, aspectRatio: 7 / 2),
+              child: ReportGeneralAppsListVidget(data: banner, aspectRatio: 7 / 2),
             ),
         ],
       ),

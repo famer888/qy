@@ -54,22 +54,27 @@ class HomeData {
 }
 
 class AdModel {
-  AdModel(
-      {this.id,
-      this.title,
-      this.description,
-      this.imgUrl,
-      this.url,
-      this.position,
-      this.androidDownUrl,
-      this.iosDownUrl,
-      this.type,
-      this.status,
-      this.oauthType,
-      this.mvM3U8,
-      this.channel,
-      this.createdAt,
-      this.subTitle});
+  AdModel({
+    this.id,
+    this.title,
+    this.description,
+    this.imgUrl,
+    this.url,
+    this.position,
+    this.androidDownUrl,
+    this.iosDownUrl,
+    this.type,
+    this.status,
+    this.oauthType,
+    this.mvM3U8,
+    this.channel,
+    this.createdAt,
+    this.subTitle,
+    this.adType,
+    this.adSlotName,
+    this.advertiseCode,
+    this.advertiseLocationCode,
+  });
 
   final int? id;
   final String? title;
@@ -87,22 +92,34 @@ class AdModel {
   final String? createdAt;
   final String? subTitle;
 
+  final int? adType;
+  final String? adSlotName;
+  final String? advertiseCode;
+  final String? advertiseLocationCode;
+
   factory AdModel.fromJson(Map<String, dynamic> json) => AdModel(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      imgUrl: json['img_url'],
-      url: json['url'],
-      position: json['position'],
-      androidDownUrl: json['android_down_url'],
-      iosDownUrl: json['ios_down_url'],
-      type: json['type'],
-      status: json['status'],
-      oauthType: json['oauth_type'],
-      mvM3U8: json['mv_m3u8'],
-      channel: json['channel'],
-      createdAt: json['created_at'].toString(),
-      subTitle: json['sub_title']);
+        id: json['id'],
+        title: json['title'],
+        description: json['description'],
+        imgUrl: json['img_url'],
+        url: json['url'],
+        position: json['position'],
+        androidDownUrl: json['android_down_url'],
+        iosDownUrl: json['ios_down_url'],
+        type: json['type'],
+        status: json['status'],
+        oauthType: json['oauth_type'],
+        mvM3U8: json['mv_m3u8'],
+        channel: json['channel'],
+        createdAt: json['created_at'].toString(),
+        subTitle: json['sub_title'],
+        adType: json['ad_type'] is int
+            ? json['ad_type']
+            : int.tryParse('${json['ad_type']}'),
+        adSlotName: json['ad_slot_name'] as String?,
+        advertiseCode: json['advertise_code'] as String?,
+        advertiseLocationCode: json['advertise_location_code'] as String?,
+      );
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -119,7 +136,11 @@ class AdModel {
         'mv_m3u8': mvM3U8,
         'channel': channel,
         'created_at': createdAt,
-        'sub_title': subTitle
+        'sub_title': subTitle,
+        'ad_type': adType,
+        'ad_slot_name': adSlotName,
+        'advertise_code': advertiseCode,
+        'advertise_location_code': advertiseLocationCode,
       };
 }
 
@@ -195,6 +216,7 @@ class Config {
     this.title,
     this.adVersion,
     this.buoy,
+    required this.buryPoint,
   });
 
   final String imgUploadUrl;
@@ -301,6 +323,8 @@ class Config {
   final int? adVersion;
 
   final List<BannerModel>? buoy;
+
+  ReportConfig buryPoint;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         imgUploadUrl: json['img_upload_url'],
@@ -412,66 +436,109 @@ class Config {
         adVersion: json['ad_version'] ?? 0,
         buoy: List<BannerModel>.from(
             json['buoy']?.map((x) => BannerModel.fromJson(x)) ?? []),
+        buryPoint: ReportConfig.fromJson(json['bury_point'] ?? {}),
       );
 }
 
 class Notice {
   Notice({
-    this.id,
+    required this.id,
+    this.url,
+    this.linkUrl,
     this.imgUrl,
     this.title,
+    this.content,
     this.router,
+    this.visibleType,
     this.type,
     this.height,
     this.width,
     this.urlStr,
-    this.linkUrl,
-    this.reportId,
+    this.reportId = 0,
     this.reportType,
     this.redirectType,
+    this.adType,
+    this.adSlotName,
+    this.advertiseCode,
+    this.advertiseLocationCode,
   });
 
-  final int? id;
+  final int id;
+  final String? url;
+  final String? linkUrl;
   final String? imgUrl;
   final String? title;
+  final String? content;
   final String? router;
+  final int? visibleType;
   final String? type;
   final int? height;
   final int? width;
   final String? urlStr;
-  final String? linkUrl;
-  final int? reportId;
+  final int reportId;
   final int? reportType;
   final int? redirectType;
+  final int? adType;
+  final String? adSlotName;
+  final String? advertiseCode;
+  final String? advertiseLocationCode;
 
   factory Notice.fromJson(Map<String, dynamic> json) => Notice(
-        id: json['id'] ?? 0,
-        imgUrl: json['img_url'] ?? '',
-        title: json['title'] ?? '',
-        router: json['router'] ?? '',
-        type: json['type'] ?? '',
-        height: json['height'] ?? 100,
-        width: json['width'] ?? 100,
-        urlStr: json['url_str'] ?? '',
-        linkUrl: json['link_url'] ?? '',
-        reportId: json['report_id'] ?? 0,
-        reportType: json['report_type'] ?? 0,
-        redirectType: json['redirect_type'] ?? 0,
+        id: json['id'] is int ? json['id'] : int.tryParse('${json['id']}') ?? 0,
+        url: json['url'] as String?,
+        linkUrl: json['link_url'] as String?,
+        imgUrl: json['img_url'] as String?,
+        title: json['title'] as String?,
+        content: json['content'] as String?,
+        router: json['router'] as String?,
+        visibleType: json['visible_type'] is int
+            ? json['visible_type']
+            : int.tryParse('${json['visible_type']}'),
+        type: json['type']?.toString(),
+        height: json['height'] is int
+            ? json['height']
+            : int.tryParse('${json['height']}'),
+        width: json['width'] is int
+            ? json['width']
+            : int.tryParse('${json['width']}'),
+        urlStr: json['url_str'] as String?,
+        reportId: json['report_id'] is int
+            ? json['report_id']
+            : int.tryParse('${json['report_id']}'),
+        reportType: json['report_type'] is int
+            ? json['report_type']
+            : int.tryParse('${json['report_type']}'),
+        redirectType: json['redirect_type'] is int
+            ? json['redirect_type']
+            : int.tryParse('${json['redirect_type']}'),
+        adType: json['ad_type'] is int
+            ? json['ad_type']
+            : int.tryParse('${json['ad_type']}'),
+        adSlotName: json['ad_slot_name'] as String?,
+        advertiseCode: json['advertise_code'] as String?,
+        advertiseLocationCode: json['advertise_location_code'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'url': url,
+        'link_url': linkUrl,
         'img_url': imgUrl,
         'title': title,
+        'content': content,
         'router': router,
+        'visible_type': visibleType,
         'type': type,
         'height': height,
         'width': width,
         'url_str': urlStr,
-        'link_url': linkUrl,
         'report_id': reportId,
         'report_type': reportType,
         'redirect_type': redirectType,
+        'ad_type': adType,
+        'ad_slot_name': adSlotName,
+        'advertise_code': advertiseCode,
+        'advertise_location_code': advertiseLocationCode,
       };
 }
 
@@ -608,5 +675,115 @@ class PreTopNavModel {
         'type': type,
         'sort': sort,
         'value': value,
+      };
+}
+
+class ReportConfig {
+  ReportConfig({
+    this.clickAppId = '',
+    this.clickTransitPath = '',
+    this.isReportOrderPaid = 0,
+    this.isReportCoinConsume = 0,
+    this.isReportNavigation = 0,
+    this.isReportAppPageView = 0,
+    this.isReportPageClick = 0,
+    this.isReportAdvertising = 0,
+    this.isReportPageLifecycle = 0,
+    this.isReportVideoEvent = 0,
+    this.isReportVideoLike = 0,
+    this.isReportVideoComment = 0,
+    this.isReportVideoCollect = 0,
+    this.isReportVideoPurchase = 0,
+    this.isReportKeywordSearch = 0,
+    this.isReportKeywordClick = 0,
+    this.isReportAdImpression = 0,
+    this.isReportAdClick = 0,
+    this.isEncryption = 0,
+    this.encryptionKey = '',
+    this.encryptionIv = '',
+    this.signKey = '',
+    this.authenticationKey = '',
+    this.authenticationTime = '',
+  });
+
+  final String clickAppId;
+  final String clickTransitPath;
+  final int isReportOrderPaid;
+  final int isReportCoinConsume;
+  final int isReportNavigation;
+  final int isReportAppPageView;
+  final int isReportPageClick;
+  final int isReportAdvertising;
+  final int isReportPageLifecycle;
+  final int isReportVideoEvent;
+  final int isReportVideoLike;
+  final int isReportVideoComment;
+  final int isReportVideoCollect;
+  final int isReportVideoPurchase;
+  final int isReportKeywordSearch;
+  final int isReportKeywordClick;
+  final int isReportAdImpression;
+  final int isReportAdClick;
+  final int isEncryption;
+  final String encryptionKey;
+  final String encryptionIv;
+  final String signKey;
+  final String authenticationKey;
+  final String authenticationTime;
+
+  factory ReportConfig.fromJson(Map<String, dynamic> json) {
+    return ReportConfig(
+      clickAppId: json['click_app_id'] ?? '',
+      clickTransitPath: json['click_transit_path'] ?? '',
+      isReportOrderPaid: json['is_report_order_paid'] ?? 0,
+      isReportCoinConsume: json['is_report_coin_consume'] ?? 0,
+      isReportNavigation: json['is_report_navigation'] ?? 0,
+      isReportAppPageView: json['is_report_app_page_view'] ?? 0,
+      isReportPageClick: json['is_report_page_click'] ?? 0,
+      isReportAdvertising: json['is_report_advertising'] ?? 0,
+      isReportPageLifecycle: json['is_report_page_lifecycle'] ?? 0,
+      isReportVideoEvent: json['is_report_video_event'] ?? 0,
+      isReportVideoLike: json['is_report_video_like'] ?? 0,
+      isReportVideoComment: json['is_report_video_comment'] ?? 0,
+      isReportVideoCollect: json['is_report_video_collect'] ?? 0,
+      isReportVideoPurchase: json['is_report_video_purchase'] ?? 0,
+      isReportKeywordSearch: json['is_report_keyword_search'] ?? 0,
+      isReportKeywordClick: json['is_report_keyword_click'] ?? 0,
+      isReportAdImpression: json['is_report_ad_impression'] ?? 0,
+      isReportAdClick: json['is_report_ad_click'] ?? 0,
+      isEncryption: json['is_encryption'] ?? 0,
+      encryptionKey: json['encryption_key'] ?? '',
+      encryptionIv: json['encryption_iv'] ?? '',
+      signKey: json['sign_key'] ?? '',
+      authenticationKey: json['authentication_key'] ?? '',
+      authenticationTime: '${json['authentication_time'] ?? ''}',
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'click_app_id': clickAppId,
+        'click_transit_path': clickTransitPath,
+        'is_report_order_paid': isReportOrderPaid,
+        'is_report_coin_consume': isReportCoinConsume,
+        'is_report_navigation': isReportNavigation,
+        'is_report_app_page_view': isReportAppPageView,
+        'is_report_page_click': isReportPageClick,
+        'is_report_advertising': isReportAdvertising,
+        'is_report_page_lifecycle': isReportPageLifecycle,
+        'is_report_video_event': isReportVideoEvent,
+        'is_report_video_like': isReportVideoLike,
+        'is_report_video_comment': isReportVideoComment,
+        'is_report_video_collect': isReportVideoCollect,
+        'is_report_video_purchase': isReportVideoPurchase,
+        'is_report_keyword_search': isReportKeywordSearch,
+        'is_report_keyword_click': isReportKeywordClick,
+        'is_report_ad_impression': isReportAdImpression,
+        'is_report_ad_click': isReportAdClick,
+        'is_encryption': isEncryption,
+        'encryption_key': encryptionKey,
+        'encryption_iv': encryptionIv,
+        'sign_key': signKey,
+        'authentication_key': authenticationKey,
+        'authentication_time': authenticationTime,
       };
 }

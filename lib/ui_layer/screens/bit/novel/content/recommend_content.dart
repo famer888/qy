@@ -17,6 +17,10 @@ import '../../../theme.dart';
 import '../card/recommend_novel_ad_card.dart';
 import '../card/recommend_novel_item_card.dart';
 
+import '../../../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../../../report/ui_layer/report_general_banner.dart';
+
 class NovelRecommendContent extends StatefulWidget {
   const NovelRecommendContent({super.key, required this.id});
   final int id;
@@ -107,7 +111,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),
@@ -135,7 +139,7 @@ class _Header extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 final partsItem = parts[index];
-                return GestureDetector(
+                return ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     //漫画分类，最新，完结，排行榜点击

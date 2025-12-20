@@ -19,6 +19,10 @@ import '../common_widgets/my_list_view.dart';
 import '../common_widgets/post/card/card.dart';
 import '../theme.dart';
 
+import '../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../report/ui_layer/report_general_banner.dart';
+
 class CommunityContentView extends StatefulWidget {
   const CommunityContentView({super.key, required this.id});
   final int id;
@@ -154,7 +158,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),
@@ -194,7 +198,7 @@ class _Header extends StatelessWidget {
                             topic.bgThumb,
                             borderRadius: 6.w,
                           ),
-                          GestureDetector(
+                          ReportGestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
                               CommunityTagDetailRoute('${topic.id}')

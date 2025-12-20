@@ -25,6 +25,8 @@ import 'widgets/clothes_remover/screen.dart';
 import 'widgets/face_swapper/screen.dart';
 import 'widgets/face_swapper/widgets/sheet.dart';
 
+import '../../../report/ui_layer/report_gesture_detector.dart';
+
 class AIServerScreen extends StatefulWidget {
   const AIServerScreen({super.key});
 
@@ -111,7 +113,7 @@ class _AIServerScreenState extends State<AIServerScreen>
                           ),
                         ),
                         SizedBox(height: 5.w),
-                        GestureDetector(
+                        ReportGestureDetector(
                           onTap: () {
                             imagePickerAssets(true).then((e) {
                               setState(() {});
@@ -150,7 +152,7 @@ class _AIServerScreenState extends State<AIServerScreen>
                                       Positioned(
                                           top: 0,
                                           right: 0,
-                                          child: GestureDetector(
+                                          child: ReportGestureDetector(
                                             onTap: () {
                                               setState(() {
                                                 uploadGroudObject = {};
@@ -181,7 +183,7 @@ class _AIServerScreenState extends State<AIServerScreen>
                           ],
                         ),
                         SizedBox(height: 10.w),
-                        GestureDetector(
+                        ReportGestureDetector(
                           onTap: () {
                             imagePickerAssets(false).then((e) {
                               setState(() {});
@@ -226,7 +228,7 @@ class _AIServerScreenState extends State<AIServerScreen>
                                       Positioned(
                                           top: 0,
                                           right: 0,
-                                          child: GestureDetector(
+                                          child: ReportGestureDetector(
                                             onTap: () {
                                               setState(() {
                                                 uploadThumObject = {};
@@ -287,7 +289,7 @@ class _AIServerScreenState extends State<AIServerScreen>
                                     style: MyTheme.nav_active_14);
                               }),
                           const Expanded(child: SizedBox()),
-                          GestureDetector(
+                          ReportGestureDetector(
                             onTap: () {
                               uploadOptional();
                             },
@@ -458,7 +460,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leadingWidth: 40.w,
-      leading: GestureDetector(
+      leading: ReportGestureDetector(
         onTap: () {
           context.pop();
         },

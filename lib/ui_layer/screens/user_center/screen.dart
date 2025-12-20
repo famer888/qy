@@ -29,6 +29,8 @@ import '../common_widgets/status/loading.dart';
 import '../common_widgets/status/network_error.dart';
 import '../theme.dart';
 
+import '../../../report/ui_layer/report_gesture_detector.dart';
+
 class UserCenterScreen extends StatefulWidget {
   const UserCenterScreen({super.key, required this.aff});
   final String aff;
@@ -171,7 +173,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
                       member.uuid == data.uuid
                           ? const SizedBox.shrink()
                           : Center(
-                        child: GestureDetector(
+                        child: ReportGestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
                             if ((member.username ?? '').isEmpty) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../app_global.dart';
 import '../../notifiers/home_config_notifier.dart';
 import '../common_widgets/screen_background.dart';
 import '../common_widgets/top_navi_view.dart';
@@ -20,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppGlobal.context = context;
     return ScreenBackground(
       child: Scaffold(
         appBar: const SearchAppBar(),

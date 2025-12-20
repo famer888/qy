@@ -20,6 +20,10 @@ import '../../common_widgets/general_banner.dart';
 import '../../common_widgets/my_list_view.dart';
 import '../../theme.dart';
 
+import '../../../../report/ui_layer/report_gesture_detector.dart';
+
+import '../../../../report/ui_layer/report_general_banner.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
   @override
@@ -86,7 +90,7 @@ class _ChatScreenState extends State<ChatScreen> {
           // Positioned(
           //   right: 20.w,
           //   bottom: MyTheme.navbarHegiht + MyTheme.pagePadding * 2,
-          //   child: GestureDetector(
+          //   child: ReportGestureDetector(
           //     onTap: () {
           //       const ChatIssueRoute().push(context);
           //     },
@@ -125,7 +129,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),

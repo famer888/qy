@@ -7,6 +7,8 @@ import '../../../common_widgets/general_banner.dart';
 import '../../../common_widgets/marquee.dart';
 import '../../../theme.dart';
 
+import '../../../../../report/ui_layer/report_general_banner.dart';
+
 class LiveVideoViewHeader extends StatelessWidget {
   const LiveVideoViewHeader({
     super.key,
@@ -29,7 +31,7 @@ class LiveVideoViewHeader extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),

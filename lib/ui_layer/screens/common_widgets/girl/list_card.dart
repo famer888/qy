@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../app_global.dart';
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/girl/girl_list_model.dart';
 import '../../../../domain/model/girl/girl_option_model.dart';
 import '../../../router/routes.dart';
-import '../../../utils/app_global_data.dart';
 import '../../../utils/common_utils.dart';
 import '../../bit/comic/di/notifier.dart';
 import '../../image_paths.dart';
