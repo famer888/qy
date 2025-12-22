@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../../../domain/model/home_data_model.dart';
 
@@ -222,34 +223,45 @@ class _ReportAppDownCenterCardState extends State<ReportAppDownCenterCard> {
                   ),
                   itemBuilder: (context, index) {
                     Notice? model = apps[index];
-                    return GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        final json = model.toJson() ?? {};
-                        CommonUtils.openRoute(context, json);
+                    return VisibilityDetector(
+                      key: Key(
+                          "ReportAppDownCenterDialog_item_${model.reportId}_1_$index"),
+                      onVisibilityChanged: (info) {
+                        // 当 Widget 可见度超过 50% 时，执行操作
+                        if (info.visibleFraction > 0.5) {
+                          _showAppAd(model);
+                        }
                       },
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 56.w,
-                            width: 56.w,
-                            child: MyImage.network(
-                              model.imgUrl ?? '',
-                              fit: BoxFit.fill,
-                              borderRadius: 10.w,
+                      child: ReportGestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          postClickReport(model);
+                          final json = model.toJson() ?? {};
+                          CommonUtils.openRoute(context, json);
+                        },
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 56.w,
+                              width: 56.w,
+                              child: MyImage.network(
+                                model.imgUrl ?? '',
+                                fit: BoxFit.fill,
+                                borderRadius: 10.w,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 5.w),
-                          Text(
-                            model.title ?? '',
-                            style: TextStyle(
-                                color: Colors.white,
-                                overflow: TextOverflow.ellipsis,
-                                decoration: TextDecoration.none,
-                                fontSize: 11.sp),
-                            maxLines: 1,
-                          ),
-                        ],
+                            SizedBox(height: 5.w),
+                            Text(
+                              model.title ?? '',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  overflow: TextOverflow.ellipsis,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 11.sp),
+                              maxLines: 1,
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }),
