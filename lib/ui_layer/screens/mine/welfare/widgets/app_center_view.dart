@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../../../domain/async_value.dart';
 import '../../../../../domain/domain.dart';
 import '../../../../../domain/model/mine/welfare/app_center_model.dart';
+import '../../../../../report/ui_layer/report_general_banner.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/general_banner.dart';
@@ -77,7 +78,7 @@ class _AppCenterViewState extends State<AppCenterView> {
                 ? const SizedBox.shrink()
                 : Padding(
                     padding: EdgeInsets.only(bottom: 10.w),
-                    child: GeneralBanner(data: banner),
+                    child: ReportGeneralBanner(data: banner),
                   ),
             recommend.isEmpty
                 ? const SizedBox.shrink()

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' as fd;
 import '../../crypto.dart';
 import '../../logger.dart';
+import '../../ui_layer/utils/app_global_data.dart';
 
 class AutoEncryptAndDecryptInterceptor extends Interceptor {
   const AutoEncryptAndDecryptInterceptor(this._appInfo);
@@ -15,6 +16,9 @@ class AutoEncryptAndDecryptInterceptor extends Interceptor {
 
     if (options.data != null) {
       data.addAll(options.data);
+    }
+    if (AppGlobal.reportTraceId.isNotEmpty) {
+      data['trace_id'] = AppGlobal.reportTraceId;
     }
     // options.data = await fd.compute(PlatformAwareCrypto.encryptReqParams, data);
     options.data = PlatformAwareCrypto.encryptReqParams(data);

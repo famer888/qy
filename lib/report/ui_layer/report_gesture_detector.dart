@@ -37,6 +37,7 @@ class ReportGestureDetector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onTap,
       onLongPress: onLongPress,
       onVerticalDragDown: onVerticalDragDown,
       onVerticalDragUpdate: onVerticalDragUpdate,
@@ -56,7 +57,7 @@ class ReportGestureDetector extends StatelessWidget {
         final px = (dx / size.width * 100).round();
         final py = (dy / size.height * 100).round();
 
-        onTap?.call();
+        // onTap?.call();
         postXYReport(context, size, dx, dy, px, py);
       },
     );

@@ -170,8 +170,8 @@ class EventTracking {
         }
 
         return {
-          "device": "web",
-          "deviceBrand": "web",
+          "device": "iOS",
+          "deviceBrand": "Apple",
           "deviceModel": "$browser - $deviceModel",
           "user_agent": userAgent,
           "platformVersion": webInfo.appVersion ?? "",
@@ -484,7 +484,8 @@ class EventTracking {
                 (result['status'] != null && result['status'] == 1));
 
         if (isSuccess) {
-          CommonUtils.log('埋点上报成功: ${events.length} 条数据 response.data = ${response.data}');
+          CommonUtils.log(
+              '埋点上报成功: ${events.length} 条数据 response.data = ${response.data}');
         } else {
           CommonUtils.log(
               '埋点上报业务失败: ${result['msg'] ?? result['message'] ?? result}');

@@ -118,18 +118,13 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     if (kIsWeb) {
       final uri = Uri.parse(html.window.location.href);
       String aff = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
-      String traceID = uri.queryParameters['trace_id'] ?? '';
       if (aff.isNotEmpty) domain.sendInvitation(affCode: aff);
-      if (traceID.isNotEmpty) context.read<AppRepo>().setReportTraceId(traceID);
     } else {
       final result = await Clipboard.getData(Clipboard.kTextPlain);
       if (result?.text case final String text when text.isNotEmpty) {
         final params = Uri.splitQueryString(text);
         String aff = params[BuildConfig.affCodeKey] ?? '';
-        String traceID = params['trace_id'] ?? '';
         if (aff.isNotEmpty) domain.sendInvitation(affCode: aff);
-        if (traceID.isNotEmpty)
-          context.read<AppRepo>().setReportTraceId(traceID);
       }
     }
   }
