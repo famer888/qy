@@ -116,15 +116,19 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
 
   Future<void> _getClipboardText() async {
     if (kIsWeb) {
-      final uri = Uri.parse(html.window.location.href);
+      final uri = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
       String aff = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
       if (aff.isNotEmpty) domain.sendInvitation(affCode: aff);
     } else {
       final result = await Clipboard.getData(Clipboard.kTextPlain);
       if (result?.text case final String text when text.isNotEmpty) {
-        final params = Uri.splitQueryString(text);
-        String aff = params[BuildConfig.affCodeKey] ?? '';
-        if (aff.isNotEmpty) domain.sendInvitation(affCode: aff);
+        try {
+          final params = Uri.splitQueryString(text);
+          String aff = params[BuildConfig.affCodeKey] ?? '';
+          if (aff.isNotEmpty) domain.sendInvitation(affCode: aff);
+        } catch (e) {
+          return;
+        }
       }
     }
   }
