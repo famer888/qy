@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:qypj/app_config.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../data_layer/repo/repo.dart';
@@ -99,6 +100,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       final uri = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
       String traceID = uri.queryParameters['trace_id'] ?? '';
       if (traceID.isNotEmpty) context.read<AppRepo>().setReportTraceId(traceID);
+
+      String aff = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
+      if (aff.isNotEmpty) context.read<AppRepo>().setAffXCode(aff);
     } else {
       final result = await Clipboard.getData(Clipboard.kTextPlain);
       if (result?.text case final String text when text.isNotEmpty) {
@@ -107,6 +111,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           String traceID = params['trace_id'] ?? '';
           if (traceID.isNotEmpty)
             context.read<AppRepo>().setReportTraceId(traceID);
+
+          String aff = params[BuildConfig.affCodeKey] ?? '';
+          if (aff.isNotEmpty) context.read<AppRepo>().setAffXCode(aff);
         } catch (e) {
           return;
         }
