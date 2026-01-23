@@ -565,8 +565,11 @@ abstract class _BaseAppRepo implements AppDomain {
   }
 
   /// 上报线路
-  Future<void> _reportLine(List<Map> lines) =>
+  _reportLine(List<Map> lines) {
+    Future.delayed(Duration(seconds: 5), () {
       _apiDio.post('/api/home/domainCheckReport2', data: {'list': lines});
+    });
+  }
 
   @override
   AsyncJson uploadImageBytes({

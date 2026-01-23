@@ -30,7 +30,7 @@
         android:icon="@mipmap/ic_launcher"
         android:hardwareAccelerated="true"
         android:requestLegacyExternalStorage="true"
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         tools:replace="android:networkSecurityConfig"
         android:networkSecurityConfig="@xml/network_config"
         tools:ignore="GoogleAppIndexingWarning">

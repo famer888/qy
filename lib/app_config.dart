@@ -3,9 +3,13 @@ import 'package:flutter/foundation.dart';
 class BuildConfig {
   static const appName = 'qypj';
 
-  static const key = '2acf7e91e9864673';
-  static const iv = '1c29882d3ddfcfd6';
-  static const appKey = '5589d41f92a597d016b037ac37db243d';
+  static const key = kIsWeb ? 'ffdf13c62bda8498' : '243de404db5e0f3a';
+  static const iv = kIsWeb ? '1003a6bf984d0aa1' : 'f5c44a8cf74c0f56';
+  static const appKey = kIsWeb
+      ? '0d2c8b41b614bba3811e358f4983f82c'
+      : '805d416b141a61bb857003b99704b6d5';
+  static const ver = kIsWeb ? 'v3' : 'v2';
+
   static const mediaKey = 'f5d965df75336270';
   static const mediaIv = '97b60394abc2fbe1';
   static const secretKey = '56d028f9e1293e74';
