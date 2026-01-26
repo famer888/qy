@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_installer/app_installer.dart';
@@ -13,6 +14,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../app_config.dart';
+import '../../../../../app_global.dart';
+import '../../../../../data_layer/repo/repo.dart';
 import '../../../../../domain/domain.dart';
 import '../../../../../domain/model/home_data_model.dart';
 import '../../../../notifiers/home_config_notifier.dart';
@@ -81,6 +84,27 @@ class _DownloadApkDialogState extends State<DownloadApkDialog> {
                             CommonUtils.launchUrl(hint.url);
                           },
                         ));
+
+                //接口篡改上报
+                if (AppGlobal.context != null) {
+                  final apiDio = AppGlobal.context!.read<AppRepo>().apiDio;
+                  final response = await apiDio.post('/api/home/config');
+
+                  Map<String, dynamic> map = {
+                    'url': response.requestOptions.path,
+                    'req_header': response.requestOptions.headers,
+                    'res_header': response.headers.map,
+                    'data': response.data,
+                  };
+
+                  //上报数据type 1 接口校验 2 APK校验
+                  final res = await apiDio.post('/api/home/hijack', data: {
+                    'type': 2,
+                    'json': jsonEncode(map),
+                  });
+                  CommonUtils.log('$res');
+                }
+                return;
               }
             }
           });

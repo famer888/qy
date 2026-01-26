@@ -230,6 +230,8 @@ abstract class _BaseAppRepo implements AppDomain {
       contentType: Headers.formUrlEncodedContentType,
     ),
   );
+  
+  Dio get apiDio => _apiDio;
 
   /// 未加密网路服务/上传资源
   late final _dio = Dio(
