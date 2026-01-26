@@ -49,8 +49,8 @@ class _DownloadApkDialogState extends State<DownloadApkDialog> {
     final digest = await sha256.bind(apkFile.openRead()).first;
     VersionMsg? cf = context.read<HomeConfigNotifier>().homeData.versionMsg;
     String fileSha256 = digest.toString();
-    return false;
-    return cf?.sha256?.isEmpty == true || cf?.sha256 == fileSha256;
+    // return false;
+    return cf?.sha256 == fileSha256;
   }
 
   Future<void> _init() async {
