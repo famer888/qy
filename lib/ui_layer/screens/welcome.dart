@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:qypj/app_config.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../../app_global.dart';
 import '../../data_layer/repo/repo.dart';
 import '../../domain/domain.dart';
 import '../../domain/model/home_data_model.dart';
@@ -218,6 +219,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppGlobal.context = context;
     return PopScopeWrapper(
       child: Scaffold(
         backgroundColor: MyTheme.bgColor,
