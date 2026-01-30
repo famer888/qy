@@ -329,7 +329,7 @@ class CommonUtils {
           context.push('/${urlList.first}$paramsStr');
         }
       } else {
-        launchUrl(data['link_url'].trim());
+        launchUrl(url?.trim() ?? '');
       }
     }
   }
