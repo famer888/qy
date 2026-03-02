@@ -1,12 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
-import 'package:provider/provider.dart';
-// import 'package:hjsq/ui_layer/screens/common_widgets/auto_carousel_slider.dart';
-// import 'package:hjsq/ui_layer/screens/theme.dart';
-
-import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../domain/model/banner_model.dart';
 import '../../ui_layer/screens/common_widgets/my_image.dart';
@@ -14,8 +7,6 @@ import '../../ui_layer/screens/theme.dart';
 import '../../ui_layer/utils/common_utils.dart';
 
 import 'report_gesture_detector.dart';
-
-import 'report_general_banner.dart';
 import '../event_tracking.dart';
 import 'report_timing_observer.dart';
 
@@ -39,13 +30,10 @@ class ReportGeneralAppListSwiper extends StatefulWidget {
   bool useMargin = false;
 
   @override
-  State<ReportGeneralAppListSwiper> createState() =>
-      _ReportGeneralAppListSwiperState();
+  State<ReportGeneralAppListSwiper> createState() => _ReportGeneralAppListSwiperState();
 }
 
-class _ReportGeneralAppListSwiperState
-    extends State<ReportGeneralAppListSwiper> {
-  final double _childAspectRatio = 57 / 76;
+class _ReportGeneralAppListSwiperState extends State<ReportGeneralAppListSwiper> {
   int threshold = 10;
   int _ColumNumber = 5;
 
@@ -56,7 +44,7 @@ class _ReportGeneralAppListSwiperState
   @override
   void initState() {
     super.initState();
-    _ColumNumber = widget.columnNumber;
+    _ColumNumber = 6; // 统一为6列
     threshold = _ColumNumber * 2;
   }
 
@@ -139,409 +127,65 @@ class _ReportGeneralAppListSwiperState
 
   @override
   Widget build(BuildContext context) {
-    if (widget.data.length > threshold) {
-      // 取前 _ColumNumber 个（不足 _ColumNumber 个则全取）
-      final firstPart =
-          widget.data.sublist(0, min(_ColumNumber, widget.data.length));
-      // 取第 _ColumNumber+1 个之后的部分（如果不够 _ColumNumber 个就为空）
-      final secondPart = widget.data.length > _ColumNumber
-          ? widget.data.sublist(_ColumNumber)
-          : [];
-      final itemWidth = (ScreenUtil().screenWidth -
-              (_ColumNumber + 1) * 6.w -
-              MyTheme.pagePadding * 2) /
-          _ColumNumber;
-
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(firstPart.length, (index) {
-                final item = firstPart[index];
-
-                _showBanner(item);
-                return ReportGestureDetector(
-                  onTap: () {
-                    postClickReport(widget.data[index]);
-                    CommonUtils.openRoute(context, item.toJson());
-                  },
-                  child: SizedBox(
-                      width: itemWidth,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: itemWidth,
-                            height: itemWidth,
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: MyImage.network(
-                                  CommonUtils.getThumb(item.toJson()),
-                                  fit: BoxFit.cover,
-                                  borderRadius: 8.w),
-                            ),
-                          ),
-                          SizedBox(height: 8.w),
-                          Text(
-                            item.name ?? item.title ?? "",
-                            style: TextStyle(
-                                color: Colors.white,
-                                overflow: TextOverflow.ellipsis,
-                                decoration: TextDecoration.none,
-                                height: 1,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 11.sp),
-                          ),
-                        ],
-                      )),
-                );
-              }),
-            ),
-          ),
-          if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
-            SizedBox(height: 10.w),
-          if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
-            ReportInfiniteBannerList(
-              banners: secondPart,
-              columNumber: _ColumNumber,
-              showFunc: (item) {
-                _showBanner(item);
-              },
-              tapFunc: (item) {
-                postClickReport(item);
-                CommonUtils.openRoute(context, item.toJson());
-              },
-            ),
-        ],
-      );
-    } else {
-      List<List<BannerModel>> pages = [];
-      List<BannerModel> page = [];
-      for (var element in widget.data) {
-        if (page.length >= _ColumNumber * 2) {
-          pages.add(page);
-          page = [];
-        }
-        page.add(element);
-      }
-
-      if (page.isNotEmpty) {
-        pages.add(page);
-      }
-
-      return Container(
-        child: widget.data.isEmpty
-            ? Container()
-            : LayoutBuilder(builder: (context, constrains) {
-                double width = constrains.maxWidth;
-                double itemWidth =
-                    (width - (_ColumNumber - 1) * 10.w) / _ColumNumber;
-                double itemHeight = itemWidth / _childAspectRatio;
-                // double bannerHeight = widget.data.length >= 10 ? itemHeight + (pages.first.length > _ColumeNumber ? 10.w : 7.w) :
-                // (itemHeight * (pages.first.length <= _ColumeNumber ? 1 : 2)) + (pages.first.length > _ColumeNumber ? 15.w : 0);
-                double bannerHeight = (itemHeight *
-                        (pages.first.length <= _ColumNumber ? 1 : 2)) +
-                    (pages.first.length > _ColumNumber ? 15.w : 0);
-
-                return SizedBox(
-                  width: width,
-                  height: bannerHeight,
-                  child: widget.data.isEmpty
-                      ? Container()
-                      : Swiper(
-                          autoplay: pages.length > 1,
-                          loop: pages.length > 1,
-                          itemBuilder: (BuildContext context, int index) {
-                            double w = itemWidth;
-                            return VisibilityDetector(
-                              key: Key("swiper_item_$index"),
-                              onVisibilityChanged: (info) {
-                                if (didReport) {
-                                  return;
-                                }
-                                if (info.visibleFraction > 0.8 &&
-                                    adIds.length < widget.data.length) {
-                                  for (var bannerModel in pages[index]) {
-                                    _showBanner(bannerModel);
-                                    // adIds.add(bannerModel.reportId);
-                                  }
-                                }
-                              },
-                              child: SizedBox(
-                                width: width,
-                                child: Builder(builder: (context) {
-                                  return GridView.count(
-                                      padding: EdgeInsets.only(bottom: 10.w),
-                                      crossAxisCount: _ColumNumber,
-                                      mainAxisSpacing: 10.w,
-                                      crossAxisSpacing: 10.w,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      childAspectRatio: _childAspectRatio,
-                                      shrinkWrap: true,
-                                      children: pages[index].map((e) {
-                                        // return Container();
-
-                                        return ReportGestureDetector(
-                                            behavior:
-                                                HitTestBehavior.translucent,
-                                            onTap: () {
-                                              FocusManager.instance.primaryFocus
-                                                  ?.unfocus();
-                                              postClickReport(
-                                                  widget.data[index]);
-                                              CommonUtils.openRoute(
-                                                  context, e.toJson());
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                SizedBox(
-                                                  width: w,
-                                                  height: w,
-                                                  child: AspectRatio(
-                                                    aspectRatio: 1,
-                                                    child: MyImage.network(
-                                                      CommonUtils.getThumb(
-                                                          e.toJson()),
-                                                      fit: BoxFit.cover,
-                                                      borderRadius: 8.w,
-                                                    ),
-                                                  ),
-                                                ),
-                                                // SizedBox(height: 8.w),
-                                                Expanded(
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    // color: Colors.blue,
-                                                    child: Text(
-                                                      e.name ?? e.title ?? "",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .none,
-                                                          height: 1,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 11.sp),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ));
-                                      }).toList()
-
-                                      // pages[index].map((e) {
-                                      //   return Container();
-                                      // }).toList(),
-                                      );
-                                }),
-                              ),
-                            );
-                          },
-                          itemCount: pages.length,
-                          pagination: pages.length > 1 || true
-                              ? SwiperPagination(
-                                  margin: EdgeInsets.zero,
-                                  builder: SwiperCustomPagination(
-                                      builder: (context, config) {
-                                    int count = pages.length;
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: List.generate(count, (index) {
-                                        return config.activeIndex == index
-                                            ? Container(
-                                                width: 10.w,
-                                                height: 4.w,
-                                                margin:
-                                                    EdgeInsets.only(right: 4.w),
-                                                decoration: BoxDecoration(
-                                                  // color: StyleTheme.white255Color,
-                                                  gradient:
-                                                      MyTheme.gradient_90_114,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(2.w)),
-                                                ),
-                                              )
-                                            : Container(
-                                                width: 4.w,
-                                                height: 4.w,
-                                                margin:
-                                                    EdgeInsets.only(right: 4.w),
-                                                decoration: BoxDecoration(
-                                                  color: MyTheme.white08Color,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(2.w)),
-                                                ),
-                                              );
-                                      }),
-                                    );
-                                  }))
-                              : null,
-                        ),
-                );
-              }),
-      );
+    // 统一为6列网格布局，不限制行数
+    if (widget.data.isEmpty) {
+      return Container();
     }
-  }
-}
+    final itemWidth = (ScreenUtil().screenWidth - (_ColumNumber + 1) * 6.w - MyTheme.pagePadding * 2) / _ColumNumber;
 
-class ReportInfiniteBannerList extends StatefulWidget {
-  final List<BannerModel> banners;
-  final int columNumber;
-  final Function(BannerModel banner)? showFunc;
-  final Function(BannerModel banner)? tapFunc;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: _ColumNumber,
+          mainAxisSpacing: 10.w,
+          crossAxisSpacing: 6.w,
+          childAspectRatio: 57 / 76,
+        ),
+        itemCount: widget.data.length,
+        itemBuilder: (context, index) {
+          final item = widget.data[index];
+          _showBanner(item);
 
-  const ReportInfiniteBannerList({
-    required this.banners,
-    required this.columNumber,
-    this.showFunc,
-    this.tapFunc,
-    super.key,
-  });
-
-  @override
-  State<ReportInfiniteBannerList> createState() =>
-      _ReportInfiniteBannerListState();
-}
-
-class _ReportInfiniteBannerListState extends State<ReportInfiniteBannerList> {
-  final ScrollController _controller = ScrollController();
-  bool _isUserTouching = false;
-  bool _autoScrollRunning = false;
-  bool _isVisible = true; // 当前是否在屏幕可见范围内
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _startAutoScroll();
-    });
-  }
-
-  void _startAutoScroll() {
-    if (_autoScrollRunning) return;
-    _autoScrollRunning = true;
-
-    const scrollSpeed = 1.0; // 每帧滚动像素数
-    const interval = Duration(milliseconds: 32);
-
-    Future.doWhile(() async {
-      if (!mounted) return false;
-      await Future.delayed(interval);
-
-      // 若不可见或用户正在触摸，则暂停
-      if (!_isVisible || _isUserTouching) return true;
-
-      if (_controller.hasClients) {
-        final max = _controller.position.maxScrollExtent;
-        final pos = _controller.position.pixels;
-
-        if (pos >= max - 1) {
-          final middle = max / 2;
-          _controller.jumpTo(middle);
-        } else {
-          _controller.jumpTo(pos + scrollSpeed);
-        }
-      }
-      return true;
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _autoScrollRunning = false;
-    VisibilityDetectorController.instance
-        .forget(ValueKey('ReportInfiniteBannerList_${widget.hashCode}'));
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final itemWidth = (ScreenUtil().screenWidth -
-            (widget.columNumber + 1) * 7 -
-            MyTheme.pagePadding * 2) /
-        widget.columNumber;
-
-    return VisibilityDetector(
-      key: ValueKey('ReportInfiniteBannerList_${widget.hashCode}'),
-      onVisibilityChanged: (info) {
-        if (!mounted) return; // 防止销毁后继续调用
-        final visibleFraction = info.visibleFraction;
-        final newVisible = visibleFraction > 0.1; // 超过10%算可见
-        if (newVisible != _isVisible) {
-          setState(() => _isVisible = newVisible);
-        }
-      },
-      child: Listener(
-        onPointerDown: (_) => _isUserTouching = true,
-        onPointerUp: (_) => _isUserTouching = false,
-        onPointerCancel: (_) => _isUserTouching = false,
-        child: SizedBox(
-          height: itemWidth + 28,
-          child: ScrollConfiguration(
-            behavior:
-                ScrollConfiguration.of(context).copyWith(scrollbars: false),
-            child: ListView.builder(
-              controller: _controller,
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: widget.banners.length * 2,
-              itemBuilder: (context, index) {
-                final banner = widget.banners[index % widget.banners.length];
-                widget.showFunc?.call(banner);
-                return ReportGestureDetector(
-                  onTap: () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    widget.tapFunc?.call(banner);
-                    // CommonUtils.openRoute(context, banner.toJson());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox.square(
-                          dimension: itemWidth,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: MyImage.network(
-                              CommonUtils.getThumb(banner.toJson()),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          banner.name ?? banner.title ?? "",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            overflow: TextOverflow.ellipsis,
-                            decoration: TextDecoration.none,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
+          return ReportGestureDetector(
+            onTap: () {
+              postClickReport(item);
+              CommonUtils.openRoute(context, item.toJson());
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: itemWidth,
+                  height: itemWidth,
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: MyImage.network(
+                      CommonUtils.getThumb(item.toJson()),
+                      fit: BoxFit.cover,
+                      borderRadius: 8.w,
                     ),
                   ),
-                );
-              },
+                ),
+                const Spacer(),
+                Text(
+                  item.name ?? item.title ?? "",
+                  style: TextStyle(
+                    color: Colors.white,
+                    overflow: TextOverflow.ellipsis,
+                    decoration: TextDecoration.none,
+                    height: 1,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11.sp,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
