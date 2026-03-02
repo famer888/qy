@@ -20,12 +20,12 @@ class BuildConfig {
   /// 备用接口线路
   static List<String> apiLines = kIsWeb
       ? [
-          'https://api1.ovrromzu.com/api.php',
+          'https://api1.fcywbfh.com/api.php',
         ]
       : [
-          'https://api2.ovrromzu.com/api.php',
-          'https://api3.ovrromzu.com/api.php',
-          'https://api4.ovrromzu.com/api.php',
+          'https://api2.fcywbfh.com/api.php',
+          'https://api3.fcywbfh.com/api.php',
+          'https://api4.fcywbfh.com/api.php',
         ];
 
   /// 备用线路
