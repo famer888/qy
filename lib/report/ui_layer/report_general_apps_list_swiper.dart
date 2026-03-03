@@ -138,234 +138,234 @@ class _ReportGeneralAppListSwiperState extends State<ReportGeneralAppListSwiper>
 
   @override
   Widget build(BuildContext context) {
-    if (widget.data.length >= threshold) {
-      // 如果超过24个，取前18个（3行*6列）用GridView显示
-      final gridCount = widget.data.length == threshold ? threshold : _ColumNumber * 3; // 18个
-      final firstPart = widget.data.sublist(0, min(gridCount, widget.data.length));
-      // 剩余的用滚动列表显示
-      final secondPart = widget.data.length > gridCount ? widget.data.sublist(gridCount) : [];
-      final itemWidth = (ScreenUtil().screenWidth - (_ColumNumber + 1) * 10.w - MyTheme.pagePadding * 2) / _ColumNumber;
+    // if (widget.data.length >= threshold) {
+    // 如果超过24个，取前18个（3行*6列）用GridView显示
+    final gridCount = widget.data.length == threshold ? threshold : _ColumNumber * 3; // 18个
+    final firstPart = widget.data.sublist(0, min(gridCount, widget.data.length));
+    // 剩余的用滚动列表显示
+    final secondPart = widget.data.length > gridCount ? widget.data.sublist(gridCount) : [];
+    final itemWidth = (ScreenUtil().screenWidth - (_ColumNumber + 1) * 10.w - MyTheme.pagePadding * 2) / _ColumNumber;
 
-      return Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-            child: GridView.count(
-              crossAxisCount: _ColumNumber,
-              mainAxisSpacing: 10.w,
-              crossAxisSpacing: 10.w,
-              physics: const NeverScrollableScrollPhysics(),
-              childAspectRatio: _childAspectRatio,
-              shrinkWrap: true,
-              children: List.generate(firstPart.length, (index) {
-                final item = firstPart[index];
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+          child: GridView.count(
+            crossAxisCount: _ColumNumber,
+            mainAxisSpacing: 10.w,
+            crossAxisSpacing: 10.w,
+            physics: const NeverScrollableScrollPhysics(),
+            childAspectRatio: _childAspectRatio,
+            shrinkWrap: true,
+            children: List.generate(firstPart.length, (index) {
+              final item = firstPart[index];
 
-                _showBanner(item);
-                return ReportGestureDetector(
-                  onTap: () {
-                    postClickReport(widget.data[index]);
-                    CommonUtils.openRoute(context, item.toJson());
-                  },
-                  child: SizedBox(
-                      width: itemWidth,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: itemWidth,
-                            height: itemWidth,
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: MyImage.network(CommonUtils.getThumb(item.toJson()),
-                                  fit: BoxFit.cover, borderRadius: 8.w),
-                            ),
+              _showBanner(item);
+              return ReportGestureDetector(
+                onTap: () {
+                  postClickReport(widget.data[index]);
+                  CommonUtils.openRoute(context, item.toJson());
+                },
+                child: SizedBox(
+                    width: itemWidth,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: itemWidth,
+                          height: itemWidth,
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: MyImage.network(CommonUtils.getThumb(item.toJson()),
+                                fit: BoxFit.cover, borderRadius: 8.w),
                           ),
-                          Spacer(),
-                          Text(
-                            item.name ?? item.title ?? "",
-                            style: TextStyle(
-                                color: Colors.white,
-                                overflow: TextOverflow.ellipsis,
-                                decoration: TextDecoration.none,
-                                height: 1,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 11.sp),
-                          ),
-                        ],
-                      )),
-                );
-              }),
-            ),
-          ),
-          if (secondPart.isNotEmpty && secondPart is List<BannerModel>) SizedBox(height: 10.w),
-          if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
-            ReportInfiniteBannerList(
-              banners: secondPart,
-              columNumber: _ColumNumber,
-              showFunc: (item) {
-                _showBanner(item);
-              },
-              tapFunc: (item) {
-                postClickReport(item);
-                CommonUtils.openRoute(context, item.toJson());
-              },
-            ),
-        ],
-      );
-    } else {
-      List<List<BannerModel>> pages = [];
-      List<BannerModel> page = [];
-      for (var element in widget.data) {
-        if (page.length >= _ColumNumber * 2) {
-          pages.add(page);
-          page = [];
-        }
-        page.add(element);
-      }
-
-      if (page.isNotEmpty) {
-        pages.add(page);
-      }
-
-      return Container(
-        child: widget.data.isEmpty
-            ? Container()
-            : LayoutBuilder(builder: (context, constrains) {
-                double width = constrains.maxWidth;
-                double itemWidth = (width - (_ColumNumber - 1) * 10.w) / _ColumNumber;
-                double itemHeight = itemWidth / _childAspectRatio;
-                // double bannerHeight = widget.data.length >= 10 ? itemHeight + (pages.first.length > _ColumeNumber ? 10.w : 7.w) :
-                // (itemHeight * (pages.first.length <= _ColumeNumber ? 1 : 2)) + (pages.first.length > _ColumeNumber ? 15.w : 0);
-                double bannerHeight = (itemHeight * (pages.first.length <= _ColumNumber ? 1 : 2)) +
-                    (pages.first.length > _ColumNumber ? 15.w : 0);
-
-                return SizedBox(
-                  width: width,
-                  height: bannerHeight,
-                  child: widget.data.isEmpty
-                      ? Container()
-                      : Swiper(
-                          autoplay: pages.length > 1,
-                          loop: pages.length > 1,
-                          itemBuilder: (BuildContext context, int index) {
-                            double w = itemWidth;
-                            return VisibilityDetector(
-                              key: Key("swiper_item_$index"),
-                              onVisibilityChanged: (info) {
-                                if (didReport) {
-                                  return;
-                                }
-                                if (info.visibleFraction > 0.8 && adIds.length < widget.data.length) {
-                                  for (var bannerModel in pages[index]) {
-                                    _showBanner(bannerModel);
-                                    // adIds.add(bannerModel.reportId);
-                                  }
-                                }
-                              },
-                              child: SizedBox(
-                                width: width,
-                                child: Builder(builder: (context) {
-                                  return GridView.count(
-                                      padding: EdgeInsets.only(bottom: 10.w),
-                                      crossAxisCount: _ColumNumber,
-                                      mainAxisSpacing: 10.w,
-                                      crossAxisSpacing: 10.w,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      childAspectRatio: _childAspectRatio,
-                                      shrinkWrap: true,
-                                      children: pages[index].map((e) {
-                                        // return Container();
-
-                                        return ReportGestureDetector(
-                                            behavior: HitTestBehavior.translucent,
-                                            onTap: () {
-                                              FocusManager.instance.primaryFocus?.unfocus();
-                                              postClickReport(widget.data[index]);
-                                              CommonUtils.openRoute(context, e.toJson());
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                SizedBox(
-                                                  width: w,
-                                                  height: w,
-                                                  child: AspectRatio(
-                                                    aspectRatio: 1,
-                                                    child: MyImage.network(
-                                                      CommonUtils.getThumb(e.toJson()),
-                                                      fit: BoxFit.cover,
-                                                      borderRadius: 8.w,
-                                                    ),
-                                                  ),
-                                                ),
-                                                // SizedBox(height: 8.w),
-                                                Expanded(
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    // color: Colors.blue,
-                                                    child: Text(
-                                                      e.name ?? e.title ?? "",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          overflow: TextOverflow.ellipsis,
-                                                          decoration: TextDecoration.none,
-                                                          height: 1,
-                                                          fontWeight: FontWeight.w600,
-                                                          fontSize: 11.sp),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ));
-                                      }).toList()
-
-                                      // pages[index].map((e) {
-                                      //   return Container();
-                                      // }).toList(),
-                                      );
-                                }),
-                              ),
-                            );
-                          },
-                          itemCount: pages.length,
-                          pagination: pages.length > 1 || true
-                              ? SwiperPagination(
-                                  margin: EdgeInsets.zero,
-                                  builder: SwiperCustomPagination(builder: (context, config) {
-                                    int count = pages.length;
-                                    return Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: List.generate(count, (index) {
-                                        return config.activeIndex == index
-                                            ? Container(
-                                                width: 10.w,
-                                                height: 4.w,
-                                                margin: EdgeInsets.only(right: 4.w),
-                                                decoration: BoxDecoration(
-                                                  // color: StyleTheme.white255Color,
-                                                  gradient: MyTheme.gradient_90_114,
-                                                  borderRadius: BorderRadius.all(Radius.circular(2.w)),
-                                                ),
-                                              )
-                                            : Container(
-                                                width: 4.w,
-                                                height: 4.w,
-                                                margin: EdgeInsets.only(right: 4.w),
-                                                decoration: BoxDecoration(
-                                                  color: MyTheme.white08Color,
-                                                  borderRadius: BorderRadius.all(Radius.circular(2.w)),
-                                                ),
-                                              );
-                                      }),
-                                    );
-                                  }))
-                              : null,
                         ),
-                );
-              }),
-      );
-    }
+                        Spacer(),
+                        Text(
+                          item.name ?? item.title ?? "",
+                          style: TextStyle(
+                              color: Colors.white,
+                              overflow: TextOverflow.ellipsis,
+                              decoration: TextDecoration.none,
+                              height: 1,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 11.sp),
+                        ),
+                      ],
+                    )),
+              );
+            }),
+          ),
+        ),
+        if (secondPart.isNotEmpty && secondPart is List<BannerModel>) SizedBox(height: 10.w),
+        if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
+          ReportInfiniteBannerList(
+            banners: secondPart,
+            columNumber: _ColumNumber,
+            showFunc: (item) {
+              _showBanner(item);
+            },
+            tapFunc: (item) {
+              postClickReport(item);
+              CommonUtils.openRoute(context, item.toJson());
+            },
+          ),
+      ],
+    );
+    // } else {
+    //   List<List<BannerModel>> pages = [];
+    //   List<BannerModel> page = [];
+    //   for (var element in widget.data) {
+    //     if (page.length >= _ColumNumber * 2) {
+    //       pages.add(page);
+    //       page = [];
+    //     }
+    //     page.add(element);
+    //   }
+    //
+    //   if (page.isNotEmpty) {
+    //     pages.add(page);
+    //   }
+    //
+    //   return Container(
+    //     child: widget.data.isEmpty
+    //         ? Container()
+    //         : LayoutBuilder(builder: (context, constrains) {
+    //             double width = constrains.maxWidth;
+    //             double itemWidth = (width - (_ColumNumber - 1) * 10.w) / _ColumNumber;
+    //             double itemHeight = itemWidth / _childAspectRatio;
+    //             // double bannerHeight = widget.data.length >= 10 ? itemHeight + (pages.first.length > _ColumeNumber ? 10.w : 7.w) :
+    //             // (itemHeight * (pages.first.length <= _ColumeNumber ? 1 : 2)) + (pages.first.length > _ColumeNumber ? 15.w : 0);
+    //             double bannerHeight = (itemHeight * (pages.first.length <= _ColumNumber ? 1 : 2)) +
+    //                 (pages.first.length > _ColumNumber ? 15.w : 0);
+    //
+    //             return SizedBox(
+    //               width: width,
+    //               height: bannerHeight,
+    //               child: widget.data.isEmpty
+    //                   ? Container()
+    //                   : Swiper(
+    //                       autoplay: pages.length > 1,
+    //                       loop: pages.length > 1,
+    //                       itemBuilder: (BuildContext context, int index) {
+    //                         double w = itemWidth;
+    //                         return VisibilityDetector(
+    //                           key: Key("swiper_item_$index"),
+    //                           onVisibilityChanged: (info) {
+    //                             if (didReport) {
+    //                               return;
+    //                             }
+    //                             if (info.visibleFraction > 0.8 && adIds.length < widget.data.length) {
+    //                               for (var bannerModel in pages[index]) {
+    //                                 _showBanner(bannerModel);
+    //                                 // adIds.add(bannerModel.reportId);
+    //                               }
+    //                             }
+    //                           },
+    //                           child: SizedBox(
+    //                             width: width,
+    //                             child: Builder(builder: (context) {
+    //                               return GridView.count(
+    //                                   padding: EdgeInsets.only(bottom: 10.w),
+    //                                   crossAxisCount: _ColumNumber,
+    //                                   mainAxisSpacing: 10.w,
+    //                                   crossAxisSpacing: 10.w,
+    //                                   physics: const NeverScrollableScrollPhysics(),
+    //                                   childAspectRatio: _childAspectRatio,
+    //                                   shrinkWrap: true,
+    //                                   children: pages[index].map((e) {
+    //                                     // return Container();
+    //
+    //                                     return ReportGestureDetector(
+    //                                         behavior: HitTestBehavior.translucent,
+    //                                         onTap: () {
+    //                                           FocusManager.instance.primaryFocus?.unfocus();
+    //                                           postClickReport(widget.data[index]);
+    //                                           CommonUtils.openRoute(context, e.toJson());
+    //                                         },
+    //                                         child: Column(
+    //                                           mainAxisAlignment: MainAxisAlignment.center,
+    //                                           children: [
+    //                                             SizedBox(
+    //                                               width: w,
+    //                                               height: w,
+    //                                               child: AspectRatio(
+    //                                                 aspectRatio: 1,
+    //                                                 child: MyImage.network(
+    //                                                   CommonUtils.getThumb(e.toJson()),
+    //                                                   fit: BoxFit.cover,
+    //                                                   borderRadius: 8.w,
+    //                                                 ),
+    //                                               ),
+    //                                             ),
+    //                                             // SizedBox(height: 8.w),
+    //                                             Expanded(
+    //                                               child: Container(
+    //                                                 alignment: Alignment.center,
+    //                                                 // color: Colors.blue,
+    //                                                 child: Text(
+    //                                                   e.name ?? e.title ?? "",
+    //                                                   style: TextStyle(
+    //                                                       color: Colors.white,
+    //                                                       overflow: TextOverflow.ellipsis,
+    //                                                       decoration: TextDecoration.none,
+    //                                                       height: 1,
+    //                                                       fontWeight: FontWeight.w600,
+    //                                                       fontSize: 11.sp),
+    //                                                 ),
+    //                                               ),
+    //                                             )
+    //                                           ],
+    //                                         ));
+    //                                   }).toList()
+    //
+    //                                   // pages[index].map((e) {
+    //                                   //   return Container();
+    //                                   // }).toList(),
+    //                                   );
+    //                             }),
+    //                           ),
+    //                         );
+    //                       },
+    //                       itemCount: pages.length,
+    //                       pagination: pages.length > 1 || true
+    //                           ? SwiperPagination(
+    //                               margin: EdgeInsets.zero,
+    //                               builder: SwiperCustomPagination(builder: (context, config) {
+    //                                 int count = pages.length;
+    //                                 return Row(
+    //                                   mainAxisAlignment: MainAxisAlignment.center,
+    //                                   children: List.generate(count, (index) {
+    //                                     return config.activeIndex == index
+    //                                         ? Container(
+    //                                             width: 10.w,
+    //                                             height: 4.w,
+    //                                             margin: EdgeInsets.only(right: 4.w),
+    //                                             decoration: BoxDecoration(
+    //                                               // color: StyleTheme.white255Color,
+    //                                               gradient: MyTheme.gradient_90_114,
+    //                                               borderRadius: BorderRadius.all(Radius.circular(2.w)),
+    //                                             ),
+    //                                           )
+    //                                         : Container(
+    //                                             width: 4.w,
+    //                                             height: 4.w,
+    //                                             margin: EdgeInsets.only(right: 4.w),
+    //                                             decoration: BoxDecoration(
+    //                                               color: MyTheme.white08Color,
+    //                                               borderRadius: BorderRadius.all(Radius.circular(2.w)),
+    //                                             ),
+    //                                           );
+    //                                   }),
+    //                                 );
+    //                               }))
+    //                           : null,
+    //                     ),
+    //             );
+    //           }),
+    //   );
+    // }
   }
 }
 
