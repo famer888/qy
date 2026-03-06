@@ -45,7 +45,6 @@ class ReportGeneralAppListSwiper extends StatefulWidget {
 
 class _ReportGeneralAppListSwiperState extends State<ReportGeneralAppListSwiper> {
   final double _childAspectRatio = 57 / 76;
-  int threshold = 10;
   int _ColumNumber = 6;
 
   Map<String, bool> adIdMap = {}; // 已经显示true 未显示null
@@ -56,7 +55,6 @@ class _ReportGeneralAppListSwiperState extends State<ReportGeneralAppListSwiper>
   void initState() {
     super.initState();
     _ColumNumber = widget.columnNumber;
-    threshold = _ColumNumber * 4; // 3行，第4行用于滚动列表
   }
 
   void _showBanner(BannerModel banner) {
@@ -138,12 +136,13 @@ class _ReportGeneralAppListSwiperState extends State<ReportGeneralAppListSwiper>
 
   @override
   Widget build(BuildContext context) {
-    // if (widget.data.length >= threshold) {
-    // 如果超过24个，取前18个（3行*6列）用GridView显示
-    final gridCount = widget.data.length == threshold ? threshold : _ColumNumber * 3; // 18个
-    final firstPart = widget.data.sublist(0, min(gridCount, widget.data.length));
-    // 剩余的用滚动列表显示
-    final secondPart = widget.data.length > gridCount ? widget.data.sublist(gridCount) : [];
+    final gridCount = widget.data.length <= _ColumNumber * 4
+        ? widget.data.length // 总数不超过24个，全部显示在GridView
+        : _ColumNumber * 3; // 超过24个，GridView显示18个（3行）
+
+    final firstPart = widget.data.sublist(0, gridCount);
+    final secondPart = widget.data.sublist(gridCount);
+
     final itemWidth = (ScreenUtil().screenWidth - (_ColumNumber + 1) * 10.w - MyTheme.pagePadding * 2) / _ColumNumber;
 
     return Column(
